@@ -86,7 +86,7 @@ func _animate_movement(delta: float) -> void:
 	else:
 		# NES-style: snap to positions, no smooth interpolation
 		# Use integer steps for authentic retro feel
-		var step := floor(t * 4.0) / 4.0
+		var step: float = floor(t * 4.0) / 4.0
 		position = start_position.lerp(target_position, step)
 
 func _on_tile_arrived() -> void:
