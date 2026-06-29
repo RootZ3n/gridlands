@@ -14,12 +14,28 @@ random monster encounters, and classic turn-based menu combat. The twist —
 Zenny himself has no stats or levels. All progression lives in the Circuit
 Blade, which levels up, learns skills, and transforms into new weapon forms.
 
-Gridlands is a project of the **Pehverse** lab, a multi-agent AI development
-ecosystem by Jeffrey Miller.
-
 > **Project status:** early development (Phase 0/1). The core engine scaffolding
 > exists — autoload singletons, the overworld movement system, and enemy data —
 > but the battle scenes, UI, and art/audio assets are still to come.
+
+---
+
+## What is this?
+
+Gridlands is a turn-based RPG inspired by Dragon Warrior, set in a neon synthwave digital world. You play as Zenny, a developer trapped inside his own corrupted lab. Your weapon — the Circuit Blade — is your only companion, and it's the one that levels up, not you.
+
+**Note:** This game is in early development. The core engine exists but battle scenes, UI, and art are still being built.
+
+## What is Peh?
+
+[Peh](https://github.com/RootZ3n) is an open-source AI ecosystem — a collection of tools for building, testing, and protecting AI systems. Gridlands is one of the creative projects in the ecosystem. Other Peh tools include:
+
+- **[Velum](https://github.com/RootZ3n/velum)** — AI privacy & injection defense
+- **[ikbi](https://github.com/RootZ3n/ikbi)** — governed build/repair engine for AI
+- **[Wyrms vs Worms](https://github.com/RootZ3n/wyrmsvsworms)** — match-3 arcade game
+- **[Kokuli](https://github.com/RootZ3n/kokuli)** — adversarial fracture engine
+
+You don't need to use the rest of Peh to play Gridlands. It's just a game.
 
 ## How to play
 
