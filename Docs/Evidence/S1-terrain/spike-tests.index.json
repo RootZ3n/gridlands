@@ -1,0 +1,109 @@
+{
+ "succeeded": 3,
+ "succeededWithWarnings": 0,
+ "failed": 1,
+ "notRun": 0,
+ "tests": [
+  {
+   "fullTestPath": "Gridlands.Spike.Terrain.CollisionFollowsEdits",
+   "state": "Success",
+   "entries": [
+    {
+     "event": {
+      "type": "Info",
+      "message": "heightfield 65x65 mesh+collision rebuild: 11.24 ms"
+     }
+    },
+    {
+     "event": {
+      "type": "Info",
+      "message": "voxel 33^3 mesh+collision rebuild: 4.90 ms"
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Spike.Terrain.Measurements",
+   "state": "Success",
+   "entries": [
+    {
+     "event": {
+      "type": "Info",
+      "message": "heightfield_65x65_at_100cm: 8192 tris, brush 0.013 ms, build 1.337 ms, dig delta 150 B (94 B zlib)"
+     }
+    },
+    {
+     "event": {
+      "type": "Info",
+      "message": "heightfield_129x129_at_50cm: 32768 tris, brush 0.048 ms, build 5.189 ms, dig delta 606 B (305 B zlib)"
+     }
+    },
+    {
+     "event": {
+      "type": "Info",
+      "message": "voxel 33^3: 2010 tris, brush 0.114 ms, build 1.079 ms, dig delta 18276 B (8687 B zlib)"
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Spike.Terrain.NavigationFollowsEdits",
+   "state": "Fail",
+   "entries": [
+    {
+     "event": {
+      "type": "Info",
+      "message": "volume bounds: IsValid=true, Min=(X=3200.000 Y=3200.000 Z=0.000), Max=(X=3200.000 Y=3200.000 Z=0.000)"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogNavigationDirtyArea: Skipped some dirty area creation due to: 0 invalid bounds, 1 empty bounds (element: None, from: Navigation bounds update)"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogNavigation: SpawnMissingNavigationData: No saved navigation data found for 'Default' in level 'PersistentLevel'. Spawning and rebuilding at runtime to recover - this has a performance cost. Rebuild navigation and resave the level to fix this."
+     }
+    },
+    {
+     "event": {
+      "type": "Info",
+      "message": "nav data objects: 1, bounds: 1, build ticks: 0"
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'navmesh exists on undug ground' to be true."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'navmesh exists in the dug pit' to be true."
+     }
+    },
+    {
+     "event": {
+      "type": "Info",
+      "message": "navmesh build 1.1 ms, rebuild after dig 0.4 ms"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogCrowdFollowing: Unable to find RecastNavMesh instance while trying to create UCrowdManager instance"
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Spike.Terrain.PureOperations",
+   "state": "Success",
+   "entries": []
+  }
+ ]
+}

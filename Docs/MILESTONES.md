@@ -17,7 +17,7 @@ with evidence under `Docs/Evidence/<milestone>/`. Gates are not traded for speed
 | # | Milestone | Proof |
 |---|---|---|
 | M2 | **Data pipeline v1** (JSON loaded directly, ADR-0021): ID/tag grammar validator ([CONTENT-IDS-AND-TAGS](CONTENT-IDS-AND-TAGS.md)); schemas for items, materials, recipes, salvage, yield categories, knowledge, build pieces (era + material + support), the 10 eras, bands, cells, glitches (stability weight), placements, capabilities, exchanges; C++ typed loader with closed keys and round-trip; lints for NC-2, E1 non-scaling, ERA-1 and P-3 no-damage | **DONE 2026-09-24**: 57 entities valid, 55 tooling tests, 15/15 automation tests from a fresh clone ([evidence](Evidence/M2/README.md)) | 
-| S1 | **Terrain spike** alongside M2 (time-boxed prototypes, not production) | evidence + terrain ADR recommendation -> **operator approval** |
+| S1 | **Terrain spike** alongside M2 (time-boxed prototypes, not production) | **DONE; awaiting operator approval of [ADR-0022](ADR/0022-terrain-chunked-heightfield.md)** ([evidence](Evidence/S1-terrain/README.md)) |
 | M3 | Character, interaction, **gameplay event bus**, anchor component + export commandlet, modern-suburbia slice blockout | interaction/anchor-export specs + manual walk |
 | M4 | Salvage + inventory + world-settings yields | per-category yield specs |
 | M5 | **Dialogue director v0** + frequency setting + first ~15 exchanges on real events (salvage, overencumbrance, death, idle) | seeded selection, silence gap, story-critical bypass specs |
