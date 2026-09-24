@@ -33,12 +33,15 @@ def main(argv: list[str]) -> int:
         return 0
     if command == "generate":
         ds = validate.load(repo_root)
-        path = repo_root / tagfiles.GENERATED_FILE
-        path.parent.mkdir(parents=True, exist_ok=True)
-        text = tagfiles.render_generated(ds)
-        changed = not path.exists() or path.read_text(encoding="utf-8") != text
-        path.write_text(text, encoding="utf-8")
-        print(f"RESULT: PASS {tagfiles.GENERATED_FILE} {'updated' if changed else 'unchanged'}")
+        results = []
+        for relative, text in ((tagfiles.GENERATED_FILE, tagfiles.render_generated(ds)),
+                               (tagfiles.SCHEMA_EXPORT, tagfiles.render_schema_export())):
+            path = repo_root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            changed = not path.exists() or path.read_text(encoding="utf-8") != text
+            path.write_text(text, encoding="utf-8")
+            results.append(f"{relative} {'updated' if changed else 'unchanged'}")
+        print(f"RESULT: PASS {'; '.join(results)}")
         return 0
     print(__doc__.strip())
     print("RESULT: FAIL usage")

@@ -16,7 +16,7 @@ with evidence under `Docs/Evidence/<milestone>/`. Gates are not traded for speed
 
 | # | Milestone | Proof |
 |---|---|---|
-| M2 | **Data pipeline v1**: ID/tag grammar validator ([CONTENT-IDS-AND-TAGS](CONTENT-IDS-AND-TAGS.md)); schemas for items, materials, recipes, salvage, yield categories, knowledge, build pieces (era + material + support), the 10 eras, bands, cells, glitches (stability weight), placements, capabilities, exchanges; deterministic importer; lints for NC-2, E1 non-scaling, ERA-1 and P-3 no-damage | validator and data specs green; importer byte-stable on re-run |
+| M2 | **Data pipeline v1** (JSON loaded directly, ADR-0021): ID/tag grammar validator ([CONTENT-IDS-AND-TAGS](CONTENT-IDS-AND-TAGS.md)); schemas for items, materials, recipes, salvage, yield categories, knowledge, build pieces (era + material + support), the 10 eras, bands, cells, glitches (stability weight), placements, capabilities, exchanges; deterministic importer; lints for NC-2, E1 non-scaling, ERA-1 and P-3 no-damage | validator and data specs green; importer byte-stable on re-run |
 | S1 | **Terrain spike** alongside M2 (time-boxed prototypes, not production) | evidence + terrain ADR recommendation -> **operator approval** |
 | M3 | Character, interaction, **gameplay event bus**, anchor component + export commandlet, modern-suburbia slice blockout | interaction/anchor-export specs + manual walk |
 | M4 | Salvage + inventory + world-settings yields | per-category yield specs |

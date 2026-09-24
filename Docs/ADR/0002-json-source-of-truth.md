@@ -29,3 +29,8 @@ needs a human in the editor.
 
 ## Reversal cost
 High. Everything downstream assumes it, which is why it is decided first.
+
+## Amendment (2026-09-24, ADR-0021)
+The engine loads the JSON directly into typed definitions; there are no
+generated DataAssets and no `Tools/import-data.sh`. Validation is
+`Tools/data.sh validate`, plus C++ closed-key and round-trip tests.

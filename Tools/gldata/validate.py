@@ -13,7 +13,7 @@ from pathlib import Path
 
 from . import grammar, schema, tagfiles
 
-SKIP_TOP = {"_registry", "README.md", "_aliases.json"}
+SKIP_TOP = {"_registry", "README.md", "_aliases.json"}  # _registry holds registries and generated exports
 ERA_POWER_KEYS = {"strength", "damage", "tier", "support", "yieldMultiplier", "power", "level"}
 DAMAGE_WORDS = ("damage", "attack", "hurt", "kill", "harm")
 
@@ -234,7 +234,7 @@ def check_yields(ds: Dataset) -> None:
     for entity in sorted(ds.entities.values(), key=lambda e: e.id):
         if entity.kind != "yield":
             continue
-        klass, scalable = entity.data.get("class"), entity.data.get("scalable")
+        klass, scalable = entity.data.get("yieldClass"), entity.data.get("scalable")
         if klass in schema.NON_SCALING_CLASSES and scalable is not False:
             ds.problem("E-1", entity.file, ".scalable", f"class '{klass}' must never scale (ADR-0016)")
         if klass not in schema.NON_SCALING_CLASSES and klass is not None and scalable is not True:
@@ -299,11 +299,12 @@ def check_placements(ds: Dataset) -> None:
 
 
 def check_generated_tags(ds: Dataset) -> None:
-    expected = tagfiles.render_generated(ds)
-    path = ds.root / tagfiles.GENERATED_FILE
-    actual = path.read_text(encoding="utf-8") if path.exists() else ""
-    if actual != expected:
-        ds.problem("GEN-1", tagfiles.GENERATED_FILE, "", "out of date with Data/; run `Tools/data.sh generate`")
+    for relative, expected in ((tagfiles.GENERATED_FILE, tagfiles.render_generated(ds)),
+                               (tagfiles.SCHEMA_EXPORT, tagfiles.render_schema_export())):
+        path = ds.root / relative
+        actual = path.read_text(encoding="utf-8") if path.exists() else ""
+        if actual != expected:
+            ds.problem("GEN-1", relative, "", "out of date; run `Tools/data.sh generate`")
 
 
 def run(repo_root: Path) -> Dataset:

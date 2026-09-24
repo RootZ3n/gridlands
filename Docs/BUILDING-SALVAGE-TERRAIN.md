@@ -86,6 +86,5 @@ on:
 - agent maintainability;
 - implications for the JSON placement layer (ADR-0018).
 
-It ends in an **ADR recommendation with evidence** (the terrain ADR, the next
-free number), and production terrain work waits for **operator approval** of
+It ends in an **ADR recommendation with evidence** (the terrain ADR, expected ADR-0022), and production terrain work waits for **operator approval** of
 that choice.

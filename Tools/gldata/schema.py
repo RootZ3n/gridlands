@@ -209,8 +209,8 @@ SCHEMAS: dict[str, Obj] = {
         required=("displayName", "tag", "depth", "baselineInterference"),
     ),
     "yield": kind(
-        {"displayName": Str(), "tag": Tag("Yield"), "class": Enum(*YIELD_CLASSES), "scalable": Bool(), "setting": Str()},
-        required=("displayName", "tag", "class", "scalable"),
+        {"displayName": Str(), "tag": Tag("Yield"), "yieldClass": Enum(*YIELD_CLASSES), "scalable": Bool(), "setting": Str()},
+        required=("displayName", "tag", "yieldClass", "scalable"),
     ),
     "settings": kind(
         {"displayName": Str(), "yieldMultipliers": Obj({"resourceYield": Num(positive=True), "creatureDrops": Num(positive=True)},
@@ -344,6 +344,21 @@ SCHEMAS: dict[str, Obj] = {
         required=("trigger", "category", "priority", "cooldownSeconds", "weight", "lines"),
     ),
 }
+
+def key_paths(spec: Spec, prefix: str = "") -> list[str]:
+    """Every key path a schema allows, e.g. 'tool.toolClass', 'yields[].item', 'bindings{}'."""
+    paths: list[str] = []
+    if isinstance(spec, Obj):
+        for key, sub in spec.fields.items():
+            path = f"{prefix}.{key}" if prefix else key
+            paths.append(path)
+            paths.extend(key_paths(sub, path))
+    elif isinstance(spec, List):
+        paths.extend(key_paths(spec.item, prefix + "[]"))
+    elif isinstance(spec, Map):
+        paths.append(prefix + "{}")
+    return paths
+
 
 PLACEMENT_KIND_DEFINITION = {"glitch": "glitch", "salvage_node": "salvage", "spawn": "creature", "patrol": "creature",
                              "discovery": "knowledge", "encounter": "creature"}

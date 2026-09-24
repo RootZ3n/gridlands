@@ -70,6 +70,17 @@ The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
 - **Add content:** create `Data/<kind>/<domain>/<name>.json` whose `id` mirrors
   the path, run `Tools/data.sh generate` (if you added an era, band or yield) and
   `Tools/data.sh validate`, then `Tools/test.sh`.
+- **Add a field to a content kind:** add it to the kind's schema in
+  `Tools/gldata/schema.py` **and** to the matching struct in
+  `Source/GridlandsCore/Public/Content/GLContentDefinitions.h` (the JSON key is the
+  property name with a lower-case first letter; use `double` for numbers). Run
+  `Tools/data.sh generate`, which refreshes `Data/_registry/schema.generated.json`,
+  then `Tools/test.sh`. `Gridlands.Core.Content.SchemaKeysMatchValidator` fails
+  if either side is missing the field.
+- **Add a content kind:** register it in `Data/_registry/kinds.json`; add a
+  schema in `schema.py`, a struct in `GLContentDefinitions.h` and a row in
+  `KindStructs` (`GLContentRegistry.cpp`); document it in
+  `Docs/CONTENT-IDS-AND-TAGS.md` section 2; then generate and test.
 - **Add a glitch to the world:** write `Data/placement/<cell>/<name>.json`
   naming a `glitch.*` definition and an anchor (see
   `Data/anchor/<cell>.generated.json`) or a cell-local transform; run the

@@ -1,0 +1,27 @@
+{
+ "comment": "Shared by Python (test_gldata) and C++ (Gridlands.Core.Content.IdGrammarMatchesCorpus): both must agree.",
+ "valid": [
+  "item.material.copper_wire",
+  "era.memory.native_american_1800s",
+  "a.b.c",
+  "a.b.c.d.e",
+  "placement.origin.glitch_kitchen_wall",
+  "x.y.zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+ ],
+ "invalid": [
+  "item.copper",
+  "Item.material.x",
+  "item.material.Copper",
+  "item.material.copper__wire",
+  "item.material.copper_",
+  "item.material.1copper",
+  "a.b.c.d.e.f",
+  "item.material.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "",
+  "item..copper",
+  "item.material.copper wire",
+  "item.material.copper-wire",
+  ".a.b",
+  "a.b.c."
+ ]
+}

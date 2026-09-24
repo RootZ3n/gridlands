@@ -77,6 +77,13 @@ class GrammarTests(unittest.TestCase):
                     "item.material.copper_", "item.material.1copper", "a.b.c.d.e.f", "item.material." + "x" * 33, 5):
             self.assertIsNotNone(grammar.id_problem(bad), bad)
 
+    def test_shared_id_corpus(self):
+        corpus = json.loads((TOOLS / "tests" / "id-corpus.json").read_text())
+        for good in corpus["valid"]:
+            self.assertIsNone(grammar.id_problem(good), good)
+        for bad in corpus["invalid"]:
+            self.assertIsNotNone(grammar.id_problem(bad), bad)
+
     def test_tags(self):
         self.assertIsNone(grammar.tag_problem("Event.Salvage.WireStripped"))
         for bad in ("event.salvage", "Event.salvage", "A.B.C.D.E", "Era.Roman_Age"):
@@ -222,6 +229,14 @@ class GenerateTests(unittest.TestCase):
         ds = validate.load(REPO)
         expected = tagfiles.render_generated(ds)
         self.assertEqual((REPO / tagfiles.GENERATED_FILE).read_text(), expected)
+
+    def test_schema_export_in_sync_and_nonempty(self):
+        text = (REPO / tagfiles.SCHEMA_EXPORT).read_text()
+        self.assertEqual(text, tagfiles.render_schema_export())
+        kinds = json.loads(text)["kinds"]
+        self.assertIn("tool.toolClass", kinds["item"])
+        self.assertIn("bindings{}", kinds["placement"])
+        self.assertIn("yields[].yieldCategory", kinds["salvage"])
 
     def test_generated_tags_cover_eras_bands_yields(self):
         declared = tagfiles.declared_tags(REPO)
