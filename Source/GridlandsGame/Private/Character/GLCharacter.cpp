@@ -14,6 +14,8 @@
 #include "InputMappingContext.h"
 #include "InputModifiers.h"
 #include "Fabrication/GLFabricatorComponent.h"
+#include "Pehlichi/GLPehlichi.h"
+#include "Pehlichi/GLPehlichiCommandComponent.h"
 #include "GridlandsGame.h"
 #include "Interaction/GLInteractorComponent.h"
 #include "Inventory/GLInventoryComponent.h"
@@ -26,6 +28,9 @@ namespace GLCharacterInput
 	const FName Jump(TEXT("Jump"));
 	const FName Interact(TEXT("Interact"));
 	const FName Fabricate(TEXT("Fabricate"));
+	const FName Scan(TEXT("CommandScan"));
+	const FName Repair(TEXT("CommandRepair"));
+	const FName Follow(TEXT("CommandFollowToggle"));
 }
 
 AGLCharacter::AGLCharacter()
@@ -112,6 +117,10 @@ void AGLCharacter::BuildInput()
 
 	UInputAction* Make = MakeAction(GLCharacterInput::Fabricate, EInputActionValueType::Boolean);
 	MappingContext->MapKey(Make, EKeys::F);
+
+	MappingContext->MapKey(MakeAction(GLCharacterInput::Scan, EInputActionValueType::Boolean), EKeys::Q);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::Repair, EInputActionValueType::Boolean), EKeys::R);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::Follow, EInputActionValueType::Boolean), EKeys::G);
 }
 
 const UInputAction* AGLCharacter::FindInputAction(FName Name) const
@@ -145,6 +154,9 @@ void AGLCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		Input->BindAction(FindInputAction(GLCharacterInput::Jump), ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 		Input->BindAction(FindInputAction(GLCharacterInput::Interact), ETriggerEvent::Started, this, &AGLCharacter::Interact);
 		Input->BindAction(FindInputAction(GLCharacterInput::Fabricate), ETriggerEvent::Started, this, &AGLCharacter::FabricateFirstAvailable);
+		Input->BindAction(FindInputAction(GLCharacterInput::Scan), ETriggerEvent::Started, this, &AGLCharacter::CommandPehlichi, FName(TEXT("Command.Pehlichi.Scan")));
+		Input->BindAction(FindInputAction(GLCharacterInput::Repair), ETriggerEvent::Started, this, &AGLCharacter::CommandPehlichi, FName(TEXT("Command.Pehlichi.Repair")));
+		Input->BindAction(FindInputAction(GLCharacterInput::Follow), ETriggerEvent::Started, this, &AGLCharacter::ToggleFollow);
 	}
 }
 
@@ -180,6 +192,21 @@ void AGLCharacter::FabricateFirstAvailable()
 		Fabricator->Fabricate(Recipes[0]);
 		UE_LOG(LogGridlands, Log, TEXT("Fabricated %s"), *Recipes[0].ToString());
 	}
+}
+
+void AGLCharacter::CommandPehlichi(FName Command)
+{
+	if (AGLPehlichi* Companion = Pehlichi.Get())
+	{
+		const EGLCommandRejection Result = Companion->GetCommands()->Issue(Command, this);
+		UE_LOG(LogGridlands, Log, TEXT("Command %s -> %s"), *Command.ToString(), *StaticEnum<EGLCommandRejection>()->GetNameStringByValue(static_cast<int64>(Result)));
+	}
+}
+
+void AGLCharacter::ToggleFollow()
+{
+	bPehlichiStaying = !bPehlichiStaying;
+	CommandPehlichi(bPehlichiStaying ? FName(TEXT("Command.Pehlichi.Stay")) : FName(TEXT("Command.Pehlichi.Follow")));
 }
 
 void AGLCharacter::GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const

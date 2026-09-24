@@ -1,0 +1,26 @@
+diff --git a/Source/GridlandsCore/Private/Glitch/GLGlitchRules.cpp b/Source/GridlandsCore/Private/Glitch/GLGlitchRules.cpp
+index d22a9d4..0879da0 100644
+--- a/Source/GridlandsCore/Private/Glitch/GLGlitchRules.cpp
++++ b/Source/GridlandsCore/Private/Glitch/GLGlitchRules.cpp
+@@ -35,7 +35,7 @@ namespace GLGlitchRules
+ 
+ 	bool CanDetect(const FGLGlitchDef& Glitch, const FGLCapabilityDef& ScanCapability, int32 ScanLevel, double DistanceCm)
+ 	{
+-		if (Glitch.Detection.Capability != ScanCapability.Id || ScanLevel < Glitch.Detection.MinLevel)
++		if (Glitch.Detection.Capability != ScanCapability.Id) // MUTATION: ignores the required scan level
+ 		{
+ 			return false;
+ 		}
+diff --git a/Source/GridlandsGame/Public/Glitch/GLGlitchComponent.h b/Source/GridlandsGame/Public/Glitch/GLGlitchComponent.h
+index 529398b..c5fc499 100644
+--- a/Source/GridlandsGame/Public/Glitch/GLGlitchComponent.h
++++ b/Source/GridlandsGame/Public/Glitch/GLGlitchComponent.h
+@@ -21,7 +21,7 @@ private:
+ 
+ struct FGLRepairAuthority
+ {
+-private:
++public: // MUTATION: anyone may now repair
+ 	FGLRepairAuthority() = default;
+ 	friend class UGLRepairComponent;
+ };

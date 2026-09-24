@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.glitch.first_detected",
+  "trigger": [
+    "Event.Glitch.Detected"
+  ],
+  "category": "StoryCritical",
+  "priority": 90,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "Pehlichi",
+      "text": "There. See it? The world's seams are showing. I can fix that."
+    },
+    {
+      "speaker": "NICE",
+      "text": "You can try."
+    }
+  ]
+}

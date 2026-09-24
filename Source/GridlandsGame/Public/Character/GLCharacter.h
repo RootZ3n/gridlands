@@ -5,6 +5,7 @@
 #include "GLCharacter.generated.h"
 
 class UCameraComponent;
+class AGLPehlichi;
 class UGLFabricatorComponent;
 class UGLInteractorComponent;
 class UGLInventoryComponent;
@@ -38,6 +39,8 @@ public:
 	UGLInteractorComponent* GetInteractor() const { return Interactor; }
 	UGLInventoryComponent* GetInventory() const { return Inventory; }
 	UGLFabricatorComponent* GetFabricator() const { return Fabricator; }
+	AGLPehlichi* GetPehlichi() const { return Pehlichi.Get(); }
+	void SetPehlichi(AGLPehlichi* InPehlichi) { Pehlichi = InPehlichi; }
 	const UInputMappingContext* GetMappingContext() const { return MappingContext; }
 	const UInputAction* FindInputAction(FName Name) const;
 
@@ -47,6 +50,9 @@ private:
 	void Interact();
 	/** Temporary until crafting UI exists: makes the first craftable recipe. */
 	void FabricateFirstAvailable();
+	/** Zenny never speaks; he commands (ADR-0005): Q scan, R repair, G follow/stay. */
+	void CommandPehlichi(FName Command);
+	void ToggleFollow();
 
 	UPROPERTY(VisibleAnywhere) TObjectPtr<USpringArmComponent> CameraBoom;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UCameraComponent> Camera;
@@ -56,5 +62,7 @@ private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGLFabricatorComponent> Fabricator;
 
 	UPROPERTY(Transient) TObjectPtr<UInputMappingContext> MappingContext;
+	TWeakObjectPtr<AGLPehlichi> Pehlichi;
+	bool bPehlichiStaying = false;
 	UPROPERTY(Transient) TMap<FName, TObjectPtr<UInputAction>> Actions;
 };

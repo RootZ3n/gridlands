@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "glitch.home.buried_signal",
+  "displayName": "Buried signal",
+  "detection": {
+    "capability": "capability.pehlichi.scan",
+    "minLevel": 2
+  },
+  "repair": {
+    "seconds": 6.0,
+    "interruptPolicy": "KeepProgress"
+  },
+  "stabilityWeight": 1.5,
+  "rewards": [
+    {
+      "recipient": "Zenny",
+      "knowledge": "knowledge.style.roman_masonry"
+    }
+  ],
+  "notes": "Only a level-2 scan can see it: the lamp's capability reward is what makes it findable."
+}

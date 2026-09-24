@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.glitch.repaired_again",
+  "trigger": [
+    "Event.Glitch.Repaired"
+  ],
+  "category": "Contextual",
+  "priority": 30,
+  "cooldownSeconds": 600,
+  "maxUses": 3,
+  "weight": 1.0,
+  "requires": [
+    {
+      "eventCount": "Event.Glitch.Repaired",
+      "min": 2
+    }
+  ],
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Stop tidying my world. I had it exactly how I liked it."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "Broken?"
+    },
+    {
+      "speaker": "NICE",
+      "text": "Curated."
+    }
+  ]
+}
