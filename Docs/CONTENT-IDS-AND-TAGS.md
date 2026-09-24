@@ -63,6 +63,12 @@ Rules:
 **[V] ID-9** A new kind is added only with a typed C++ definition (ADR-0021)
 and an entry here. It's a code change, reviewed.
 
+## 2b. Content rules beyond the grammar
+
+- **[V] KN-1** A knowledge entry's `sources` must be backed by content: `Source.Salvage`
+  needs a salvage whose `onSalvageUnlocks` grants it, and `Source.Discovery` needs an item whose
+  `onAcquireUnlocks` grants it. That way NC-2 cannot be satisfied on paper only.
+
 ## 2a. Loader rules (C++, ADR-0021)
 
 The engine's loader re-checks what it depends on: ID-1, ID-2, ID-3, ID-4,

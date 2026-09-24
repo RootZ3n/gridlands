@@ -2,6 +2,7 @@
 
 #include "Content/GLContent.h"
 #include "Content/GLContentDefinitions.h"
+#include "Knowledge/GLKnowledge.h"
 #include "Events/GLEventSubsystem.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -22,6 +23,23 @@ int32 UGLInventoryComponent::AddItem(FName Item, int32 Count)
 		UpdateEncumbrance();
 	}
 	return Added;
+}
+
+FGLCraftCheck UGLInventoryComponent::Craft(FName RecipeId, const FGLKnowledge& Knowledge, const TArray<FName>& StationsInReach)
+{
+	const FGLCraftCheck Result = GLFabricationRules::Craft(GLContent::Get(), RecipeId, Inventory, Knowledge, StationsInReach);
+	if (Result.CanCraft())
+	{
+		const FGLRecipeDef* Recipe = GLContent::Get().Find<FGLRecipeDef>(RecipeId);
+		FGLGameplayEvent Event;
+		Event.Tag = UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Item.Acquired"));
+		Event.Subject = Recipe->Output.Item;
+		Event.Instigator = GetOwner();
+		Event.Numbers.Add(TEXT("count"), Recipe->Output.Count);
+		UGLEventSubsystem::Emit(this, MoveTemp(Event));
+		UpdateEncumbrance();
+	}
+	return Result;
 }
 
 bool UGLInventoryComponent::RemoveItem(FName Item, int32 Count)

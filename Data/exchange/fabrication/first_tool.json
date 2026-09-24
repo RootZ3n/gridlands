@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.fabrication.first_tool",
+  "trigger": [
+    "Event.Item.Fabricated"
+  ],
+  "subject": "item.tool.pry_bar",
+  "category": "Contextual",
+  "priority": 40,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "You made a crowbar. From garbage. I'm almost impressed."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "It's a pry bar. And he's about to pry your world open with it."
+    }
+  ]
+}

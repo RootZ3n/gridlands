@@ -13,6 +13,8 @@
 #include "InputAction.h"
 #include "InputMappingContext.h"
 #include "InputModifiers.h"
+#include "Fabrication/GLFabricatorComponent.h"
+#include "GridlandsGame.h"
 #include "Interaction/GLInteractorComponent.h"
 #include "Inventory/GLInventoryComponent.h"
 #include "UObject/ConstructorHelpers.h"
@@ -23,6 +25,7 @@ namespace GLCharacterInput
 	const FName Look(TEXT("Look"));
 	const FName Jump(TEXT("Jump"));
 	const FName Interact(TEXT("Interact"));
+	const FName Fabricate(TEXT("Fabricate"));
 }
 
 AGLCharacter::AGLCharacter()
@@ -58,6 +61,7 @@ AGLCharacter::AGLCharacter()
 
 	Interactor = CreateDefaultSubobject<UGLInteractorComponent>(TEXT("Interactor"));
 	Inventory = CreateDefaultSubobject<UGLInventoryComponent>(TEXT("Inventory"));
+	Fabricator = CreateDefaultSubobject<UGLFabricatorComponent>(TEXT("Fabricator"));
 }
 
 void AGLCharacter::BuildInput()
@@ -105,6 +109,9 @@ void AGLCharacter::BuildInput()
 	UInputAction* Use = MakeAction(GLCharacterInput::Interact, EInputActionValueType::Boolean);
 	MappingContext->MapKey(Use, EKeys::E);
 	MappingContext->MapKey(Use, EKeys::Gamepad_FaceButton_Left);
+
+	UInputAction* Make = MakeAction(GLCharacterInput::Fabricate, EInputActionValueType::Boolean);
+	MappingContext->MapKey(Make, EKeys::F);
 }
 
 const UInputAction* AGLCharacter::FindInputAction(FName Name) const
@@ -137,6 +144,7 @@ void AGLCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		Input->BindAction(FindInputAction(GLCharacterInput::Jump), ETriggerEvent::Started, this, &ACharacter::Jump);
 		Input->BindAction(FindInputAction(GLCharacterInput::Jump), ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 		Input->BindAction(FindInputAction(GLCharacterInput::Interact), ETriggerEvent::Started, this, &AGLCharacter::Interact);
+		Input->BindAction(FindInputAction(GLCharacterInput::Fabricate), ETriggerEvent::Started, this, &AGLCharacter::FabricateFirstAvailable);
 	}
 }
 
@@ -162,6 +170,16 @@ void AGLCharacter::Look(const FInputActionValue& Value)
 void AGLCharacter::Interact()
 {
 	Interactor->TryInteract();
+}
+
+void AGLCharacter::FabricateFirstAvailable()
+{
+	const TArray<FName> Recipes = Fabricator->CraftableRecipes();
+	if (Recipes.Num() > 0)
+	{
+		Fabricator->Fabricate(Recipes[0]);
+		UE_LOG(LogGridlands, Log, TEXT("Fabricated %s"), *Recipes[0].ToString());
+	}
 }
 
 void AGLCharacter::GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const

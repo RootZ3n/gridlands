@@ -21,7 +21,7 @@ with evidence under `Docs/Evidence/<milestone>/`. Gates are not traded for speed
 | M3 | Character, interaction, **gameplay event bus**, anchor component + export commandlet, modern-suburbia slice blockout | **DONE 2026-09-24**: 20/20 automation tests; rendered game run loads L_Origin with 15 anchors ([evidence](Evidence/M3/README.md)); keyboard walk-around is the operator's to try |
 | M4 | Salvage + inventory + world-settings yields | **DONE 2026-09-24**: 28/28 automation tests; E-1 mutation caught ([evidence](Evidence/M4/README.md)) |
 | M5 | **Dialogue director v0** + frequency setting + first ~15 exchanges on real events (salvage, overencumbrance, death, idle) | **DONE 2026-09-24**: 34/34 automation + 58 tooling tests; 15 exchanges ([evidence](Evidence/M5/README.md)). Idle has no event source yet |
-| M6 | Fabrication + knowledge unlocks | pry bar salvages faster; discovery unlocks a recipe |
+| M6 | Fabrication + knowledge unlocks | **DONE 2026-09-24**: loop steps 2-4 automated; 39/39 automation + 59 tooling tests ([evidence](Evidence/M6/README.md)) |
 | M7 | Pehlichi command/scan/repair from placements; requirements (salvaged blocker, delivered item, riddle) | lifecycle/command/requirement specs |
 | M8 | Stability model + interference tiers; static recedes after repair | derived-value specs |
 | M9 | World save of everything above (ADR-0019) | round-trip + migration spec |

@@ -64,7 +64,11 @@ bool FGLDirectorReacts::RunTest(const FString& Parameters)
 		TestTrue(TEXT("only NICE and Pehlichi speak (Zenny is silent)"), Line.Speaker == TEXT("NICE") || Line.Speaker == TEXT("Pehlichi"));
 	}
 	TestEqual(TEXT("one burst of events -> one exchange, no pile-up"), Exchanges.Num(), 1);
-	TestTrue(TEXT("it reacts to what actually happened (the fuse)"), Exchanges.Contains(TEXT("exchange.item.fuse")));
+	// Which one depends on event order (items, knowledge learned, completion, wire); what matters is
+	// that it answers something that actually happened in this burst.
+	const TSet<FName> BurstResponses = { TEXT("exchange.item.fuse"), TEXT("exchange.knowledge.first_unlock"),
+		TEXT("exchange.salvage.first_completed"), TEXT("exchange.salvage.wire_bike") };
+	TestTrue(TEXT("it reacts to what actually happened in the burst"), Exchanges.Num() == 1 && BurstResponses.Contains(Exchanges.Array()[0]));
 
 	// Later, wire stripping again: after the gap and the busy window, the wire joke can play.
 	Director->SetTimeOverride(2000.0);

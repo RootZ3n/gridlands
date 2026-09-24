@@ -194,6 +194,7 @@ def cross_check(ds: Dataset) -> None:
 
     check_aliases(ds)
     check_non_combat(ds)
+    check_knowledge_sources(ds)
     check_yields(ds)
     check_dialogue(ds)
     check_placements(ds)
@@ -223,6 +224,33 @@ def check_non_combat(ds: Dataset) -> None:
             if sources and sources <= ds.combat_sources:
                 ds.problem("NC-2", entity.file, ".sources",
                            f"critical-path {entity.kind} has only combat sources ({', '.join(sorted(sources))}); add a non-combat source")
+
+
+# A knowledge source tag is only real if some content actually grants the knowledge that way.
+KNOWLEDGE_SOURCE_BACKING = {
+    "Source.Salvage": ("salvage", "onSalvageUnlocks"),
+    "Source.Discovery": ("item", "onAcquireUnlocks"),
+}
+
+
+def check_knowledge_sources(ds: Dataset) -> None:
+    """KN-1: declared knowledge sources are backed by content (so NC-2 cannot pass on paper only)."""
+    granted: dict[str, set[str]] = {tag: set() for tag in KNOWLEDGE_SOURCE_BACKING}
+    for entity in ds.entities.values():
+        for tag, (kind, field_name) in KNOWLEDGE_SOURCE_BACKING.items():
+            if entity.kind == kind:
+                granted[tag].update(entity.data.get(field_name, []))
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        if entity.kind == "glitch":
+            for reward in entity.data.get("rewards", []):
+                if isinstance(reward, dict) and "knowledge" in reward:
+                    granted.setdefault("Source.GlitchReward", set()).add(reward["knowledge"])
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        if entity.kind != "knowledge":
+            continue
+        for tag in entity.data.get("sources", []):
+            if tag in granted and entity.id not in granted[tag]:
+                ds.problem("KN-1", entity.file, ".sources", f"declares {tag} but nothing grants {entity.id} that way")
 
 
 def check_yields(ds: Dataset) -> None:

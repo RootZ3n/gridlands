@@ -1,0 +1,31 @@
+{
+ "succeeded": 1,
+ "succeededWithWarnings": 0,
+ "failed": 1,
+ "notRun": 0,
+ "inProcess": 0,
+ "totalDuration": 0.016342289745807648,
+ "tests": [
+  {
+   "fullTestPath": "Gridlands.Core.Fabrication.CraftIsTransactional",
+   "state": "Fail",
+   "warnings": 0,
+   "errors": 1,
+   "entries": [
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'and nothing was consumed' to be 50, but it was 47."
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Fabrication.KnowledgeAndStationGates",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  }
+ ]
+}
