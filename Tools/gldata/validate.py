@@ -1,0 +1,314 @@
+"""Validate Data/ against Docs/CONTENT-IDS-AND-TAGS.md and the design invariants.
+
+Every problem is a Problem(rule, file, where, message). Rule codes match the
+documents: ID-*, TAG-*, ERA-1, NC-2, E-1, P-3, DLG-1, PLC-*, GEN-1, SCHEMA.
+Output is sorted, so two runs over the same data print the same thing.
+"""
+
+from __future__ import annotations
+
+import json
+from dataclasses import dataclass, field
+from pathlib import Path
+
+from . import grammar, schema, tagfiles
+
+SKIP_TOP = {"_registry", "README.md", "_aliases.json"}  # _registry holds registries and generated exports
+ERA_POWER_KEYS = {"strength", "damage", "tier", "support", "yieldMultiplier", "power", "level"}
+DAMAGE_WORDS = ("damage", "attack", "hurt", "kill", "harm")
+
+
+@dataclass(frozen=True, order=True)
+class Problem:
+    rule: str
+    file: str
+    where: str
+    message: str
+
+    def __str__(self) -> str:
+        where = f" {self.where}" if self.where else ""
+        return f"{self.rule:<7} {self.file}{where}: {self.message}"
+
+
+@dataclass
+class Entity:
+    id: str
+    kind: str
+    file: str
+    data: dict
+    found: schema.Found
+
+
+@dataclass
+class Dataset:
+    root: Path
+    kinds: list[str]
+    namespaces: dict[str, str]
+    combat_sources: set[str]
+    entities: dict[str, Entity] = field(default_factory=dict)
+    anchors: dict[str, str] = field(default_factory=dict)  # anchor id -> file
+    aliases: dict[str, str] = field(default_factory=dict)
+    problems: list[Problem] = field(default_factory=list)
+
+    def problem(self, rule: str, file: str, where: str, message: str) -> None:
+        self.problems.append(Problem(rule, file, where, message))
+
+
+def load_json(path: Path, ds: Dataset, rel: str):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as error:
+        ds.problem("SCHEMA", rel, "", f"unreadable JSON: {error}")
+        return None
+
+
+def load(repo_root: Path) -> Dataset:
+    data_root = repo_root / "Data"
+    registry = json.loads((data_root / "_registry" / "kinds.json").read_text(encoding="utf-8"))
+    tag_registry = json.loads((data_root / "_registry" / "tag-namespaces.json").read_text(encoding="utf-8"))
+    ds = Dataset(root=repo_root, kinds=registry["kinds"], namespaces=tag_registry["namespaces"],
+                 combat_sources=set(tag_registry.get("combatSources", [])))
+
+    aliases_path = data_root / "_aliases.json"
+    if aliases_path.exists():
+        aliases = load_json(aliases_path, ds, "Data/_aliases.json")
+        if isinstance(aliases, dict):
+            ds.aliases = aliases.get("aliases", {})
+
+    for path in sorted(data_root.rglob("*.json")):
+        rel = path.relative_to(repo_root).as_posix()
+        parts = path.relative_to(data_root).parts
+        if parts[0] in SKIP_TOP:
+            continue
+        kind = parts[0]
+        if kind not in ds.kinds:
+            ds.problem("ID-9", rel, "", f"top-level folder '{kind}' is not a registered kind")
+            continue
+        if kind == "anchor":
+            load_anchor_file(path, rel, parts, ds)
+            continue
+        data = load_json(path, ds, rel)
+        if data is None:
+            continue
+        load_entity(path, rel, parts, kind, data, ds)
+    return ds
+
+
+def load_entity(path: Path, rel: str, parts: tuple[str, ...], kind: str, data, ds: Dataset) -> None:
+    if not isinstance(data, dict):
+        ds.problem("SCHEMA", rel, "", "an entity file must contain one JSON object")
+        return
+    if "schemaVersion" not in data or "id" not in data:
+        ds.problem("ID-8", rel, "", "entity needs 'schemaVersion' and 'id'")
+        return
+    entity_id = data["id"]
+    problem = grammar.id_problem(entity_id)
+    if problem:
+        ds.problem("ID-1", rel, ".id", f"{entity_id!r}: {problem}")
+        return
+    if grammar.id_kind(entity_id) != kind:
+        ds.problem("ID-2", rel, ".id", f"id kind '{grammar.id_kind(entity_id)}' does not match folder kind '{kind}'")
+    expected = "Data/" + "/".join(entity_id.split(".")) + ".json"
+    if rel != expected:
+        ds.problem("ID-4", rel, "", f"file path must mirror id: expected {expected}")
+    if entity_id in ds.entities:
+        ds.problem("ID-3", rel, ".id", f"duplicate id, also defined in {ds.entities[entity_id].file}")
+        return
+    if kind == "era":
+        power = sorted(ERA_POWER_KEYS & set(data))
+        if power:
+            ds.problem("ERA-1", rel, "", f"eras carry no gameplay power; remove {', '.join(power)}")
+    if kind == "capability":
+        check_no_damage(data, rel, ds)
+    found = schema.Found()
+    spec = schema.SCHEMAS.get(kind)
+    if spec is None:
+        ds.problem("SCHEMA", rel, "", f"kind '{kind}' has no schema yet; content of this kind cannot be validated")
+    else:
+        spec.check(data, "", found)
+    ds.entities[entity_id] = Entity(entity_id, kind, rel, data, found)
+
+
+def load_anchor_file(path: Path, rel: str, parts: tuple[str, ...], ds: Dataset) -> None:
+    if len(parts) != 2 or not parts[1].endswith(".generated.json"):
+        ds.problem("ID-4", rel, "", "anchors live only in Data/anchor/<cell>.generated.json")
+        return
+    cell_short = parts[1][: -len(".generated.json")]
+    data = load_json(path, ds, rel)
+    if not isinstance(data, dict) or not isinstance(data.get("anchors"), list):
+        ds.problem("SCHEMA", rel, "", "anchor file needs an 'anchors' list")
+        return
+    for index, anchor in enumerate(data["anchors"]):
+        anchor_id = anchor.get("id") if isinstance(anchor, dict) else None
+        problem = grammar.id_problem(anchor_id)
+        if problem:
+            ds.problem("ID-1", rel, f".anchors[{index}]", f"{anchor_id!r}: {problem}")
+            continue
+        if grammar.id_kind(anchor_id) != "anchor" or anchor_id.split(".")[1] != cell_short:
+            ds.problem("ID-10", rel, f".anchors[{index}]", f"{anchor_id} must be anchor.{cell_short}.<name>")
+        ds.anchors[anchor_id] = rel
+
+
+def check_no_damage(data: dict, rel: str, ds: Dataset) -> None:
+    """P-3 / ADR-0017: Pehlichi deals zero direct damage. Named explicitly, before generic schema errors."""
+    for li, level in enumerate(data.get("levels", []) if isinstance(data.get("levels"), list) else []):
+        for ei, effect in enumerate(level.get("effects", []) if isinstance(level, dict) else []):
+            kind = str(effect.get("kind", "")) if isinstance(effect, dict) else ""
+            if any(word in kind.lower() for word in DAMAGE_WORDS):
+                ds.problem("P-3", rel, f".levels[{li}].effects[{ei}]",
+                           f"effect '{kind}': Pehlichi deals zero direct damage (ADR-0017); changing that needs a new operator ADR")
+
+
+def cross_check(ds: Dataset) -> None:
+    declared_tags = tagfiles.declared_tags(ds.root)
+    cell_shorts: dict[str, str] = {}
+    for entity in ds.entities.values():
+        if entity.kind == "cell":
+            short = entity.id.split(".")[-1]
+            if short in cell_shorts:
+                ds.problem("ID-10", entity.file, ".id", f"cell short name '{short}' also used by {cell_shorts[short]}")
+            cell_shorts[short] = entity.id
+
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        for rule, where, message in entity.found.errors:
+            ds.problem(rule, entity.file, where, message)
+        for where, target, kinds in entity.found.refs:
+            resolved = ds.aliases.get(target, target)
+            if grammar.id_kind(resolved) == "anchor":
+                if resolved not in ds.anchors:
+                    ds.problem("PLC-3", entity.file, where, f"anchor {target} not in any Data/anchor/*.generated.json")
+                continue
+            if resolved not in ds.entities:
+                ds.problem("ID-5", entity.file, where, f"reference {target} does not resolve")
+            elif kinds and grammar.id_kind(resolved) not in kinds:
+                ds.problem("ID-5", entity.file, where, f"reference {target} must be a {' or '.join(kinds)}")
+        for where, tag, namespace in entity.found.tags:
+            if grammar.tag_namespace(tag) not in ds.namespaces:
+                ds.problem("TAG-2", entity.file, where, f"{tag}: namespace '{grammar.tag_namespace(tag)}' is not registered")
+            elif grammar.tag_namespace(tag) != namespace:
+                ds.problem("TAG-2", entity.file, where, f"{tag}: expected a {namespace}.* tag")
+            elif tag not in declared_tags and not declares_tag(entity, where):
+                ds.problem("TAG-3", entity.file, where, f"{tag} is not declared in Config/Tags/*.ini")
+        if entity.kind == "placement" and entity.id.split(".")[1] not in cell_shorts:
+            ds.problem("ID-10", entity.file, ".id", f"no cell with short name '{entity.id.split('.')[1]}'")
+
+    check_aliases(ds)
+    check_non_combat(ds)
+    check_yields(ds)
+    check_dialogue(ds)
+    check_placements(ds)
+    check_generated_tags(ds)
+
+
+def declares_tag(entity: Entity, where: str) -> bool:
+    """An era/band/yield entity's own `tag` field declares it (generated into Config/Tags, GEN-1)."""
+    return entity.kind in tagfiles.GENERATING_KINDS and where == ".tag"
+
+
+def check_aliases(ds: Dataset) -> None:
+    for old, new in sorted(ds.aliases.items()):
+        if new in ds.aliases:
+            ds.problem("ID-6", "Data/_aliases.json", old, f"alias chains through {new}; point directly at the final id")
+        elif new not in ds.entities:
+            ds.problem("ID-6", "Data/_aliases.json", old, f"alias target {new} does not exist")
+        if old in ds.entities:
+            ds.problem("ID-6", "Data/_aliases.json", old, "an aliased id must not also exist as an entity")
+
+
+def check_non_combat(ds: Dataset) -> None:
+    """NC-2: everything on the critical path has at least one non-combat source."""
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        if entity.data.get("criticalPath") is True:
+            sources = set(entity.data.get("sources", []))
+            if sources and sources <= ds.combat_sources:
+                ds.problem("NC-2", entity.file, ".sources",
+                           f"critical-path {entity.kind} has only combat sources ({', '.join(sorted(sources))}); add a non-combat source")
+
+
+def check_yields(ds: Dataset) -> None:
+    """E-1 / ADR-0016: scaling follows the yield class; settings cover every scalable setting key."""
+    settings_keys: set[str] = set()
+    presets = [e for e in ds.entities.values() if e.kind == "settings"]
+    for preset in presets:
+        settings_keys |= set(preset.data.get("yieldMultipliers", {}))
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        if entity.kind != "yield":
+            continue
+        klass, scalable = entity.data.get("yieldClass"), entity.data.get("scalable")
+        if klass in schema.NON_SCALING_CLASSES and scalable is not False:
+            ds.problem("E-1", entity.file, ".scalable", f"class '{klass}' must never scale (ADR-0016)")
+        if klass not in schema.NON_SCALING_CLASSES and klass is not None and scalable is not True:
+            ds.problem("E-1", entity.file, ".scalable", f"repeatable class '{klass}' scales with the player's setting (ADR-0016)")
+        if scalable is True and not entity.data.get("setting"):
+            ds.problem("E-1", entity.file, ".setting", "a scalable yield category must name its world setting")
+        if scalable is True and presets and entity.data.get("setting") not in settings_keys:
+            ds.problem("E-1", entity.file, ".setting", f"setting '{entity.data.get('setting')}' is not defined by any settings preset")
+        if scalable is False and "setting" in entity.data:
+            ds.problem("E-1", entity.file, ".setting", "a non-scalable category must not name a setting")
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        if entity.kind != "glitch":
+            continue
+        for index, reward in enumerate(entity.data.get("rewards", [])):
+            if not isinstance(reward, dict) or "item" not in reward:
+                continue
+            category = ds.entities.get(reward.get("yieldCategory", ""))
+            if category is None:
+                ds.problem("E-1", entity.file, f".rewards[{index}]", "item rewards must name a yieldCategory")
+            elif category.data.get("scalable") is not False:
+                ds.problem("E-1", entity.file, f".rewards[{index}].yieldCategory", "glitch rewards never scale; use a non-scalable category")
+
+
+def check_dialogue(ds: Dataset) -> None:
+    """DLG-1: Zenny is silent."""
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        if entity.kind != "exchange":
+            continue
+        for index, line in enumerate(entity.data.get("lines", [])):
+            if isinstance(line, dict) and str(line.get("speaker", "")).lower() == "zenny":
+                ds.problem("DLG-1", entity.file, f".lines[{index}].speaker", "Zenny is silent; only NICE and Pehlichi speak")
+
+
+def check_placements(ds: Dataset) -> None:
+    """PLC-1: placement kind matches its definition. PLC-2: glitch requirement bindings resolve correctly."""
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        if entity.kind != "placement":
+            continue
+        kind, definition = entity.data.get("kind"), entity.data.get("definition", "")
+        expected = schema.PLACEMENT_KIND_DEFINITION.get(kind)
+        if expected and isinstance(definition, str) and grammar.id_kind(definition) != expected:
+            ds.problem("PLC-1", entity.file, ".definition", f"a {kind} placement needs a {expected}.* definition")
+        bindings = entity.data.get("bindings", {}) if isinstance(entity.data.get("bindings"), dict) else {}
+        if kind != "glitch":
+            if bindings:
+                ds.problem("PLC-2", entity.file, ".bindings", "only glitch placements have requirement bindings")
+            continue
+        glitch = ds.entities.get(definition)
+        requirements = {r.get("name"): r for r in glitch.data.get("requirements", []) if isinstance(r, dict)} if glitch else {}
+        for name in sorted(bindings):
+            if name not in requirements:
+                ds.problem("PLC-2", entity.file, f".bindings.{name}", f"{definition} has no requirement named '{name}'")
+        for name, requirement in sorted(requirements.items(), key=lambda kv: str(kv[0])):
+            target_kind = schema.REQUIREMENT_KINDS_NEEDING_TARGET.get(requirement.get("kind"))
+            if target_kind is None:
+                continue
+            target = ds.entities.get(bindings.get(name, ""))
+            if name not in bindings:
+                ds.problem("PLC-2", entity.file, ".bindings", f"requirement '{name}' ({requirement.get('kind')}) needs a binding")
+            elif target is not None and target.data.get("kind") != target_kind:
+                ds.problem("PLC-2", entity.file, f".bindings.{name}", f"must bind a {target_kind} placement")
+
+
+def check_generated_tags(ds: Dataset) -> None:
+    for relative, expected in ((tagfiles.GENERATED_FILE, tagfiles.render_generated(ds)),
+                               (tagfiles.SCHEMA_EXPORT, tagfiles.render_schema_export())):
+        path = ds.root / relative
+        actual = path.read_text(encoding="utf-8") if path.exists() else ""
+        if actual != expected:
+            ds.problem("GEN-1", relative, "", "out of date; run `Tools/data.sh generate`")
+
+
+def run(repo_root: Path) -> Dataset:
+    ds = load(repo_root)
+    cross_check(ds)
+    ds.problems = sorted(set(ds.problems))
+    return ds

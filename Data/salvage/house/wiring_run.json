@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "salvage.house.wiring_run",
+  "displayName": "Wiring run",
+  "integrity": 25.0,
+  "material": "material.metal.copper",
+  "yields": [
+    {
+      "item": "item.material.copper_wire",
+      "count": 5,
+      "yieldCategory": "yield.common.salvage"
+    },
+    {
+      "item": "item.part.fuse",
+      "count": 1,
+      "yieldCategory": "yield.common.salvage"
+    }
+  ],
+  "toolEfficiency": [
+    {
+      "toolClass": "Tool.Pry",
+      "minTier": 1,
+      "multiplier": 1.5
+    }
+  ]
+}

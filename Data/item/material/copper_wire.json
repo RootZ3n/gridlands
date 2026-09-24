@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "item.material.copper_wire",
+  "displayName": "Copper wire",
+  "stackSize": 50,
+  "weight": 0.1,
+  "material": "material.metal.copper",
+  "criticalPath": true,
+  "sources": [
+    "Source.Salvage"
+  ],
+  "onAcquireUnlocks": [
+    "knowledge.material.copper_wire"
+  ]
+}

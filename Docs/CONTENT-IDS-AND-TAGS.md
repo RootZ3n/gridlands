@@ -60,8 +60,17 @@ Rules:
 | `settings` | world-setting presets | `settings.preset.relaxed` |
 | `yield` | yield category definitions | `yield.rare.material` |
 
-**[V] ID-9** A new kind is added only with an importer handler and an entry
-here. It's a code change, reviewed.
+**[V] ID-9** A new kind is added only with a typed C++ definition (ADR-0021)
+and an entry here. It's a code change, reviewed.
+
+## 2a. Loader rules (C++, ADR-0021)
+
+The engine's loader re-checks what it depends on: ID-1, ID-2, ID-3, ID-4,
+ID-8 and ID-9, plus:
+- **CXX-1**: a JSON key with no matching C++ field (closed schemas in C++ too);
+- **CXX-2**: a value the typed definition cannot hold.
+
+A file that fails is refused, never loaded partially.
 
 ## 3. Cell-scoped ids
 

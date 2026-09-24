@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "salvage.yard.junk_pile",
+  "displayName": "Junk pile",
+  "integrity": 30.0,
+  "material": "material.metal.scrap_steel",
+  "yields": [
+    {
+      "item": "item.material.scrap_metal",
+      "count": 4,
+      "yieldCategory": "yield.common.salvage"
+    }
+  ],
+  "toolEfficiency": [
+    {
+      "toolClass": "Tool.Pry",
+      "minTier": 1,
+      "multiplier": 2.0
+    }
+  ]
+}

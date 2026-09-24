@@ -9,6 +9,10 @@ BUILD=1
 if [ "${1:-}" = "--no-build" ]; then BUILD=0; shift; fi
 FILTER="${1:-Gridlands}"
 
+# Content is validated first: it needs no engine and fails in seconds (ADR-0002/0020).
+"$GRIDLANDS_ROOT/Tools/data.sh" validate | tail -3
+[ "${PIPESTATUS[0]}" -eq 0 ] || result FAIL "Data/ validation failed; run Tools/data.sh validate"
+
 require_pinned_engine
 if [ "$BUILD" = 1 ]; then
 	# A stale binary once hid real failures in the lab; tests always run what was just built.

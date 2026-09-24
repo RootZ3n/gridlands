@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.salvage.wire_bike",
+  "trigger": [
+    "Event.Salvage.WireStripped"
+  ],
+  "category": "Contextual",
+  "priority": 20,
+  "cooldownSeconds": 900,
+  "maxUses": 2,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Stripping wire. Bold career move. Where's your bike?"
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "He's recycling. Something you could try with your personality."
+    }
+  ]
+}

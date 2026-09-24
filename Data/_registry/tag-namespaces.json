@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "comment": "Registered Gameplay Tag namespaces (Docs/CONTENT-IDS-AND-TAGS.md section 5). A new namespace needs a real owning system (TAG-5).",
+  "namespaces": {
+    "Era": "world memory (generated from era.*)",
+    "Band": "world progression (generated from band.*)",
+    "Material": "building, salvage",
+    "Source": "acquisition; non-combat completion checks (NC-2)",
+    "Yield": "economy (generated from yield.*)",
+    "Event": "gameplay event bus",
+    "Knowledge": "knowledge categories",
+    "Interact": "interaction verbs",
+    "Tool": "tool classes",
+    "Station": "fabrication stations",
+    "Command": "Pehlichi commands",
+    "Capability": "capability categories",
+    "Requirement": "glitch requirement kinds"
+  },
+  "combatSources": ["Source.CreatureDrop", "Source.Boss"]
+}

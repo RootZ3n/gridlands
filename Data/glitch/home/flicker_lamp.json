@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "glitch.home.flicker_lamp",
+  "displayName": "Flickering streetlamp",
+  "detection": {
+    "capability": "capability.pehlichi.scan",
+    "minLevel": 1
+  },
+  "requirements": [
+    {
+      "name": "blocker",
+      "kind": "Requirement.ObjectSalvaged"
+    }
+  ],
+  "repair": {
+    "seconds": 5.0,
+    "interruptPolicy": "KeepProgress"
+  },
+  "stabilityWeight": 1.0,
+  "rewards": [
+    {
+      "recipient": "Pehlichi",
+      "capability": "capability.pehlichi.scan",
+      "delta": 1
+    }
+  ]
+}

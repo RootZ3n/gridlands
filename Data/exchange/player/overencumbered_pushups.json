@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.player.overencumbered_pushups",
+  "trigger": [
+    "Event.Player.Overencumbered"
+  ],
+  "category": "Ambient",
+  "priority": 10,
+  "cooldownSeconds": 1200,
+  "maxUses": 2,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Too heavy? Have you considered push-ups?"
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "Have you considered a body?"
+    }
+  ]
+}

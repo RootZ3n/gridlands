@@ -1,0 +1,313 @@
+{
+ "succeeded": 9,
+ "succeededWithWarnings": 1,
+ "failed": 5,
+ "notRun": 0,
+ "inProcess": 0,
+ "totalDuration": 0.11941635608673096,
+ "tests": [
+  {
+   "fullTestPath": "Gridlands.Core.Content.IdGrammarMatchesCorpus",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Content.LoaderRejectsMalformedEntities",
+   "state": "Fail",
+   "warnings": 0,
+   "errors": 2,
+   "entries": [
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'a well-formed entity loads' to be 1, but it was 0."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'with no problems' to be false."
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Content.RepositoryDataLoadsClean",
+   "state": "Fail",
+   "warnings": 6,
+   "errors": 8,
+   "entries": [
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/material/copper_wire.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/material/cut_stone.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/material/scrap_metal.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/material/timber_plank.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/part/fuse.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/tool/pry_bar.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "CXX-1 Data/item/material/copper_wire.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "CXX-1 Data/item/material/cut_stone.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "CXX-1 Data/item/material/scrap_metal.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "CXX-1 Data/item/material/timber_plank.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "CXX-1 Data/item/part/fuse.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "CXX-1 Data/item/tool/pry_bar.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'no load problems' to be true."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'every entity file became an entity' to be 57, but it was 51."
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Content.RoundTripKeepsEveryField",
+   "state": "Success",
+   "warnings": 6,
+   "errors": 0,
+   "entries": [
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/material/copper_wire.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/material/cut_stone.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/material/scrap_metal.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/material/timber_plank.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/part/fuse.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/tool/pry_bar.json: no C++ field for: weight"
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Content.SchemaKeysMatchValidator",
+   "state": "Fail",
+   "warnings": 0,
+   "errors": 1,
+   "entries": [
+    {
+     "event": {
+      "type": "Error",
+      "message": "item: validator allows 'weight' but C++ has no field for it"
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Content.TypedLookupReadsAuthoredValues",
+   "state": "Fail",
+   "warnings": 6,
+   "errors": 1,
+   "entries": [
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/material/copper_wire.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/material/cut_stone.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/material/scrap_metal.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/material/timber_plank.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/part/fuse.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogGridlandsCore: Content: CXX-1 Data/item/tool/pry_bar.json: no C++ field for: weight"
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'pry bar' to be not null."
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.EveryUnrepairedStateCanStillBeRepaired",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.OnlyPehlichiRepairCompletesRepair",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.PlayerHasNoAuthority",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.RepairedIsTerminal",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.RepairRequiresPehlichiScanAndRepair",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.TableMatchesDocumentedTransitions",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.VisibilityAndPersistedState",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Content.ConfigTagsAreRegisteredWithEngine",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Content.EngineSubsystemLoadsContent",
+   "state": "Fail",
+   "warnings": 0,
+   "errors": 2,
+   "entries": [
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'loaded without problems' to be 0, but it was 6."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'pry bar reachable through the subsystem' to be not null."
+     }
+    }
+   ]
+  }
+ ]
+}

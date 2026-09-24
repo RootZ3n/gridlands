@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "salvage.yard.fence_panel",
+  "displayName": "Fence panel",
+  "integrity": 40.0,
+  "material": "material.timber.pine",
+  "yields": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 3,
+      "yieldCategory": "yield.common.salvage"
+    }
+  ],
+  "toolEfficiency": [
+    {
+      "toolClass": "Tool.Pry",
+      "minTier": 1,
+      "multiplier": 2.5
+    }
+  ]
+}

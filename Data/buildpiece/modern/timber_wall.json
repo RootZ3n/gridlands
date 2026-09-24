@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.timber_wall",
+  "displayName": "Timber wall",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "sockets": [
+    "bottom",
+    "top",
+    "left",
+    "right"
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 4
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "comment": "Registered entity kinds (Docs/CONTENT-IDS-AND-TAGS.md section 2). Adding a kind needs an importer handler and a doc row (ID-9).",
+  "kinds": [
+    "item", "material", "recipe", "salvage", "buildpiece", "knowledge", "glitch",
+    "capability", "skill", "creature", "era", "band", "cell", "placement", "anchor",
+    "puzzle", "storm", "exchange", "settings", "yield"
+  ]
+}

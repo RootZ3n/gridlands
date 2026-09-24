@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "glitch.home.dead_transformer",
+  "displayName": "Dead transformer",
+  "detection": {
+    "capability": "capability.pehlichi.scan",
+    "minLevel": 1
+  },
+  "requirements": [
+    {
+      "name": "fuse",
+      "kind": "Requirement.ItemDelivered",
+      "item": "item.part.fuse",
+      "count": 1
+    }
+  ],
+  "repair": {
+    "seconds": 8.0,
+    "interruptPolicy": "KeepProgress"
+  },
+  "stabilityWeight": 1.0,
+  "rewards": [
+    {
+      "recipient": "Zenny",
+      "knowledge": "knowledge.style.modern_timber_frame"
+    }
+  ]
+}

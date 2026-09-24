@@ -148,7 +148,7 @@ out of scope.
 }
 ```
 
-The exact schema is fixed in M2 and validated by `Tools/import-data.sh`.
+The schema is fixed in M2 (`Tools/gldata/schema.py`) and validated by `Tools/data.sh validate`.
 Illustrative fields beyond the bootstrap (`hiddenIn`, `accessClass`,
 `guards`, `decoy`, `stabilization`) are added when their feature is built, not
 before.

@@ -48,11 +48,17 @@ GridlandsCore     (runtime)      pure types and rules: ids, lifecycle tables, st
 
 Structured content (items, materials, recipes, salvage yields, build pieces,
 glitch definitions, capability levels, creatures, knowledge, Grid cells, bands,
-eras, dialogue exchanges, world-setting presets) is authored as JSON in `Data/`. The
-`GridlandsEditor` importer deterministically generates or validates the
-matching `UPrimaryDataAsset`s under `Content/Gridlands/Data/`. An agent adds an
-item by editing JSON and running `Tools/import-data.sh`; it never edits a
-`.uasset`. Blueprints are thin visual subclasses (mesh, material, sound) with
+eras, dialogue exchanges, world-setting presets) is authored as JSON in `Data/`,
+validated by `Tools/data.sh validate` (no engine), and **loaded directly by the
+engine into typed definitions** keyed by id ([ADR-0021](ADR/0021-runtime-loads-json-definitions.md));
+there are no generated DataAssets. An agent adds an item by writing one JSON
+file; it never edits a `.uasset`.
+
+The loader is `FGLContentRegistry` (GridlandsCore, pure), owned at runtime by
+`UGLContentSubsystem` (an engine subsystem). Definitions are USTRUCTs in
+`GLContentDefinitions.h`, looked up with `Find<FGLItemDef>(Id)`. The Python
+schemas and the C++ structs are held in step by `SchemaKeysMatchValidator`
+(key paths, both directions) and `RoundTripKeepsEveryField`. Blueprints are thin visual subclasses (mesh, material, sound) with
 no gameplay logic. See [ADR-0002](ADR/0002-json-source-of-truth.md).
 
 **Ids and tags** follow the grammar in [CONTENT-IDS-AND-TAGS.md](CONTENT-IDS-AND-TAGS.md)

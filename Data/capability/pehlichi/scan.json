@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "capability.pehlichi.scan",
+  "displayName": "Scan",
+  "owner": "pehlichi",
+  "category": "Capability.Pehlichi.Scan",
+  "levels": [
+    {
+      "level": 1,
+      "effects": [
+        {
+          "kind": "scan_range",
+          "value": 15
+        },
+        {
+          "kind": "scan_strength",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "effects": [
+        {
+          "kind": "scan_range",
+          "value": 25
+        },
+        {
+          "kind": "scan_strength",
+          "value": 2
+        }
+      ]
+    }
+  ]
+}

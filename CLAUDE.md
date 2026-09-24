@@ -28,6 +28,8 @@ is refused, not started.
 ```sh
 Tools/doctor.sh      # environment vs pin (Tools/engine-pin.env)
 Tools/selftest.sh    # tooling tests, no engine
+Tools/data.sh validate   # Data/ grammar, references, invariants (seconds, no engine)
+Tools/data.sh generate   # regenerate Config/Tags/GeneratedFromData.ini
 Tools/build.sh       # compile GridlandsEditor, Linux Development
 Tools/test.sh        # headless automation; PASS only by parsed report
 Tools/verify-fresh-clone.sh  # reproducibility proof from a clean clone

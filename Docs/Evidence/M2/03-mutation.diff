@@ -1,0 +1,10 @@
+--- a/Source/GridlandsCore/Public/Content/GLContentDefinitions.h
++++ b/Source/GridlandsCore/Public/Content/GLContentDefinitions.h
+@@ -125,7 +125,6 @@
+ 
+ 	UPROPERTY() FString DisplayName;
+ 	UPROPERTY() int32 StackSize = 1;
+-	UPROPERTY() double Weight = 0.0;
+ 	UPROPERTY() FName Material;
+ 	/** Optional. Absent means the item is not a tool (ToolClass is None). */
+ 	UPROPERTY() FGLToolDef Tool;
