@@ -20,7 +20,9 @@ Read in this order: `CLAUDE.md` (repo root), `Docs/DESIGN-BIBLE.md`,
 | Command | Needs engine | Meaning |
 |---|---|---|
 | `Tools/doctor.sh` | reports if absent | environment matches the pin |
-| `Tools/selftest.sh` | no | tests the tooling itself (report parser) |
+| `Tools/selftest.sh` | no | tests the tooling itself (report parser, data validator) |
+| `Tools/data.sh validate` | no | validates `Data/` against the id/tag grammar and invariants (rule codes in `Docs/CONTENT-IDS-AND-TAGS.md`) |
+| `Tools/data.sh generate` | no | regenerates `Config/Tags/GeneratedFromData.ini` from era/band/yield data |
 | `Tools/build.sh` | yes | compiles `GridlandsEditor` (Linux, Development) |
 | `Tools/test.sh` | yes | headless automation; pass only by parsed report (ADR-0008) |
 | `Tools/verify-fresh-clone.sh [ref]` | yes | clone, build and test from tracked inputs + pinned engine only |
@@ -65,8 +67,9 @@ The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
 - **Add a test:** put it next to the code in `Private/Tests/`, name it
   `Gridlands.<Layer>.<System>.<Case>`, and add it to `Tools/required-tests.txt`
   when it guards an invariant.
-- **Add content (from M2):** edit `Data/<kind>/*.json`, run
-  `Tools/import-data.sh`, then `Tools/test.sh`.
+- **Add content:** create `Data/<kind>/<domain>/<name>.json` whose `id` mirrors
+  the path, run `Tools/data.sh generate` (if you added an era, band or yield) and
+  `Tools/data.sh validate`, then `Tools/test.sh`.
 - **Add a glitch to the world:** write `Data/placement/<cell>/<name>.json`
   naming a `glitch.*` definition and an anchor (see
   `Data/anchor/<cell>.generated.json`) or a cell-local transform; run the

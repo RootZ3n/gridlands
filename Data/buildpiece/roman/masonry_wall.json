@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.roman.masonry_wall",
+  "displayName": "Roman masonry wall",
+  "era": "era.memory.roman",
+  "material": "material.masonry.roman_concrete",
+  "sockets": [
+    "bottom",
+    "top",
+    "left",
+    "right"
+  ],
+  "cost": [
+    {
+      "item": "item.material.cut_stone",
+      "count": 6
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.roman_masonry"
+  ]
+}

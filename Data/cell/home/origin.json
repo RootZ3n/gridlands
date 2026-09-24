@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "cell.home.origin",
+  "displayName": "Origin (home suburb)",
+  "band": "band.ring.home",
+  "coord": {
+    "x": 0,
+    "y": 0
+  },
+  "eraComposition": [
+    {
+      "era": "era.memory.modern_day",
+      "weight": 0.85
+    },
+    {
+      "era": "era.memory.fifties",
+      "weight": 0.1
+    },
+    {
+      "era": "era.memory.roman",
+      "weight": 0.05
+    }
+  ]
+}

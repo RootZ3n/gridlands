@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.player.died_again",
+  "trigger": [
+    "Event.Player.Died"
+  ],
+  "category": "Contextual",
+  "priority": 40,
+  "cooldownSeconds": 300,
+  "maxUses": 3,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "I bet you won't do that again."
+    },
+    {
+      "speaker": "NICE",
+      "text": "...Yeah, you will."
+    }
+  ]
+}
