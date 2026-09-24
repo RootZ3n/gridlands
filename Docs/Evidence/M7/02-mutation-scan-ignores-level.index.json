@@ -1,0 +1,45 @@
+{
+ "succeeded": 3,
+ "succeededWithWarnings": 0,
+ "failed": 1,
+ "notRun": 0,
+ "inProcess": 0,
+ "totalDuration": 0.039630863815546036,
+ "tests": [
+  {
+   "fullTestPath": "Gridlands.Game.Pehlichi.ItemDeliveryInterruptAndResume",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Pehlichi.LampLoopRevealPrepareRepairUpgrade",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Pehlichi.PlayerHasNoWayToRepair",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Pehlichi.ScanRevealsByRangeAndLevel",
+   "state": "Fail",
+   "warnings": 0,
+   "errors": 1,
+   "entries": [
+    {
+     "event": {
+      "type": "Error",
+      "message": "a level-2 glitch stays hidden from a level-1 scan, even point-blank: The two values are not equal."
+     }
+    }
+   ]
+  }
+ ]
+}
