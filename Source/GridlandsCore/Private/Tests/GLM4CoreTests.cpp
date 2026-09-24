@@ -10,7 +10,7 @@
 
 namespace GLM4CoreTests
 {
-	constexpr EAutomationTestFlags Flags = EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter;
+	constexpr EAutomationTestFlags M4CoreFlags = EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter;
 
 	const FGLContentRegistry& Content()
 	{
@@ -27,7 +27,7 @@ namespace GLM4CoreTests
 
 using namespace GLM4CoreTests;
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLInventoryRules, "Gridlands.Core.Inventory.StacksWeightAndCapacity", Flags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLInventoryRules, "Gridlands.Core.Inventory.StacksWeightAndCapacity", M4CoreFlags)
 bool FGLInventoryRules::RunTest(const FString& Parameters)
 {
 	const FName Wire(TEXT("item.material.copper_wire")); // stack 50, weight 0.1
@@ -55,7 +55,7 @@ bool FGLInventoryRules::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLYieldRules, "Gridlands.Core.Economy.YieldScalingFollowsCategory", Flags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLYieldRules, "Gridlands.Core.Economy.YieldScalingFollowsCategory", M4CoreFlags)
 bool FGLYieldRules::RunTest(const FString& Parameters)
 {
 	// E-1/E-2 over every real category and preset, plus extreme synthetic multipliers.
@@ -111,7 +111,7 @@ bool FGLYieldRules::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLSalvageRulesTest, "Gridlands.Core.Salvage.ToolEfficiencyAndGating", Flags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLSalvageRulesTest, "Gridlands.Core.Salvage.ToolEfficiencyAndGating", M4CoreFlags)
 bool FGLSalvageRulesTest::RunTest(const FString& Parameters)
 {
 	const FGLItemDef* PryBar = Content().Find<FGLItemDef>(TEXT("item.tool.pry_bar"));

@@ -7,6 +7,7 @@
 #include "GameplayTagsManager.h"
 #include "Inventory/GLInventoryComponent.h"
 #include "Misc/AutomationTest.h"
+#include "Tests/GLTestUtils.h"
 #include "Salvage/GLSalvageNode.h"
 #include "Salvage/GLSalvageableComponent.h"
 #include "World/GLPlacementSubsystem.h"
@@ -15,27 +16,6 @@
 
 namespace GLM4Tests
 {
-	constexpr EAutomationTestFlags Flags = EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter;
-
-	struct FTestWorld
-	{
-		UWorld* World = nullptr;
-		FTestWorld()
-		{
-			World = UWorld::CreateWorld(EWorldType::Game, false, TEXT("GLM4TestWorld"));
-			FWorldContext& Context = GEngine->CreateNewWorldContext(EWorldType::Game);
-			Context.SetCurrentWorld(World);
-			World->InitializeActorsForPlay(FURL());
-		}
-		~FTestWorld()
-		{
-			GEngine->DestroyWorldContext(World);
-			World->DestroyWorld(false);
-		}
-	};
-
-	FGameplayTag Tag(const TCHAR* Name) { return UGameplayTagsManager::Get().RequestGameplayTag(FName(Name)); }
-
 	/** A bare actor with an inventory: the salvaging "player". */
 	UGLInventoryComponent* SpawnSalvager(UWorld* World)
 	{
@@ -65,6 +45,7 @@ namespace GLM4Tests
 }
 
 using namespace GLM4Tests;
+using namespace GLTestUtils;
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLSalvageCompletes, "Gridlands.Game.Salvage.CompletesGrantsYieldsAndEvents", Flags)
 bool FGLSalvageCompletes::RunTest(const FString& Parameters)

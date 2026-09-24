@@ -8,7 +8,7 @@
 
 namespace GLGlitchLifecycleTests
 {
-	constexpr EAutomationTestFlags TestFlags = EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter;
+	constexpr EAutomationTestFlags LifecycleTestFlags = EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter;
 
 	TArray<EGLGlitchState> AllStates()
 	{
@@ -64,7 +64,7 @@ namespace GLGlitchLifecycleTests
 using namespace GLGlitchLifecycleTests;
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLGlitchLifecyclePlayerHasNoAuthority,
-	"Gridlands.Core.Glitch.Lifecycle.PlayerHasNoAuthority", TestFlags)
+	"Gridlands.Core.Glitch.Lifecycle.PlayerHasNoAuthority", LifecycleTestFlags)
 bool FGLGlitchLifecyclePlayerHasNoAuthority::RunTest(const FString& Parameters)
 {
 	int32 Checked = 0;
@@ -83,7 +83,7 @@ bool FGLGlitchLifecyclePlayerHasNoAuthority::RunTest(const FString& Parameters)
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLGlitchLifecycleOnlyPehlichiRepairs,
-	"Gridlands.Core.Glitch.Lifecycle.OnlyPehlichiRepairCompletesRepair", TestFlags)
+	"Gridlands.Core.Glitch.Lifecycle.OnlyPehlichiRepairCompletesRepair", LifecycleTestFlags)
 bool FGLGlitchLifecycleOnlyPehlichiRepairs::RunTest(const FString& Parameters)
 {
 	for (const EGLGlitchState From : AllStates())
@@ -100,7 +100,7 @@ bool FGLGlitchLifecycleOnlyPehlichiRepairs::RunTest(const FString& Parameters)
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLGlitchLifecycleRepairNeedsScanAndRepair,
-	"Gridlands.Core.Glitch.Lifecycle.RepairRequiresPehlichiScanAndRepair", TestFlags)
+	"Gridlands.Core.Glitch.Lifecycle.RepairRequiresPehlichiScanAndRepair", LifecycleTestFlags)
 bool FGLGlitchLifecycleRepairNeedsScanAndRepair::RunTest(const FString& Parameters)
 {
 	// With every authority, a latent glitch can eventually be repaired...
@@ -125,7 +125,7 @@ bool FGLGlitchLifecycleRepairNeedsScanAndRepair::RunTest(const FString& Paramete
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLGlitchLifecycleNoDeadStates,
-	"Gridlands.Core.Glitch.Lifecycle.EveryUnrepairedStateCanStillBeRepaired", TestFlags)
+	"Gridlands.Core.Glitch.Lifecycle.EveryUnrepairedStateCanStillBeRepaired", LifecycleTestFlags)
 bool FGLGlitchLifecycleNoDeadStates::RunTest(const FString& Parameters)
 {
 	for (const EGLGlitchState From : AllStates())
@@ -137,7 +137,7 @@ bool FGLGlitchLifecycleNoDeadStates::RunTest(const FString& Parameters)
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLGlitchLifecycleRepairedIsTerminal,
-	"Gridlands.Core.Glitch.Lifecycle.RepairedIsTerminal", TestFlags)
+	"Gridlands.Core.Glitch.Lifecycle.RepairedIsTerminal", LifecycleTestFlags)
 bool FGLGlitchLifecycleRepairedIsTerminal::RunTest(const FString& Parameters)
 {
 	TestTrue(TEXT("Repaired is terminal"), FGLGlitchLifecycle::IsTerminal(EGLGlitchState::Repaired));
@@ -157,7 +157,7 @@ bool FGLGlitchLifecycleRepairedIsTerminal::RunTest(const FString& Parameters)
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLGlitchLifecycleTableMatchesDocs,
-	"Gridlands.Core.Glitch.Lifecycle.TableMatchesDocumentedTransitions", TestFlags)
+	"Gridlands.Core.Glitch.Lifecycle.TableMatchesDocumentedTransitions", LifecycleTestFlags)
 bool FGLGlitchLifecycleTableMatchesDocs::RunTest(const FString& Parameters)
 {
 	// Docs/GLITCH-AND-PEHLICHI.md section 2 lists 10 edges carrying 12 (edge, authority) grants.
@@ -192,7 +192,7 @@ bool FGLGlitchLifecycleTableMatchesDocs::RunTest(const FString& Parameters)
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLGlitchLifecycleVisibilityAndPersistence,
-	"Gridlands.Core.Glitch.Lifecycle.VisibilityAndPersistedState", TestFlags)
+	"Gridlands.Core.Glitch.Lifecycle.VisibilityAndPersistedState", LifecycleTestFlags)
 bool FGLGlitchLifecycleVisibilityAndPersistence::RunTest(const FString& Parameters)
 {
 	for (const EGLGlitchState State : AllStates())
