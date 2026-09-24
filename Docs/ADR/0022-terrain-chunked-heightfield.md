@@ -1,6 +1,6 @@
-# ADR-0022: Terrain is a chunked runtime heightfield (recommendation)
+# ADR-0022: Terrain is a chunked runtime heightfield
 
-- Status: **Proposed; awaiting operator approval.** No production terrain work before approval (E7).
+- Status: **Accepted by the operator 2026-09-24** (option: heightfield (B)). Terrain is "done" only when the four open proofs below pass.
 - Date: 2026-09-24
 - Decider: operator; recommendation by agent from spike S1
 - Evidence: [Docs/Evidence/S1-terrain](../Evidence/S1-terrain/README.md)
@@ -59,6 +59,6 @@ deterministically and be maintainable by agents.
 - Terrain edits become a gameplay system like any other: pure rules in Core,
   tests, save deltas.
 
-## Decision needed from the operator
-Approve (B) as above; or (B) plus a later local voxel layer for player-dug
-tunnels; or reject and name what the spike should compare next.
+## Operator decision
+Approved (B) as recommended. Player-dug caves remain out of scope; revisiting
+that would be a new ADR.
