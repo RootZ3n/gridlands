@@ -1,0 +1,17 @@
+diff --git a/Source/GridlandsCore/Private/Economy/GLYield.cpp b/Source/GridlandsCore/Private/Economy/GLYield.cpp
+index ca39756..0c71498 100644
+--- a/Source/GridlandsCore/Private/Economy/GLYield.cpp
++++ b/Source/GridlandsCore/Private/Economy/GLYield.cpp
+@@ -24,10 +24,10 @@ namespace GLYield
+ 
+ 	int32 Apply(int32 AuthoredCount, const FGLYieldCategoryDef& Category, const FGLSettingsPresetDef& Settings)
+ 	{
+-		if (!Category.Scalable || AuthoredCount <= 0)
++		if (AuthoredCount <= 0) // MUTATION: scales every category, including glitch rewards
+ 		{
+ 			return AuthoredCount;
+ 		}
+-		return FMath::Max(1, FMath::RoundToInt(AuthoredCount * MultiplierFor(Category, Settings)));
++		return FMath::Max(1, FMath::RoundToInt(AuthoredCount * Settings.YieldMultipliers.ResourceYield));
+ 	}
+ }
