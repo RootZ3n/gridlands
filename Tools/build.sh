@@ -8,7 +8,11 @@ require_pinned_engine
 [ -z "$(editor_running_for_project)" ] || result FAIL "an editor has this project open; close it first (Live Coding corrupts Blueprints)"
 
 echo "Building GridlandsEditor with Unreal $GRIDLANDS_UE_VERSION at $ENGINE_ROOT"
-"$UE_BUILD_SH" GridlandsEditor Linux Development -Project="$GRIDLANDS_UPROJECT" -WaitMutex "$@"
+# Unreal Build Accelerator listens on 0.0.0.0:1345 by default, i.e. every interface
+# (LAN, Tailscale). Gridlands builds locally only, so bind it to loopback and refuse
+# remote helpers. Supported UBT options: UnrealBuildAcceleratorConfig.Host / bDisableRemote.
+UBA_ARGS=(-UBAHost=127.0.0.1 -UBADisableRemote)
+"$UE_BUILD_SH" GridlandsEditor Linux Development -Project="$GRIDLANDS_UPROJECT" -WaitMutex "${UBA_ARGS[@]}" "$@"
 status=$?
 [ "$status" -eq 0 ] || result FAIL "UnrealBuildTool exited $status"
 
