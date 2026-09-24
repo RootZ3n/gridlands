@@ -26,7 +26,7 @@ Read in this order: `CLAUDE.md` (repo root), `Docs/DESIGN-BIBLE.md`,
 | `Tools/export-anchors.sh` | yes | writes `Data/anchor/<cell>.generated.json` from each cell's map (ADR-0018) |
 | `Tools/build-blockout.sh` | yes | regenerates the origin blockout map from its C++ generator, then exports anchors |
 | `Tools/build.sh` | yes | compiles `GridlandsEditor` (Linux, Development) |
-| `Tools/test.sh` | yes | headless automation; pass only by parsed report (ADR-0008) |
+| `Tools/test.sh` | yes | tooling self-tests, data validation, build, then headless automation; pass only by parsed report (ADR-0008) |
 | `Tools/verify-fresh-clone.sh [ref]` | yes | clone, build and test from tracked inputs + pinned engine only |
 
 Exit codes: 0 pass, 1 check failed, 2 environment/usage problem (engine
@@ -99,6 +99,11 @@ The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
   name a `yield.*` category; optional `onSalvageEvents` for dialogue hooks) and a
   `salvage_node` placement in `Data/placement/<cell>/` anchored to a visual actor or at a
   transform. The node spawns at play; salvaging hides the anchored visual.
+- **Write banter:** add `Data/exchange/<domain>/<name>.json`: `trigger` (Event.* tags),
+  `category` (StoryCritical / Contextual / Ambient), `priority`, `cooldownSeconds`,
+  `maxUses`, optional `subject` (react to one item or salvage) and `requires` (event
+  history, e.g. third death). Only NICE and Pehlichi speak (DLG-1). Keep it smart-ass and
+  keep it rare: set caps so no line becomes a catchphrase.
 - **Add a glitch to the world:** write `Data/placement/<cell>/<name>.json`
   naming a `glitch.*` definition and an anchor (see
   `Data/anchor/<cell>.generated.json`) or a cell-local transform; run the

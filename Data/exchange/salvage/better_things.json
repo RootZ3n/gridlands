@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.salvage.better_things",
+  "trigger": [
+    "Event.Salvage.Completed"
+  ],
+  "category": "Ambient",
+  "priority": 10,
+  "cooldownSeconds": 2400,
+  "maxUses": 2,
+  "weight": 1.0,
+  "requires": [
+    {
+      "eventCount": "Event.Salvage.Completed",
+      "min": 6
+    }
+  ],
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Don't you have something better to do?"
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "He does. You keep hiding it behind glitches."
+    }
+  ]
+}

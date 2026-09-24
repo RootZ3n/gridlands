@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.item.scrap_diet",
+  "trigger": [
+    "Event.Item.Acquired"
+  ],
+  "subject": "item.material.scrap_metal",
+  "category": "Ambient",
+  "priority": 10,
+  "cooldownSeconds": 1500,
+  "maxUses": 2,
+  "weight": 1.0,
+  "requires": [
+    {
+      "eventCount": "Event.Item.Acquired",
+      "min": 4
+    }
+  ],
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Scrap again. Is that a food group where you're from?"
+    }
+  ]
+}

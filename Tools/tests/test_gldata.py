@@ -211,16 +211,20 @@ class RuleTests(unittest.TestCase):
         self.box.edit("placement.origin.glitch_flicker_lamp", lambda d: d.update(bindings={"blocker": "placement.origin.glitch_flicker_lamp"}))
         self.assertRule("PLC-2")
 
+    # Anchor tests must not depend on which anchors the real maps export today.
+    UNKNOWN_ANCHOR = "anchor.origin.test_no_such_anchor"
+
     def test_plc3_unknown_anchor(self):
-        self.box.edit("placement.origin.junk_pile_01", lambda d: (d.pop("transform"), d.update(anchor="anchor.origin.house_03")))
+        self.box.edit("placement.origin.junk_pile_01", lambda d: (d.pop("transform"), d.update(anchor=self.UNKNOWN_ANCHOR)))
         self.assertRule("PLC-3")
 
     def test_plc3_known_anchor_resolves(self):
-        anchors = {"schemaVersion": 1, "cell": "cell.home.origin",
-                   "anchors": [{"id": "anchor.origin.house_03", "transform": {"location": [0, 0, 0]}}]}
-        (self.box.root / "Data/anchor").mkdir(parents=True, exist_ok=True)
-        (self.box.root / "Data/anchor/origin.generated.json").write_text(json.dumps(anchors))
-        self.box.edit("placement.origin.junk_pile_01", lambda d: (d.pop("transform"), d.update(anchor="anchor.origin.house_03")))
+        path = self.box.root / "Data/anchor/origin.generated.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        anchors = json.loads(path.read_text()) if path.exists() else {"schemaVersion": 1, "cell": "cell.home.origin", "anchors": []}
+        anchors["anchors"].append({"id": "anchor.origin.test_added_anchor", "transform": {"location": [0, 0, 0]}})
+        path.write_text(json.dumps(anchors))
+        self.box.edit("placement.origin.junk_pile_01", lambda d: (d.pop("transform"), d.update(anchor="anchor.origin.test_added_anchor")))
         self.assertEqual(self.box.problems(), [])
 
 

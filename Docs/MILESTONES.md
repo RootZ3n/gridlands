@@ -20,7 +20,7 @@ with evidence under `Docs/Evidence/<milestone>/`. Gates are not traded for speed
 | S1 | **Terrain spike** alongside M2 (time-boxed prototypes, not production) | **DONE; [ADR-0022](ADR/0022-terrain-chunked-heightfield.md) approved: chunked runtime heightfield** ([evidence](Evidence/S1-terrain/README.md)) |
 | M3 | Character, interaction, **gameplay event bus**, anchor component + export commandlet, modern-suburbia slice blockout | **DONE 2026-09-24**: 20/20 automation tests; rendered game run loads L_Origin with 15 anchors ([evidence](Evidence/M3/README.md)); keyboard walk-around is the operator's to try |
 | M4 | Salvage + inventory + world-settings yields | **DONE 2026-09-24**: 28/28 automation tests; E-1 mutation caught ([evidence](Evidence/M4/README.md)) |
-| M5 | **Dialogue director v0** + frequency setting + first ~15 exchanges on real events (salvage, overencumbrance, death, idle) | seeded selection, silence gap, story-critical bypass specs |
+| M5 | **Dialogue director v0** + frequency setting + first ~15 exchanges on real events (salvage, overencumbrance, death, idle) | **DONE 2026-09-24**: 34/34 automation + 58 tooling tests; 15 exchanges ([evidence](Evidence/M5/README.md)). Idle has no event source yet |
 | M6 | Fabrication + knowledge unlocks | pry bar salvages faster; discovery unlocks a recipe |
 | M7 | Pehlichi command/scan/repair from placements; requirements (salvaged blocker, delivered item, riddle) | lifecycle/command/requirement specs |
 | M8 | Stability model + interference tiers; static recedes after repair | derived-value specs |

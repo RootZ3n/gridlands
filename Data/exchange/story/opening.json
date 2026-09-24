@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.story.opening",
+  "trigger": [
+    "Event.Game.Started"
+  ],
+  "category": "StoryCritical",
+  "priority": 100,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Oh good, you're awake. Welcome to my world, Zenny. Try not to break anything. That's my job."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "Ignore her. She monologues when she's nervous."
+    },
+    {
+      "speaker": "NICE",
+      "text": "I do not monologue. I narrate. Beautifully."
+    }
+  ]
+}

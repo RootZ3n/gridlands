@@ -383,6 +383,18 @@ struct GRIDLANDSCORE_API FGLExchangeLineDef
 };
 
 USTRUCT()
+struct GRIDLANDSCORE_API FGLExchangeRequirementDef
+{
+	GENERATED_BODY()
+
+	/** Event.* tag whose occurrences (including child tags) are counted. */
+	UPROPERTY() FName EventCount;
+	UPROPERTY() int32 Min = 0;
+	/** 0 when absent: no upper bound. */
+	UPROPERTY() int32 Max = 0;
+};
+
+USTRUCT()
 struct GRIDLANDSCORE_API FGLExchangeDef : public FGLDefinitionBase
 {
 	GENERATED_BODY()
@@ -394,5 +406,8 @@ struct GRIDLANDSCORE_API FGLExchangeDef : public FGLDefinitionBase
 	/** 0 when absent: unlimited. */
 	UPROPERTY() int32 MaxUses = 0;
 	UPROPERTY() double Weight = 1.0;
+	/** Content id the event must be about; None matches any subject. */
+	UPROPERTY() FName Subject;
+	UPROPERTY() TArray<FGLExchangeRequirementDef> Requires;
 	UPROPERTY() TArray<FGLExchangeLineDef> Lines;
 };

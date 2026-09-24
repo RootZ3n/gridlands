@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.salvage.fence_feelings",
+  "trigger": [
+    "Event.Salvage.Completed"
+  ],
+  "subject": "salvage.yard.fence_panel",
+  "category": "Contextual",
+  "priority": 35,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "That fence had feelings."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "That fence had termites."
+    }
+  ]
+}

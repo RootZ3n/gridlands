@@ -68,6 +68,13 @@ multiplier / hardness); required-tool gating). The game layer wires them:
 `UGLWorldSettingsSubsystem` (the active preset) and `UGLPlacementSubsystem`, which
 spawns `salvage_node` placements at play, anchored or at a transform.
 
+**Dialogue (M5, ADR-0015).** `GLDialogueRules` (Core, pure, seeded) chooses at most one
+exchange per event: trigger and subject match, history requirements, maxUses, cooldowns,
+busy rule (only StoryCritical may interrupt, never another StoryCritical), then the
+frequency setting's silence gap and chance for optional categories. `UGLDialogueDirector`
+(world subsystem) listens to every `Event.*` and delivers lines via `OnLine`. Gameplay code
+never includes it; `Tools/tests/test_architecture_rules.py` enforces that (D-4).
+
 The loader is `FGLContentRegistry` (GridlandsCore, pure), owned at runtime by
 `UGLContentSubsystem` (an engine subsystem). Definitions are USTRUCTs in
 `GLContentDefinitions.h`, looked up with `Find<FGLItemDef>(Id)`. The Python

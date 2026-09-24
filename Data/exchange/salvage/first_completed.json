@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.salvage.first_completed",
+  "trigger": [
+    "Event.Salvage.Completed"
+  ],
+  "category": "Contextual",
+  "priority": 30,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "You just tore apart a perfectly good pile of junk. I made that junk."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "It was bad junk, NICE."
+    }
+  ]
+}

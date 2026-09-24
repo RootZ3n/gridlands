@@ -9,7 +9,14 @@ BUILD=1
 if [ "${1:-}" = "--no-build" ]; then BUILD=0; shift; fi
 FILTER="${1:-Gridlands}"
 
-# Content is validated first: it needs no engine and fails in seconds (ADR-0002/0020).
+# Engine-free checks first; they fail in seconds. The tooling self-tests (validator rules,
+# report parser, architecture rules) are part of the gate: they once went stale unnoticed
+# for two milestones because only a manual command ran them.
+mkdir -p "$GRIDLANDS_ROOT/.test-reports"
+"$GRIDLANDS_ROOT/Tools/selftest.sh" > "$GRIDLANDS_ROOT/.test-reports/selftest.log" 2>&1 \
+	|| { tail -20 "$GRIDLANDS_ROOT/.test-reports/selftest.log"; result FAIL "tooling self-tests failed (log .test-reports/selftest.log)"; }
+echo "  $(grep -E '^Ran [0-9]+ tests' "$GRIDLANDS_ROOT/.test-reports/selftest.log" | tail -1) (tooling)"
+# Content is validated next (ADR-0002/0020).
 "$GRIDLANDS_ROOT/Tools/data.sh" validate | tail -3
 [ "${PIPESTATUS[0]}" -eq 0 ] || result FAIL "Data/ validation failed; run Tools/data.sh validate"
 

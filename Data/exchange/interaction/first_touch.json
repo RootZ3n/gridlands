@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.interaction.first_touch",
+  "trigger": [
+    "Event.Interaction.Performed"
+  ],
+  "category": "Contextual",
+  "priority": 25,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Look at you, touching my things."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "That's how science works. Poke first, publish later."
+    }
+  ]
+}
