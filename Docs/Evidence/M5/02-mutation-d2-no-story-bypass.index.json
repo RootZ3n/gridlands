@@ -1,0 +1,101 @@
+{
+ "succeeded": 5,
+ "succeededWithWarnings": 0,
+ "failed": 1,
+ "notRun": 0,
+ "inProcess": 0,
+ "totalDuration": 0.05217445269227028,
+ "tests": [
+  {
+   "fullTestPath": "Gridlands.Core.Dialogue.DeterministicUnderSeed",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Dialogue.FrequencyScalesOptionalOnly",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Dialogue.SilenceGapAndRepetitionLimits",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Dialogue.StoryCriticalIgnoresSetting",
+   "state": "Fail",
+   "warnings": 0,
+   "errors": 50,
+   "entries": [
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'seed 0: story pre-empts optional chatter under Quiet' to be true."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'seed 1: story pre-empts optional chatter under Quiet' to be true."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'seed 2: story pre-empts optional chatter under Quiet' to be true."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'seed 3: story pre-empts optional chatter under Quiet' to be true."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'seed 4: story pre-empts optional chatter under Quiet' to be true."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'seed 5: story pre-empts optional chatter under Quiet' to be true."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'seed 6: story pre-empts optional chatter under Quiet' to be true."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'seed 7: story pre-empts optional chatter under Quiet' to be true."
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Dialogue.TriggersSubjectsAndHistory",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Dialogue.DirectorReactsToRealGameplay",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  }
+ ]
+}
