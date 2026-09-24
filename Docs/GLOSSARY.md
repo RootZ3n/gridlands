@@ -24,4 +24,7 @@ these meanings.
 | **Exchange** | a unit of dialogue: one or more NICE/Pehlichi lines selected by the dialogue director |
 | **World settings** | per-world configuration, e.g. yield multipliers by category and commentary frequency |
 | **Combat-free** | achievable without killing: by stealth, avoidance, distraction, non-lethal disabling, terrain or waiting |
+| **Id** | a stable namespaced entity id, e.g. `item.material.copper_wire` ([CONTENT-IDS-AND-TAGS.md](CONTENT-IDS-AND-TAGS.md)) |
+| **Placement** | a JSON gameplay object in a cell (glitch, salvage node, spawn, discovery, encounter), `placement.<cell>.<name>` (ADR-0018) |
+| **Anchor** | a stable handle on a visual-world actor in an Unreal map, `anchor.<cell>.<name>`; how placements attach to houses, walls and grates (ADR-0018) |
 | **Zone** | *deprecated*. Do not use. Say **cell** (place), **band** (depth) or **era** (memory) |

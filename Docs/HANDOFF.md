@@ -51,6 +51,13 @@ missing, wrong version). The last line of output is always
     never call dialogue directly (ADR-0015).
 14. Every yield passes through its world-settings category (ADR-0016).
 
+15. **Pehlichi deals zero direct damage** (ADR-0017). No capability, item or
+    balance change may give him one. That needs a new operator ADR.
+16. Gameplay placement is JSON per cell; never put gameplay logic or
+    gameplay-critical placement only in a `.umap` (ADR-0018).
+17. Ids and tags follow `Docs/CONTENT-IDS-AND-TAGS.md`; eras are data (ADR-0020).
+18. All progression lives in the world save (ADR-0019).
+
 The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
 
 ## Recipes
@@ -60,6 +67,10 @@ The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
   when it guards an invariant.
 - **Add content (from M2):** edit `Data/<kind>/*.json`, run
   `Tools/import-data.sh`, then `Tools/test.sh`.
+- **Add a glitch to the world:** write `Data/placement/<cell>/<name>.json`
+  naming a `glitch.*` definition and an anchor (see
+  `Data/anchor/<cell>.generated.json`) or a cell-local transform; run the
+  importer and the tests.
 - **Add a glitch requirement kind:** subclass `UGLGlitchRequirement` in C++,
   register its JSON `kind`, add a spec, document it in
   `GLITCH-AND-PEHLICHI.md`.

@@ -1,7 +1,8 @@
 # Design reconciliation: 2026-09-24
 
 The operator's current Gridlands design was reconciled with the M1 bootstrap
-architecture. **This pass is docs, design and impact analysis only. No code
+architecture. **Operator review: approved, with decisions E1–E8 recorded in
+section E and in ADR-0016..0020.** **This pass is docs, design and impact analysis only. No code
 changed, and M2 has not started.**
 
 Baseline: `master` at `c563b40` (M1 GREEN, tag `m1-green` -> `5b446c0`).
@@ -26,6 +27,8 @@ Baseline: `master` at `c563b40` (M1 GREEN, tag `m1-green` -> `5b446c0`).
 | `Docs/HANDOFF.md`, `CLAUDE.md`, `README.md` | reading order, invariants, premise |
 | `Docs/ADR/0011`..`0016` | **new ADRs** (below) |
 | `Docs/ADR/0004`, `0006`, `0009`, `0010` | **amendment sections appended**; original decisions left intact |
+| `Docs/CONTENT-IDS-AND-TAGS.md` | **new** (after operator review): exact id/tag grammar and validation rules, registered kinds and namespaces, the ten eras as data |
+| `Docs/ADR/0017`..`0020` | **new** (after operator review): Pehlichi zero damage; gameplay placement layer; world-save-bound progression; ids, tags and eras as data |
 | `Docs/DESIGN-RECONCILIATION.md` | this report |
 
 New ADRs, each of which constrains implementation and would be expensive to reverse:
@@ -46,7 +49,10 @@ ADRs above, or they are decided later.
 |---|---|---|
 | P-1 | Only Pehlichi completes a glitch repair; the Player authority has no transitions | unchanged (tested in M1) |
 | P-2 | Access, guards, resources, **puzzles**, jamming are requirements, not states | extended (puzzles) |
-| P-3 | Pehlichi does not deal damage; its creature abilities are detection, weak points, disruption, pacification | **new, an interpretation of "not a combat pet"; confirm (E6)** |
+| P-3 | **Pehlichi deals zero direct damage**; he prefers flight when combat begins | **new, hard invariant** (ADR-0017, E6) |
+| L-1 | Gameplay-critical placement is per-cell JSON; visuals link only via anchor ids | **new** (ADR-0018, E2) |
+| ID-1 | Ids/tags follow the documented grammar; eras are data, not enums or tiers | **new** (ADR-0020, E4/E5) |
+| SV-1 | All progression is world-save-bound | **new** (ADR-0019, E3) |
 | NC-1 | No progression or completion requires a kill; progression is **stabilization** | **changed** (was "zone quota") |
 | NC-2 | Every critical-path item, capability **or knowledge** has a non-combat source | extended (knowledge) |
 | NC-3 | Per **band**, combat-free stabilization makes the next band traversable | **changed** (was per-zone quota) |
@@ -114,27 +120,24 @@ guards and interference all fit as requirements or scan inputs.
 | 5 | Visual: "low-poly, pixel-adjacent" | stylized 3D, Valheim to ARK range | VISUAL doc updated |
 | 6 | Structural support "designed for, not built" | a core desired feature | ADR-0004 amended: schema fields from M2; built in M10 |
 | 7 | Narrative out of scope | the banter system is core identity | ADR-0015; designed now, built in M9; cutscenes/voice still out |
-| 8 | No terraforming in the architecture | core feature | new subsystem; spike + ADR-0017 before M3 (E7) |
+| 8 | No terraforming in the architecture | core feature | new subsystem; spike S1 alongside M2 -> terrain ADR -> operator approval (E7) |
 | 9 | No economy settings | world-configurable yields by category | ADR-0016 |
 | 10 | Capability component could serve player and Pehlichi | Zenny grows by use-based **skills**; Pehlichi by capabilities/knowledge | separate Skills system; capabilities stay Pehlichi-centric |
-| 11 | Persistence covered glitches, inventory, pieces, capabilities | many more world facts | ARCHITECTURE section 6 expanded; character-vs-world split open (E3) |
+| 11 | Persistence covered glitches, inventory, pieces, capabilities | many more world facts | ARCHITECTURE section 6 expanded; world-save-bound (ADR-0019) |
 | 12 | "Tiny test neighborhood" | build one Grid region deeply | home-region slice, multi-cell-ready |
-| 13 | **ADR-0002 (JSON source of truth) vs where placements live** | a hand-authored world stores actor placements in binary `.umap` files that agents cannot edit | **open, E2**: placement manifests in JSON per cell, or accept umap placement |
+| 13 | **ADR-0002 (JSON source of truth) vs where placements live** | a hand-authored world stores actor placements in binary `.umap` files that agents cannot edit | **resolved (E2, ADR-0018)**: per-cell JSON gameplay placements over the authored map, linked by anchor ids |
 
-## E. Decisions to make BEFORE M2
+## E. Decisions before M2: RESOLVED by the operator (2026-09-24)
 
-These shape the M2 content schema or are costly to change once content exists.
-
-| # | Decision | Recommendation | Why before M2 |
+| # | Decision | Operator ruling | Recorded in |
 |---|---|---|---|
-| E1 | **Yield categories** (ADR-0016 pending): which scale with settings? | Scalable: `Yield.Common.Salvage`, `Yield.Common.Gather`, `Yield.Creature.Drop`. Never scaled: `Yield.Reward.Glitch`, `Yield.Reward.Unique`, `Yield.Knowledge`. **Operator: should `Yield.Rare` (rare materials) scale?** | every yield entry in the schema names a category |
-| E2 | **Authored vs procedural world, and where placements live** | Hand-authored cells. Levels hold geometry and art; **gameplay placements (glitches, salvageables, requirements, spawn sources) live in JSON manifests per cell**, spawned by id at load, so agents can place content. Procedural is out. | decides the persistent-id scheme and whether M2 imports placements; the biggest AI-maintainability lever left |
-| E3 | **Character-portable vs world-bound progression** (knowledge, skills, inventory, Pehlichi capabilities) | **World-bound** for everything. Pehlichi's growth is tied to repairing this world, and a single authored world makes portability pointless. Revisit only if multiple worlds are ever wanted. | save format and knowledge ids |
-| E4 | **Content schema conventions**: id format, tag namespaces, schema versioning, one file per entity | ids `kind.domain.name` (`item.material.copper_wire`); namespaces `Era.* Band.* Material.* Source.* Yield.* Event.* Knowledge.*`; `schemaVersion` per file; one entity per file | the importer is built on them |
-| E5 | **Era list as data** | the 10 known eras as `Era.*` tags; adding one is data only | build pieces and cells reference them |
-| E6 | **Confirm P-3**: Pehlichi never deals damage | confirm | constrains Pehlichi capability data |
-| E7 | **Terrain technology** (can run in parallel with M2; required **before M3**) | time-boxed spike S1 -> ADR-0017 | level authoring and saves depend on it |
-| E8 | **Home slice brief** (before M3): size and era mix | ~250 x 250 m corner of the home cell; a 1950s suburb with one Roman fragment; one storm-drain entrance | M3 blockout needs it |
+| E1 | Resource scaling | **Repeatable rare-material yields scale** with the applicable setting. Never scaled: unique/one-off rewards, glitch progression rewards, knowledge/unlocks, blueprints that are themselves the reward, quest/story items, unique artifacts. *Discovery/access establishes rarity; once a repeatable source is legitimately reached, abundance respects the player's time.* | ADR-0016, SURVIVAL section 6 |
+| E2 | Gameplay placement | Agent-editable **per-cell JSON** for gameplay-critical placements (glitches, salvage nodes, spawns/patrols, discoveries, encounters, anchors). Unreal owns visual composition. A stable-id **anchor** boundary links them. Not every decorative object. | ADR-0018, ARCHITECTURE section 3 |
+| E3 | Progression ownership | **World-save-bound**: skills, knowledge, inventory, Pehlichi upgrades, glitch state, all progression. No transferable characters or NG+ now. | ADR-0019 |
+| E4/E5 | Ids and tags | Stable namespaced ids with exact grammar documented before content grows; data-driven tag namespaces (era, band, material, source, yield, event, knowledge; more only when a system needs one); **the ten eras are data**, never enums or tiers | ADR-0020, CONTENT-IDS-AND-TAGS |
+| E6 | Pehlichi combat authority | **Hard invariant: Pehlichi deals zero direct damage.** Scans, weak points, distraction, jamming, temporary disabling, pacification, escape help; flees when combat starts. Changing it needs a new operator ADR. | ADR-0017 |
+| E7 | Terrain | **Tightly time-boxed spike alongside M2** with small executable prototypes, then an ADR recommendation with evidence, then **operator approval** before production terrain | BUILDING section 4, MILESTONES S1 |
+| E8 | First playable area | ~250 m, dominantly **modern-day suburbia**, with one conspicuous 1950s fragment, one smaller Roman fragment and one storm-drain entrance. **Not** a 1950s biome. | WORLD section 13, section H below |
 
 ## F. Decisions that can safely wait
 
@@ -156,29 +159,22 @@ These shape the M2 content schema or are costly to change once content exists.
 - a naming review of "Neurolink" before any public release (close to a real
   company's name).
 
-## G. Proposed roadmap, next ~30 days of Claude Code work
+## G. Roadmap, next ~30 days of Claude Code work
 
-**Honest sizing:** M2 through M9 fit in about 30 working days. M10–M11 likely
-spill into days 31–40. Each milestone ends green on `Tools/test.sh`, fresh
-clone included.
+The authoritative, operator-approved table is in [MILESTONES.md](MILESTONES.md).
+It differs from the first draft in one deliberate way: **the dialogue director
+moves up to M5**, right after salvage and inventory, because banter is a core
+product feature and must be proven on real events early.
 
-| Days | Work |
-|---|---|
-| 1–6 | **M2** data pipeline v1 (schema per E1–E5, importer/validator, deterministic re-import, NC-2 source check, era-not-power lint) |
-| 5–8 | **S1** terrain spike, overlapping M2's tail -> ADR-0017 -> operator decision |
-| 7–9 | **M3** character, interaction, home-slice blockout (per E8), event-bus skeleton |
-| 10–12 | **M4** salvage + inventory + world-settings yields |
-| 13–15 | **M5** fabrication + knowledge unlocks |
-| 16–19 | **M6** Pehlichi command/scan/repair + requirements (salvaged blocker, delivered item, simple riddle) |
-| 20–22 | **M7** stability model + interference tiers + static edge v0 |
-| 23–25 | **M8** persistence of all of the above |
-| 26–30 | **M9** dialogue director v0 + frequency setting + ~40 exchanges |
-| 31–40 | **M10** building v0 + terraform v0; **M11** automated first-playable loop + vertical-slice pass |
+**Honest sizing:** M2–M8 plus the terrain spike fit in about 30 working
+days. M9–M11 run to about day 40. Every milestone ends with `Tools/test.sh`
+and `Tools/verify-fresh-clone.sh` green and evidence under `Docs/Evidence/`.
 
 ## H. The earliest genuinely playable, fun vertical slice
 
-A **~250 m corner of the home region**: a 1950s suburban street of 6–8
-houses, with one out-of-place Roman fragment, and static visible at the
+A **~250 m prototype of recognizable modern-day suburbia** (E8): a street of
+6–8 contemporary houses, with **one conspicuous 1950s fragment**, a **smaller
+Roman fragment**, a **storm-drain entrance**, and static visible at the
 slice's edges.
 
 - **Salvage**: wire, wood, scrap and brick from houses and yards. Stripping
@@ -192,11 +188,15 @@ slice's edges.
   - one with a short riddle.
 - **Repairs push the static back**, opening a storm-drain entrance to a
   one-room sewer proof with a hidden glitch.
-- **Creatures**: one passive glitched animal, and one territorial one that can
-  be avoided (the non-combat path works from day one).
+- **Creatures**: one passive glitched animal, and one territorial one. Combat
+  is possible but the creature is avoidable, with **at least one demonstrated
+  non-combat solution** (e.g. Pehlichi distraction or a terrain line-of-sight
+  break).
 - **One harmless Glitch Storm**: raining glitched cats and dogs.
-- **~40 exchanges** of NICE/Pehlichi banter, covering death, overencumbrance,
-  first repair and silence, with the frequency setting working.
+- **The contextual dialogue framework**, proven early (M5) with ~40 authored
+  test exchanges reacting to Zenny (salvage, death, overencumbrance, first
+  repair, building, silence), the frequency setting working, and an
+  architecture that scales to far larger content.
 - **Save and reload** keep everything.
 
 Why this slice: it exercises every pillar at small scale (salvage, build,
@@ -211,7 +211,7 @@ Agents do best with **pure rules + JSON + tests**. Design these first:
    items, pieces, glitches, knowledge and dialogue without the editor, and
    invariant violations (NC-2, era-not-power, unresolved refs) fail lint
    instead of review.
-2. **Per-cell JSON placement manifests (E2)**, so agents can place glitches,
+2. **Per-cell JSON placements with anchor linking (ADR-0018)**, so agents can place glitches,
    salvageables and spawn sources, not just define them.
 3. **The pure Core rule sets**: glitch lifecycle (done), stability/
    interference/composure, dialogue selection, yield math, support
@@ -229,5 +229,5 @@ Agents do best with **pure rules + JSON + tests**. Design these first:
 
 ---
 
-**Stop:** this report ends the design-reconciliation pass. M2 waits for the
-operator's review and the section E decisions.
+**Status:** approved by the operator with decisions E1–E8 (section E). M2 and
+the terrain spike S1 proceed under the milestone gates.

@@ -179,7 +179,19 @@ A guarded glitch counts as combat-free only if its guards can be lured,
 distracted, evaded, disabled non-lethally or waited out. Later bands may
 guard a larger share of glitches but must keep NC-3 true.
 
-## 13. Home and settlement
+## 13. The opening area (operator decision E8)
+
+The first playable area is a **~250 m prototype of recognizable modern-day
+suburbia**, the dominant environment, containing:
+- **one conspicuous 1950s memory fragment**;
+- **one smaller Roman fragment**;
+- **one storm-drain / sewer entrance**.
+
+It establishes the opening-world grammar: **recognizable modern reality, with
+impossible fragments from Pehlichi's and Zenny's worlds bleeding into it.** The
+opening is not a 1950s biome.
+
+## 14. Home and settlement
 
 - The home/starting region is genuinely useful for long, low-attention play.
 - There are no mandatory base raids.

@@ -16,10 +16,12 @@ record. Overview: [DESIGN-BIBLE.md](DESIGN-BIBLE.md).
    Pehlichi.
 
 3. **Pehlichi is the curious scientist/hacker companion, not a combat pet.
-   (firm, [ADR-0005](ADR/0005-pehlichi-sole-repair-authority.md))** Only
-   Pehlichi scans, detects, accesses and repairs glitches. The player enables
-   repairs but never performs them. Pehlichi's creature-facing abilities are
-   detection, weak-point analysis, disruption and pacification, not damage.
+   (firm, [ADR-0005](ADR/0005-pehlichi-sole-repair-authority.md),
+   [ADR-0017](ADR/0017-pehlichi-deals-zero-damage.md))** Only Pehlichi scans,
+   detects, accesses and repairs glitches, and the player enables but never
+   performs repairs. **Pehlichi deals zero direct damage** (hard invariant). He
+   scans, finds weak points, distracts, disrupts, disables temporarily,
+   pacifies and helps Zenny escape. When fighting starts, he flees.
 
 4. **Story accompanies play. (firm,
    [ADR-0015](ADR/0015-contextual-dialogue-system.md))** Narrative is delivered

@@ -7,23 +7,26 @@ The operator reviews after M1 before anything further begins.
 |---|---|---|---|
 | M0 | Engine 5.8.3 prebuilt + git-lfs installed; `Tools/doctor.sh` | doctor passes | **done**: 5.8.3 CL 58210709 at `/pehverse/engines/UE_5.8.3` |
 | M1 | Skeleton: 3 modules, tooling, docs, ADRs, one real headless test | `build.sh` + `test.sh` green from a fresh clone | **green, awaiting operator review**: 7/7 at `5b446c0`, fresh clone included |
-| **Gate** | Design reconciliation (docs only), then operator review and the pre-M2 decisions in `DESIGN-RECONCILIATION.md` section E | operator approval | **in review** |
+| **Gate** | Design reconciliation (docs only) + operator decisions E1–E8 | operator approval | **approved 2026-09-24** |
 
-### Roadmap after the gate (revised 2026-09-24; see DESIGN-RECONCILIATION section G)
+### Roadmap (operator-approved 2026-09-24; dialogue moved earlier as a core feature)
+
+Every milestone ends green on `Tools/test.sh` **and** `Tools/verify-fresh-clone.sh`,
+with evidence under `Docs/Evidence/<milestone>/`. Gates are not traded for speed.
 
 | # | Milestone | Proof |
 |---|---|---|
-| M2 | **Data pipeline v1**: JSON schema foundation (ids, tag namespaces, yield categories, knowledge, era/material/support fields, glitch stability weights, cells/bands/eras) + deterministic importer/validator (refs, NC-2 source check) | data tests green; re-import is byte-stable |
-| S1 | **Terrain spike** (time-boxed): custom chunked heightfield vs landscape+overlay | measurements + ADR-0017; no production code |
-| M3 | Character, interaction, home-slice blockout | interaction spec + manual walk |
-| M4 | Salvage + inventory + world-settings yields (Core yield math) | per-category yield specs |
-| M5 | Fabrication + knowledge unlocks | the tool salvages faster; discovery unlocks a recipe |
-| M6 | Pehlichi command/scan/repair in the world; requirements (ObjectSalvaged, ItemDelivered, PuzzleSolved) | lifecycle/command/requirement specs |
-| M7 | Stability model (Core) + interference tiers + static edge v0 | derived-value specs; static recedes after a repair |
-| M8 | Persistence of all of the above (derived values rebuilt, not saved) | round-trip + migration spec |
-| M9 | Event bus + dialogue director v0 + frequency setting + ~40 exchanges | selection specs; the silence gap holds |
-| M10 | Building v0 (snap, a small mixed-era set, simple support) + terraform v0 per ADR-0017 | specs + manual build |
-| M11 | First playable loop as one automated functional test; vertical-slice pass | full loop green headless |
+| M2 | **Data pipeline v1**: ID/tag grammar validator ([CONTENT-IDS-AND-TAGS](CONTENT-IDS-AND-TAGS.md)); schemas for items, materials, recipes, salvage, yield categories, knowledge, build pieces (era + material + support), the 10 eras, bands, cells, glitches (stability weight), placements, capabilities, exchanges; deterministic importer; lints for NC-2, E1 non-scaling, ERA-1 and P-3 no-damage | validator and data specs green; importer byte-stable on re-run |
+| S1 | **Terrain spike** alongside M2 (time-boxed prototypes, not production) | evidence + terrain ADR recommendation -> **operator approval** |
+| M3 | Character, interaction, **gameplay event bus**, anchor component + export commandlet, modern-suburbia slice blockout | interaction/anchor-export specs + manual walk |
+| M4 | Salvage + inventory + world-settings yields | per-category yield specs |
+| M5 | **Dialogue director v0** + frequency setting + first ~15 exchanges on real events (salvage, overencumbrance, death, idle) | seeded selection, silence gap, story-critical bypass specs |
+| M6 | Fabrication + knowledge unlocks | pry bar salvages faster; discovery unlocks a recipe |
+| M7 | Pehlichi command/scan/repair from placements; requirements (salvaged blocker, delivered item, riddle) | lifecycle/command/requirement specs |
+| M8 | Stability model + interference tiers; static recedes after repair | derived-value specs |
+| M9 | World save of everything above (ADR-0019) | round-trip + migration spec |
+| M10 | Building v0 (snap, small mixed-era set, simple support) + terraform v0 per the approved terrain ADR | specs + manual build |
+| M11 | **Vertical slice**: avoidable creature + one demonstrated non-combat solution, Raining Cats and Dogs storm, one-room storm drain, ~40 exchanges, automated first-playable loop | full loop green headless |
 
 ## First playable loop (M9 functional test)
 

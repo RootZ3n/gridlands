@@ -28,7 +28,7 @@ glitches. **The more Pehlichi repairs the world, the more NICE comes apart.**
 | Character | Role | Voice |
 |---|---|---|
 | **Zenny** | the player avatar; silent; NICE's toy and test subject | none. Pehlichi talks for the pair |
-| **Pehlichi** | curious scientist/hacker companion; the **only** repairer of glitches; not a combat pet | smart-ass and sick of NICE's nonsense; antagonizes her back. *"Curiosity can't kill me. I'm not a cat."* |
+| **Pehlichi** | curious scientist/hacker companion; the **only** repairer of glitches; **deals zero direct damage** and flees combat ([ADR-0017](ADR/0017-pehlichi-deals-zero-damage.md)) | smart-ass and sick of NICE's nonsense; antagonizes her back. *"Curiosity can't kill me. I'm not a cat."* |
 | **NICE** | Game Master of the world; watches and manipulates Zenny's experience | playful, arrogant, funny, cruel, theatrical, unpredictable, and increasingly unstable as the world is repaired |
 
 The in-game Pehlichi and NICE are authored game characters. Neither is
@@ -124,7 +124,9 @@ exploiting stabilized Grid infrastructure (not approved yet).
 ## 9. First development strategy
 
 **Build one Grid (the home/starting region) deeply before populating the
-world**, while keeping the architecture multi-cell and streaming-ready. The
+world.** The opening is **recognizable modern-day suburbia** with one
+conspicuous 1950s fragment, a smaller Roman fragment and a storm-drain
+entrance: modern reality with impossible fragments bleeding in. Keep the architecture multi-cell and streaming-ready. The
 content scope stays narrow at first: one Zenny, one Pehlichi, a few creatures,
 a few tools and weapons, a small building set, a small sewer proof, and a
 small dialogue set. Prove the loop, then scale. See [MILESTONES.md](MILESTONES.md).

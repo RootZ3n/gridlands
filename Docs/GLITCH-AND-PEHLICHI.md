@@ -8,7 +8,9 @@ Decision record: [ADR-0005](ADR/0005-pehlichi-sole-repair-authority.md).
 
 **Pehlichi repairs glitches. The player cannot.** Pehlichi is a curious
 scientist/hacker (a former Neurolink scientist in a squirrel body), not a
-combat pet. Zenny is silent; Pehlichi does the talking
+combat pet. **He deals zero direct damage**
+([ADR-0017](ADR/0017-pehlichi-deals-zero-damage.md)); when fighting starts, he
+prefers flight and avoidance. Zenny is silent; Pehlichi does the talking
 ([STORY-AND-DIALOGUE.md](STORY-AND-DIALOGUE.md)).
 
 | The player... | Pehlichi... |
@@ -19,7 +21,7 @@ combat pet. Zenny is silent; Pehlichi does the talking
 | gathers and delivers required resources; solves riddles and puzzles | performs the repair over time |
 | removes, lures, distracts or evades Glitch Guards and other interference | can be interrupted, then resumes |
 | protects Pehlichi during repair (fighting, hiding, distracting, timing) | receives permanent capability upgrades |
-| decides where to push into interference | detects creature weak points; later disrupts or pacifies creatures non-lethally |
+| decides where to push into interference | detects weak points and exposes them for Zenny; distracts, jams, disables temporarily, pacifies; helps Zenny escape. **Never damages** |
 
 The in-game Pehlichi is **entirely separate from the real Pehlichi lab agent**.
 It never calls a model, agent API, lab service or Pehverse runtime
@@ -90,6 +92,11 @@ Repair authority is enforced by a passkey: glitch-mutating functions on
 `UGLGlitchComponent` take an `FGLRepairAuthority` argument whose constructor
 is private and befriends only `UGLRepairComponent`. Scan authority works the
 same way with `FGLScanAuthority`.
+
+**Glitches in the world come from placements** ([ADR-0018](ADR/0018-gameplay-placement-layer.md)):
+a `placement.<cell>.*` JSON file names the glitch definition and its location
+(an anchor such as a house wall, or a cell-local transform). Requirement
+targets are other placements (e.g. the blocker to salvage).
 
 **Glitch (`AGLGlitch` + `UGLGlitchComponent`)**: holds lifecycle state,
 repair progress and a reference to its `UGLGlitchDefinition`. It does **not**

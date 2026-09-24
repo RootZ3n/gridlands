@@ -55,6 +55,18 @@ item by editing JSON and running `Tools/import-data.sh`; it never edits a
 `.uasset`. Blueprints are thin visual subclasses (mesh, material, sound) with
 no gameplay logic. See [ADR-0002](ADR/0002-json-source-of-truth.md).
 
+**Ids and tags** follow the grammar in [CONTENT-IDS-AND-TAGS.md](CONTENT-IDS-AND-TAGS.md)
+(ADR-0020). Eras are data, not enums.
+
+**Placement.** Gameplay-significant *placement* is JSON too
+([ADR-0018](ADR/0018-gameplay-placement-layer.md)). Unreal maps own the
+visual world (geometry, architecture, props, lighting). Per-cell placement
+files own glitches, gameplay salvage nodes, spawns/patrols, discoveries and
+encounters. The two meet only at **anchors**: an `anchor.<cell>.<name>` id
+on a visual actor, exported by an editor commandlet to
+`Data/anchor/<cell>.generated.json` so agents can see anchors without the
+editor.
+
 ## 4. Systems
 
 | System | Runtime shape (C++) | Definition (data) |
@@ -75,6 +87,7 @@ no gameplay logic. See [ADR-0002](ADR/0002-json-source-of-truth.md).
 
 | System | Runtime shape (C++) | Definition (data) | Doc |
 |---|---|---|---|
+| Placement layer | placement subsystem spawns gameplay actors from `Data/placement/<cell>/*.json`; `UGLAnchorComponent` + anchor export commandlet (ADR-0018) | placements; generated anchor files | [ADR-0018](ADR/0018-gameplay-placement-layer.md) |
 | World axes | cell / band / era lookups; no "zone" type (ADR-0012) | `UGLGridCellDefinition {cell, band, eraComposition}`, band and era definitions | [WORLD](WORLD-AND-PROGRESSION.md) |
 | **Stability model** | **pure Core functions**: glitch states -> cell stability -> interference at a point; global NICE composure (ADR-0013) | stability weights, falloff, tier thresholds | [WORLD](WORLD-AND-PROGRESSION.md) |
 | Interference effects | consumers read the derived tier: map/minimap static, visibility, scan confidence, weak-point analysis | per-tier effect tuning | [WORLD](WORLD-AND-PROGRESSION.md) |
@@ -85,7 +98,7 @@ no gameplay logic. See [ADR-0002](ADR/0002-json-source-of-truth.md).
 | World settings | per-world settings object; the Core yield computation takes it as input (ADR-0016) | presets; yield categories | [SURVIVAL](SURVIVAL-AND-THREAT.md) |
 | Threat sources | spawn only from territory, patrol, encounter, NICE area or band table; no activity API (ADR-0014) | spawn/territory definitions | [SURVIVAL](SURVIVAL-AND-THREAT.md) |
 | Glitch Storms | NICE-scheduled world events; place-shaped | storm definitions | [WORLD](WORLD-AND-PROGRESSION.md) |
-| Terrain | **technology undecided**: spike, then ADR, before M3 | terrain materials | [BUILDING](BUILDING-SALVAGE-TERRAIN.md) |
+| Terrain | **technology undecided**: spike S1 alongside M2, then an ADR and operator approval before production terrain | terrain materials | [BUILDING](BUILDING-SALVAGE-TERRAIN.md) |
 | Structural support | integrity propagation over the piece graph | material/piece support fields (from M2) | [BUILDING](BUILDING-SALVAGE-TERRAIN.md) |
 | Underground, NPCs, fast travel | later; sub-levels/interiors under the streaming ADR | later | [WORLD](WORLD-AND-PROGRESSION.md) |
 
@@ -136,11 +149,13 @@ salvaged or destroyed, glitch lifecycle states, placed and repaired build
 pieces, inventories, Pehlichi capability levels, and later terrain edits,
 knowledge, skills, puzzle states, dialogue history and story flags, explored
 map state, and world settings. **Derived values (stability, interference,
-NICE composure) are never saved** (ADR-0013). Whether knowledge, skills and
-inventory belong to a portable character save or to the world save is an
-open decision ([DESIGN-RECONCILIATION.md](DESIGN-RECONCILIATION.md) section E). Every mutable placed actor carries a
-`UGLPersistentIdComponent` whose `FGuid` is validated for uniqueness by an
-editor check. The save schema is versioned from day one, and every version bump
+NICE composure) are never saved** (ADR-0013). **All progression is
+world-save-bound**: one save is one world ([ADR-0019](ADR/0019-world-save-bound-progression.md)).
+
+Save keys: authored gameplay objects are keyed by their **placement id**, and
+visual actors gameplay changes (a salvaged wall) by their **anchor id**
+(ADR-0018). Runtime-created objects (player-built pieces, dropped items) get a
+generated `FGuid`. The save schema is versioned from day one, and every version bump
 ships with a migration and a round-trip test.
 
 Transient lifecycle states are not saved as-is: `Repairing` saves as
@@ -167,6 +182,10 @@ performing.
 |---|---|---|
 | P-1 | Only Pehlichi's repair system completes a glitch repair; the Player authority has no lifecycle transitions | ADR-0005 |
 | P-2 | Access, guards, resources, puzzles and jamming are orthogonal **requirements**, not lifecycle states | ADR-0005 |
+| P-3 | **Pehlichi deals zero direct damage**; he flees combat. Changing this needs a new operator-approved ADR | ADR-0017 |
+| L-1 | Gameplay-critical placement is JSON per cell; visuals link to it only through anchor ids | ADR-0018 |
+| ID-1 | Ids and tags follow the documented grammar; eras are data | ADR-0020 |
+| SV-1 | All progression is in the world save | ADR-0019 |
 | NC-1..6 | The whole game is completable without combat (restated per band) | ADR-0009, WORLD section 12 |
 | W-1 | Cell, band and era are separate axes; era is not a tech tier | ADR-0012 |
 | W-2 | No invisible walls or repair-count locks; the barrier is derived interference | ADR-0011 |

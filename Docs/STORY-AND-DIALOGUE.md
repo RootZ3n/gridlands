@@ -24,6 +24,13 @@ chaotic because she herself is unraveling. Her composure is derived from
 world state ([ADR-0013](ADR/0013-derived-world-stability.md)), so her voice
 shifts with it.
 
+**Smart-ass, contextual, Zenny-reactive NICE/Pehlichi banter is a core product
+feature, not polish.** The early vertical slice must prove the
+dialogue-selection architecture with real triggers (about 40 authored test
+exchanges), and the architecture must scale to far larger content. The
+director is therefore built right after the first salvage/inventory loop
+([MILESTONES.md](MILESTONES.md)), not at the end.
+
 ## 2. Delivery rules
 
 - **Story accompanies play.** It is told through contextual banter during

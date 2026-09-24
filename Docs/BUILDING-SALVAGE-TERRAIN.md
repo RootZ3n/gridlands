@@ -30,8 +30,8 @@ with several sources:
 - Knowledge entries have stable ids. Recipes and build pieces declare which
   knowledge unlocks them. The importer/validator checks that every unlock is
   reachable and that critical-path unlocks have a non-combat source (NC-2).
-- Whether knowledge belongs to the **character** or the **world save** is an
-  open decision ([DESIGN-RECONCILIATION.md](DESIGN-RECONCILIATION.md) section E).
+- Knowledge is **world-save-bound** ([ADR-0019](ADR/0019-world-save-bound-progression.md)).
+- A blueprint whose value *is* the unlock never scales with yield settings (ADR-0016).
 
 ## 3. Building
 
@@ -71,7 +71,21 @@ must be made before the home region is authored (before M3). Options:
 | Voxel terrain (third-party voxel plugin) | yes, including caves and overhangs | plugin-dependent | plugin tools | licence, dependency and headless-test risk |
 | Landscape for the base + a deformable overlay volume only where sculpting is allowed | partial | good | good | medium: two terrain systems |
 
-The recommendation is a **time-boxed spike** that compares a custom chunked
-heightfield against the landscape-plus-overlay option on the home slice,
-measuring deformation, persistence size, navmesh rebuild cost and headless
-testability. The spike ends in an ADR, not in production code.
+**Approved (E7): a tightly time-boxed spike alongside M2**, using small
+executable prototypes, not production terrain. It compares viable approaches
+on:
+- runtime deformation (digging/lowering, raising/building);
+- persistence representation and size;
+- streaming / World Partition compatibility;
+- collision;
+- navigation/AI consequences;
+- interaction with building placement;
+- performance;
+- Linux / UE 5.8.3 support;
+- deterministic testing;
+- agent maintainability;
+- implications for the JSON placement layer (ADR-0018).
+
+It ends in an **ADR recommendation with evidence** (the terrain ADR, the next
+free number), and production terrain work waits for **operator approval** of
+that choice.

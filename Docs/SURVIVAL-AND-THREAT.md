@@ -76,19 +76,27 @@ capabilities.
 
 Pehlichi grows through exploration, glitch repair, knowledge, and
 understanding NICE's systems. Growth takes the form of capability levels
-(scan strength and range, weak-point analysis, disruption, pacification,
-later traversal).
+(scan strength and range, weak-point analysis, distraction, disruption/
+jamming, temporary disabling, pacification, escape assistance, later
+traversal). **None of them deals damage** ([ADR-0017](ADR/0017-pehlichi-deals-zero-damage.md)).
+All progression lives in the world save ([ADR-0019](ADR/0019-world-save-bound-progression.md)).
 
 ## 6. Resource economy
 
 - **Yields are world-configurable.** The economy must not require days of
   repetitive gathering just to build.
-- Yields are adjusted by **category**, not by one global rate.
-  **Scalable:** common salvage and gathering (and similar abundance).
-  **Never scaled:** discovery unlocks, glitch rewards, unique rewards,
-  progression-critical knowledge.
-  The exact category list needs operator confirmation before M2; see
-  [DESIGN-RECONCILIATION.md](DESIGN-RECONCILIATION.md) section E.
+- Yields are adjusted by **category**, not by one global rate (ADR-0016,
+  operator decision E1). **Principle: discovery and access establish rarity
+  and progression. Once a repeatable source has been legitimately discovered
+  or reached, the player's abundance setting respects their time.**
+
+  | Scales with the applicable yield setting | Never scales |
+  |---|---|
+  | repeatable common salvage, gathering, mining | unique / one-off rewards |
+  | **repeatable rare-material yields** | glitch progression rewards |
+  | repeatable creature drops | knowledge / unlocks |
+  | | blueprints where the blueprint itself is the reward |
+  | | quest / story items; unique artifacts |
 - Adjusting abundance must never bypass discovery, glitch progression, unique
   rewards or progression-critical knowledge.
 - No system hard-codes an assumption about a single global yield rate.
