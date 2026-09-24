@@ -1,68 +1,98 @@
 # Design pillars
 
-These are design constraints. When a system decision contradicts one of them,
-the pillar wins unless the operator changes it. Pillars marked **firm** have
-an ADR; changing them is an operator decision.
+These are constraints, not aspirations. When a system decision contradicts a
+pillar, the pillar wins unless the operator changes it. **(firm)** marks a
+pillar backed by an ADR; changing one of those is an operator decision on the
+record. Overview: [DESIGN-BIBLE.md](DESIGN-BIBLE.md).
 
-1. **Pehlichi repairs, the player enables.** The glitch loop is a partnership.
-   The player's verbs are explore, notice, command, protect, gather and clear.
-   See [GLITCH-AND-PEHLICHI.md](GLITCH-AND-PEHLICHI.md).
+## The fourteen pillars
 
-2. **The whole game can be completed without combat. (firm,
-   [ADR-0009](ADR/0009-non-combat-completion-path.md))** A stealth, casual,
-   low-combat or zero-kill player can finish Gridlands. This is a core design
-   requirement, not an accessibility afterthought.
-   - Zones advance by **repairing enough glitches with Pehlichi**, never by
-     killing something.
-   - **Bosses are optional.** They give valuable, unique, interesting rewards
-     but never unlock the next zone or finish the game.
-   - **Mob drops are never mandatory.** Every material or capability needed to
-     complete the game has a non-combat acquisition path.
-   - Combat rewards may be faster, stronger, more convenient, unique
-     sidegrades, special equipment, special building pieces, cosmetics, rare
-     Pehlichi upgrades or powerful shortcuts. They must **never become hidden
-     progression gates**.
-   - **The non-combat path is not easy mode.** It trades combat difficulty for
-     stealth, patrol avoidance, longer resource chains, harder salvage,
-     environmental puzzles, extra exploration, alternate routes, careful
-     planning, scan usage, timing, safe footholds and repairing additional
-     glitches.
-   - Hunters sent by the hostile AI must be avoidable, evadable, distractible
-     or routable-around.
-   - **Test of failure: if a player can only advance by killing something,
-     the non-combat path has failed.**
+1. **NICE is the Game Master.** The world is hers: its storms, its
+   interference, its encounters. The player is always inside her game, and
+   she makes sure he knows it.
 
-3. **Low-attention play is a first-class mode.** Players should be able to
-   spend long stretches salvaging, crafting, repairing, building, organizing,
-   exploring stabilized areas and improving a home, with no mandatory combat
-   interrupting them. The starter/stabilized area must be genuinely useful for
-   this.
+2. **Zenny is the silent player avatar and NICE's toy.** He never speaks.
+   NICE plays with him and taunts him at least as much as she spars with
+   Pehlichi.
 
-4. **Danger is a gradient away from home, and rises zone by zone.** Risk grows
-   with distance from home and stabilized areas and from one Grid to the next:
-   more guarded glitches, patrols that search for the player, and hostile-AI
-   interference with Pehlichi. The player should feel rising resistance
-   without losing the option to progress mainly through stealth, exploration,
-   salvage, rebuilding and glitch repair. See
-   [ZONES-AND-PROGRESSION.md](ZONES-AND-PROGRESSION.md).
+3. **Pehlichi is the curious scientist/hacker companion, not a combat pet.
+   (firm, [ADR-0005](ADR/0005-pehlichi-sole-repair-authority.md),
+   [ADR-0017](ADR/0017-pehlichi-deals-zero-damage.md))** Only Pehlichi scans,
+   detects, accesses and repairs glitches, and the player enables but never
+   performs repairs. **Pehlichi deals zero direct damage** (hard invariant). He
+   scans, finds weak points, distracts, disrupts, disables temporarily,
+   pacifies and helps Zenny escape. When fighting starts, he flees.
 
-5. **Major danger is player-initiated or geographically telegraphed.** Random
-   mandatory base raids are *not* a core requirement.
+4. **Story accompanies play. (firm,
+   [ADR-0015](ADR/0015-contextual-dialogue-system.md))** Narrative is delivered
+   mainly through contextual NICE/Pehlichi banter triggered by play, not by
+   monologues or frequent cutscenes. Silence is part of the design: they must
+   never become nonstop podcast hosts.
 
-6. **Building in dangerous places is a deliberate risk/reward choice.** A base
-   voluntarily established in a later hostile Grid needs defenses; the home
-   area does not. Building/stabilization will eventually suppress hostile
-   spawning within a local radius, similar in principle to Valheim. No radius
-   is final, the radius is data, and the system is not built during bootstrap.
+5. **Smart-ass humor is core identity**, not flavor. NICE and Pehlichi are
+   funny, and they are funny *at each other* and at Zenny.
 
-7. **Grid lines define regions, not surfaces. (firm,
-   [ADR-0010](ADR/0010-grid-cells-are-world-regions.md))** Each major zone is
-   one large Grid cell (planning assumption: about 1 km x 1 km, not final).
-   The player physically crosses a world-scale boundary to enter the next zone.
-   Ordinary streets and houses are not covered in neon lines.
+6. **Combat is substantial but never mandatory for completion. (firm,
+   [ADR-0009](ADR/0009-non-combat-completion-path.md))** Combat is a major and
+   enjoyable path. A complete non-combat path stays viable and is not easy
+   mode: it trades fighting for stealth, exploration, puzzles, resource chains,
+   terrain manipulation and planning. Bosses are optional. Drops are bonuses
+   or alternate sources, never the only way.
+   *If a player can only advance by killing something, the non-combat path has
+   failed.*
 
-8. **Normal things look physical; glitched things reveal the Grid.** See
-   [VISUAL-DIRECTION.md](VISUAL-DIRECTION.md).
+7. **Player activity does not summon enemies. (firm,
+   [ADR-0014](ADR/0014-threat-comes-from-place-not-activity.md))** Building,
+   salvaging, gathering, crafting, terraforming and inventory work never spawn
+   hostiles. Threat comes from location, exploration choices, authored
+   encounters, creature territories/patrols and NICE-controlled areas. There
+   are no mandatory base raids.
 
-9. **Organic building.** Construction snaps via sockets (Valheim-like), not a
-   strict grid, even though the world's aesthetic is grids.
+8. **Repairing the world stabilizes it while destabilizing NICE. (firm,
+   [ADR-0013](ADR/0013-derived-world-stability.md))** Repaired glitches reduce
+   interference, make territory safer and settleable, bring traders back, and
+   erode NICE's composure. At the start the world is unstable and NICE is
+   confident; by the end the world is steady and NICE is unraveling.
+
+9. **Exploration and discovery feed everything.** Discovery teaches material
+   uses, scanned architecture teaches building styles, and exploration grows
+   Pehlichi's understanding.
+
+10. **Grid cells are physical world regions; moving inward toward NICE
+    raises corruption and danger. (firm,
+    [ADR-0010](ADR/0010-grid-cells-are-world-regions.md),
+    [ADR-0011](ADR/0011-radial-bands-and-soft-interference.md))** Grid lines
+    define regions, not surfaces. Progression is radial, not a chain of
+    levels. Deeper territory resists through interference, never through
+    invisible walls or repair-count locks.
+
+11. **Historical/project fragments are mixed world memory, not linear eras.
+    (firm, [ADR-0012](ADR/0012-world-axes-band-cell-era.md))** Eras blend,
+    coherently at the edge and chaotically near the core. An era is not a tech
+    tier.
+
+12. **Building, salvage and terraforming are first-class gameplay**, not
+    side activities.
+
+13. **Player time is respected. (firm,
+    [ADR-0016](ADR/0016-world-settings-and-yield-categories.md))** Resource
+    yields are world-configurable. Common abundance never requires days of
+    grinding, but adjusting it never bypasses discovery, glitch progression,
+    unique rewards or progression-critical knowledge. Convenient return travel
+    comes eventually.
+
+14. **Player choice determines pressure whenever practical.** Danger is
+    geographic, telegraphed and opted into. Home is genuinely usable for
+    low-attention play. A base in hostile territory is a deliberate
+    risk/reward choice that needs defenses.
+
+## Presentation rules that serve the pillars
+
+- **Normal things look physical; the Grid shows where the simulation shows.**
+  Ordinary spaces read as real environments. Neon Grid structure appears at
+  boundaries, in scans, around glitches, in corruption and in NICE's
+  phenomena. See [VISUAL-DIRECTION.md](VISUAL-DIRECTION.md).
+- **Organic building.** Construction snaps via sockets (Valheim-like), not a
+  strict grid ([ADR-0004](ADR/0004-snap-socket-building.md)).
+- **Travel is physical early.** On foot, with no early flying mounts; the world
+  must be crossed to be reached.

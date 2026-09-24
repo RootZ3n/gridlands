@@ -6,16 +6,22 @@ Decision record: [ADR-0005](ADR/0005-pehlichi-sole-repair-authority.md).
 
 ## 1. Roles
 
-**Pehlichi repairs glitches. The player cannot.**
+**Pehlichi repairs glitches. The player cannot.** Pehlichi is a curious
+scientist/hacker (a former Neurolink scientist in a squirrel body), not a
+combat pet. **He deals zero direct damage**
+([ADR-0017](ADR/0017-pehlichi-deals-zero-damage.md)); when fighting starts, he
+prefers flight and avoidance. Zenny is silent; Pehlichi does the talking
+([STORY-AND-DIALOGUE.md](STORY-AND-DIALOGUE.md)).
 
 | The player... | Pehlichi... |
 |---|---|
 | explores and notices signs that something is wrong | scans, which exposes the underlying Grid |
 | commands Pehlichi (follow, stay, scan, repair, go-to) | accepts or refuses each command with a typed reason |
-| creates physical access (salvages blockers, opens paths) | must physically reach the repair point |
-| gathers and delivers required resources | performs the repair over time |
+| creates physical access (salvages blockers, opens paths, terraforms) | must physically reach the repair point |
+| gathers and delivers required resources; solves riddles and puzzles | performs the repair over time |
 | removes, lures, distracts or evades Glitch Guards and other interference | can be interrupted, then resumes |
-| protects Pehlichi during repair | receives permanent capability upgrades |
+| protects Pehlichi during repair (fighting, hiding, distracting, timing) | receives permanent capability upgrades |
+| decides where to push into interference | detects weak points and exposes them for Zenny; distracts, jams, disables temporarily, pacifies; helps Zenny escape. **Never damages** |
 
 The in-game Pehlichi is **entirely separate from the real Pehlichi lab agent**.
 It never calls a model, agent API, lab service or Pehverse runtime
@@ -87,6 +93,11 @@ Repair authority is enforced by a passkey: glitch-mutating functions on
 is private and befriends only `UGLRepairComponent`. Scan authority works the
 same way with `FGLScanAuthority`.
 
+**Glitches in the world come from placements** ([ADR-0018](ADR/0018-gameplay-placement-layer.md)):
+a `placement.<cell>.*` JSON file names the glitch definition and its location
+(an anchor such as a house wall, or a cell-local transform). Requirement
+targets are other placements (e.g. the blocker to salvage).
+
 **Glitch (`AGLGlitch` + `UGLGlitchComponent`)**: holds lifecycle state,
 repair progress and a reference to its `UGLGlitchDefinition`. It does **not**
 implement `IGLInteractable`.
@@ -102,7 +113,24 @@ JSON. The bootstrap needs one or two, for example:
 - `ItemDelivered(ItemId, Count)`: materials placed into a receptacle actor.
 
 Later: `NoHostilesWithin(Radius)`, `RepairPointReachable(TraversalClass)`,
-`NotJammed`.
+`NotJammed`, `PuzzleSolved(PuzzleId)` (riddles and environmental puzzles).
+
+**Scans under interference.** Scan findings carry a `Confidence`. Interference
+at the scan location ([WORLD-AND-PROGRESSION.md](WORLD-AND-PROGRESSION.md)
+section 4) lowers confidence and range, can hide findings, and at high tiers
+blocks weak-point analysis. Pehlichi's capability level pushes back against
+it. Scan reliability is therefore a function of capability and interference,
+not a constant.
+
+**What a repair does.** A repair is a persistent world change and the
+source of truth for progression. From the set of repaired glitches, the world
+**derives** ([ADR-0013](ADR/0013-derived-world-stability.md)):
+- local stability and reduced interference;
+- reduced NICE control and NICE's falling composure;
+- safer travel and settlement; returning traders.
+
+The repair itself grants its definition's **rewards**: Pehlichi capabilities,
+knowledge, and player rewards where defined.
 
 **Revelation.** Revealed glitches show a debug Grid visualization (bootstrap:
 an emissive wire mesh plus debug draw). The finished scan-overlay shader is
@@ -128,7 +156,8 @@ before.
 ## 5. Future behaviours and where they plug in
 
 Every one of these must keep the non-combat path viable (ADR-0009): a glitch
-that can *only* be reached by killing never counts toward a zone quota.
+that can *only* be reached by killing never counts toward the combat-free
+stabilization that NC-3 requires.
 
 | Behaviour | Extension point |
 |---|---|
@@ -137,8 +166,10 @@ that can *only* be reached by killing never counts toward a zone quota.
 | only Pehlichi can access / physically enter | `RepairPointReachable(TraversalClass)` + `IGLReachability` |
 | defend Pehlichi during repair | `Hostile` -> `Interrupted`; creature `Hunting` targets the repairer; defending includes hiding, distracting and timing, not only fighting |
 | Glitch Guards | guards are creatures bound to a glitch; `NoHostilesWithin` requirement, which must be satisfiable without a kill (lure, distract, evade, wait) for the glitch to count as combat-free (ADR-0009) |
-| zone quota and boundary stabilization | repaired glitches count toward their zone's quota; meeting it lets Pehlichi stabilize the next Grid boundary ([ZONES-AND-PROGRESSION.md](ZONES-AND-PROGRESSION.md)) |
-| Pehlichi's zone estimate ("roughly 35 signatures") | a zone-level `FGLScanResult` summary; accuracy may scale with scan capability |
+| riddles and puzzles | `PuzzleSolved(PuzzleId)` requirement; puzzle state is a persisted world fact |
+| stabilization pushes back static | repaired glitches feed the derived stability model; **no quota gates anything** ([ADR-0011](ADR/0011-radial-bands-and-soft-interference.md)) |
+| Pehlichi's regional estimate ("roughly 35 signatures") | a region-level `FGLScanResult` summary; accuracy depends on scan capability and interference; informative, never a gate |
+| NICE bribes Pehlichi to stop | a dialogue/story beat driven by NICE's derived composure; it changes nothing in the lifecycle table |
 | jammed/obscured by the hostile AI | `Hostile` -> `Latent` transitions; `NotJammed` requirement |
 | false signatures / decoys | `FGLScanFinding.Kind = Decoy`, low confidence; definition flag |
 | stabilizing the local simulation | optional reward effect consumed by `UGLStabilitySubsystem` |

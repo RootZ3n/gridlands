@@ -4,22 +4,44 @@
 
 **NORMAL THINGS LOOK PHYSICAL. GLITCHED THINGS REVEAL THE GRID.**
 
-- The ordinary town (houses, salvageable objects, tools, props) uses stylized
-  low-poly, pixel-adjacent geometry and materials. It reads as solid matter.
+- Ordinary physical spaces (houses, salvageable objects, tools, props, era
+  fragments) are **stylized 3D** and read as real environments.
 - Corruption exposes the neon digital structure beneath: cyan wireframe
   volumes, magenta circuit traces, grid planes.
 - Pehlichi's scan will eventually let the player *see* that underlying Grid.
   In bootstrap this is a clear debug visualization, not a finished shader.
 
+## Target fidelity
+
+Stylized 3D, roughly in this range:
+- more detailed and cleaner than Stardew-style pixel presentation;
+- Valheim-level stylization/pixelation is acceptable;
+- ARK-like cleanliness is also acceptable;
+- **photorealism is not required** and not a goal.
+
+The world has a synthwave/digital-Grid identity, while ordinary spaces stay
+readable as real places.
+
 ## Grid lines define regions, not surfaces
 
-The "Grid" is world-scale: its lines divide the world into large cells (about
-1 km; one zone each). **Do not cover streets, floors, houses or terrain in
-neon graph-paper lines.** The Grid shows at zone boundaries, during Pehlichi
+The "Grid" is world-scale: its lines divide the world into large cells
+(about 1 km, planning assumption). **Do not cover streets, floors, houses or terrain in
+neon graph-paper lines.** The Grid shows at cell boundaries, during Pehlichi
 scans, around glitches, where the simulation is damaged, and in corruption
 events. Crossing a boundary should look and feel physically meaningful. See
-[ZONES-AND-PROGRESSION.md](ZONES-AND-PROGRESSION.md) and
+[WORLD-AND-PROGRESSION.md](WORLD-AND-PROGRESSION.md) and
 [ADR-0010](ADR/0010-grid-cells-are-world-regions.md).
+
+## Static, storms and NICE's phenomena
+
+- **Static replaces map fog.** Unexplored and unstable areas show digital
+  static / white noise on the map. In the world, interference scales from
+  haze up to a full static blizzard.
+- **Glitch Storms** are NICE's weather and should look authored by her:
+  playful (glitched cats and dogs raining), creepy, or dangerous. They are one
+  of the places the neon Grid is allowed to dominate.
+- **Era collisions** near the core may look chaotic on purpose. Incompatible
+  eras intersect because NICE is unraveling.
 
 ## Primary target
 

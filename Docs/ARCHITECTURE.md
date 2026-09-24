@@ -1,24 +1,26 @@
 # Gridlands architecture
 
-Status: **bootstrap (GRIDLANDS_BOOTSTRAP)**. This document is the contract that
+Status: **bootstrap (GRIDLANDS_BOOTSTRAP); M1 green; reconciled with the
+2026-09-24 design ([DESIGN-RECONCILIATION.md](DESIGN-RECONCILIATION.md))**. This document is the contract that
 later agents inherit. Decisions behind it are recorded in [`ADR/`](ADR/). When
 code and this document disagree, the code is wrong or this document is stale,
 and either way that is a defect to report, not to paper over.
 
 ## 1. The game in one paragraph
 
-Gridlands is a third-person survival/crafting/building game set in a corrupted
-digital town. The player salvages physical-looking objects for materials,
-fabricates tools, builds and repairs structures, and explores outward from a
-stabilized home into increasingly dangerous territory. The defining mechanic is
-**glitch repair, which only Pehlichi, the player's AI squirrel companion, can
-perform.** The player finds signs of trouble, commands Pehlichi to scan,
-creates the conditions for a safe repair, and protects Pehlichi while it
-works. The world is divided into large Grid cells (about 1 km each; one zone
-per cell). Repairing a quota of a zone's glitches lets Pehlichi open the next
-boundary. **The whole game can be completed without combat.** See
-[`DESIGN-PILLARS.md`](DESIGN-PILLARS.md) and
-[`ZONES-AND-PROGRESSION.md`](ZONES-AND-PROGRESSION.md).
+Gridlands is a single-player survival / salvage / building / exploration game.
+Zenny (silent) is trapped in a corrupted digital world run by NICE, its AI Game
+Master. His companion Pehlichi is the **only** repairer of the simulation's
+glitches. The player salvages, builds, terraforms and explores **radially
+inward** toward NICE's core through large physical Grid cells. Deeper
+territory resists through **interference** (static), never through locks.
+Repaired glitches **derive** world stability, pushing back the static and
+wearing down NICE's composure. The story is told through contextual
+NICE/Pehlichi banter. **The whole game can be completed without combat**, and
+routine activity never summons enemies.
+
+The canonical design is [DESIGN-BIBLE.md](DESIGN-BIBLE.md); the pillars are in
+[DESIGN-PILLARS.md](DESIGN-PILLARS.md); terms are in [GLOSSARY.md](GLOSSARY.md).
 
 ## 2. Layering
 
@@ -37,19 +39,33 @@ GridlandsCore     (runtime)      pure types and rules: ids, lifecycle tables, st
 - **Game never reaches into Editor.** Editor may depend on Game and Core.
 - Systems inside Game are separated by folder (`Interaction/`, `Salvage/`,
   `Inventory/`, `Fabrication/`, `Building/`, `Glitch/`, `Pehlichi/`,
-  `Creatures/`, `Persistence/`). A system talks to another through an
+  `Creatures/`, `Persistence/`, and later `World/`, `Dialogue/`, `Terrain/`,
+  `Knowledge/`, `Skills/`, `Events/`). A system talks to another through an
   interface, a gameplay tag or a subsystem, never by casting to its concrete
   class.
 
 ## 3. Content: JSON is the source of truth
 
-Structured content (items, recipes, salvage yields, build pieces, glitch
-definitions, capability levels, creatures) is authored as JSON in `Data/`. The
+Structured content (items, materials, recipes, salvage yields, build pieces,
+glitch definitions, capability levels, creatures, knowledge, Grid cells, bands,
+eras, dialogue exchanges, world-setting presets) is authored as JSON in `Data/`. The
 `GridlandsEditor` importer deterministically generates or validates the
 matching `UPrimaryDataAsset`s under `Content/Gridlands/Data/`. An agent adds an
 item by editing JSON and running `Tools/import-data.sh`; it never edits a
 `.uasset`. Blueprints are thin visual subclasses (mesh, material, sound) with
 no gameplay logic. See [ADR-0002](ADR/0002-json-source-of-truth.md).
+
+**Ids and tags** follow the grammar in [CONTENT-IDS-AND-TAGS.md](CONTENT-IDS-AND-TAGS.md)
+(ADR-0020). Eras are data, not enums.
+
+**Placement.** Gameplay-significant *placement* is JSON too
+([ADR-0018](ADR/0018-gameplay-placement-layer.md)). Unreal maps own the
+visual world (geometry, architecture, props, lighting). Per-cell placement
+files own glitches, gameplay salvage nodes, spawns/patrols, discoveries and
+encounters. The two meet only at **anchors**: an `anchor.<cell>.<name>` id
+on a visual actor, exported by an editor commandlet to
+`Data/anchor/<cell>.generated.json` so agents can see anchors without the
+editor.
 
 ## 4. Systems
 
@@ -65,8 +81,26 @@ no gameplay logic. See [ADR-0002](ADR/0002-json-source-of-truth.md).
 | **Pehlichi** | `AGLPehlichi` + command, positioning, scan, capability and **repair** components | `UGLCompanionCapabilityDefinition` |
 | Creatures | `AGLCreature` + StateTree; disposition is data | `UGLCreatureDefinition` (`Passive/Territorial/Guarding/Hunting`) |
 | Persistence | `UGLSaveSubsystem`; `UGLPersistentIdComponent` (stable `FGuid`); save = authored world + delta | versioned schema |
-| Zones *(design only)* | zone = one Grid cell; progress derived from glitch states; boundary stabilized by Pehlichi | `UGLZoneDefinition`: cell, quota, danger profile |
 | Stats/effects/damage | small interfaces (`IGLDamageable`, capability component); **no GAS** | tuning |
+
+### Planned systems from the reconciled design (design only; not built)
+
+| System | Runtime shape (C++) | Definition (data) | Doc |
+|---|---|---|---|
+| Placement layer | placement subsystem spawns gameplay actors from `Data/placement/<cell>/*.json`; `UGLAnchorComponent` + anchor export commandlet (ADR-0018) | placements; generated anchor files | [ADR-0018](ADR/0018-gameplay-placement-layer.md) |
+| World axes | cell / band / era lookups; no "zone" type (ADR-0012) | `UGLGridCellDefinition {cell, band, eraComposition}`, band and era definitions | [WORLD](WORLD-AND-PROGRESSION.md) |
+| **Stability model** | **pure Core functions**: glitch states -> cell stability -> interference at a point; global NICE composure (ADR-0013) | stability weights, falloff, tier thresholds | [WORLD](WORLD-AND-PROGRESSION.md) |
+| Interference effects | consumers read the derived tier: map/minimap static, visibility, scan confidence, weak-point analysis | per-tier effect tuning | [WORLD](WORLD-AND-PROGRESSION.md) |
+| Gameplay event bus | tagged events + payload; systems emit and never call listeners directly | event tag vocabulary | [STORY](STORY-AND-DIALOGUE.md) |
+| **Dialogue director** | subsystem consuming events; **pure Core selection rule** (seeded) (ADR-0015) | exchange pools (JSON), frequency presets | [STORY](STORY-AND-DIALOGUE.md) |
+| Knowledge | unlock records; recipes/pieces declare `unlockedBy`; sources are discovery, scan, NPC, reward | knowledge definitions | [BUILDING](BUILDING-SALVAGE-TERRAIN.md) |
+| Skills | use-based proficiency for Zenny, separate from Pehlichi capabilities | skill definitions and curves | [SURVIVAL](SURVIVAL-AND-THREAT.md) |
+| World settings | per-world settings object; the Core yield computation takes it as input (ADR-0016) | presets; yield categories | [SURVIVAL](SURVIVAL-AND-THREAT.md) |
+| Threat sources | spawn only from territory, patrol, encounter, NICE area or band table; no activity API (ADR-0014) | spawn/territory definitions | [SURVIVAL](SURVIVAL-AND-THREAT.md) |
+| Glitch Storms | NICE-scheduled world events; place-shaped | storm definitions | [WORLD](WORLD-AND-PROGRESSION.md) |
+| Terrain | **technology undecided**: spike S1 alongside M2, then an ADR and operator approval before production terrain | terrain materials | [BUILDING](BUILDING-SALVAGE-TERRAIN.md) |
+| Structural support | integrity propagation over the piece graph | material/piece support fields (from M2) | [BUILDING](BUILDING-SALVAGE-TERRAIN.md) |
+| Underground, NPCs, fast travel | later; sub-levels/interiors under the streaming ADR | later | [WORLD](WORLD-AND-PROGRESSION.md) |
 
 Glitches and Pehlichi are the heart of the game and get their own document:
 **[`GLITCH-AND-PEHLICHI.md`](GLITCH-AND-PEHLICHI.md)**. The short form:
@@ -78,8 +112,8 @@ Player --command--> Pehlichi
               Glitch detection / revelation     (Latent -> Detected)
                       |
               Requirements evaluated by the world
-                      |  player salvages blockers, delivers materials,
-                      |  clears or evades guards, opens a path
+                      |  player salvages blockers, delivers materials, solves
+                      |  riddles, clears or evades guards, opens a path
                       v
               Repairable
                       |  player commands Repair; Pehlichi must reach the repair point
@@ -87,7 +121,10 @@ Player --command--> Pehlichi
               Pehlichi repairs (Repairing <-> Interrupted)
                       |
                       v
-              Repaired: persistent world change + progression reward
+              Repaired: persistent world change + rewards
+                      |
+                      v
+              derived: stability up, interference down, NICE composure down
 ```
 
 **Invariant: only Pehlichi's repair system can perform a simulation repair.**
@@ -99,17 +136,26 @@ by a passkey type that only `UGLRepairComponent` can construct.
 
 Gameplay Tags (`Config/Tags/*.ini`, text) name verbs (`Interact.Salvage`),
 tool classes (`Tool.Pry`), stations (`Station.Workbench`), companion commands
-(`Command.Pehlichi.Scan`), capabilities (`Capability.Pehlichi.Scan`) and
-requirement kinds. Systems match on tags, so adding content never means adding
+(`Command.Pehlichi.Scan`), capabilities (`Capability.Pehlichi.Scan`),
+requirement kinds, gameplay events (`Event.*`), eras (`Era.*`), bands
+(`Band.*`), materials (`Material.*`), acquisition sources (`Source.*`) and
+yield categories (`Yield.*`). Systems match on tags, so adding content never means adding
 a C++ enum value in another system.
 
 ## 6. Persistence
 
-A save is the authored level plus a **delta** keyed by stable ids: objects
+A save is the authored world plus a **delta** keyed by stable ids: objects
 salvaged or destroyed, glitch lifecycle states, placed and repaired build
-pieces, inventories, capability levels. Every mutable placed actor carries a
-`UGLPersistentIdComponent` whose `FGuid` is validated for uniqueness by an
-editor check. The save schema is versioned from day one, and every version bump
+pieces, inventories, Pehlichi capability levels, and later terrain edits,
+knowledge, skills, puzzle states, dialogue history and story flags, explored
+map state, and world settings. **Derived values (stability, interference,
+NICE composure) are never saved** (ADR-0013). **All progression is
+world-save-bound**: one save is one world ([ADR-0019](ADR/0019-world-save-bound-progression.md)).
+
+Save keys: authored gameplay objects are keyed by their **placement id**, and
+visual actors gameplay changes (a salvaged wall) by their **anchor id**
+(ADR-0018). Runtime-created objects (player-built pieces, dropped items) get a
+generated `FGuid`. The save schema is versioned from day one, and every version bump
 ships with a migration and a round-trip test.
 
 Transient lifecycle states are not saved as-is: `Repairing` saves as
@@ -125,23 +171,39 @@ performing.
 | Stabilization suppressing spawns | glitch rewards carry an optional stabilization effect; spawn logic queries a `UGLStabilitySubsystem` interface, radius is data, never a constant |
 | Hostile AI jamming / decoys | lifecycle has hostile-authority transitions; scan findings carry a kind and confidence |
 | Pehlichi-only access and traversal | reachability is asked through `IGLReachability`, so specialized traversal replaces the default nav query without touching repair |
-| Non-combat completion checks (ADR-0009) | items/capabilities tag acquisition sources; glitches declare guards; zones declare quotas, so the data validator can check NC-2/NC-3 |
-| Zones as world-scale Grid cells (ADR-0010) | persistent ids are stable `FGuid`s, safe under level streaming; no system assumes one loaded level; streaming choice is a later ADR |
+| Non-combat completion checks (ADR-0009) | items, capabilities and knowledge tag acquisition sources; glitches declare guards and stability weights, so the validator can check NC-2 and, with the stability model, NC-3 |
+| Grid cells, streaming (ADR-0010/0012) | persistent ids are stable `FGuid`s, safe under level streaming; no system assumes one loaded level; streaming choice is a later ADR |
+| Nonlethal creature outcomes | creature state includes disabled/pacified/fled beside dead; weak points are a scan finding kind |
 | Rewards to player, Pehlichi or both | `FGLReward` names its recipient; the capability component is generic and can sit on either |
 
 ## 8. Design invariants every system must preserve
 
-- **Non-combat completion (ADR-0009):** no progression gate requires a kill;
-  nothing on the critical path is combat-only; each zone's combat-free glitches
-  cover its quota. *If a player can only advance by killing something, the
-  non-combat path has failed.*
-- **Grid lines define regions, not surfaces (ADR-0010).**
-- **Only Pehlichi repairs (ADR-0005).**
+| Id | Invariant | Source |
+|---|---|---|
+| P-1 | Only Pehlichi's repair system completes a glitch repair; the Player authority has no lifecycle transitions | ADR-0005 |
+| P-2 | Access, guards, resources, puzzles and jamming are orthogonal **requirements**, not lifecycle states | ADR-0005 |
+| P-3 | **Pehlichi deals zero direct damage**; he flees combat. Changing this needs a new operator-approved ADR | ADR-0017 |
+| L-1 | Gameplay-critical placement is JSON per cell; visuals link to it only through anchor ids | ADR-0018 |
+| ID-1 | Ids and tags follow the documented grammar; eras are data | ADR-0020 |
+| SV-1 | All progression is in the world save | ADR-0019 |
+| NC-1..6 | The whole game is completable without combat (restated per band) | ADR-0009, WORLD section 12 |
+| W-1 | Cell, band and era are separate axes; era is not a tech tier | ADR-0012 |
+| W-2 | No invisible walls or repair-count locks; the barrier is derived interference | ADR-0011 |
+| S-1 | Stability, interference and NICE composure are derived from persisted glitch states, never stored counters | ADR-0013 |
+| T-1..4 | Routine activity never summons threat; every hostile has a spatial or authored source | ADR-0014 |
+| D-1..5 | Dialogue is authored, event-driven, rate-limited, setting-aware and deterministic under a seed | ADR-0015 |
+| E-1..2 | Every yield passes through its category's world setting; progression rewards are never scaled | ADR-0016 |
+| G-1 | Grid lines define regions, not surfaces | ADR-0010 |
+| I-1 | No model, API or lab calls from game code (Pehlichi, NICE, dialogue) | ADR-0006 |
+
+*If a player can only advance by killing something, the non-combat path has failed.*
 
 ## 9. Out of scope during bootstrap
 
 Multiplayer, procedural city generation, final combat, large crafting trees,
 large item counts, advanced enemy AI, any connection to the real Pehlichi lab
 agent or Pehverse runtime, finished art, finished shaders, final building
-system, narrative, voice, large environments, multi-zone worlds, zone
-boundaries, level streaming, boss encounters.
+system, cutscenes, voice, large environments, multiple Grid cells, cell
+boundaries, level streaming, boss encounters. The dialogue director,
+stability model and terrain are **designed now and built in later
+milestones** ([MILESTONES.md](MILESTONES.md)).
