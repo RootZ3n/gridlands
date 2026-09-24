@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.player.overencumbered_again",
+  "trigger": [
+    "Event.Player.Overencumbered"
+  ],
+  "category": "Ambient",
+  "priority": 12,
+  "cooldownSeconds": 1800,
+  "maxUses": 2,
+  "weight": 1.0,
+  "requires": [
+    {
+      "eventCount": "Event.Player.Overencumbered",
+      "min": 2
+    }
+  ],
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Carrying half my town on your back. Bold. Stupid, but bold."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "He's redistributing it. Aggressively."
+    }
+  ]
+}

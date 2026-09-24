@@ -11,4 +11,5 @@ class GRIDLANDSGAME_API AGLGameMode : public AGameModeBase
 
 public:
 	AGLGameMode();
+	virtual void StartPlay() override;
 };

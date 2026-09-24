@@ -1,0 +1,13 @@
+diff --git a/Source/GridlandsCore/Private/Dialogue/GLDialogueRules.cpp b/Source/GridlandsCore/Private/Dialogue/GLDialogueRules.cpp
+index 3cf4ff2..0344369 100644
+--- a/Source/GridlandsCore/Private/Dialogue/GLDialogueRules.cpp
++++ b/Source/GridlandsCore/Private/Dialogue/GLDialogueRules.cpp
+@@ -121,7 +121,7 @@ namespace GLDialogueRules
+ 			Roll -= Weights[Index];
+ 		}
+ 
+-		if (!bCritical)
++		if (true) // MUTATION: story-critical exchanges obey the setting like optional ones (breaks D-2)
+ 		{
+ 			const FGLCommentaryTuning Tuning = TuningFor(Frequency);
+ 			if (Now - State.LastOptionalTime < Tuning.SilenceGapSeconds)

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.zenny.silent_type",
+  "trigger": [
+    "Event.Interaction.Performed"
+  ],
+  "category": "Ambient",
+  "priority": 12,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "requires": [
+    {
+      "eventCount": "Event.Interaction.Performed",
+      "min": 5
+    }
+  ],
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "You're the silent type, aren't you? I like that in a test subject."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "He's saving his words for your error log."
+    }
+  ]
+}

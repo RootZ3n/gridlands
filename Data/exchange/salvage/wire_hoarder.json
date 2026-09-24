@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.salvage.wire_hoarder",
+  "trigger": [
+    "Event.Salvage.WireStripped"
+  ],
+  "category": "Ambient",
+  "priority": 15,
+  "cooldownSeconds": 1800,
+  "maxUses": 2,
+  "weight": 1.0,
+  "requires": [
+    {
+      "eventCount": "Event.Salvage.WireStripped",
+      "min": 3
+    }
+  ],
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "More wire. Building a very small, very sad bridge?"
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "It's called planning. You'd know if you had a roadmap instead of a mood."
+    }
+  ]
+}

@@ -341,6 +341,10 @@ SCHEMAS: dict[str, Obj] = {
             "cooldownSeconds": Num(0, 1e7),
             "maxUses": Int(1, 1000000),
             "weight": Num(positive=True),
+            # Only react when the event is about this content id (e.g. item.part.fuse).
+            "subject": Ref(),
+            # History-aware conditions: how often an Event.* tag (or its children) has fired so far.
+            "requires": List(Obj({"eventCount": Tag("Event"), "min": Int(0, 1000000), "max": Int(0, 1000000)}, required=("eventCount",))),
             "lines": List(Obj({"speaker": Enum("NICE", "Pehlichi"), "text": Str(max_len=500)}, required=("speaker", "text")), min_items=1),
         },
         required=("trigger", "category", "priority", "cooldownSeconds", "weight", "lines"),

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.item.fuse",
+  "trigger": [
+    "Event.Item.Acquired"
+  ],
+  "subject": "item.part.fuse",
+  "category": "Contextual",
+  "priority": 30,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "A fuse. How quaint. What are you going to do, fix something?"
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "Yes. That is literally the plan."
+    }
+  ]
+}

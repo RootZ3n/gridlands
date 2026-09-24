@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.pehlichi.not_a_cat",
+  "trigger": [
+    "Event.Interaction.Performed"
+  ],
+  "category": "Ambient",
+  "priority": 11,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "requires": [
+    {
+      "eventCount": "Event.Interaction.Performed",
+      "min": 12
+    }
+  ],
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Careful, little squirrel. Curiosity killed the cat."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "Curiosity can't kill me. I'm not a cat."
+    }
+  ]
+}

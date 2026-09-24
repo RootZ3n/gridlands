@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.player.died_scrapbook",
+  "trigger": [
+    "Event.Player.Died"
+  ],
+  "category": "Contextual",
+  "priority": 45,
+  "cooldownSeconds": 600,
+  "maxUses": 3,
+  "weight": 1.0,
+  "requires": [
+    {
+      "eventCount": "Event.Player.Died",
+      "min": 3
+    }
+  ],
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Again? I'm starting a scrapbook."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "Make it a thick one. You'll need the pages when he wins."
+    }
+  ]
+}
