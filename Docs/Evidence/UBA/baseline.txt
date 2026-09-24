@@ -1,0 +1,8 @@
+# baseline: clean-clone build, :1345 listeners sampled every 0.2 s
+Running command : dotnet Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll GridlandsEditor Linux Development -Project=<repo> -WaitMutex
+UbaServer - Listening on 0.0.0.0:1345
+Using Unreal Build Accelerator local executor to run 15 action(s)
+Total time in Unreal Build Accelerator local executor: 28.53 seconds
+RESULT: PASS GridlandsEditor built
+listener samples: 151
+    151 0.0.0.0:1345 users:(("dotnet",pid=N,fd=N))
