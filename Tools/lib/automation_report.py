@@ -10,6 +10,7 @@ parser passes only when:
   * every test's state is Success;
   * the summary counts agree with the per-test list;
   * every required prefix matches at least its minimum number of tests.
+Warnings never fail a run but are always listed and counted.
 
 Exit: 0 pass, 1 fail. The last stdout line is always "RESULT: PASS|FAIL <reason>".
 """
@@ -27,6 +28,7 @@ class Verdict:
     passed: bool
     reason: str
     ran: int = 0
+    warnings: int = 0
     lines: list[str] = field(default_factory=list)
 
 
@@ -67,6 +69,7 @@ def evaluate(report: dict, required: list[tuple[str, int]]) -> Verdict:
     lines: list[str] = []
     failures: list[str] = []
     paths: list[str] = []
+    warning_messages: dict[str, int] = {}
     for test in tests:
         path = test.get("fullTestPath") or test.get("testDisplayName") or "<unnamed>"
         state = test.get("state", "<missing>")
@@ -74,10 +77,18 @@ def evaluate(report: dict, required: list[tuple[str, int]]) -> Verdict:
         lines.append(f"  {state:<10} {path}")
         if state != "Success":
             failures.append(f"{path} [{state}]")
+        for entry in test.get("entries", []):
+            event = entry.get("event", {})
+            if event.get("type") == "Warning":
+                message = event.get("message", "<no message>")
+                warning_messages[message] = warning_messages.get(message, 0) + 1
 
     succeeded = report.get("succeeded", 0) + report.get("succeededWithWarnings", 0)
     counted = succeeded + report.get("failed", 0) + report.get("notRun", 0) + report.get("inProcess", 0)
-    verdict = Verdict(False, "", ran=len(tests), lines=lines)
+    # Warnings do not fail a run, but they are never silent.
+    for message, count in sorted(warning_messages.items()):
+        lines.append(f"  warning x{count}: {message}")
+    verdict = Verdict(False, "", ran=len(tests), warnings=sum(warning_messages.values()), lines=lines)
 
     if counted != len(tests):
         verdict.reason = f"summary counts ({counted}) disagree with test list ({len(tests)})"
@@ -96,7 +107,7 @@ def evaluate(report: dict, required: list[tuple[str, int]]) -> Verdict:
         return verdict
 
     verdict.passed = True
-    verdict.reason = f"{len(tests)} tests succeeded, {len(required)} requirement(s) met"
+    verdict.reason = f"{len(tests)} tests succeeded, {len(required)} requirement(s) met, {verdict.warnings} warning(s)"
     return verdict
 
 

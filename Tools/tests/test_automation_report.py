@@ -64,6 +64,17 @@ class EvaluateTests(unittest.TestCase):
         # "Gridlands.Core.Glitch.Life" must not match "...Lifecycle.Case0".
         self.assertFalse(ar.evaluate(report(["Success"]), [("Gridlands.Core.Glitch.Life", 1)]).passed)
 
+    def test_warnings_pass_but_are_reported(self):
+        data = report(["Success", "Success"], succeeded=0, succeededWithWarnings=2)
+        noise = {"event": {"type": "Warning", "message": "engine noise"}}
+        for test in data["tests"]:
+            test["entries"] = [noise, {"event": {"type": "Info", "message": "fine"}}]
+        verdict = ar.evaluate(data, [(LIFECYCLE, 2)])
+        self.assertTrue(verdict.passed, verdict.reason)
+        self.assertEqual(verdict.warnings, 2)
+        self.assertIn("2 warning(s)", verdict.reason)
+        self.assertIn("  warning x2: engine noise", verdict.lines)
+
     def test_summary_disagreeing_with_list_fails(self):
         verdict = ar.evaluate(report(["Success"], succeeded=5), [(LIFECYCLE, 1)])
         self.assertFalse(verdict.passed)
