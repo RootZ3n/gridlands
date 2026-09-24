@@ -7,6 +7,6 @@ public class GridlandsEditorTarget : TargetRules
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.Latest;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
-		ExtraModuleNames.AddRange(new string[] { "GridlandsCore", "GridlandsGame", "GridlandsEditor" });
+		ExtraModuleNames.AddRange(new string[] { "GridlandsCore", "GridlandsGame", "GridlandsEditor", "GridlandsTerrainSpike" });
 	}
 }
