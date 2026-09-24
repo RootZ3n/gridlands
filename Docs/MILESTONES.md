@@ -5,8 +5,8 @@ The operator reviews after M1 before anything further begins.
 
 | # | Milestone | Proof | Status |
 |---|---|---|---|
-| M0 | Engine 5.8.3 prebuilt + git-lfs installed; `Tools/doctor.sh` | doctor passes | git-lfs done; engine awaits operator download |
-| M1 | Skeleton: 3 modules, tooling, docs, ADRs, one real headless test | `build.sh` + `test.sh` green from a fresh clone | written; blocked on M0 engine |
+| M0 | Engine 5.8.3 prebuilt + git-lfs installed; `Tools/doctor.sh` | doctor passes | **done**: 5.8.3 CL 58210709 at `/pehverse/engines/UE_5.8.3` |
+| M1 | Skeleton: 3 modules, tooling, docs, ADRs, one real headless test | `build.sh` + `test.sh` green from a fresh clone | **green, awaiting operator review**: 7/7 at `5b446c0`, fresh clone included |
 | M2 | JSON -> DataAsset importer/validator | data tests green, deterministic re-import | - |
 | M3 | Character, interaction, `L_TestNeighborhood` | interaction spec + manual walk-around | - |
 | M4 | Salvage + inventory | specs | - |
