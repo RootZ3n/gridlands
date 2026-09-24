@@ -13,7 +13,7 @@
 | Landscape height editing is editor-only | `Runtime/Landscape/Public/LandscapeEdit.h`: the edit interface sits inside `#if WITH_EDITOR` (lines 34–588) |
 | Heightmap import from a render target does not work in games | `Runtime/Landscape/Classes/LandscapeProxy.h:1563` (heightmap) and `:1572` (weightmap): "Only works in the editor" |
 | Epic does not support runtime landscape editing | `Plugins/Editor/LandscapePatch/.../LandscapePatchComponent.h:142`: "we don't yet support runtime landscape editing" |
-| Landscape holes (needed to *dig into* a landscape) are edit-layer data | same edit-layer machinery; there is no runtime API |
+| Landscape holes (needed to *dig into* a landscape) cannot be set at runtime | the public runtime API only reads them (`LandscapeComponent.h:1106` `GetLandscapeHoleMaterial`, `:1239` `GetVisibilityLayer`); the visibility layer is a weightmap edited via the `WITH_EDITOR` interface above |
 | Navigation can export triangle-mesh collision | `Runtime/NavigationSystem/Private/NavMesh/RecastNavMeshGenerator.cpp:394` `ExportChaosTriMesh` |
 
 Consequence: stock Landscape cannot be dug at runtime. A "Landscape base + runtime
