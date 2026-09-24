@@ -8,6 +8,6 @@ public class GridlandsEditor : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine" });
-		PrivateDependencyModuleNames.AddRange(new string[] { "UnrealEd", "GridlandsCore", "GridlandsGame" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "UnrealEd", "GridlandsCore", "GridlandsGame", "Json" });
 	}
 }
