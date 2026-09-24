@@ -12,3 +12,8 @@ greps for the agent does not match game code by accident.
 
 ## Reversal cost
 Any future integration is a new ADR with its own isolation boundary.
+
+## Amendment (2026-09-24, design reconciliation)
+This applies equally to **NICE** and to all dialogue: every line is authored
+content selected by rules (ADR-0015). No runtime language-model generation in
+the game.

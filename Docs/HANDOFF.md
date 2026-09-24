@@ -1,8 +1,10 @@
 # Handoff: inheriting Gridlands as an autonomous coding agent
 
-Read in this order: `CLAUDE.md` (repo root), `Docs/ARCHITECTURE.md`,
-`Docs/GLITCH-AND-PEHLICHI.md`, `Docs/DESIGN-PILLARS.md`,
-`Docs/ZONES-AND-PROGRESSION.md`, `Docs/ADR/`,
+Read in this order: `CLAUDE.md` (repo root), `Docs/DESIGN-BIBLE.md`,
+`Docs/GLOSSARY.md`, `Docs/ARCHITECTURE.md`, `Docs/GLITCH-AND-PEHLICHI.md`,
+`Docs/DESIGN-PILLARS.md`, the topic docs (`WORLD-AND-PROGRESSION`,
+`STORY-AND-DIALOGUE`, `SURVIVAL-AND-THREAT`, `BUILDING-SALVAGE-TERRAIN`),
+`Docs/ADR/`,
 `Docs/MILESTONES.md`.
 
 ## Roles (Pehverse lab)
@@ -36,10 +38,20 @@ missing, wrong version). The last line of output is always
 5. No network, model or lab calls from game code (ADR-0006).
 6. No GAS (ADR-0003).
 7. The save schema version bumps with a migration and a round-trip test.
-8. Non-combat completion (ADR-0009): no content may make a kill the only way
-   to advance. No combat-only critical-path item, no zone whose combat-free
-   glitches fall below its quota, no required boss.
-9. Grid lines define regions, not surfaces (ADR-0010).
+8. Non-combat completion (ADR-0009, amended by ADR-0011): no content may
+   make a kill the only way to advance. No combat-only critical-path item,
+   knowledge or capability; combat-free stabilization must make each next
+   band traversable; no required boss.
+9. Grid lines define regions, not surfaces (ADR-0010). Never use "zone": say
+   cell, band or era (ADR-0012).
+10. No repair-count locks or invisible walls; interference is the barrier (ADR-0011).
+11. Stability, interference and NICE composure are derived, never stored (ADR-0013).
+12. Routine activity never summons threat (ADR-0014).
+13. Dialogue is authored JSON selected by the director; systems emit events and
+    never call dialogue directly (ADR-0015).
+14. Every yield passes through its world-settings category (ADR-0016).
+
+The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
 
 ## Recipes
 

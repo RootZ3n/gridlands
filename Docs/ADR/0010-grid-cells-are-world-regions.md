@@ -1,6 +1,6 @@
 # ADR-0010: Grid cells are world-scale regions; zones are cells
 
-- Status: Accepted
+- Status: Accepted; **amended by ADR-0011 and ADR-0012**
 - Date: 2026-09-24
 - Decider: operator
 
@@ -33,3 +33,11 @@ in the bootstrap assumes a single loaded level for the whole world.
 
 ## Reversal cost
 Medium-high once content is authored at cell scale; low today.
+
+## Amendment (2026-09-24, ADR-0011, ADR-0012)
+- "Zone" is deprecated. A cell is a **place**; depth is a **band**; world
+  memory is an **era composition** (ADR-0012). `UGLZoneDefinition` becomes
+  `UGLGridCellDefinition {cell, band, eraComposition}`.
+- Progression is radial, and **crossings are never locked** (ADR-0011).
+  "Locked/stabilized crossings" is removed from the future boundary
+  behaviours; interference replaces it.

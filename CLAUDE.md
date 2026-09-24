@@ -5,9 +5,10 @@ changes on what is actually in the codebase.
 
 ## What this is
 
-Gridlands is an **Unreal Engine 5.8.3** (prebuilt Linux binary) third-person
-survival/crafting/building game with a C++ gameplay core and JSON-first
-content. The defining mechanic: **only Pehlichi, the AI squirrel companion,
+Gridlands is an **Unreal Engine 5.8.3** (prebuilt Linux binary) single-player
+third-person survival / salvage / building / exploration game with a C++
+gameplay core and JSON-first content. Zenny (silent) is trapped in a world run
+by NICE, its AI Game Master; progression is radial toward her core. The defining mechanic: **only Pehlichi, the AI squirrel companion,
 repairs simulation glitches.** The player scans via Pehlichi, satisfies
 requirements, and protects it. The in-game Pehlichi has nothing to do with the
 real Pehlichi lab agent and must never call any model, API or lab service.
@@ -18,8 +19,8 @@ is refused, not started.
 
 ## Read before changing code
 
-`Docs/ARCHITECTURE.md` -> `Docs/GLITCH-AND-PEHLICHI.md` ->
-`Docs/ZONES-AND-PROGRESSION.md` -> `Docs/ADR/` ->
+`Docs/DESIGN-BIBLE.md` -> `Docs/GLOSSARY.md` -> `Docs/ARCHITECTURE.md` ->
+`Docs/GLITCH-AND-PEHLICHI.md` -> topic docs -> `Docs/ADR/` ->
 `Docs/HANDOFF.md` (invariants + recipes).
 
 ## Commands (repo root)
@@ -54,6 +55,11 @@ never evidence (ADR-0008). Zero tests run is a failure.
   repair interaction.
 - The game must stay completable without combat (ADR-0009): never make a kill,
   a boss or a mob drop required for progression.
+- Never add a repair-count lock or an invisible wall (ADR-0011); never store
+  stability/interference/NICE composure as counters (ADR-0013); never spawn
+  threat from routine activity (ADR-0014); never call dialogue from gameplay
+  code; emit events instead (ADR-0015).
+- Do not use the word "zone"; say cell, band or era (ADR-0012, `Docs/GLOSSARY.md`).
 - No GAS. No gameplay logic in Blueprints.
 - Close the editor before `Tools/build.sh` (Live Coding and hot reload
   corrupt Blueprints).

@@ -1,6 +1,6 @@
 # ADR-0009: The full game is completable without combat
 
-- Status: Accepted (core design requirement)
+- Status: Accepted (core design requirement); **amended by ADR-0011**
 - Date: 2026-09-24
 - Decider: operator
 
@@ -11,7 +11,7 @@ that needs one mob drop, or a guarded glitch counted toward a quota, is enough
 to break it.
 
 ## Decision
-Invariants NC-1..NC-6 in [ZONES-AND-PROGRESSION.md](../ZONES-AND-PROGRESSION.md) section 3:
+Invariants NC-1..NC-6, now in [WORLD-AND-PROGRESSION.md](../WORLD-AND-PROGRESSION.md) section 12:
 - Zones advance by repairing a quota of glitches with Pehlichi. No progression
   gate requires a kill.
 - Bosses are optional. Mob/boss drops are never the sole source of anything on
@@ -40,3 +40,11 @@ can be satisfied by luring, distracting, evading or waiting, not solely by killi
 
 ## Reversal cost
 High. Reversing it would change what the game is.
+
+## Amendment (2026-09-24, ADR-0011)
+Zone quotas were removed. The principle is unchanged; the mechanism moved.
+Read "zones advance by repairing a quota" as **"progression is stabilization
+from repaired glitches"**, and NC-3 as **"per band, combat-free stabilization
+suffices to make the next band traversable"**. Data declares glitch
+stability weights and guards (not zone quotas), and the validator checks NC-3
+against the derived interference model (ADR-0013).

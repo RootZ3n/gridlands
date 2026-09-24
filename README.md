@@ -1,12 +1,16 @@
 # Gridlands
 
-A third-person survival/crafting/building game set inside a corrupted digital
-town, built in **Unreal Engine 5.8** (C++ core, data-driven content).
+A single-player survival / salvage / building / exploration game set inside a
+corrupted digital world, built in **Unreal Engine 5.8** (C++ core, data-driven
+content).
 
-Salvage the physical world for materials, fabricate tools, build and repair a
-home, and push outward into danger. You can't fix the simulation yourself.
-**Pehlichi**, your AI squirrel companion, can: it scans to reveal glitches in
-the Grid and repairs them while you clear the way and keep it safe.
+You are Zenny, a silent game developer and the favourite toy of **NICE**, the
+AI Game Master who runs this world and never lets you forget it. Salvage,
+build, terraform and push inward toward her core through static and
+corruption. You can't fix the simulation yourself. **Pehlichi**, your
+smart-mouthed scientist companion stuck in a squirrel body, can: it scans for
+glitches and repairs them. Every repair steadies the world, and rattles NICE a
+little more.
 
 > *Normal things look physical. Glitched things reveal the Grid.*
 
@@ -29,10 +33,13 @@ write that path into an untracked `.engine-root` file.
 
 ## Documentation
 
+- [Design bible](Docs/DESIGN-BIBLE.md), the canonical game design; [glossary](Docs/GLOSSARY.md)
 - [Architecture](Docs/ARCHITECTURE.md)
 - [Glitches and Pehlichi](Docs/GLITCH-AND-PEHLICHI.md), the defining mechanic
 - [Design pillars](Docs/DESIGN-PILLARS.md) and [visual direction](Docs/VISUAL-DIRECTION.md)
-- [Zones and progression](Docs/ZONES-AND-PROGRESSION.md): Grid cells, quotas, the non-combat path
+- [World and progression](Docs/WORLD-AND-PROGRESSION.md): cells, bands, eras, static, storms
+- [Story and dialogue](Docs/STORY-AND-DIALOGUE.md), [survival and threat](Docs/SURVIVAL-AND-THREAT.md), [building, salvage and terrain](Docs/BUILDING-SALVAGE-TERRAIN.md)
+- [Design reconciliation report](Docs/DESIGN-RECONCILIATION.md)
 - [Decision records](Docs/ADR/)
 - [Handoff for coding agents](Docs/HANDOFF.md)
 - [The Godot prototype this replaced](Docs/LEGACY-GODOT.md)
