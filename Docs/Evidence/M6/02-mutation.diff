@@ -1,0 +1,24 @@
+diff --git a/Source/GridlandsCore/Private/Fabrication/GLFabricationRules.cpp b/Source/GridlandsCore/Private/Fabrication/GLFabricationRules.cpp
+index 231c37b..d59ada9 100644
+--- a/Source/GridlandsCore/Private/Fabrication/GLFabricationRules.cpp
++++ b/Source/GridlandsCore/Private/Fabrication/GLFabricationRules.cpp
+@@ -57,6 +57,10 @@ namespace GLFabricationRules
+ 		const FGLKnowledge& Knowledge, const TArray<FName>& StationsInReach)
+ 	{
+ 		const FGLCraftCheck Result = Check(Content, RecipeId, Inventory, Knowledge, StationsInReach);
++		if (const FGLRecipeDef* Early = Content.Find<FGLRecipeDef>(RecipeId); Early && Result.Block == EGLCraftBlock::NoRoomForOutput)
++		{
++			for (const FGLItemStackDef& Input : Early->Inputs) { Inventory.Remove(Input.Item, Input.Count); } // MUTATION: consumes on a refused craft
++		}
+ 		if (Result.CanCraft())
+ 		{
+ 			const FGLRecipeDef* Recipe = Content.Find<FGLRecipeDef>(RecipeId);
+@@ -65,7 +69,7 @@ namespace GLFabricationRules
+ 				Inventory.Remove(Input.Item, Input.Count);
+ 			}
+ 			const int32 Added = Inventory.Add(Content, Recipe->Output.Item, Recipe->Output.Count);
+-			check(Added == Recipe->Output.Count); // guaranteed by Check
++			(void)Added;
+ 		}
+ 		return Result;
+ 	}
