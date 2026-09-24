@@ -1,0 +1,82 @@
+#include "Inventory/GLInventoryComponent.h"
+
+#include "Content/GLContent.h"
+#include "Content/GLContentDefinitions.h"
+#include "Events/GLEventSubsystem.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameplayTagsManager.h"
+#include "Salvage/GLSalvageRules.h"
+
+int32 UGLInventoryComponent::AddItem(FName Item, int32 Count)
+{
+	const int32 Added = Inventory.Add(GLContent::Get(), Item, Count);
+	if (Added > 0)
+	{
+		FGLGameplayEvent Event;
+		Event.Tag = UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Item.Acquired"));
+		Event.Subject = Item;
+		Event.Instigator = GetOwner();
+		Event.Numbers.Add(TEXT("count"), Added);
+		UGLEventSubsystem::Emit(this, MoveTemp(Event));
+		UpdateEncumbrance();
+	}
+	return Added;
+}
+
+bool UGLInventoryComponent::RemoveItem(FName Item, int32 Count)
+{
+	const bool bRemoved = Inventory.Remove(Item, Count);
+	if (bRemoved)
+	{
+		UpdateEncumbrance();
+	}
+	return bRemoved;
+}
+
+const FGLItemDef* UGLInventoryComponent::BestToolFor(const FGLSalvageDef& Salvage) const
+{
+	const FGLItemDef* Best = nullptr;
+	double BestMultiplier = 0.0;
+	for (const FGLInventoryStack& Stack : Inventory.GetStacks())
+	{
+		const FGLItemDef* Item = GLContent::Get().Find<FGLItemDef>(Stack.Item);
+		if (Item && Item->IsTool() && GLSalvageRules::CanSalvage(Salvage, Item))
+		{
+			const double Multiplier = GLSalvageRules::ToolMultiplier(Salvage, Item);
+			if (!Best || Multiplier > BestMultiplier)
+			{
+				Best = Item;
+				BestMultiplier = Multiplier;
+			}
+		}
+	}
+	return Best;
+}
+
+void UGLInventoryComponent::UpdateEncumbrance()
+{
+	const bool bNow = Inventory.IsOverencumbered(GLContent::Get());
+	if (bNow == bOverencumbered)
+	{
+		return;
+	}
+	bOverencumbered = bNow;
+	if (ACharacter* Character = Cast<ACharacter>(GetOwner()))
+	{
+		UCharacterMovementComponent* Movement = Character->GetCharacterMovement();
+		if (NormalWalkSpeed < 0.f)
+		{
+			NormalWalkSpeed = Movement->MaxWalkSpeed;
+		}
+		Movement->MaxWalkSpeed = bOverencumbered ? NormalWalkSpeed * OverencumberedSpeedFactor : NormalWalkSpeed;
+	}
+	if (bOverencumbered)
+	{
+		FGLGameplayEvent Event;
+		Event.Tag = UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Player.Overencumbered"));
+		Event.Instigator = GetOwner();
+		Event.Numbers.Add(TEXT("weight"), Inventory.TotalWeight(GLContent::Get()));
+		UGLEventSubsystem::Emit(this, MoveTemp(Event));
+	}
+}

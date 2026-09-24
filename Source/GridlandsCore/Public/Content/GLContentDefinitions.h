@@ -192,6 +192,8 @@ struct GRIDLANDSCORE_API FGLSalvageDef : public FGLDefinitionBase
 	UPROPERTY() TArray<FGLSalvageYieldDef> Yields;
 	UPROPERTY() TArray<FGLToolEfficiencyDef> ToolEfficiency;
 	UPROPERTY() TArray<FName> OnSalvageUnlocks;
+	/** Event.* tags emitted on completion, e.g. Event.Salvage.WireStripped. */
+	UPROPERTY() TArray<FName> OnSalvageEvents;
 };
 
 USTRUCT()

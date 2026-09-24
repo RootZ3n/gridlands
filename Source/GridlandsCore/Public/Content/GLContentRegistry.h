@@ -14,6 +14,15 @@ struct GRIDLANDSCORE_API FGLContentProblem
 	FString ToString() const { return FString::Printf(TEXT("%s %s: %s"), *Rule, *File, *Message); }
 };
 
+/** An exported anchor (Data/anchor/<cell>.generated.json): where a visual-world actor is. */
+struct GRIDLANDSCORE_API FGLAnchorRecord
+{
+	FName Id;
+	FVector Location = FVector::ZeroVector;
+	double Yaw = 0.0;
+	FVector BoundsExtent = FVector::ZeroVector;
+};
+
 /** A loaded entity: the source JSON (kept for round-trip checks) and its typed definition. */
 struct GRIDLANDSCORE_API FGLContentEntry
 {
@@ -41,7 +50,8 @@ public:
 	const TArray<FGLContentProblem>& GetProblems() const { return Problems; }
 	int32 Num() const { return Entries.Num(); }
 	const FGLContentEntry* FindEntry(FName Id) const { return Entries.Find(Id); }
-	bool HasAnchor(FName AnchorId) const { return AnchorIds.Contains(AnchorId); }
+	bool HasAnchor(FName AnchorId) const { return Anchors.Contains(AnchorId); }
+	const FGLAnchorRecord* FindAnchor(FName AnchorId) const { return Anchors.Find(AnchorId); }
 	void ForEachEntry(TFunctionRef<void(const FGLContentEntry&)> Visit) const;
 
 	/** The typed definition for Id, or nullptr if absent or of a different kind. */
@@ -71,6 +81,6 @@ private:
 
 	TMap<FName, FGLContentEntry> Entries;
 	TSet<FName> RegisteredKinds;
-	TSet<FName> AnchorIds;
+	TMap<FName, FGLAnchorRecord> Anchors;
 	TArray<FGLContentProblem> Problems;
 };

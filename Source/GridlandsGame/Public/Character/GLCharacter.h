@@ -6,6 +6,7 @@
 
 class UCameraComponent;
 class UGLInteractorComponent;
+class UGLInventoryComponent;
 class UInputAction;
 class UInputMappingContext;
 class USpringArmComponent;
@@ -34,6 +35,7 @@ public:
 	void BuildInput();
 
 	UGLInteractorComponent* GetInteractor() const { return Interactor; }
+	UGLInventoryComponent* GetInventory() const { return Inventory; }
 	const UInputMappingContext* GetMappingContext() const { return MappingContext; }
 	const UInputAction* FindInputAction(FName Name) const;
 
@@ -46,6 +48,7 @@ private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UCameraComponent> Camera;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Body;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGLInteractorComponent> Interactor;
+	UPROPERTY(VisibleAnywhere) TObjectPtr<UGLInventoryComponent> Inventory;
 
 	UPROPERTY(Transient) TObjectPtr<UInputMappingContext> MappingContext;
 	UPROPERTY(Transient) TMap<FName, TObjectPtr<UInputAction>> Actions;
