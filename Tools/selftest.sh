@@ -9,5 +9,5 @@ done
 if command -v shellcheck >/dev/null; then
 	shellcheck -x -e SC1091 "$GRIDLANDS_ROOT"/Tools/*.sh || result FAIL "shellcheck"
 fi
-python3 -m unittest discover -s "$GRIDLANDS_ROOT/Tools/tests" -p 'test_*.py' -v 2>&1 || result FAIL "tooling unit tests"
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s "$GRIDLANDS_ROOT/Tools/tests" -p 'test_*.py' -v 2>&1 || result FAIL "tooling unit tests"
 result PASS "tooling self-tests"
