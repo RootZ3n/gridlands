@@ -23,6 +23,8 @@ Read in this order: `CLAUDE.md` (repo root), `Docs/DESIGN-BIBLE.md`,
 | `Tools/selftest.sh` | no | tests the tooling itself (report parser, data validator) |
 | `Tools/data.sh validate` | no | validates `Data/` against the id/tag grammar and invariants (rule codes in `Docs/CONTENT-IDS-AND-TAGS.md`) |
 | `Tools/data.sh generate` | no | regenerates `Config/Tags/GeneratedFromData.ini` from era/band/yield data |
+| `Tools/export-anchors.sh` | yes | writes `Data/anchor/<cell>.generated.json` from each cell's map (ADR-0018) |
+| `Tools/build-blockout.sh` | yes | regenerates the origin blockout map from its C++ generator, then exports anchors |
 | `Tools/build.sh` | yes | compiles `GridlandsEditor` (Linux, Development) |
 | `Tools/test.sh` | yes | headless automation; pass only by parsed report (ADR-0008) |
 | `Tools/verify-fresh-clone.sh [ref]` | yes | clone, build and test from tracked inputs + pinned engine only |
@@ -81,6 +83,15 @@ The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
   schema in `schema.py`, a struct in `GLContentDefinitions.h` and a row in
   `KindStructs` (`GLContentRegistry.cpp`); document it in
   `Docs/CONTENT-IDS-AND-TAGS.md` section 2; then generate and test.
+- **Change the origin blockout (until art takes the map over):** edit
+  `Source/GridlandsEditor/Private/Commandlets/GLBuildBlockoutCommandlet.cpp`, run
+  `Tools/build.sh` then `Tools/build-blockout.sh` (it regenerates
+  `Content/Gridlands/Maps/L_Origin.umap` and re-exports anchors), then `Tools/test.sh`.
+- **Anchors changed in a map:** run `Tools/export-anchors.sh`;
+  `Gridlands.Editor.Anchors.ExportMatchesCommitted` fails until you do.
+- **Change key bindings:** edit `AGLCharacter::BuildInput` (input is C++, not assets).
+- **React to gameplay:** subscribe to an `Event.*` tag on `UGLEventSubsystem`, and emit
+  events with `UGLEventSubsystem::Emit`. Never call another system's listener directly.
 - **Add a glitch to the world:** write `Data/placement/<cell>/<name>.json`
   naming a `glitch.*` definition and an anchor (see
   `Data/anchor/<cell>.generated.json`) or a cell-local transform; run the
