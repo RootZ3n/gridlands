@@ -4,6 +4,9 @@
 #include "Content/GLContentDefinitions.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "Glitch/GLGlitch.h"
+#include "Glitch/GLGlitchComponent.h"
+#include "Glitch/GLGlitchSubsystem.h"
 #include "GridlandsGame.h"
 #include "Salvage/GLSalvageNode.h"
 #include "Salvage/GLSalvageableComponent.h"
@@ -55,7 +58,8 @@ int32 UGLPlacementSubsystem::SpawnCell(FName CellId)
 	Content.ForEachEntry([&](const FGLContentEntry& Entry)
 	{
 		const FGLPlacementDef* Placement = Entry.Definition.GetPtr<FGLPlacementDef>();
-		if (!Placement || Entry.Kind != TEXT("placement") || !Entry.Id.ToString().StartsWith(Prefix) || Placement->Kind != TEXT("salvage_node"))
+		if (!Placement || Entry.Kind != TEXT("placement") || !Entry.Id.ToString().StartsWith(Prefix)
+			|| (Placement->Kind != TEXT("salvage_node") && Placement->Kind != TEXT("glitch")))
 		{
 			return;
 		}
@@ -82,6 +86,18 @@ int32 UGLPlacementSubsystem::SpawnCell(FName CellId)
 		{
 			Location = FVector(Placement->Transform.Location[0], Placement->Transform.Location[1], Placement->Transform.Location[2]);
 			Yaw = Placement->Transform.Yaw;
+		}
+		if (Placement->Kind == TEXT("glitch"))
+		{
+			AGLGlitch* Glitch = World->SpawnActor<AGLGlitch>(Location, FRotator(0.0, Yaw, 0.0));
+			if (!Glitch || !Glitch->GetGlitch()->Setup(Placement->Definition, Entry.Id, Placement->Bindings))
+			{
+				UE_LOG(LogGridlands, Error, TEXT("%s: could not spawn glitch %s"), *Entry.Id.ToString(), *Placement->Definition.ToString());
+				return;
+			}
+			World->GetSubsystem<UGLGlitchSubsystem>()->Register(Glitch);
+			++Spawned;
+			return;
 		}
 		AGLSalvageNode* Node = World->SpawnActor<AGLSalvageNode>(Location, FRotator(0.0, Yaw, 0.0));
 		if (!Node || !Node->GetSalvageable()->Setup(Placement->Definition, Visual))

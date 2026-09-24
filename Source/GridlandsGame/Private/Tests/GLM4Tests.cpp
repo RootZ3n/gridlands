@@ -128,7 +128,19 @@ bool FGLPlacementsSpawn::RunTest(const FString& Parameters)
 {
 	FTestWorld Test; // no map: anchored placements resolve through the exported anchor records
 	UGLPlacementSubsystem* Placements = Test.World->GetSubsystem<UGLPlacementSubsystem>();
-	TestEqual(TEXT("the origin cell's three salvage placements spawn"), Placements->SpawnCell(TEXT("cell.home.origin")), 3);
+	// Every supported placement of the cell spawns (salvage nodes since M4, glitches since M7).
+	int32 Supported = 0, Salvage = 0;
+	GLContent::Get().ForEachEntry([&](const FGLContentEntry& Entry)
+	{
+		const FGLPlacementDef* P = Entry.Definition.GetPtr<FGLPlacementDef>();
+		if (P && Entry.Id.ToString().StartsWith(TEXT("placement.origin.")))
+		{
+			Supported += (P->Kind == TEXT("salvage_node") || P->Kind == TEXT("glitch")) ? 1 : 0;
+			Salvage += P->Kind == TEXT("salvage_node") ? 1 : 0;
+		}
+	});
+	TestEqual(TEXT("every supported origin placement spawns"), Placements->SpawnCell(TEXT("cell.home.origin")), Supported);
+	TestEqual(TEXT("including the three salvage nodes"), Salvage, 3);
 
 	const AGLSalvageNode* Junk = Placements->FindSalvageNode(TEXT("placement.origin.junk_pile_01"));
 	TestTrue(TEXT("transform placement at its authored location"), Junk && Junk->GetActorLocation().Equals(FVector(1200, 300, 0)));

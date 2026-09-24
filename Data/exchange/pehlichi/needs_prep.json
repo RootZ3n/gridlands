@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.pehlichi.needs_prep",
+  "trigger": [
+    "Event.Pehlichi.CommandRejected.RequirementsUnmet"
+  ],
+  "category": "Contextual",
+  "priority": 35,
+  "cooldownSeconds": 120,
+  "maxUses": 4,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "Pehlichi",
+      "text": "I can see it, but I can't reach the fault yet. Something's in the way. That part's your job."
+    }
+  ]
+}

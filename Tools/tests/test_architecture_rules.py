@@ -25,13 +25,37 @@ class DialogueIsEventDriven(unittest.TestCase):
         self.assertIsNone(self.ALLOWED.search("GridlandsGame/Private/Salvage/GLSalvageableComponent.cpp"))
 
 
+class OnlyPehlichiRepairs(unittest.TestCase):
+    """P-1 (ADR-0005), in the source: glitch state changes need a passkey only Pehlichi's systems can make."""
+
+    HEADER = SOURCE / "GridlandsGame/Public/Glitch/GLGlitchComponent.h"
+
+    def test_every_state_mutator_takes_an_authority(self):
+        text = self.HEADER.read_text()
+        public = text.split("public:")[1].split("private:")[0] if "public:" in text else ""
+        mutators = re.findall(r"^\s*(?:bool|void)\s+(Reveal|SetRequirementsMet|BeginRepair|AddRepairProgress|Interrupt|MarkItemsDelivered)\((.*?)\)", public, re.M)
+        self.assertGreaterEqual(len(mutators), 6)
+        for name, params in mutators:
+            self.assertRegex(params, r"FGL(Scan|Repair|World)Authority", f"{name} must require an authority passkey")
+
+    def test_passkeys_are_private_and_befriend_one_class(self):
+        text = self.HEADER.read_text()
+        for key, friend in (("FGLScanAuthority", "UGLScanComponent"), ("FGLRepairAuthority", "UGLRepairComponent"), ("FGLWorldAuthority", "UGLGlitchSubsystem")):
+            block = re.search(r"struct " + key + r"\s*\{(.*?)\};", text, re.S).group(1)
+            self.assertIn("private:", block, f"{key} constructor must be private")
+            self.assertEqual(re.findall(r"friend class (\w+);", block), [friend], f"{key} may only befriend {friend}")
+
+    def test_there_is_no_player_authority(self):
+        self.assertNotRegex(self.HEADER.read_text(), r"FGLPlayerAuthority")
+
+
 class PehlichiDealsNoDamage(unittest.TestCase):
     """P-3 (ADR-0017): no Pehlichi source applies damage."""
 
     def test_no_damage_calls_in_pehlichi_code(self):
         offenders = []
         for path in SOURCE.rglob("*.*"):
-            if path.suffix in (".h", ".cpp") and "Pehlichi" in path.name:
+            if path.suffix in (".h", ".cpp") and ("Pehlichi" in path.name or "/Pehlichi/" in path.as_posix()):
                 text = path.read_text(encoding="utf-8", errors="replace")
                 if re.search(r"\b(ApplyDamage|TakeDamage|ApplyPointDamage|ApplyRadialDamage)\b", text):
                     offenders.append(path.relative_to(SOURCE).as_posix())

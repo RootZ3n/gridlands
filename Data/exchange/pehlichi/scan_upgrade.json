@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.pehlichi.scan_upgrade",
+  "trigger": [
+    "Event.Pehlichi.CapabilityRaised"
+  ],
+  "subject": "capability.pehlichi.scan",
+  "category": "StoryCritical",
+  "priority": 85,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "Pehlichi",
+      "text": "Oh. Oh, that's better. I can hear the deeper layers now."
+    },
+    {
+      "speaker": "NICE",
+      "text": "Nobody asked you to get smarter."
+    }
+  ]
+}
