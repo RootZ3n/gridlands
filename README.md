@@ -32,6 +32,7 @@ write that path into an untracked `.engine-root` file.
 - [Architecture](Docs/ARCHITECTURE.md)
 - [Glitches and Pehlichi](Docs/GLITCH-AND-PEHLICHI.md), the defining mechanic
 - [Design pillars](Docs/DESIGN-PILLARS.md) and [visual direction](Docs/VISUAL-DIRECTION.md)
+- [Zones and progression](Docs/ZONES-AND-PROGRESSION.md): Grid cells, quotas, the non-combat path
 - [Decision records](Docs/ADR/)
 - [Handoff for coding agents](Docs/HANDOFF.md)
 - [The Godot prototype this replaced](Docs/LEGACY-GODOT.md)

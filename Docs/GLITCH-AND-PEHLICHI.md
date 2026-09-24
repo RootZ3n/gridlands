@@ -14,7 +14,7 @@ Decision record: [ADR-0005](ADR/0005-pehlichi-sole-repair-authority.md).
 | commands Pehlichi (follow, stay, scan, repair, go-to) | accepts or refuses each command with a typed reason |
 | creates physical access (salvages blockers, opens paths) | must physically reach the repair point |
 | gathers and delivers required resources | performs the repair over time |
-| removes Glitch Guards and other interference | can be interrupted, then resumes |
+| removes, lures, distracts or evades Glitch Guards and other interference | can be interrupted, then resumes |
 | protects Pehlichi during repair | receives permanent capability upgrades |
 
 The in-game Pehlichi is **entirely separate from the real Pehlichi lab agent**.
@@ -127,13 +127,18 @@ before.
 
 ## 5. Future behaviours and where they plug in
 
+Every one of these must keep the non-combat path viable (ADR-0009): a glitch
+that can *only* be reached by killing never counts toward a zone quota.
+
 | Behaviour | Extension point |
 |---|---|
 | hidden inside buildings/objects | detection requirement plus an occlusion factor in the scan query |
 | needs higher scan capability | `detection.minLevel` |
 | only Pehlichi can access / physically enter | `RepairPointReachable(TraversalClass)` + `IGLReachability` |
-| defend Pehlichi during repair | `Hostile` -> `Interrupted`; creature `Hunting` targets the repairer |
-| Glitch Guards | guards are creatures bound to a glitch; `NoHostilesWithin` requirement |
+| defend Pehlichi during repair | `Hostile` -> `Interrupted`; creature `Hunting` targets the repairer; defending includes hiding, distracting and timing, not only fighting |
+| Glitch Guards | guards are creatures bound to a glitch; `NoHostilesWithin` requirement, which must be satisfiable without a kill (lure, distract, evade, wait) for the glitch to count as combat-free (ADR-0009) |
+| zone quota and boundary stabilization | repaired glitches count toward their zone's quota; meeting it lets Pehlichi stabilize the next Grid boundary ([ZONES-AND-PROGRESSION.md](ZONES-AND-PROGRESSION.md)) |
+| Pehlichi's zone estimate ("roughly 35 signatures") | a zone-level `FGLScanResult` summary; accuracy may scale with scan capability |
 | jammed/obscured by the hostile AI | `Hostile` -> `Latent` transitions; `NotJammed` requirement |
 | false signatures / decoys | `FGLScanFinding.Kind = Decoy`, low confidence; definition flag |
 | stabilizing the local simulation | optional reward effect consumed by `UGLStabilitySubsystem` |

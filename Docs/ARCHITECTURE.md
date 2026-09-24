@@ -14,7 +14,11 @@ stabilized home into increasingly dangerous territory. The defining mechanic is
 **glitch repair, which only Pehlichi, the player's AI squirrel companion, can
 perform.** The player finds signs of trouble, commands Pehlichi to scan,
 creates the conditions for a safe repair, and protects Pehlichi while it
-works. See [`DESIGN-PILLARS.md`](DESIGN-PILLARS.md).
+works. The world is divided into large Grid cells (about 1 km each; one zone
+per cell). Repairing a quota of a zone's glitches lets Pehlichi open the next
+boundary. **The whole game can be completed without combat.** See
+[`DESIGN-PILLARS.md`](DESIGN-PILLARS.md) and
+[`ZONES-AND-PROGRESSION.md`](ZONES-AND-PROGRESSION.md).
 
 ## 2. Layering
 
@@ -61,6 +65,7 @@ no gameplay logic. See [ADR-0002](ADR/0002-json-source-of-truth.md).
 | **Pehlichi** | `AGLPehlichi` + command, positioning, scan, capability and **repair** components | `UGLCompanionCapabilityDefinition` |
 | Creatures | `AGLCreature` + StateTree; disposition is data | `UGLCreatureDefinition` (`Passive/Territorial/Guarding/Hunting`) |
 | Persistence | `UGLSaveSubsystem`; `UGLPersistentIdComponent` (stable `FGuid`); save = authored world + delta | versioned schema |
+| Zones *(design only)* | zone = one Grid cell; progress derived from glitch states; boundary stabilized by Pehlichi | `UGLZoneDefinition`: cell, quota, danger profile |
 | Stats/effects/damage | small interfaces (`IGLDamageable`, capability component); **no GAS** | tuning |
 
 Glitches and Pehlichi are the heart of the game and get their own document:
@@ -74,7 +79,7 @@ Player --command--> Pehlichi
                       |
               Requirements evaluated by the world
                       |  player salvages blockers, delivers materials,
-                      |  clears guards, opens a path
+                      |  clears or evades guards, opens a path
                       v
               Repairable
                       |  player commands Repair; Pehlichi must reach the repair point
@@ -120,11 +125,23 @@ performing.
 | Stabilization suppressing spawns | glitch rewards carry an optional stabilization effect; spawn logic queries a `UGLStabilitySubsystem` interface, radius is data, never a constant |
 | Hostile AI jamming / decoys | lifecycle has hostile-authority transitions; scan findings carry a kind and confidence |
 | Pehlichi-only access and traversal | reachability is asked through `IGLReachability`, so specialized traversal replaces the default nav query without touching repair |
+| Non-combat completion checks (ADR-0009) | items/capabilities tag acquisition sources; glitches declare guards; zones declare quotas, so the data validator can check NC-2/NC-3 |
+| Zones as world-scale Grid cells (ADR-0010) | persistent ids are stable `FGuid`s, safe under level streaming; no system assumes one loaded level; streaming choice is a later ADR |
 | Rewards to player, Pehlichi or both | `FGLReward` names its recipient; the capability component is generic and can sit on either |
 
-## 8. Out of scope during bootstrap
+## 8. Design invariants every system must preserve
+
+- **Non-combat completion (ADR-0009):** no progression gate requires a kill;
+  nothing on the critical path is combat-only; each zone's combat-free glitches
+  cover its quota. *If a player can only advance by killing something, the
+  non-combat path has failed.*
+- **Grid lines define regions, not surfaces (ADR-0010).**
+- **Only Pehlichi repairs (ADR-0005).**
+
+## 9. Out of scope during bootstrap
 
 Multiplayer, procedural city generation, final combat, large crafting trees,
 large item counts, advanced enemy AI, any connection to the real Pehlichi lab
 agent or Pehverse runtime, finished art, finished shaders, final building
-system, narrative, voice, large environments.
+system, narrative, voice, large environments, multi-zone worlds, zone
+boundaries, level streaming, boss encounters.

@@ -18,7 +18,8 @@ is refused, not started.
 
 ## Read before changing code
 
-`Docs/ARCHITECTURE.md` -> `Docs/GLITCH-AND-PEHLICHI.md` -> `Docs/ADR/` ->
+`Docs/ARCHITECTURE.md` -> `Docs/GLITCH-AND-PEHLICHI.md` ->
+`Docs/ZONES-AND-PROGRESSION.md` -> `Docs/ADR/` ->
 `Docs/HANDOFF.md` (invariants + recipes).
 
 ## Commands (repo root)
@@ -51,6 +52,8 @@ never evidence (ADR-0008). Zero tests run is a failure.
 - Naming: `GL` prefix on all game types (`AGLPehlichi`, `UGLGlitchComponent`).
 - Glitch transitions only through `FGLGlitchLifecycle`; never add a player
   repair interaction.
+- The game must stay completable without combat (ADR-0009): never make a kill,
+  a boss or a mob drop required for progression.
 - No GAS. No gameplay logic in Blueprints.
 - Close the editor before `Tools/build.sh` (Live Coding and hot reload
   corrupt Blueprints).

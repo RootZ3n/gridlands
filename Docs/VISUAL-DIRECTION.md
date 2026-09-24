@@ -11,6 +11,16 @@
 - Pehlichi's scan will eventually let the player *see* that underlying Grid.
   In bootstrap this is a clear debug visualization, not a finished shader.
 
+## Grid lines define regions, not surfaces
+
+The "Grid" is world-scale: its lines divide the world into large cells (about
+1 km; one zone each). **Do not cover streets, floors, houses or terrain in
+neon graph-paper lines.** The Grid shows at zone boundaries, during Pehlichi
+scans, around glitches, where the simulation is damaged, and in corruption
+events. Crossing a boundary should look and feel physically meaningful. See
+[ZONES-AND-PROGRESSION.md](ZONES-AND-PROGRESSION.md) and
+[ADR-0010](ADR/0010-grid-cells-are-world-regions.md).
+
 ## Primary target
 
 [`ArtReference/ref-01-digital-tree-grid.png`](ArtReference/ref-01-digital-tree-grid.png)
@@ -18,7 +28,8 @@ is the operator's chosen style target. Read it as **what a scan reveals**, the
 simulation laid bare: a tree whose trunk has become magenta circuit traces
 and whose canopy has become cyan wireframe cubes, standing on a magenta grid
 under a synthwave sun. In play, the same tree would look like a physical,
-low-poly tree until its glitch is exposed.
+low-poly tree until its glitch is exposed. The magenta ground grid in the image
+is a *revealed* or boundary view, not how ordinary ground normally looks.
 
 Other references (carried over from the Godot prototype):
 `ref-02-dinosaurs-neon.png` (corrupted assets from other game worlds),

@@ -1,7 +1,8 @@
 # Handoff: inheriting Gridlands as an autonomous coding agent
 
 Read in this order: `CLAUDE.md` (repo root), `Docs/ARCHITECTURE.md`,
-`Docs/GLITCH-AND-PEHLICHI.md`, `Docs/DESIGN-PILLARS.md`, `Docs/ADR/`,
+`Docs/GLITCH-AND-PEHLICHI.md`, `Docs/DESIGN-PILLARS.md`,
+`Docs/ZONES-AND-PROGRESSION.md`, `Docs/ADR/`,
 `Docs/MILESTONES.md`.
 
 ## Roles (Pehverse lab)
@@ -35,6 +36,10 @@ missing, wrong version). The last line of output is always
 5. No network, model or lab calls from game code (ADR-0006).
 6. No GAS (ADR-0003).
 7. The save schema version bumps with a migration and a round-trip test.
+8. Non-combat completion (ADR-0009): no content may make a kill the only way
+   to advance. No combat-only critical-path item, no zone whose combat-free
+   glitches fall below its quota, no required boss.
+9. Grid lines define regions, not surfaces (ADR-0010).
 
 ## Recipes
 
