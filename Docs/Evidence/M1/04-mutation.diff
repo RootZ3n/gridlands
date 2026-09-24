@@ -1,0 +1,36 @@
+diff --git a/Config/DefaultEngine.ini b/Config/DefaultEngine.ini
+index 45cceb7..08e644a 100644
+--- a/Config/DefaultEngine.ini
++++ b/Config/DefaultEngine.ini
+@@ -6,3 +6,18 @@ TargetedHardwareClass=Desktop
+ AppliedTargetedHardwareClass=Desktop
+ DefaultGraphicsPerformance=Maximum
+ AppliedDefaultGraphicsPerformance=Maximum
++
++[/Script/AndroidFileServerEditor.AndroidFileServerRuntimeSettings]
++bEnablePlugin=True
++bAllowNetworkConnection=True
++SecurityToken=01A0D565D8B77BA6A6CB779D496B4887
++bIncludeInShipping=False
++bAllowExternalStartInShipping=False
++bCompileAFSProject=False
++bUseCompression=False
++bLogFiles=False
++bReportStats=False
++ConnectionType=USBOnly
++bUseManualIPAddress=False
++ManualIPAddress=
++
+diff --git a/Source/GridlandsCore/Private/Glitch/GLGlitchLifecycle.cpp b/Source/GridlandsCore/Private/Glitch/GLGlitchLifecycle.cpp
+index 0ed096c..548ea54 100644
+--- a/Source/GridlandsCore/Private/Glitch/GLGlitchLifecycle.cpp
++++ b/Source/GridlandsCore/Private/Glitch/GLGlitchLifecycle.cpp
+@@ -20,7 +20,7 @@ namespace GLGlitchLifecycle
+ 	// Mirrors the table in Docs/GLITCH-AND-PEHLICHI.md section 2. Change both together.
+ 	// Note the absence of A::Player anywhere in this table.
+ 	constexpr FTransitionRule Rules[] = {
+-		{ S::Latent,      S::Detected,    AuthorityBit(A::PehlichiScan) },
++		{ S::Latent,      S::Detected,    AuthorityBit(A::PehlichiScan) | AuthorityBit(A::Player) }, // MUTATION
+ 		{ S::Detected,    S::Latent,      AuthorityBit(A::Hostile) },
+ 		{ S::Repairable,  S::Latent,      AuthorityBit(A::Hostile) },
+ 		{ S::Detected,    S::Repairable,  AuthorityBit(A::World) },

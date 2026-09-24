@@ -1,0 +1,6 @@
+# Test path prefixes that must be present in every Tools/test.sh run (ADR-0008).
+# Format: <prefix> [minimum number of matching tests, default 1]
+# A prefix matches whole dot-separated segments only.
+
+# ADR-0005: Pehlichi is the sole repair authority.
+Gridlands.Core.Glitch.Lifecycle 7

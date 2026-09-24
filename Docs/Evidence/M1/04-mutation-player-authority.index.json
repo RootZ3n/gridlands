@@ -1,0 +1,126 @@
+{
+ "succeeded": 0,
+ "succeededWithWarnings": 4,
+ "failed": 3,
+ "notRun": 0,
+ "inProcess": 0,
+ "totalDuration": 0.05177358537912369,
+ "tests": [
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.EveryUnrepairedStateCanStillBeRepaired",
+   "state": "Success",
+   "warnings": 1,
+   "errors": 0,
+   "entries": [
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogInit: Querying IsUsingWayland before SDL is initialized"
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.OnlyPehlichiRepairCompletesRepair",
+   "state": "Success",
+   "warnings": 1,
+   "errors": 0,
+   "entries": [
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogInit: Querying IsUsingWayland before SDL is initialized"
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.PlayerHasNoAuthority",
+   "state": "Fail",
+   "warnings": 1,
+   "errors": 1,
+   "entries": [
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'Player must not move Latent -> Detected' to be false."
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogInit: Querying IsUsingWayland before SDL is initialized"
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.RepairedIsTerminal",
+   "state": "Success",
+   "warnings": 1,
+   "errors": 0,
+   "entries": [
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogInit: Querying IsUsingWayland before SDL is initialized"
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.RepairRequiresPehlichiScanAndRepair",
+   "state": "Fail",
+   "warnings": 1,
+   "errors": 1,
+   "entries": [
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'Latent cannot leave Latent without PehlichiScan' to be false."
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogInit: Querying IsUsingWayland before SDL is initialized"
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.TableMatchesDocumentedTransitions",
+   "state": "Fail",
+   "warnings": 1,
+   "errors": 1,
+   "entries": [
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'documented grant count' to be 12, but it was 13."
+     }
+    },
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogInit: Querying IsUsingWayland before SDL is initialized"
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.VisibilityAndPersistedState",
+   "state": "Success",
+   "warnings": 1,
+   "errors": 0,
+   "entries": [
+    {
+     "event": {
+      "type": "Warning",
+      "message": "LogInit: Querying IsUsingWayland before SDL is initialized"
+     }
+    }
+   ]
+  }
+ ]
+}
