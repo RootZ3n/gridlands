@@ -291,7 +291,7 @@ bool FGLContentRegistry::LoadRepository(const FString& RepoRoot)
 {
 	Entries.Reset();
 	RegisteredKinds.Reset();
-	AnchorIds.Reset();
+	Anchors.Reset();
 	Problems.Reset();
 
 	const FString DataDir = FPaths::Combine(RepoRoot, TEXT("Data"));
@@ -343,7 +343,7 @@ bool FGLContentRegistry::LoadRepository(const FString& RepoRoot)
 		UE_LOG(LogGridlandsCore, Warning, TEXT("Content: %s"), *Problem.ToString());
 	}
 	UE_LOG(LogGridlandsCore, Log, TEXT("Content: loaded %d entities and %d anchors from %s with %d problem(s)"),
-		Entries.Num(), AnchorIds.Num(), *DataDir, Problems.Num());
+		Entries.Num(), Anchors.Num(), *DataDir, Problems.Num());
 	return Problems.Num() == 0;
 }
 
@@ -428,18 +428,39 @@ void FGLContentRegistry::LoadAnchorFile(const FString& AbsolutePath, const FStri
 	}
 	FString Error;
 	const TSharedPtr<FJsonObject> Json = ReadJsonObject(AbsolutePath, Error);
-	const TArray<TSharedPtr<FJsonValue>>* Anchors = nullptr;
-	if (!Json.IsValid() || !Json->TryGetArrayField(TEXT("anchors"), Anchors))
+	const TArray<TSharedPtr<FJsonValue>>* AnchorValues = nullptr;
+	if (!Json.IsValid() || !Json->TryGetArrayField(TEXT("anchors"), AnchorValues))
 	{
 		AddProblem(TEXT("SCHEMA"), RelativePath, Error.IsEmpty() ? TEXT("anchor file needs an 'anchors' list") : Error);
 		return;
 	}
-	for (const TSharedPtr<FJsonValue>& Anchor : *Anchors)
+	for (const TSharedPtr<FJsonValue>& Anchor : *AnchorValues)
 	{
 		FString Id;
 		if (Anchor->Type == EJson::Object && Anchor->AsObject()->TryGetStringField(TEXT("id"), Id) && GLContentId::IsValid(Id))
 		{
-			AnchorIds.Add(FName(*Id));
+			const TSharedPtr<FJsonObject> Object = Anchor->AsObject();
+			FGLAnchorRecord& Record = Anchors.Add(FName(*Id));
+			Record.Id = FName(*Id);
+			auto ReadVector = [](const TArray<TSharedPtr<FJsonValue>>* Values, FVector& Out)
+			{
+				if (Values && Values->Num() == 3)
+				{
+					Out = FVector((*Values)[0]->AsNumber(), (*Values)[1]->AsNumber(), (*Values)[2]->AsNumber());
+				}
+			};
+			const TSharedPtr<FJsonObject>* Transform = nullptr;
+			const TArray<TSharedPtr<FJsonValue>>* Values = nullptr;
+			if (Object->TryGetObjectField(TEXT("transform"), Transform))
+			{
+				(*Transform)->TryGetArrayField(TEXT("location"), Values);
+				ReadVector(Values, Record.Location);
+				(*Transform)->TryGetNumberField(TEXT("yaw"), Record.Yaw);
+			}
+			if (Object->TryGetArrayField(TEXT("boundsExtent"), Values))
+			{
+				ReadVector(Values, Record.BoundsExtent);
+			}
 		}
 		else
 		{

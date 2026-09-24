@@ -8,36 +8,12 @@
 #include "Interaction/GLDebugInteractable.h"
 #include "Interaction/GLInteractorComponent.h"
 #include "Misc/AutomationTest.h"
+#include "Tests/GLTestUtils.h"
 #include "World/GLGameMode.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-namespace GLM3Tests
-{
-	constexpr EAutomationTestFlags Flags = EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter;
-
-	/** A throwaway game world with physics and world subsystems. */
-	struct FTestWorld
-	{
-		UWorld* World = nullptr;
-		FTestWorld()
-		{
-			World = UWorld::CreateWorld(EWorldType::Game, false, TEXT("GLM3TestWorld"));
-			FWorldContext& Context = GEngine->CreateNewWorldContext(EWorldType::Game);
-			Context.SetCurrentWorld(World);
-			World->InitializeActorsForPlay(FURL());
-		}
-		~FTestWorld()
-		{
-			GEngine->DestroyWorldContext(World);
-			World->DestroyWorld(false);
-		}
-	};
-
-	FGameplayTag Tag(const TCHAR* Name) { return UGameplayTagsManager::Get().RequestGameplayTag(FName(Name)); }
-}
-
-using namespace GLM3Tests;
+using namespace GLTestUtils;
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLEventBus, "Gridlands.Game.Events.SubscribersReceiveMatchingTags", Flags)
 bool FGLEventBus::RunTest(const FString& Parameters)

@@ -12,7 +12,10 @@ echo "Building GridlandsEditor with Unreal $GRIDLANDS_UE_VERSION at $ENGINE_ROOT
 # (LAN, Tailscale). Gridlands builds locally only, so bind it to loopback and refuse
 # remote helpers. Supported UBT options: UnrealBuildAcceleratorConfig.Host / bDisableRemote.
 UBA_ARGS=(-UBAHost=127.0.0.1 -UBADisableRemote)
-"$UE_BUILD_SH" GridlandsEditor Linux Development -Project="$GRIDLANDS_UPROJECT" -WaitMutex "${UBA_ARGS[@]}" "$@"
+# Adaptive unity compiles recently edited files on their own, which hid unity-build name
+# collisions that only a clean clone exposed. Every build now groups files like a clean build.
+UNITY_ARGS=(-DisableAdaptiveUnity)
+"$UE_BUILD_SH" GridlandsEditor Linux Development -Project="$GRIDLANDS_UPROJECT" -WaitMutex "${UBA_ARGS[@]}" "${UNITY_ARGS[@]}" "$@"
 status=$?
 [ "$status" -eq 0 ] || result FAIL "UnrealBuildTool exited $status"
 

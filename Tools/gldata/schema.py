@@ -266,6 +266,8 @@ SCHEMAS: dict[str, Obj] = {
             "toolEfficiency": List(Obj({"toolClass": Tag("Tool"), "minTier": Int(1, 10), "multiplier": Num(positive=True)},
                                        required=("toolClass", "minTier", "multiplier"))),
             "onSalvageUnlocks": List(Ref("knowledge"), unique=True),
+            # Gameplay events emitted when salvage completes (dialogue hooks, ADR-0015).
+            "onSalvageEvents": List(Tag("Event"), unique=True),
         },
         required=("displayName", "integrity", "yields"),
     ),

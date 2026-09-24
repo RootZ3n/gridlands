@@ -15,7 +15,7 @@
 
 namespace GLContentTests
 {
-	constexpr EAutomationTestFlags TestFlags = EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter;
+	constexpr EAutomationTestFlags ContentTestFlags = EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter;
 
 	FString RepoRoot() { return FPaths::ConvertRelativePathToFull(FPaths::ProjectDir()); }
 
@@ -52,7 +52,7 @@ namespace GLContentTests
 
 using namespace GLContentTests;
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLContentIdCorpus, "Gridlands.Core.Content.IdGrammarMatchesCorpus", TestFlags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLContentIdCorpus, "Gridlands.Core.Content.IdGrammarMatchesCorpus", ContentTestFlags)
 bool FGLContentIdCorpus::RunTest(const FString& Parameters)
 {
 	const TSharedPtr<FJsonObject> Corpus = ReadJson(FPaths::Combine(RepoRoot(), TEXT("Tools/tests/id-corpus.json")));
@@ -76,7 +76,7 @@ bool FGLContentIdCorpus::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLContentRepositoryLoads, "Gridlands.Core.Content.RepositoryDataLoadsClean", TestFlags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLContentRepositoryLoads, "Gridlands.Core.Content.RepositoryDataLoadsClean", ContentTestFlags)
 bool FGLContentRepositoryLoads::RunTest(const FString& Parameters)
 {
 	FGLContentRegistry Registry;
@@ -99,7 +99,7 @@ bool FGLContentRepositoryLoads::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLContentRoundTrip, "Gridlands.Core.Content.RoundTripKeepsEveryField", TestFlags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLContentRoundTrip, "Gridlands.Core.Content.RoundTripKeepsEveryField", ContentTestFlags)
 bool FGLContentRoundTrip::RunTest(const FString& Parameters)
 {
 	FGLContentRegistry Registry;
@@ -126,7 +126,7 @@ bool FGLContentRoundTrip::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLContentSchemaKeys, "Gridlands.Core.Content.SchemaKeysMatchValidator", TestFlags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLContentSchemaKeys, "Gridlands.Core.Content.SchemaKeysMatchValidator", ContentTestFlags)
 bool FGLContentSchemaKeys::RunTest(const FString& Parameters)
 {
 	const TSharedPtr<FJsonObject> Export = ReadJson(FPaths::Combine(RepoRoot(), TEXT("Data/_registry/schema.generated.json")));
@@ -170,7 +170,7 @@ bool FGLContentSchemaKeys::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLContentRejects, "Gridlands.Core.Content.LoaderRejectsMalformedEntities", TestFlags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLContentRejects, "Gridlands.Core.Content.LoaderRejectsMalformedEntities", ContentTestFlags)
 bool FGLContentRejects::RunTest(const FString& Parameters)
 {
 	// Each rejection below is logged by the loader; declaring them makes the log part of the assertion.
@@ -212,7 +212,7 @@ bool FGLContentRejects::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLContentTypedLookup, "Gridlands.Core.Content.TypedLookupReadsAuthoredValues", TestFlags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLContentTypedLookup, "Gridlands.Core.Content.TypedLookupReadsAuthoredValues", ContentTestFlags)
 bool FGLContentTypedLookup::RunTest(const FString& Parameters)
 {
 	FGLContentRegistry Registry;

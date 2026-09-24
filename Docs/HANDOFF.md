@@ -68,7 +68,10 @@ The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
 
 - **Add a test:** put it next to the code in `Private/Tests/`, name it
   `Gridlands.<Layer>.<System>.<Case>`, and add it to `Tools/required-tests.txt`
-  when it guards an invariant.
+  when it guards an invariant. **Unity builds merge .cpp files**: never define
+  file-local helpers with generic names (`Flags`, `FTestWorld`, `Tag`). In
+  GridlandsGame use `Tests/GLTestUtils.h`, and give anything file-specific a
+  unique name.
 - **Add content:** create `Data/<kind>/<domain>/<name>.json` whose `id` mirrors
   the path, run `Tools/data.sh generate` (if you added an era, band or yield) and
   `Tools/data.sh validate`, then `Tools/test.sh`.
@@ -92,6 +95,10 @@ The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
 - **Change key bindings:** edit `AGLCharacter::BuildInput` (input is C++, not assets).
 - **React to gameplay:** subscribe to an `Event.*` tag on `UGLEventSubsystem`, and emit
   events with `UGLEventSubsystem::Emit`. Never call another system's listener directly.
+- **Add salvage to the world:** write `Data/salvage/<domain>/<name>.json` (yields
+  name a `yield.*` category; optional `onSalvageEvents` for dialogue hooks) and a
+  `salvage_node` placement in `Data/placement/<cell>/` anchored to a visual actor or at a
+  transform. The node spawns at play; salvaging hides the anchored visual.
 - **Add a glitch to the world:** write `Data/placement/<cell>/<name>.json`
   naming a `glitch.*` definition and an anchor (see
   `Data/anchor/<cell>.generated.json`) or a cell-local transform; run the

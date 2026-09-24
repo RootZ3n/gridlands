@@ -1,0 +1,206 @@
+{
+ "succeeded": 28,
+ "succeededWithWarnings": 0,
+ "failed": 0,
+ "notRun": 0,
+ "inProcess": 0,
+ "totalDuration": 0.23625005781650543,
+ "tests": [
+  {
+   "fullTestPath": "Gridlands.Core.Content.IdGrammarMatchesCorpus",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Content.LoaderRejectsMalformedEntities",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Content.RepositoryDataLoadsClean",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Content.RoundTripKeepsEveryField",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Content.SchemaKeysMatchValidator",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Content.TypedLookupReadsAuthoredValues",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Economy.YieldScalingFollowsCategory",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.EveryUnrepairedStateCanStillBeRepaired",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.OnlyPehlichiRepairCompletesRepair",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.PlayerHasNoAuthority",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.RepairedIsTerminal",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.RepairRequiresPehlichiScanAndRepair",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.TableMatchesDocumentedTransitions",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Glitch.Lifecycle.VisibilityAndPersistedState",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Inventory.StacksWeightAndCapacity",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Salvage.ToolEfficiencyAndGating",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Editor.Anchors.ExportMatchesCommitted",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Editor.Blockout.OriginMatchesBrief",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Character.InputIsDefinedInCode",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Content.ConfigTagsAreRegisteredWithEngine",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Content.EngineSubsystemLoadsContent",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Events.SubscribersReceiveMatchingTags",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Interaction.FocusAndInteract",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Inventory.OverencumbranceIsAnnouncedOnce",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Placement.SpawnsSalvageNodesFromData",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Salvage.CompletesGrantsYieldsAndEvents",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Salvage.PryBarSalvagesFaster",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Salvage.WorldSettingsScaleRepeatableYields",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  }
+ ]
+}

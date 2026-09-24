@@ -1,0 +1,111 @@
+{
+ "succeeded": 3,
+ "succeededWithWarnings": 0,
+ "failed": 1,
+ "notRun": 0,
+ "inProcess": 0,
+ "totalDuration": 0.04003092646598816,
+ "tests": [
+  {
+   "fullTestPath": "Gridlands.Core.Economy.YieldScalingFollowsCategory",
+   "state": "Fail",
+   "warnings": 0,
+   "errors": 111,
+   "entries": [
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'yield.creature.drop scales (settings.preset.relaxed)' to be 5, but it was 6."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'yield.creature.drop scales (settings.preset.relaxed)' to be 8, but it was 10."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'yield.creature.drop scales (settings.preset.relaxed)' to be 60, but it was 80."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'yield.reward.artifact never scales (settings.preset.relaxed)' to be 1, but it was 2."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'yield.reward.artifact never scales (settings.preset.relaxed)' to be 3, but it was 6."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'yield.reward.artifact never scales (settings.preset.relaxed)' to be 5, but it was 10."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'yield.reward.artifact never scales (settings.preset.relaxed)' to be 40, but it was 80."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'yield.reward.artifact never scales (settings.test.x0.001)' to be 3, but it was 1."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'yield.reward.artifact never scales (settings.test.x0.001)' to be 5, but it was 1."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'yield.reward.artifact never scales (settings.test.x0.001)' to be 40, but it was 1."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'yield.reward.artifact never scales (settings.test.x0.5)' to be 3, but it was 2."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'yield.reward.artifact never scales (settings.test.x0.5)' to be 5, but it was 3."
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Salvage.CompletesGrantsYieldsAndEvents",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Salvage.PryBarSalvagesFaster",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Salvage.WorldSettingsScaleRepeatableYields",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  }
+ ]
+}

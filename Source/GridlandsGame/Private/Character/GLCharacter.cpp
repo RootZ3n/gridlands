@@ -14,6 +14,7 @@
 #include "InputMappingContext.h"
 #include "InputModifiers.h"
 #include "Interaction/GLInteractorComponent.h"
+#include "Inventory/GLInventoryComponent.h"
 #include "UObject/ConstructorHelpers.h"
 
 namespace GLCharacterInput
@@ -56,6 +57,7 @@ AGLCharacter::AGLCharacter()
 	Camera->bUsePawnControlRotation = false;
 
 	Interactor = CreateDefaultSubobject<UGLInteractorComponent>(TEXT("Interactor"));
+	Inventory = CreateDefaultSubobject<UGLInventoryComponent>(TEXT("Inventory"));
 }
 
 void AGLCharacter::BuildInput()

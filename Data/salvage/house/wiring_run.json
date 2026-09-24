@@ -22,5 +22,8 @@
       "minTier": 1,
       "multiplier": 1.5
     }
+  ],
+  "onSalvageEvents": [
+    "Event.Salvage.WireStripped"
   ]
 }
