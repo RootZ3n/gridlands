@@ -68,6 +68,13 @@ multiplier / hardness); required-tool gating). The game layer wires them:
 `UGLWorldSettingsSubsystem` (the active preset) and `UGLPlacementSubsystem`, which
 spawns `salvage_node` placements at play, anchored or at a transform.
 
+**Fabrication and knowledge (M6).** `FGLKnowledge` (world-bound, ADR-0019) and
+`GLFabricationRules` (transactional; unlockedBy uses AND semantics; stations by tag within
+reach) are pure Core. `UGLKnowledgeSubsystem` learns only by listening to events
+(Item.Acquired with `onAcquireUnlocks`, Salvage.Completed with `onSalvageUnlocks`).
+`UGLFabricatorComponent` crafts through the inventory. F is a temporary "fabricate the first
+available recipe" key until crafting UI exists.
+
 **Dialogue (M5, ADR-0015).** `GLDialogueRules` (Core, pure, seeded) chooses at most one
 exchange per event: trigger and subject match, history requirements, maxUses, cooldowns,
 busy rule (only StoryCritical may interrupt, never another StoryCritical), then the

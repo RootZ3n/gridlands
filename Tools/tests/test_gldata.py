@@ -178,6 +178,10 @@ class RuleTests(unittest.TestCase):
         self.box.edit("item.part.fuse", lambda d: d.update(sources=["Source.Salvage", "Source.CreatureDrop"]))
         self.assertNotIn("NC-2", self.box.rules())
 
+    def test_kn1_declared_source_must_be_backed(self):
+        self.box.edit("knowledge.style.roman_masonry", lambda d: d.update(sources=["Source.Salvage"]))
+        self.assertRule("KN-1")
+
     def test_e1_glitch_reward_category_must_not_scale(self):
         self.box.edit("yield.reward.glitch", lambda d: d.update(scalable=True, setting="resourceYield"))
         self.assertRule("E-1")

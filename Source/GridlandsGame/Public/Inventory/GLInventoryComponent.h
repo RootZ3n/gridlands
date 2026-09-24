@@ -2,6 +2,7 @@
 
 #include "Components/ActorComponent.h"
 #include "CoreMinimal.h"
+#include "Fabrication/GLFabricationRules.h"
 #include "Inventory/GLInventory.h"
 #include "GLInventoryComponent.generated.h"
 
@@ -22,6 +23,8 @@ public:
 	/** Adds items; returns how many fit. */
 	int32 AddItem(FName Item, int32 Count);
 	bool RemoveItem(FName Item, int32 Count);
+	/** Crafts RecipeId transactionally (GLFabricationRules); announces the output like any acquired item. */
+	FGLCraftCheck Craft(FName RecipeId, const class FGLKnowledge& Knowledge, const TArray<FName>& StationsInReach);
 	int32 CountOf(FName Item) const { return Inventory.CountOf(Item); }
 	bool IsOverencumbered() const { return bOverencumbered; }
 	const FGLInventory& GetInventory() const { return Inventory; }

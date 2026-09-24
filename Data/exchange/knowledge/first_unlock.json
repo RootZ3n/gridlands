@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.knowledge.first_unlock",
+  "trigger": [
+    "Event.Knowledge.Unlocked"
+  ],
+  "category": "Contextual",
+  "priority": 20,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "Pehlichi",
+      "text": "Noted. Everything in here remembers what it was for. You just have to ask it right."
+    },
+    {
+      "speaker": "NICE",
+      "text": "Please stop interrogating my materials."
+    }
+  ]
+}

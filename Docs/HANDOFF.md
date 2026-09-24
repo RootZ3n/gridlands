@@ -99,6 +99,12 @@ The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
   name a `yield.*` category; optional `onSalvageEvents` for dialogue hooks) and a
   `salvage_node` placement in `Data/placement/<cell>/` anchored to a visual actor or at a
   transform. The node spawns at play; salvaging hides the anchored visual.
+- **Add a recipe:** `Data/recipe/<domain>/<name>.json` with `output`, `inputs`, optional
+  `station` (Station.* tag) and `unlockedBy` (knowledge ids, ALL required). Crafting is
+  transactional (`GLFabricationRules`): nothing is consumed unless the output fits.
+- **Teach something:** add a `knowledge.*` entry and grant it from content: an item's
+  `onAcquireUnlocks`, a salvage's `onSalvageUnlocks`, or a glitch reward. Its `sources` must
+  name only ways that really exist (validator rule KN-1).
 - **Write banter:** add `Data/exchange/<domain>/<name>.json`: `trigger` (Event.* tags),
   `category` (StoryCritical / Contextual / Ambient), `priority`, `cooldownSeconds`,
   `maxUses`, optional `subject` (react to one item or salvage) and `requires` (event
