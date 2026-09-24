@@ -109,11 +109,27 @@ state-change events used by revelation visuals and persistence.
 **Requirements (`UGLGlitchRequirement`)** are C++ classes parameterized from
 JSON. The bootstrap needs one or two, for example:
 
-- `ObjectSalvaged(PersistentId)`: a physical blocker must be salvaged first.
-- `ItemDelivered(ItemId, Count)`: materials placed into a receptacle actor.
+- `ObjectSalvaged`: a physical blocker must be salvaged first. The glitch placement's
+  `bindings` name the target salvage placement.
+- `ItemDelivered(item, count)`: met while the **commanding player carries** the items.
+  **Pehlichi takes them when the repair starts**, and they stay delivered through
+  interruptions. *(Built in M7. This interpretation is cheap to change if a receptacle
+  object is wanted instead.)*
 
 Later: `NoHostilesWithin(Radius)`, `RepairPointReachable(TraversalClass)`,
-`NotJammed`, `PuzzleSolved(PuzzleId)` (riddles and environmental puzzles).
+`NotJammed`, `PuzzleSolved(PuzzleId)` (riddles and environmental puzzles). **PuzzleSolved is
+deliberately not built**: how a silent Zenny answers a riddle is an open design question
+for the operator. Unknown requirement kinds are never met.
+
+**As built (M7).**
+- Zenny commands with **Q** (scan), **R** (repair the nearest revealed glitch) and
+  **G** (follow/stay).
+- Commands are accepted, or refused as `Event.Pehlichi.CommandRejected.<Reason>`
+  (`NothingRevealedNearby`, `RequirementsUnmet`, `Busy`, ...), so banter can react to
+  each reason.
+- Pehlichi walks in a straight line (no navmesh yet; see ADR-0022).
+- Glitch placements spawn as `AGLGlitch`, invisible while Latent.
+- The world re-checks requirements four times a second.
 
 **Scans under interference.** Scan findings carry a `Confidence`. Interference
 at the scan location ([WORLD-AND-PROGRESSION.md](WORLD-AND-PROGRESSION.md)

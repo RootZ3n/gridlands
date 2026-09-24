@@ -99,6 +99,11 @@ The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
   name a `yield.*` category; optional `onSalvageEvents` for dialogue hooks) and a
   `salvage_node` placement in `Data/placement/<cell>/` anchored to a visual actor or at a
   transform. The node spawns at play; salvaging hides the anchored visual.
+- **Add a glitch:** `Data/glitch/<domain>/<name>.json` (detection capability and minLevel,
+  requirements with `name` and `kind`, repair seconds and interruptPolicy, stabilityWeight,
+  rewards) and a `glitch` placement in `Data/placement/<cell>/` with `bindings` for
+  ObjectSalvaged targets. Never add a way for the player to change glitch state: the
+  passkeys in `GLGlitchComponent.h` are checked by `test_architecture_rules.py` (P-1).
 - **Add a recipe:** `Data/recipe/<domain>/<name>.json` with `output`, `inputs`, optional
   `station` (Station.* tag) and `unlockedBy` (knowledge ids, ALL required). Crafting is
   transactional (`GLFabricationRules`): nothing is consumed unless the output fits.

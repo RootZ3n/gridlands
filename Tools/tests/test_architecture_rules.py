@@ -32,7 +32,9 @@ class OnlyPehlichiRepairs(unittest.TestCase):
 
     def test_every_state_mutator_takes_an_authority(self):
         text = self.HEADER.read_text()
-        public = text.split("public:")[1].split("private:")[0] if "public:" in text else ""
+        # Parse the component class itself, not the passkey structs above it.
+        body = text[text.index("class GRIDLANDSGAME_API UGLGlitchComponent"):]
+        public = body.split("public:", 1)[1].split("private:", 1)[0]
         mutators = re.findall(r"^\s*(?:bool|void)\s+(Reveal|SetRequirementsMet|BeginRepair|AddRepairProgress|Interrupt|MarkItemsDelivered)\((.*?)\)", public, re.M)
         self.assertGreaterEqual(len(mutators), 6)
         for name, params in mutators:
