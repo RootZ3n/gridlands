@@ -20,6 +20,7 @@ Read in this order: `CLAUDE.md` (repo root), `Docs/ARCHITECTURE.md`,
 | `Tools/selftest.sh` | no | tests the tooling itself (report parser) |
 | `Tools/build.sh` | yes | compiles `GridlandsEditor` (Linux, Development) |
 | `Tools/test.sh` | yes | headless automation; pass only by parsed report (ADR-0008) |
+| `Tools/verify-fresh-clone.sh [ref]` | yes | clone, build and test from tracked inputs + pinned engine only |
 
 Exit codes: 0 pass, 1 check failed, 2 environment/usage problem (engine
 missing, wrong version). The last line of output is always

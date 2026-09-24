@@ -28,6 +28,7 @@ Tools/doctor.sh      # environment vs pin (Tools/engine-pin.env)
 Tools/selftest.sh    # tooling tests, no engine
 Tools/build.sh       # compile GridlandsEditor, Linux Development
 Tools/test.sh        # headless automation; PASS only by parsed report
+Tools/verify-fresh-clone.sh  # reproducibility proof from a clean clone
 ```
 
 The last output line is `RESULT: PASS|FAIL|ENV ...`. Exit status alone is
