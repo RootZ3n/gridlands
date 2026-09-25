@@ -67,6 +67,12 @@ Your health bar is top left.
 After Pehlichi's second repair, NICE loses her temper and it rains cats and dogs for 40 seconds.
 They're glitch sprites and they don't hurt.
 
+## A second cell (architecture proof, not a new zone)
+East of home, past the cyan posts (about 128 m east of the start), is a second Grid cell: the
+Diner Lots. It is deeper (more static), mostly 1950s, and has one glitch and a junk pile. The
+posts and the "Cell:" line on the HUD are temporary development markers. Walk back and forth:
+whatever you change on either side should still be there when you return.
+
 ## Things to find (spoilers)
 - The flickering lamp: clear the junk pile blocking it, then scan and repair.
 - The dead transformer needs a fuse (fabricate one).

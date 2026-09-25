@@ -1,0 +1,209 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0D8A69DE27AE9B42A3E1014168BB5",
+			"instanceName": "Pehverse-3322232",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.25-13.00.11",
+	"succeeded": 0,
+	"succeededWithWarnings": 0,
+	"failed": 3,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 3.9671683311462402,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "SaveInTheSecondCellAndRestart",
+			"fullTestPath": "Gridlands.Game.Grid.SaveInTheSecondCellAndRestart",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D8A69DE27AE9B42A3E1014168BB5"
+			],
+			"duration": 0.94063067436218262,
+			"dateTime": "2026.09.25-13.00.07",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "walking home: the origin's lamp is repaired: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<engine>/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-13.00.08"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'and its blocker salvaged' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 270,
+					"timestamp": "2026.09.25-13.00.08"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaticDepthAndEraAreIndependentPerCell",
+			"fullTestPath": "Gridlands.Game.Grid.StaticDepthAndEraAreIndependentPerCell",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D8A69DE27AE9B42A3E1014168BB5"
+			],
+			"duration": 0.58237451314926147,
+			"dateTime": "2026.09.25-13.00.08",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'and NICE still counts that repair (1.000 -> 0.792 -> 1.000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<engine>/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-13.00.08"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StreamingNeverLosesDuplicatesOrReplays",
+			"fullTestPath": "Gridlands.Game.Grid.StreamingNeverLosesDuplicatesOrReplays",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D8A69DE27AE9B42A3E1014168BB5"
+			],
+			"duration": 2.4441630840301514,
+			"dateTime": "2026.09.25-13.00.08",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "A: lamp still repaired: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<engine>/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-13.00.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A: blocker still salvaged' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 201,
+					"timestamp": "2026.09.25-13.00.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A: gremlin still defeated' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 202,
+					"timestamp": "2026.09.25-13.00.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A: both pieces back' to be 2, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<engine>/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-13.00.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A: the mound is back on its side' to be 78.000000, but it was 0.000000 and outside tolerance 0.000100.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 204,
+					"timestamp": "2026.09.25-13.00.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "B: jukebox still repaired: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<engine>/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-13.00.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'B: the hole is still there' to be -317.000000, but it was -217.000000 and outside tolerance 0.000100.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.25-13.00.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'B: the mound's other half is back too' to be 78.000000, but it was 0.000000 and outside tolerance 0.000100.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 216,
+					"timestamp": "2026.09.25-13.00.11"
+				}
+			],
+			"warnings": 0,
+			"errors": 8,
+			"artifacts": []
+		}
+	]
+}

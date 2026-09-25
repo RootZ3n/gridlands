@@ -1,0 +1,147 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0D8A7489C790999F9C18F0B17E9F6",
+			"instanceName": "Pehverse-3331547",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.25-13.00.55",
+	"succeeded": 2,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 3.9641215801239014,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "SaveInTheSecondCellAndRestart",
+			"fullTestPath": "Gridlands.Game.Grid.SaveInTheSecondCellAndRestart",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0D8A7489C790999F9C18F0B17E9F6"
+			],
+			"duration": 0.95317906141281128,
+			"dateTime": "2026.09.25-13.00.51",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaticDepthAndEraAreIndependentPerCell",
+			"fullTestPath": "Gridlands.Game.Grid.StaticDepthAndEraAreIndependentPerCell",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0D8A7489C790999F9C18F0B17E9F6"
+			],
+			"duration": 0.56135797500610352,
+			"dateTime": "2026.09.25-13.00.52",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StreamingNeverLosesDuplicatesOrReplays",
+			"fullTestPath": "Gridlands.Game.Grid.StreamingNeverLosesDuplicatesOrReplays",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D8A7489C790999F9C18F0B17E9F6"
+			],
+			"duration": 2.4495844841003418,
+			"dateTime": "2026.09.25-13.00.52",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  no origin creature remains' to be 0, but it was 1.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.25-13.00.53"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  no origin creature remains' to be 0, but it was 2.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.25-13.00.53"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  no origin creature remains' to be 0, but it was 3.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.25-13.00.53"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  no origin creature remains' to be 0, but it was 4.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.25-13.00.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  no origin creature remains' to be 0, but it was 5.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.25-13.00.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'no duplicate creatures' to be 1, but it was 6.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 208,
+					"timestamp": "2026.09.25-13.00.54"
+				}
+			],
+			"warnings": 0,
+			"errors": 6,
+			"artifacts": []
+		}
+	]
+}

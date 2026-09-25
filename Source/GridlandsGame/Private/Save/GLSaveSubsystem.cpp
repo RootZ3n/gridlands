@@ -482,8 +482,16 @@ bool UGLSaveSubsystem::LoadFromSlot(const FString& Slot, TArray<FString>* OutPro
 		return false;
 	}
 	Apply(Save, OutProblems);
-	UE_LOG(LogGridlands, Log, TEXT("Load: restored %d glitches, %d salvaged placements, %d build pieces, %d edited ground vertices from %s"),
-		Save.Glitches.Num(), Save.SalvagedPlacements.Num(), Save.BuildPieces.Num(), Save.TerrainIndices.Num(), *SlotPath(Slot));
+	int32 CellGlitches = 0, CellPieces = 0, CellGround = 0, CellSalvage = 0;
+	for (const FGLSavedCell& Record : Save.Cells)
+	{
+		CellGlitches += Record.Glitches.Num();
+		CellSalvage += Record.SalvagedPlacements.Num();
+		CellPieces += Record.BuildPieces.Num();
+		CellGround += Record.TerrainIndices.Num();
+	}
+	UE_LOG(LogGridlands, Log, TEXT("Load: %d cell records (%d loaded now, the rest when they stream in): %d glitches, %d salvaged placements, %d build pieces, %d edited ground vertices from %s"),
+		Save.Cells.Num(), Save.Cells.Num() - Dormant.Num(), CellGlitches, CellSalvage, CellPieces, CellGround, *SlotPath(Slot));
 	return true;
 }
 

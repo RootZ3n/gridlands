@@ -140,6 +140,7 @@ bool UGLGridSubsystem::UnloadCell(FName Cell)
 	{
 		Entry.Level->SetShouldBeVisible(false);
 		Entry.Level->SetShouldBeLoaded(false);
+		World->FlushLevelStreaming(); // synchronous, like loading (ADR-0026: amortise later)
 	}
 	++Unloads;
 	UE_LOG(LogGridlands, Log, TEXT("Grid: unloaded %s"), *Cell.ToString());
