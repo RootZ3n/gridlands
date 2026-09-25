@@ -1,0 +1,13 @@
+diff --git a/Source/GridlandsCore/Private/World/GLStabilityModel.cpp b/Source/GridlandsCore/Private/World/GLStabilityModel.cpp
+index b3051ee..90f02fe 100644
+--- a/Source/GridlandsCore/Private/World/GLStabilityModel.cpp
++++ b/Source/GridlandsCore/Private/World/GLStabilityModel.cpp
+@@ -4,7 +4,7 @@ namespace GLStabilityModel
+ {
+ 	// Tuning. Weights and radii are content (glitch data); these shape the curve.
+ 	constexpr double CorruptionScale = 0.5;
+-	constexpr double ReliefScale = 0.5;
++	constexpr double ReliefScale = -0.5; // MUTATION: repairs make interference worse
+ 	constexpr double HazyAt = 0.2;
+ 	constexpr double StaticAt = 0.45;
+ 	constexpr double BlizzardAt = 0.7;

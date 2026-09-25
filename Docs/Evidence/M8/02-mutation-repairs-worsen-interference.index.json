@@ -1,0 +1,69 @@
+{
+ "succeeded": 1,
+ "succeededWithWarnings": 0,
+ "failed": 2,
+ "notRun": 0,
+ "inProcess": 0,
+ "totalDuration": 0.027741622179746628,
+ "tests": [
+  {
+   "fullTestPath": "Gridlands.Core.Stability.DerivedDeterministicAndMonotone",
+   "state": "Fail",
+   "warnings": 0,
+   "errors": 4,
+   "entries": [
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'repair 0 clears the air around it' to be true."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'repair 1 clears the air around it' to be true."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'repair 2 clears the air around it' to be true."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "fully repaired, a home band reads Clear: The two values are not equal."
+     }
+    }
+   ]
+  },
+  {
+   "fullTestPath": "Gridlands.Core.Stability.NiceComposureAndTiers",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Stability.StaticRecedesWhenPehlichiRepairs",
+   "state": "Fail",
+   "warnings": 0,
+   "errors": 2,
+   "entries": [
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'Pehlichi fixed the world: interference 0.72 -> 0.72' to be true."
+     }
+    },
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected 'the tier dropped' to be true."
+     }
+    }
+   ]
+  }
+ ]
+}
