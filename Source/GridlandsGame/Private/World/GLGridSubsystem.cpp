@@ -14,17 +14,49 @@
 #include "World/GLGridCells.h"
 #include "World/GLPlacementSubsystem.h"
 
+double UGLGridSubsystem::Now() const
+{
+	return FPlatformTime::Seconds();
+}
+
 void UGLGridSubsystem::Tick(float DeltaTime)
 {
-	SinceUpdate += DeltaTime;
-	if (SinceUpdate < 0.25)
-	{
-		return;
-	}
-	SinceUpdate = 0.0;
 	if (const APawn* Zenny = UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
 	{
-		Update(Zenny->GetActorLocation());
+		Advance(Zenny->GetActorLocation());
+	}
+}
+
+void UGLGridSubsystem::Advance(const FVector& Where, double BudgetSeconds)
+{
+	Update(Where);
+	UGLTerrainSubsystem* Terrain = GetWorld()->GetSubsystem<UGLTerrainSubsystem>();
+	// Safety first: the ground under Zenny exists, with collision, whatever else is in flight.
+	Terrain->EnsureReadyAt(FVector2D(Where));
+	Terrain->Pump(FVector2D(Where), BudgetSeconds);
+	for (TPair<FName, FGLLoadedCell>& Entry : Loaded)
+	{
+		FGLLoadedCell& Cell = Entry.Value;
+		if (Cell.GroundAt < 0.0 && Terrain->HasCell(Entry.Key))
+		{
+			Cell.GroundAt = Now();
+		}
+		if (!Cell.bRuntime)
+		{
+			TryFinishRuntime(Entry.Key, Cell);
+		}
+		if (Cell.bRuntime && Cell.CompleteAt < 0.0 && Terrain->IsCellComplete(Entry.Key))
+		{
+			Cell.CompleteAt = Now();
+			FGLCellLoadRecord& R = Records.AddDefaulted_GetRef();
+			R.Cell = Entry.Key;
+			R.Epoch = Cell.Epoch;
+			R.GroundSeconds = Cell.GroundAt - Cell.StartedAt;
+			R.RuntimeSeconds = Cell.RuntimeAt - Cell.StartedAt;
+			R.CompleteSeconds = Cell.CompleteAt - Cell.StartedAt;
+			UE_LOG(LogGridlands, Log, TEXT("Grid: %s (epoch %d) ready: ground %.0f ms, runtime %.0f ms, every chunk %.0f ms"),
+				*Entry.Key.ToString(), Cell.Epoch, R.GroundSeconds * 1000.0, R.RuntimeSeconds * 1000.0, R.CompleteSeconds * 1000.0);
+		}
 	}
 }
 
@@ -37,7 +69,6 @@ void UGLGridSubsystem::Update(const FVector& Where)
 		UE_LOG(LogGridlands, Log, TEXT("Grid: entered %s (from %s)"), *Now.ToString(), *Current.ToString());
 		Current = Now;
 	}
-	// The cell Zenny stands in first, so there is always ground under him.
 	if (!Current.IsNone() && !IsLoaded(Current))
 	{
 		LoadCell(Current);
@@ -50,11 +81,20 @@ void UGLGridSubsystem::Update(const FVector& Where)
 		{
 			LoadCell(Cell);
 		}
-		else if (IsLoaded(Cell) && Distance > UnloadMarginM * 100.0)
+		else if (IsLoaded(Cell) && Cell != Current && Distance > UnloadMarginM * 100.0)
 		{
 			UnloadCell(Cell);
 		}
 	}
+}
+
+bool UGLGridSubsystem::LevelReady(const FGLLoadedCell& Entry) const
+{
+	if (bHoldLevels)
+	{
+		return false;
+	}
+	return !bLoadLevels || !Entry.Level || Entry.Level->IsLevelVisible();
 }
 
 bool UGLGridSubsystem::LoadCell(FName Cell)
@@ -65,13 +105,14 @@ bool UGLGridSubsystem::LoadCell(FName Cell)
 	{
 		return false;
 	}
-	const double Start = FPlatformTime::Seconds();
 	FGLLoadedCell& Entry = Loaded.Add(Cell);
-	// 1. The authored level, at the cell's world offset (its actors use cell-local coordinates).
+	Entry.Epoch = ++EpochCounter;
+	Entry.StartedAt = Now();
+	// 1. The authored level, asynchronously, at the cell's world offset. One streaming level per
+	// cell for the session: coming back re-requests the same one (a same-named new instance fails
+	// while the old one is still unloading).
 	if (bLoadLevels && !Def->Level.IsEmpty())
 	{
-		// One streaming level per cell for the whole session: coming back re-requests the same one.
-		// (A fresh instance with the same name while the old one is still unloading fails.)
 		TObjectPtr<ULevelStreamingDynamic>& Level = CellLevels.FindOrAdd(Cell);
 		if (!Level)
 		{
@@ -84,36 +125,57 @@ bool UGLGridSubsystem::LoadCell(FName Cell)
 			Level->SetShouldBeLoaded(true);
 			Level->SetShouldBeVisible(true);
 		}
-		// Synchronous for now so anchored placements find their map actors (a streaming hitch; see ADR-0026).
-		World->FlushLevelStreaming();
-		if (!Level || !Level->IsLevelLoaded())
-		{
-			UE_LOG(LogGridlands, Warning, TEXT("Grid: %s level %s did not load"), *Cell.ToString(), *Def->Level);
-		}
 		Entry.Level = Level;
 	}
-	// 2. Its runtime layer, with the state it had when it was stowed (or saved).
+	// 2. Its ground, on a worker, with its saved edits (the rest of its kept state waits for the runtime layer).
+	FGLSavedCell Kept;
+	if (const FGLSavedCell* Dormant = World->GetSubsystem<UGLSaveSubsystem>()->PeekDormant(Cell))
+	{
+		Kept = *Dormant;
+	}
+	World->GetSubsystem<UGLTerrainSubsystem>()->BeginCellGround(Cell, Kept.TerrainIndices, Kept.TerrainDeltaCm);
+	++Loads;
+	UE_LOG(LogGridlands, Log, TEXT("Grid: loading %s (epoch %d)"), *Cell.ToString(), Entry.Epoch);
+	return true;
+}
+
+void UGLGridSubsystem::TryFinishRuntime(FName Cell, FGLLoadedCell& Entry)
+{
+	UWorld* World = GetWorld();
+	UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>();
+	if (!LevelReady(Entry) || !Terrain->HasCell(Cell))
+	{
+		return;
+	}
 	UGLSaveSubsystem* Saves = World->GetSubsystem<UGLSaveSubsystem>();
+	UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>();
 	FGLSavedCell Record;
 	Record.Cell = Cell;
-	const bool bHadState = Saves && Saves->TakeDormant(Cell, Record);
-	World->GetSubsystem<UGLTerrainSubsystem>()->SetupCell(Cell, Record.TerrainIndices, Record.TerrainDeltaCm);
-	World->GetSubsystem<UGLPlacementSubsystem>()->SpawnCell(Cell);
-	if (Saves && bHadState)
+	const bool bHadState = Saves->TakeDormant(Cell, Record);
+	// Anything done to this cell while it was loading is newer than its kept record: its ground as
+	// it is now, and any pieces already placed on it.
+	Terrain->CaptureCellDelta(Cell, Record.TerrainIndices, Record.TerrainDeltaCm);
+	for (const FGLPlacedPiece& Piece : Building->PiecesOfCell(Cell))
 	{
-		Saves->ApplyCell(Record);
+		if (!Record.BuildPieces.ContainsByPredicate([&Piece](const FGLSavedPiece& S) { return S.Id == Piece.Id; }))
+		{
+			Record.BuildPieces.Add({ Piece.Id, Piece.Def, Piece.Location, Piece.YawQuarter });
+		}
 	}
+	World->GetSubsystem<UGLPlacementSubsystem>()->SpawnCell(Cell);
+	Saves->ApplyCell(Record);
 	if (bShowBoundaries)
 	{
+		const FGLCellDef* Def = GLContent::Get().Find<FGLCellDef>(Cell);
 		Entry.Boundary = World->SpawnActor<AGLGridBoundary>();
-		if (Entry.Boundary)
+		if (Entry.Boundary && Def)
 		{
 			Entry.Boundary->Setup(Def->CentreCm(), Def->SizeMetres);
 		}
 	}
-	++Loads;
-	UE_LOG(LogGridlands, Log, TEXT("Grid: loaded %s in %.0f ms (kept state: %s)"), *Cell.ToString(), (FPlatformTime::Seconds() - Start) * 1000.0, bHadState ? TEXT("yes") : TEXT("no"));
-	return true;
+	Entry.bRuntime = true;
+	Entry.RuntimeAt = Now();
+	UE_LOG(LogGridlands, Log, TEXT("Grid: %s runtime layer in (epoch %d, kept state: %s)"), *Cell.ToString(), Entry.Epoch, bHadState ? TEXT("yes") : TEXT("no"));
 }
 
 bool UGLGridSubsystem::UnloadCell(FName Cell)
@@ -124,10 +186,20 @@ bool UGLGridSubsystem::UnloadCell(FName Cell)
 		return false;
 	}
 	UWorld* World = GetWorld();
-	// Keep everything about it first, then take it out of the world.
-	if (UGLSaveSubsystem* Saves = World->GetSubsystem<UGLSaveSubsystem>())
+	UGLSaveSubsystem* Saves = World->GetSubsystem<UGLSaveSubsystem>();
+	// Keep what this cell is, then take it out of the world. A cell whose runtime never came in
+	// still has its full kept record: only its ground (which may have been edited) is merged.
+	if (Entry.bRuntime)
 	{
 		Saves->StowCell(Cell);
+	}
+	else
+	{
+		Saves->StowTerrainOnly(Cell);
+		FGLCellLoadRecord& R = Records.AddDefaulted_GetRef();
+		R.Cell = Cell;
+		R.Epoch = Entry.Epoch;
+		R.bCancelled = true;
 	}
 	World->GetSubsystem<UGLBuildingSubsystem>()->RemoveCell(Cell);
 	World->GetSubsystem<UGLPlacementSubsystem>()->DespawnCell(Cell);
@@ -140,9 +212,25 @@ bool UGLGridSubsystem::UnloadCell(FName Cell)
 	{
 		Entry.Level->SetShouldBeVisible(false);
 		Entry.Level->SetShouldBeLoaded(false);
-		World->FlushLevelStreaming(); // synchronous, like loading (ADR-0026: amortise later)
 	}
 	++Unloads;
-	UE_LOG(LogGridlands, Log, TEXT("Grid: unloaded %s"), *Cell.ToString());
+	UE_LOG(LogGridlands, Log, TEXT("Grid: unloaded %s (epoch %d, %s)"), *Cell.ToString(), Entry.Epoch, Entry.bRuntime ? TEXT("was ready") : TEXT("cancelled mid-load"));
 	return true;
+}
+
+void UGLGridSubsystem::FlushAll()
+{
+	UWorld* World = GetWorld();
+	if (bLoadLevels)
+	{
+		World->FlushLevelStreaming();
+	}
+	World->GetSubsystem<UGLTerrainSubsystem>()->FlushAll();
+	for (TPair<FName, FGLLoadedCell>& Entry : Loaded)
+	{
+		if (!Entry.Value.bRuntime)
+		{
+			TryFinishRuntime(Entry.Key, Entry.Value);
+		}
+	}
 }

@@ -126,6 +126,36 @@ Medieval / Hedge Knight, Feudal Japan, Victorian, 1800s Native American,
 - Scanning era architecture teaches building styles
   ([BUILDING-SALVAGE-TERRAIN.md](BUILDING-SALVAGE-TERRAIN.md)).
 
+## 7a. Neighbour influence and era transitions (operator decision, 2026-09-25)
+Each cell has:
+- a physical identity;
+- a depth band;
+- a **native era composition**;
+- **influence from its neighbours**;
+- world stability.
+
+**Transitions start before the boundary.** A Modern-dominant cell bordering a 1950s-dominant one
+gradually takes on period material as the player approaches that neighbour:
+- street furniture, vehicles and props;
+- architecture and interiors;
+- loot and content pools;
+- environmental details.
+
+It is **weighted influence, not geometry morphing**: authored assets stay coherent. At corners and
+intersections, several neighbours' influences coexist.
+
+**Stability shapes coherence.**
+- High stability: transitions are believable and subtle.
+- Low stability: eras combine in increasingly impossible ways.
+- Near NICE's core: normal composition rules visibly break down.
+
+**Not implemented yet (the content generator is future work).** The data already supports it:
+- every cell carries `eraComposition` and a `coord`, so neighbours are found by coordinate;
+- the influence weight can be derived from the distance to the shared edge (the 1 km cells give
+  room for a wide band) and scaled by derived stability (S-1);
+- placements stay per cell, and a future influence pass would add weighted, cell-owned content,
+  not move another cell's content across the edge.
+
 ## 8. Glitch Storms (NICE's weather)
 
 Traditional weather is supplemented, and largely replaced, by **Glitch

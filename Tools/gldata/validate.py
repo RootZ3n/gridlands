@@ -203,6 +203,7 @@ def cross_check(ds: Dataset) -> None:
     check_terraform(ds)
     check_creatures(ds)
     check_grid(ds)
+    check_knowledge_domains(ds)
     check_generated_tags(ds)
 
 
@@ -417,6 +418,24 @@ def check_grid(ds: Dataset) -> None:
             chunk, spacing = terrain.get("chunkMetres", 0), terrain.get("spacingMetres", 1)
             if chunk <= 0 or abs(size / chunk - round(size / chunk)) > 1e-9 or abs(chunk / spacing - round(chunk / spacing)) > 1e-9:
                 ds.problem("GRID-3", e.file, ".terrain", f"{chunk} m chunks at {spacing} m spacing must tile a {size} m cell exactly")
+
+
+def check_knowledge_domains(ds: Dataset) -> None:
+    """KN-2 every knowledge category belongs to exactly one book (Chukka / Ofi / Hoponi); KN-3 what unlocks
+    a recipe or a build piece is Ofi knowledge (Docs/KNOWLEDGE-AND-DISCOVERY.md: never one generic unlock DB)."""
+    path = ds.root / "Data" / "_registry" / "knowledge-domains.json"
+    domains = json.loads(path.read_text(encoding="utf-8")).get("domains", {}) if path.exists() else {}
+    for category, book in domains.items():
+        if book not in ("chukka", "ofi", "hoponi"):
+            ds.problem("KN-2", "Data/_registry/knowledge-domains.json", f".domains.{category}", f"unknown book '{book}'")
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        if entity.kind == "knowledge" and entity.data.get("category") not in domains:
+            ds.problem("KN-2", entity.file, ".category", f"{entity.data.get('category')} belongs to no knowledge book")
+        if entity.kind in ("recipe", "buildpiece"):
+            for index, ref in enumerate(entity.data.get("unlockedBy", [])):
+                known = ds.entities.get(ref)
+                if known and domains.get(known.data.get("category")) != "ofi":
+                    ds.problem("KN-3", entity.file, f".unlockedBy[{index}]", f"{ref} is not Ofi (blueprint) knowledge")
 
 
 def check_generated_tags(ds: Dataset) -> None:

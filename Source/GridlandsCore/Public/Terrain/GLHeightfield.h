@@ -69,7 +69,7 @@ public:
 	 *  - IsProtected returns true for any vertex the edit would move (e.g. under a structure);
 	 *  - the depth/height limits leave less than half the nominal change (no free strokes).
 	 */
-	FGLTerrainEditResult Apply(const FGLTerrainEdit& Edit, TFunctionRef<bool(const FVector2D& World)> IsProtected);
+	FGLTerrainEditResult Apply(const FGLTerrainEdit& Edit, TFunctionRef<bool(const FVector2D& World)> IsProtected, bool bDryRun = false);
 	FGLTerrainEditResult Apply(const FGLTerrainEdit& Edit) { return Apply(Edit, [](const FVector2D&) { return false; }); }
 
 	/** Sparse difference from the flat base: vertex index -> whole centimetres. Deterministic order. */

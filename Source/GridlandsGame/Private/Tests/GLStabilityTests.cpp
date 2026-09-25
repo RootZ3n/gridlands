@@ -33,8 +33,10 @@ bool FGLStaticRecedes::RunTest(const FString& Parameters)
 	const double Before = Stability->InterferenceAt(At);
 	TestTrue(FString::Printf(TEXT("an unrepaired glitch corrupts its surroundings (%.2f)"), Before), Before >= 0.2);
 	TestEqual(TEXT("NICE starts composed"), Stability->NiceComposure(), 1.0);
-	TestTrue(TEXT("beyond the playable slice, the next band's interference applies"),
-		Stability->BaselineAt(FVector(20000, 0, 0)) > Stability->BaselineAt(FVector(0, 0, 0)));
+	// Canonical 1 km cells (ADR-0027) are playable edge to edge; beyond the known Grid, the next
+	// band's interference applies.
+	TestTrue(TEXT("beyond the known Grid, the next band's interference applies"),
+		Stability->BaselineAt(FVector(0, -100000, 0)) > Stability->BaselineAt(FVector(0, 0, 0)));
 
 	// The real loop: Zenny clears the blocker, Pehlichi scans and repairs.
 	AActor* Zenny = World->SpawnActor<AActor>();

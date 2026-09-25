@@ -30,6 +30,10 @@ public:
 	void ApplyCell(const FGLSavedCell& Record, TArray<FString>* OutProblems = nullptr);
 	/** Keeps a cell's state before it streams out. */
 	void StowCell(FName Cell);
+	/** A cell leaving before its runtime layer came in: its kept record stays, with its live ground merged in. */
+	void StowTerrainOnly(FName Cell);
+	/** True when a cell's state is live in the world (its placements spawned, or it has none). */
+	bool IsRuntimeLive(FName Cell) const;
 	/** Hands back (and forgets) a streamed-out cell's kept state. False if there is none. */
 	bool TakeDormant(FName Cell, FGLSavedCell& Out);
 	const FGLSavedCell* PeekDormant(FName Cell) const { return Dormant.Find(Cell); }

@@ -469,7 +469,8 @@ namespace GLDemo
 		UGLGridSubsystem* Grid = World->GetSubsystem<UGLGridSubsystem>();
 		UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>();
 		Zenny->SetActorLocation(FVector(To, 300.0), false, nullptr, ETeleportType::TeleportPhysics);
-		Grid->Update(Zenny->GetActorLocation());
+		Grid->Advance(Zenny->GetActorLocation());
+		Grid->FlushAll(); // a teleport for evidence: finish streaming at once (real walking streams incrementally)
 		Zenny->SetActorLocation(FVector(To, Terrain->HeightAt(To) + 110.0), false, nullptr, ETeleportType::TeleportPhysics);
 	}
 

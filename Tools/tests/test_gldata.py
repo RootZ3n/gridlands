@@ -238,6 +238,14 @@ class RuleTests(unittest.TestCase):
         self.box.edit("cell.outer.diner_lots", lambda d: d["terrain"].update(chunkMetres=60))
         self.assertRule("GRID-3")
 
+    def test_kn2_every_knowledge_has_a_book(self):
+        self.box.edit("knowledge.memory.fifties_diner", lambda d: d.update(category="Knowledge.Unfiled"))
+        self.assertRule("KN-2")
+
+    def test_kn3_blueprints_come_from_ofi(self):
+        self.box.edit("buildpiece.modern.timber_wall", lambda d: d.update(unlockedBy=["knowledge.memory.fifties_diner"]))
+        self.assertRule("KN-3")
+
     def test_kn1_declared_source_must_be_backed(self):
         self.box.edit("knowledge.style.roman_masonry", lambda d: d.update(sources=["Source.Salvage"]))
         self.assertRule("KN-1")

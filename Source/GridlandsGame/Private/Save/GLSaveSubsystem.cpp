@@ -151,7 +151,24 @@ FGLWorldSave UGLSaveSubsystem::Capture() const
 	const TSet<FName> Loaded = LoadedCells();
 	for (const FName& Cell : Loaded)
 	{
-		FGLSavedCell Record = CaptureCell(Cell);
+		FGLSavedCell Record;
+		if (IsRuntimeLive(Cell))
+		{
+			Record = CaptureCell(Cell);
+		}
+		else
+		{
+			// Still loading: its kept record is the truth, with its live ground (maybe edited) merged in.
+			if (const FGLSavedCell* Kept = Dormant.Find(Cell))
+			{
+				Record = *Kept;
+			}
+			Record.Cell = Cell;
+			if (const UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>(); Terrain && Terrain->HasCell(Cell))
+			{
+				Terrain->CaptureCellDelta(Cell, Record.TerrainIndices, Record.TerrainDeltaCm);
+			}
+		}
 		if (!Record.IsEmpty())
 		{
 			Save.Cells.Add(MoveTemp(Record));
@@ -331,6 +348,45 @@ void UGLSaveSubsystem::StowCell(FName Cell)
 	Dormant.Add(Cell, CaptureCell(Cell));
 }
 
+void UGLSaveSubsystem::StowTerrainOnly(FName Cell)
+{
+	FGLSavedCell& Record = Dormant.FindOrAdd(Cell);
+	Record.Cell = Cell;
+	if (const UGLTerrainSubsystem* Terrain = GetWorld()->GetSubsystem<UGLTerrainSubsystem>(); Terrain && Terrain->HasCell(Cell))
+	{
+		Terrain->CaptureCellDelta(Cell, Record.TerrainIndices, Record.TerrainDeltaCm);
+	}
+	if (const UGLBuildingSubsystem* Building = GetWorld()->GetSubsystem<UGLBuildingSubsystem>())
+	{
+		for (const FGLPlacedPiece& Piece : Building->PiecesOfCell(Cell))
+		{
+			if (!Record.BuildPieces.ContainsByPredicate([&Piece](const FGLSavedPiece& S) { return S.Id == Piece.Id; }))
+			{
+				Record.BuildPieces.Add({ Piece.Id, Piece.Def, Piece.Location, Piece.YawQuarter });
+			}
+		}
+	}
+	if (Record.IsEmpty())
+	{
+		Dormant.Remove(Cell);
+	}
+}
+
+bool UGLSaveSubsystem::IsRuntimeLive(FName Cell) const
+{
+	const UGLPlacementSubsystem* Placements = GetWorld()->GetSubsystem<UGLPlacementSubsystem>();
+	if (Placements && Placements->IsCellSpawned(Cell))
+	{
+		return true;
+	}
+	bool bHasPlacements = false;
+	GLContent::Get().ForEachEntry([&](const FGLContentEntry& Entry)
+	{
+		bHasPlacements |= Entry.Kind == TEXT("placement") && UGLPlacementSubsystem::IsPlacementOfCell(Entry.Id, Cell);
+	});
+	return !bHasPlacements;
+}
+
 bool UGLSaveSubsystem::TakeDormant(FName Cell, FGLSavedCell& Out)
 {
 	return Dormant.RemoveAndCopyValue(Cell, Out);
@@ -355,13 +411,18 @@ void UGLSaveSubsystem::Apply(const FGLWorldSave& Save, TArray<FString>* OutProbl
 	const TSet<FName> Loaded = LoadedCells();
 	for (const FGLSavedCell& Record : Save.Cells)
 	{
-		if (Loaded.Contains(Record.Cell))
+		if (Loaded.Contains(Record.Cell) && IsRuntimeLive(Record.Cell))
 		{
 			ApplyCell(Record, OutProblems);
 		}
 		else
 		{
 			Dormant.Add(Record.Cell, Record);
+			// A cell mid-load already has ground: bring it to the saved heights now.
+			if (UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>(); Terrain && Terrain->HasCell(Record.Cell))
+			{
+				Terrain->RestoreCellDelta(Record.Cell, Record.TerrainIndices, Record.TerrainDeltaCm);
+			}
 		}
 	}
 	// Flat v1-style fields (built in code, e.g. by tools and tests): applied to whatever is live.
