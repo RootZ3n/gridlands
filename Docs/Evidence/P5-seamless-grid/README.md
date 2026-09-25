@@ -144,4 +144,4 @@ treated navigation as idle while tile tasks were still running. It now waits for
 `GetNumRemainingBuildTasks() == 0` too.
 
 ## H. Fresh clone
-See `00-fresh-clone.summary.txt`.
+PASS: a fresh clone of `fe32e05` built and passed **91/91** tests (36 requirements, 0 warnings) and the data validation (147 entities) from tracked inputs plus the pinned engine (`00-*`).
