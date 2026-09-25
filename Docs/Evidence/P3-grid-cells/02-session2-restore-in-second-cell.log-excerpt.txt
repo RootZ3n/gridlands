@@ -1,16 +1,16 @@
 LogStreaming: Display: AsyncLoading2 - Created: Async Loading Thread: false, Async Post Load: false, Multithreaded: false
 LogLoad: LoadMap: /Game/Gridlands/Maps/L_Grid?Name=Player
 LogLoad: Game class is 'GLGameMode'
-LogGridlands: Load: restored 0 glitches, 0 salvaged placements, 0 build pieces, 0 edited ground vertices from <repo>/Saved/SaveGames/Gridlands/world.json
+LogGridlands: Load: 2 cell records (0 loaded now, the rest when they stream in): 6 glitches, 0 salvaged placements, 2 build pieces, 26 edited ground vertices from <repo>/Saved/SaveGames/Gridlands/world.json
 LogGridlands: Grid: entered cell.outer.diner_lots (from None)
 LogGridlands: Terrain: cell.outer.diner_lots ground 4x4 chunks of 64 m (13 edited vertices)
-LogGridlands: Grid: loaded cell.outer.diner_lots in 193 ms (kept state: yes)
-LogLoad: Took 0.255120 seconds to LoadMap(/Game/Gridlands/Maps/L_Grid)
-LogLoad: (Engine Initialization) Total time: 6.95 seconds
+LogGridlands: Grid: loaded cell.outer.diner_lots in 196 ms (kept state: yes)
+LogLoad: Took 0.258818 seconds to LoadMap(/Game/Gridlands/Maps/L_Grid)
+LogLoad: (Engine Initialization) Total time: 6.92 seconds
 LogGridlands: gl.Demo.GridReport: in cell.outer.diner_lots | loaded [cell.outer.diner_lots] | origin: lamp (not loaded), pieces 0, mound -9999 cm, level actors 0 | lots: jukebox Repaired, pieces 0, level actors 10 | glitch actors 1, creatures 0 | loads 1 unloads 0
 LogGridlands: Grid: entered cell.home.origin (from cell.outer.diner_lots)
 LogGridlands: Terrain: cell.home.origin ground 4x4 chunks of 64 m (13 edited vertices)
-LogGridlands: Grid: loaded cell.home.origin in 183 ms (kept state: yes)
+LogGridlands: Grid: loaded cell.home.origin in 186 ms (kept state: yes)
 LogGridlands: Grid: unloaded cell.outer.diner_lots
 LogGridlands: gl.Demo.GridReport: in cell.home.origin | loaded [cell.home.origin] | origin: lamp Latent, pieces 2, mound 78 cm, level actors 53 | lots: jukebox (not loaded), pieces 0, level actors 0 | glitch actors 5, creatures 1 | loads 2 unloads 1
 LogGridlands: Dialogue [exchange.world.static_thickens] Pehlichi: Static's getting thick. That's her, leaning on this part of the world.
