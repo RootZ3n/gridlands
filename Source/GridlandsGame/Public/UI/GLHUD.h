@@ -17,6 +17,14 @@ class GRIDLANDSGAME_API AGLHUD : public AHUD
 public:
 	virtual void DrawHUD() override;
 
+private:
+	/** NICE and Pehlichi, bottom centre (P4). */
+	void DrawSubtitles();
+	/** What E will do to the thing in reach (P4); nothing when nothing is in reach. */
+	void DrawInteractionPrompt(const APawn* Zenny);
+
+public:
+
 	/** Show "Grid: Hazy (0.31) | NICE composure 100%" top-left. */
 	UPROPERTY(EditAnywhere, Category = "Gridlands") bool bShowReadout = true;
 

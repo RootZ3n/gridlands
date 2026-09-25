@@ -18,6 +18,8 @@ struct GRIDLANDSGAME_API FGLDialogueLine
 	FString Text;
 	/** Seconds after the exchange started at which this line should appear. */
 	double Delay = 0.0;
+	/** Optional voice asset path (empty: text only). Presentation plays it and times the subtitle by it. */
+	FString Voice;
 };
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FGLOnDialogueLine, const FGLDialogueLine&);
@@ -53,8 +55,8 @@ public:
 
 	FGLOnDialogueLine OnLine;
 
-	/** Show lines as on-screen debug text (off in tests). */
-	bool bShowOnScreen = true;
+	/** Developer fallback: also show lines as on-screen debug text. Off: the HUD's subtitle layer presents them (P4). */
+	bool bShowOnScreen = false;
 
 private:
 	void HandleEvent(const FGLGameplayEvent& Event);

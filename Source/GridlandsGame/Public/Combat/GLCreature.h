@@ -37,6 +37,7 @@ public:
 	FName GetDefId() const { return DefId; }
 	FName GetPlacementId() const { return PlacementId; }
 	UGLHealthComponent* GetHealth() const { return Health; }
+	class UGLDerezComponent* GetDerez() const { return Derez; }
 	const FVector& GetHome() const { return Home; }
 
 private:
@@ -47,6 +48,7 @@ private:
 	bool LineOfSightTo(const AActor* Target) const;
 
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGLHealthComponent> Health;
+	UPROPERTY(VisibleAnywhere) TObjectPtr<class UGLDerezComponent> Derez;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<class UStaticMeshComponent> Body;
 	FName DefId;
 	FName PlacementId;

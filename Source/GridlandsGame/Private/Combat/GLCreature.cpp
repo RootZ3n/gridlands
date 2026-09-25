@@ -3,6 +3,7 @@
 #include "AIController.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "Combat/GLHealthComponent.h"
+#include "Presentation/GLDerez.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Content/GLContent.h"
@@ -26,6 +27,7 @@ AGLCreature::AGLCreature()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	GetCapsuleComponent()->InitCapsuleSize(40.f, 60.f);
 	Health = CreateDefaultSubobject<UGLHealthComponent>(TEXT("Health"));
+	Derez = CreateDefaultSubobject<UGLDerezComponent>(TEXT("Derez"));
 	Body = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
 	Body->SetupAttachment(GetCapsuleComponent());
 	Body->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -218,7 +220,12 @@ void AGLCreature::HandleDied(AActor* Killer)
 		}
 	}
 	Emit(TEXT("Event.Creature.Defeated"));
-	RestoreDefeated();
+	// Gameplay: defeated now (no collision, no behaviour). Presentation: it de-rezzes, then is hidden.
+	State = EGLCreatureState::Defeated;
+	Health->Restore(0.0);
+	SetActorEnableCollision(false);
+	SetActorTickEnabled(false);
+	Derez->Start(1.2f);
 }
 
 void AGLCreature::RestoreDefeated()
@@ -226,7 +233,7 @@ void AGLCreature::RestoreDefeated()
 	State = EGLCreatureState::Defeated;
 	Health->Restore(0.0);
 	SetActorEnableCollision(false);
-	SetActorHiddenInGame(true); // it de-rezzes (a presentation pass can animate this)
+	SetActorHiddenInGame(true); // restored as already gone (no replayed de-rez)
 	SetActorTickEnabled(false);
 }
 

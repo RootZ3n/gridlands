@@ -616,6 +616,18 @@ namespace GLDemo
 		TEXT("DEV ONLY: the Grid streaming torture walk (build/terraform at the boundary, repair in the lots, cross 7 times, save in the lots)."),
 		FConsoleCommandWithWorldDelegate::CreateStatic(&GridWalk));
 
+	/** Defeats the drain gremlin as Zenny (evidence of the de-rez presentation). */
+	FAutoConsoleCommandWithWorld DefeatGremlinCommand(
+		TEXT("gl.Demo.DefeatGremlin"),
+		TEXT("DEV ONLY: defeats the storm drain gremlin (shows the de-rez)."),
+		FConsoleCommandWithWorldDelegate::CreateStatic([](UWorld* World)
+		{
+			if (AGLCreature* Gremlin = World->GetSubsystem<UGLPlacementSubsystem>()->FindCreature(TEXT("placement.origin.drain_gremlin_den")))
+			{
+				Gremlin->GetHealth()->ApplyDamage(1000.0, UGameplayStatics::GetPlayerPawn(World, 0));
+			}
+		}));
+
 	FAutoConsoleCommandWithWorld RepairNearbyCommand(
 		TEXT("gl.Demo.RepairNearby"),
 		TEXT("DEV ONLY: clears blockers, then has Pehlichi scan and repair every glitch through the real loop (fast-forwarded)."),
