@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.creature.distracted",
+  "trigger": [
+    "Event.Creature.Distracted"
+  ],
+  "category": "Contextual",
+  "priority": 60,
+  "cooldownSeconds": 60,
+  "maxUses": 3,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "Pehlichi",
+      "text": "Over here, static-breath!"
+    },
+    {
+      "speaker": "NICE",
+      "text": "Did you just... heckle my gremlin?"
+    }
+  ]
+}

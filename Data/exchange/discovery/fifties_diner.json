@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.discovery.fifties_diner",
+  "trigger": [
+    "Event.Discovery.Found"
+  ],
+  "subject": "knowledge.memory.fifties_diner",
+  "category": "Contextual",
+  "priority": 70,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Don't look at the diner. The diner is a rendering accident."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "It's 1957 in there. Where'd it come from?"
+    },
+    {
+      "speaker": "NICE",
+      "text": "...Memory leak."
+    }
+  ]
+}

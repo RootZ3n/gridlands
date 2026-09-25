@@ -201,6 +201,7 @@ def cross_check(ds: Dataset) -> None:
     check_puzzles(ds)
     check_building(ds)
     check_terraform(ds)
+    check_creatures(ds)
     check_generated_tags(ds)
 
 
@@ -243,6 +244,9 @@ def check_knowledge_sources(ds: Dataset) -> None:
         for tag, (kind, field_name) in KNOWLEDGE_SOURCE_BACKING.items():
             if entity.kind == kind:
                 granted[tag].update(entity.data.get(field_name, []))
+    for entity in ds.entities.values():
+        if entity.kind == "placement" and entity.data.get("kind") == "discovery":
+            granted["Source.Discovery"].add(entity.data.get("definition", ""))
     for entity in sorted(ds.entities.values(), key=lambda e: e.id):
         if entity.kind == "glitch":
             for reward in entity.data.get("rewards", []):
@@ -375,6 +379,21 @@ def check_terraform(ds: Dataset) -> None:
             ds.problem("TF-1", rel, ".cost", "RAISE must cost what DIG yields (no free ground)")
         if data.get("op") == "DIG" and not data.get("yields"):
             ds.problem("TF-1", rel, ".yields", "DIG must yield what RAISE costs")
+
+
+def check_creatures(ds: Dataset) -> None:
+    """CR-1 creature drops are combat sources: every dropped item must declare Source.CreatureDrop, and
+    (with NC-2) never be critical-path by drops alone. CR-2 a creature exists only through a placement."""
+    placed = {e.data.get("definition") for e in ds.entities.values() if e.kind == "placement"}
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        if entity.kind != "creature":
+            continue
+        for index, drop in enumerate(entity.data.get("drops", [])):
+            item = ds.entities.get(drop.get("item", "")) if isinstance(drop, dict) else None
+            if item and "Source.CreatureDrop" not in item.data.get("sources", []):
+                ds.problem("CR-1", entity.file, f".drops[{index}]", f"{drop['item']} must list Source.CreatureDrop among its sources")
+        if entity.id not in placed:
+            ds.problem("CR-2", entity.file, "", "a creature must be placed somewhere (threat comes from places, ADR-0014)")
 
 
 def check_generated_tags(ds: Dataset) -> None:

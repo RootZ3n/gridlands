@@ -10,6 +10,10 @@
 #include "Engine/StaticMeshActor.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerStart.h"
+#include "Engine/PointLight.h"
+#include "Components/PointLightComponent.h"
+#include "Terrain/GLCellNavBounds.h"
+#include "World/GLTravelPoint.h"
 #include "GameFramework/WorldSettings.h"
 #include "GridlandsEditor.h"
 #include "HAL/FileManager.h"
@@ -141,6 +145,51 @@ int32 UGLBuildBlockoutCommandlet::Main(const FString& Params)
 		AStaticMeshActor* Culvert = B.Box(TEXT("StormDrain_Culvert"), FVector(60 * M, 70 * M, 0.5 * M), FVector(3, 4, 2), 90.0);
 		B.Anchor(Culvert, TEXT("storm_drain_entrance"));
 		B.Box(TEXT("StormDrain_Grate"), FVector(60 * M, 67.8 * M, 0.02 * M), FVector(2.4, 0.4, 0.05));
+	}
+	// The storm-drain room (M11): authored geometry 50 m under the culvert, reached by travel points.
+	// A main hall with pillars (the creature's den, placements drain_*) and a walled side channel
+	// along the north wall: the way around the gremlin (non-combat route).
+	{
+		const FVector C(60 * M, 95 * M, -50 * M);
+		B.Box(TEXT("Drain_Floor"), C + FVector(0, 0, -0.5 * M), FVector(26, 16, 1));
+		B.Box(TEXT("Drain_Ceiling"), C + FVector(0, 0, 4.5 * M), FVector(26, 16, 1));
+		B.Box(TEXT("Drain_Wall_S"), C + FVector(0, -8.25 * M, 2 * M), FVector(26, 0.5, 4));
+		B.Box(TEXT("Drain_Wall_N"), C + FVector(0, 8.25 * M, 2 * M), FVector(26, 0.5, 4));
+		B.Box(TEXT("Drain_Wall_W"), C + FVector(-13.25 * M, 0, 2 * M), FVector(0.5, 16, 4));
+		B.Box(TEXT("Drain_Wall_E"), C + FVector(13.25 * M, 0, 2 * M), FVector(0.5, 16, 4));
+		// Side channel: a partition from x = -9 m to +9 m at y = +4 m, open at both ends.
+		B.Box(TEXT("Drain_Partition"), C + FVector(0, 4 * M, 2 * M), FVector(18, 0.4, 4));
+		for (int32 Pillar = 0; Pillar < 3; ++Pillar)
+		{
+			B.Box(*FString::Printf(TEXT("Drain_Pillar_%d"), Pillar + 1), C + FVector((-6 + 6 * Pillar) * M, -3.5 * M, 2 * M), FVector(0.8, 0.8, 4));
+		}
+		B.Box(TEXT("Drain_Channel_Water"), C + FVector(0, -6 * M, -0.02 * M), FVector(24, 2, 0.04));
+		for (int32 Lamp = 0; Lamp < 3; ++Lamp)
+		{
+			APointLight* Light = World->SpawnActor<APointLight>(C + FVector((-8 + 8 * Lamp) * M, 0, 3.5 * M), FRotator::ZeroRotator);
+			Light->SetMobility(EComponentMobility::Movable);
+			Light->PointLightComponent->SetIntensity(6000.f);
+			Light->PointLightComponent->SetAttenuationRadius(1400.f);
+			Light->PointLightComponent->SetLightColor(FLinearColor(0.6f, 0.9f, 0.8f));
+			Light->SetActorLabel(*FString::Printf(TEXT("Drain_Light_%d"), Lamp + 1));
+		}
+		// Navigation for the creature: the room declares its own bounds (as cells do at runtime).
+		AGLCellNavBounds* RoomNav = World->SpawnActor<AGLCellNavBounds>(C + FVector(0, 0, 2 * M), FRotator::ZeroRotator);
+		RoomNav->SetExtent(FVector(13 * M, 8 * M, 3 * M));
+		RoomNav->SetActorLabel(TEXT("Drain_NavBounds"));
+		// In and out.
+		AGLTravelPoint* Down = World->SpawnActor<AGLTravelPoint>(FVector(60 * M, 67.0 * M, 0.05 * M), FRotator::ZeroRotator);
+		Down->Destination = C + FVector(-11 * M, 0, 1.0 * M);
+		Down->DestinationYaw = 0.f;
+		Down->Label = NSLOCTEXT("Gridlands", "EnterDrain", "Climb down into the storm drain");
+		Down->AreaName = TEXT("area.origin.storm_drain");
+		Down->SetActorLabel(TEXT("Travel_IntoDrain"));
+		AGLTravelPoint* Up = World->SpawnActor<AGLTravelPoint>(C + FVector(-12.2 * M, 0, 0.05 * M), FRotator::ZeroRotator);
+		Up->Destination = FVector(60 * M, 65.5 * M, 1.0 * M);
+		Up->DestinationYaw = -90.f;
+		Up->Label = NSLOCTEXT("Gridlands", "LeaveDrain", "Climb back up to the street");
+		Up->AreaName = TEXT("area.origin.street");
+		Up->SetActorLabel(TEXT("Travel_OutOfDrain"));
 	}
 
 	// Two debug interactables near the start, for manual interaction checks.

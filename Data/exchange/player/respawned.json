@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.player.respawned",
+  "trigger": [
+    "Event.Player.Respawned"
+  ],
+  "category": "Contextual",
+  "priority": 40,
+  "cooldownSeconds": 240,
+  "maxUses": 3,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "Pehlichi",
+      "text": "You're back. I kept your stuff warm."
+    },
+    {
+      "speaker": "NICE",
+      "text": "He's just going to lose it again."
+    }
+  ]
+}

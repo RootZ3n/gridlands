@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "glitch.drain.echo_loop",
+  "displayName": "Echo loop",
+  "detection": {
+    "capability": "capability.pehlichi.scan",
+    "minLevel": 1
+  },
+  "repair": {
+    "seconds": 10.0,
+    "interruptPolicy": "KeepProgress"
+  },
+  "stabilityWeight": 1.0,
+  "influenceRadius": 30.0,
+  "rewards": [
+    {
+      "recipient": "Pehlichi",
+      "capability": "capability.pehlichi.distract",
+      "delta": 1
+    }
+  ]
+}

@@ -6,6 +6,7 @@
 #include "EngineUtils.h"
 #include "GridlandsGame.h"
 #include "Save/GLSaveSubsystem.h"
+#include "Economy/GLWorldSettingsSubsystem.h"
 #include "UI/GLHUD.h"
 #include "Events/GLEventSubsystem.h"
 #include "GameFramework/Controller.h"
@@ -33,6 +34,15 @@ void AGLGameMode::StartPlay()
 		if (!FParse::Param(FCommandLine::Get(), TEXT("GLNewWorld")) && UGLSaveSubsystem::SlotExists(Saves->AutosaveSlot))
 		{
 			Saves->LoadFromSlot(Saves->AutosaveSlot);
+		}
+		else if (FString Preset; FParse::Value(FCommandLine::Get(), TEXT("GLSettings="), Preset))
+		{
+			// A new world's resource-yield setting (ADR-0016), e.g. -GLSettings=settings.preset.relaxed.
+			// It is saved with the world and kept on later loads.
+			if (UGLWorldSettingsSubsystem* Settings = GetWorld()->GetSubsystem<UGLWorldSettingsSubsystem>(); !Settings || !Settings->SetPreset(FName(*Preset)))
+			{
+				UE_LOG(LogGridlands, Warning, TEXT("Unknown settings preset %s; keeping the default"), *Preset);
+			}
 		}
 		Saves->bAutosave = true;
 	}

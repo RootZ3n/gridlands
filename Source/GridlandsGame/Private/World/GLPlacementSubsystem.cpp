@@ -9,6 +9,7 @@
 #include "Glitch/GLGlitchSubsystem.h"
 #include "GridlandsGame.h"
 #include "Puzzle/GLPuzzleSite.h"
+#include "Combat/GLCreature.h"
 #include "Salvage/GLSalvageNode.h"
 #include "Salvage/GLSalvageableComponent.h"
 #include "World/GLAnchorComponent.h"
@@ -60,7 +61,8 @@ int32 UGLPlacementSubsystem::SpawnCell(FName CellId)
 	{
 		const FGLPlacementDef* Placement = Entry.Definition.GetPtr<FGLPlacementDef>();
 		if (!Placement || Entry.Kind != TEXT("placement") || !Entry.Id.ToString().StartsWith(Prefix)
-			|| (Placement->Kind != TEXT("salvage_node") && Placement->Kind != TEXT("glitch") && Placement->Kind != TEXT("puzzle_site")))
+			|| (Placement->Kind != TEXT("salvage_node") && Placement->Kind != TEXT("glitch") && Placement->Kind != TEXT("puzzle_site")
+				&& Placement->Kind != TEXT("spawn") && Placement->Kind != TEXT("discovery")))
 		{
 			return;
 		}
@@ -87,6 +89,25 @@ int32 UGLPlacementSubsystem::SpawnCell(FName CellId)
 		{
 			Location = FVector(Placement->Transform.Location[0], Placement->Transform.Location[1], Placement->Transform.Location[2]);
 			Yaw = Placement->Transform.Yaw;
+		}
+		if (Placement->Kind == TEXT("spawn"))
+		{
+			// The only place creatures come from (ADR-0014: threat from place; architecture rule).
+			AGLCreature* Creature = World->SpawnActor<AGLCreature>(Location + FVector(0, 0, 70), FRotator(0.0, Yaw, 0.0));
+			if (!Creature || !Creature->Setup(Placement->Definition, Entry.Id))
+			{
+				UE_LOG(LogGridlands, Error, TEXT("%s: could not spawn creature %s"), *Entry.Id.ToString(), *Placement->Definition.ToString());
+				return;
+			}
+			Creatures.Add(Entry.Id, Creature);
+			++Spawned;
+			return;
+		}
+		if (Placement->Kind == TEXT("discovery"))
+		{
+			Discoveries.Add({ Entry.Id, Placement->Definition, Location, (Placement->Radius > 0.0 ? Placement->Radius : 8.0) * 100.0 });
+			++Spawned;
+			return;
 		}
 		if (Placement->Kind == TEXT("puzzle_site"))
 		{

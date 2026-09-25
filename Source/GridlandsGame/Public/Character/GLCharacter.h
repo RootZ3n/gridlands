@@ -40,6 +40,8 @@ public:
 	UGLInventoryComponent* GetInventory() const { return Inventory; }
 	UGLFabricatorComponent* GetFabricator() const { return Fabricator; }
 	class UGLBuildModeComponent* GetBuildMode() const { return BuildMode; }
+	class UGLHealthComponent* GetHealth() const { return Health; }
+	class UGLCombatComponent* GetCombat() const { return Combat; }
 	AGLPehlichi* GetPehlichi() const { return Pehlichi.Get(); }
 	void SetPehlichi(AGLPehlichi* InPehlichi) { Pehlichi = InPehlichi; }
 	const UInputMappingContext* GetMappingContext() const { return MappingContext; }
@@ -60,6 +62,9 @@ private:
 	/** H: ask Pehlichi about NICE's current puzzle (ADR-0023). Zenny still says nothing. */
 	void AskForHint();
 	void NextPiece();
+	/** Left mouse: the build/terraform tool when one is out, otherwise a swing (M11). */
+	void PrimaryAction();
+	void DistractCommand();
 	void PreviousPiece();
 
 	UPROPERTY(VisibleAnywhere) TObjectPtr<USpringArmComponent> CameraBoom;
@@ -69,6 +74,8 @@ private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGLInventoryComponent> Inventory;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGLFabricatorComponent> Fabricator;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<class UGLBuildModeComponent> BuildMode;
+	UPROPERTY(VisibleAnywhere) TObjectPtr<class UGLHealthComponent> Health;
+	UPROPERTY(VisibleAnywhere) TObjectPtr<class UGLCombatComponent> Combat;
 
 	UPROPERTY(Transient) TObjectPtr<UInputMappingContext> MappingContext;
 	TWeakObjectPtr<AGLPehlichi> Pehlichi;

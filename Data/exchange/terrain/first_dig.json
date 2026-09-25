@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.terrain.first_dig",
+  "trigger": [
+    "Event.Terrain.Edited"
+  ],
+  "category": "Contextual",
+  "priority": 55,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Did you just dig a hole in my ground? With a SHOVEL?"
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "It's a good shovel."
+    }
+  ]
+}

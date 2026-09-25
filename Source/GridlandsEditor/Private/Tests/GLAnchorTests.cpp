@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerStart.h"
 #include "GameFramework/WorldSettings.h"
 #include "Misc/AutomationTest.h"
+#include "World/GLTravelPoint.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
 #include "World/GLAnchorComponent.h"
@@ -64,6 +65,7 @@ bool FGLOriginBrief::RunTest(const FString& Parameters)
 	}
 	TMap<FString, const AActor*> Anchored;
 	int32 PlayerStarts = 0;
+	int32 TravelPoints = 0;
 	for (const AActor* Actor : World->PersistentLevel->Actors)
 	{
 		if (!Actor)
@@ -71,6 +73,7 @@ bool FGLOriginBrief::RunTest(const FString& Parameters)
 			continue;
 		}
 		PlayerStarts += Actor->IsA<APlayerStart>() ? 1 : 0;
+		TravelPoints += Actor->IsA<AGLTravelPoint>() ? 1 : 0;
 		TestFalse(TEXT("no static ground box: the runtime heightfield is the ground (ADR-0022)"), Actor->GetActorLabel() == TEXT("Ground"));
 		if (const UGLAnchorComponent* Anchor = Actor->FindComponentByClass<UGLAnchorComponent>())
 		{
@@ -88,6 +91,7 @@ bool FGLOriginBrief::RunTest(const FString& Parameters)
 	TestTrue(TEXT("one Roman fragment"), Anchored.Contains(TEXT("anchor.origin.fragment_roman_columns")));
 	TestTrue(TEXT("one storm-drain entrance"), Anchored.Contains(TEXT("anchor.origin.storm_drain_entrance")));
 	TestEqual(TEXT("exactly one player start"), PlayerStarts, 1);
+	TestEqual(TEXT("the storm drain has a way in and a way out (M11)"), TravelPoints, 2);
 	TestTrue(TEXT("the world uses the Gridlands game mode"), World->GetWorldSettings()->DefaultGameMode == AGLGameMode::StaticClass());
 	return true;
 }

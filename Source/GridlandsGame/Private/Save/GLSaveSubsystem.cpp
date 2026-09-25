@@ -22,6 +22,10 @@
 #include "Building/GLBuildingSubsystem.h"
 #include "Content/GLContentDefinitions.h"
 #include "Terrain/GLTerrainSubsystem.h"
+#include "Combat/GLCreature.h"
+#include "Combat/GLHealthComponent.h"
+#include "Storm/GLStormSubsystem.h"
+#include "World/GLAmbientSubsystem.h"
 #include "Salvage/GLSalvageNode.h"
 #include "Salvage/GLSalvageableComponent.h"
 #include "World/GLPlacementSubsystem.h"
@@ -145,6 +149,30 @@ FGLWorldSave UGLSaveSubsystem::Capture() const
 	{
 		Save.SettingsPreset = Settings->GetPresetId();
 	}
+	if (const UGLPlacementSubsystem* Placed = World->GetSubsystem<UGLPlacementSubsystem>())
+	{
+		for (const TPair<FName, TWeakObjectPtr<AGLCreature>>& Entry : Placed->GetCreatures())
+		{
+			if (Entry.Value.IsValid() && Entry.Value->IsDefeated())
+			{
+				Save.DefeatedCreatures.Add(Entry.Key);
+			}
+		}
+		Save.DefeatedCreatures.Sort(FNameLexicalLess());
+	}
+	if (const UGLAmbientSubsystem* Ambient = World->GetSubsystem<UGLAmbientSubsystem>())
+	{
+		Save.Discoveries = Ambient->GetDiscovered();
+		Save.Discoveries.Sort(FNameLexicalLess());
+	}
+	if (const UGLStormSubsystem* Storms = World->GetSubsystem<UGLStormSubsystem>())
+	{
+		Save.StormsOccurred = Storms->GetOccurred();
+	}
+	if (const UGLHealthComponent* Life = Zenny ? Zenny->FindComponentByClass<UGLHealthComponent>() : nullptr)
+	{
+		Save.ZennyHealth = Life->IsDead() ? Life->GetMax() : Life->GetCurrent(); // dying then saving wakes you whole
+	}
 	if (const UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>())
 	{
 		for (const FGLPlacedPiece& Piece : Building->GetPieces())
@@ -218,6 +246,10 @@ void UGLSaveSubsystem::Apply(const FGLWorldSave& Save, TArray<FString>* OutProbl
 
 	AActor* Zenny = Glitches->GetCommander();
 	ApplyTransform(Zenny, Save.Zenny);
+	if (UGLHealthComponent* Life = Zenny ? Zenny->FindComponentByClass<UGLHealthComponent>() : nullptr; Life && Save.ZennyHealth >= 0.0)
+	{
+		Life->Restore(Save.ZennyHealth);
+	}
 	if (UGLInventoryComponent* Inventory = Zenny ? Zenny->FindComponentByClass<UGLInventoryComponent>() : nullptr)
 	{
 		TArray<TPair<FName, int32>> Items;
@@ -262,6 +294,30 @@ void UGLSaveSubsystem::Apply(const FGLWorldSave& Save, TArray<FString>* OutProbl
 	if (UGLWorldSettingsSubsystem* Settings = World->GetSubsystem<UGLWorldSettingsSubsystem>(); Settings && !Save.SettingsPreset.IsNone())
 	{
 		Settings->SetPreset(Save.SettingsPreset);
+	}
+	for (const FName& Id : Save.DefeatedCreatures)
+	{
+		if (AGLCreature* Creature = Placements->FindCreature(Id))
+		{
+			Creature->RestoreDefeated();
+		}
+		else
+		{
+			Problem(FString::Printf(TEXT("saved defeated creature %s no longer exists"), *Id.ToString()));
+		}
+	}
+	if (UGLAmbientSubsystem* Ambient = World->GetSubsystem<UGLAmbientSubsystem>())
+	{
+		Ambient->Restore(Save.Discoveries);
+	}
+	if (UGLStormSubsystem* Storms = World->GetSubsystem<UGLStormSubsystem>())
+	{
+		TMap<FName, int32> Counts;
+		for (const FGLSavedCount& Count : Save.EventCounts)
+		{
+			Counts.Add(Count.Id, Count.Count);
+		}
+		Storms->Restore(Save.StormsOccurred, Counts);
 	}
 	// Ground first, then the pieces that stand on it (support is derived from both).
 	if (UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>(); Terrain && Terrain->HasGround())

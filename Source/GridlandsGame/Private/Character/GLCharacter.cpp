@@ -17,6 +17,8 @@
 #include "Pehlichi/GLPehlichi.h"
 #include "Puzzle/GLPuzzleSubsystem.h"
 #include "Building/GLBuildModeComponent.h"
+#include "Combat/GLCombatComponent.h"
+#include "Combat/GLHealthComponent.h"
 #include "Save/GLSaveSubsystem.h"
 #include "Pehlichi/GLPehlichiCommandComponent.h"
 #include "GridlandsGame.h"
@@ -44,6 +46,7 @@ namespace GLCharacterInput
 	const FName PiecePrevious(TEXT("PiecePrevious"));
 	const FName PieceRotate(TEXT("PieceRotate"));
 	const FName PieceDemolish(TEXT("PieceDemolish"));
+	const FName Distract(TEXT("PehlichiDistract"));
 	const FName QuickLoad(TEXT("QuickLoad"));
 }
 
@@ -82,6 +85,8 @@ AGLCharacter::AGLCharacter()
 	Inventory = CreateDefaultSubobject<UGLInventoryComponent>(TEXT("Inventory"));
 	Fabricator = CreateDefaultSubobject<UGLFabricatorComponent>(TEXT("Fabricator"));
 	BuildMode = CreateDefaultSubobject<UGLBuildModeComponent>(TEXT("BuildMode"));
+	Health = CreateDefaultSubobject<UGLHealthComponent>(TEXT("Health"));
+	Combat = CreateDefaultSubobject<UGLCombatComponent>(TEXT("Combat"));
 }
 
 void AGLCharacter::BuildInput()
@@ -145,6 +150,7 @@ void AGLCharacter::BuildInput()
 	MappingContext->MapKey(MakeAction(GLCharacterInput::PiecePrevious, EInputActionValueType::Boolean), EKeys::MouseScrollDown);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::PieceRotate, EInputActionValueType::Boolean), EKeys::Z);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::PieceDemolish, EInputActionValueType::Boolean), EKeys::X);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::Distract, EInputActionValueType::Boolean), EKeys::V);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::QuickLoad, EInputActionValueType::Boolean), EKeys::F9);
 }
 
@@ -186,7 +192,8 @@ void AGLCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		Input->BindAction(FindInputAction(GLCharacterInput::Hint), ETriggerEvent::Started, this, &AGLCharacter::AskForHint);
 		Input->BindAction(FindInputAction(GLCharacterInput::BuildToggle), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::ToggleBuild);
 		Input->BindAction(FindInputAction(GLCharacterInput::TerraformCycle), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::CycleTerraform);
-		Input->BindAction(FindInputAction(GLCharacterInput::ToolPrimary), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::Primary);
+		Input->BindAction(FindInputAction(GLCharacterInput::ToolPrimary), ETriggerEvent::Started, this, &AGLCharacter::PrimaryAction);
+		Input->BindAction(FindInputAction(GLCharacterInput::Distract), ETriggerEvent::Started, this, &AGLCharacter::DistractCommand);
 		Input->BindAction(FindInputAction(GLCharacterInput::PieceNext), ETriggerEvent::Started, this, &AGLCharacter::NextPiece);
 		Input->BindAction(FindInputAction(GLCharacterInput::PiecePrevious), ETriggerEvent::Started, this, &AGLCharacter::PreviousPiece);
 		Input->BindAction(FindInputAction(GLCharacterInput::PieceRotate), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::Rotate);
@@ -236,6 +243,23 @@ void AGLCharacter::CommandPehlichi(FName Command)
 		const EGLCommandRejection Result = Companion->GetCommands()->Issue(Command, this);
 		UE_LOG(LogGridlands, Log, TEXT("Command %s -> %s"), *Command.ToString(), *StaticEnum<EGLCommandRejection>()->GetNameStringByValue(static_cast<int64>(Result)));
 	}
+}
+
+void AGLCharacter::PrimaryAction()
+{
+	if (BuildMode->GetMode() != EGLToolMode::None)
+	{
+		BuildMode->Primary();
+	}
+	else
+	{
+		Combat->Attack();
+	}
+}
+
+void AGLCharacter::DistractCommand()
+{
+	CommandPehlichi(TEXT("Command.Pehlichi.Distract"));
 }
 
 void AGLCharacter::NextPiece()

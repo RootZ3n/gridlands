@@ -88,6 +88,22 @@ class DialogueNeverSolvesPuzzles(unittest.TestCase):
         self.assertEqual(callers, ["GridlandsGame/Private/Puzzle/GLPuzzleSite.cpp"])
 
 
+class ThreatComesFromPlaces(unittest.TestCase):
+    """ADR-0014: creatures enter the world only through placements, never because of an activity."""
+
+    def test_only_the_placement_subsystem_spawns_creatures(self):
+        spawners = sorted(p.relative_to(SOURCE).as_posix() for p in SOURCE.rglob("*.cpp")
+                          if re.search(r"SpawnActor(Deferred)?\s*<\s*AGLCreature\s*>", p.read_text(encoding="utf-8", errors="replace"))
+                          and "/Tests/" not in p.as_posix())
+        self.assertEqual(spawners, ["GridlandsGame/Private/World/GLPlacementSubsystem.cpp"])
+
+    def test_glitch_storms_are_harmless(self):
+        offenders = [p.relative_to(SOURCE).as_posix() for p in SOURCE.rglob("*.*")
+                     if p.suffix in (".h", ".cpp") and "/Storm/" in p.as_posix()
+                     and re.search(r"\b(ApplyDamage|TakeDamage)\b", p.read_text(encoding="utf-8", errors="replace"))]
+        self.assertEqual(offenders, [])
+
+
 class PehlichiDealsNoDamage(unittest.TestCase):
     """P-3 (ADR-0017): no Pehlichi source applies damage."""
 
