@@ -4,6 +4,8 @@
 // saves and restarts. Terraforming is heard, only within hearing; losing sight is not forgetting.
 
 #include "Combat/GLCreature.h"
+#include "Content/GLContent.h"
+#include "Content/GLContentDefinitions.h"
 #include "Combat/GLHealthComponent.h"
 #include "EngineUtils.h"
 #include "Events/GLEventSubsystem.h"
@@ -319,6 +321,38 @@ bool FGLStructureTree::RunTest(const FString& Parameters)
 	TestEqual(TEXT("log gathered"), R.StateOf(SPine, TEXT("trunk")), EGLStructurePartState::DebrisSalvaged);
 	TestEqual(TEXT("no tree actors"), R.PartActors(SPine), 0);
 	IFileManager::Get().Delete(*UGLSaveSubsystem::SlotPath(SSlot));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLStructuresStand, "Gridlands.Game.Structure.EveryAuthoredStructureStandsOnItsGround", GLTestUtils::Flags)
+bool FGLStructuresStand::RunTest(const FString& Parameters)
+{
+	// Both cells loaded (at the boundary): every structure placement spawns with every part supported.
+	FStructureScene S(TEXT("GLStructuresStandWorld"), SAtEdge);
+	int32 Structures = 0;
+	GLContent::Get().ForEachEntry([&](const FGLContentEntry& Entry)
+	{
+		const FGLPlacementDef* P = Entry.Definition.GetPtr<FGLPlacementDef>();
+		if (!P || P->Kind != TEXT("structure"))
+		{
+			return;
+		}
+		++Structures;
+		const FGLStructureRuntime* Runtime = S.Structures->Find(Entry.Id);
+		if (!TestNotNull(*FString::Printf(TEXT("%s spawned"), *Entry.Id.ToString()), Runtime))
+		{
+			return;
+		}
+		TArray<FGLPlacedPiece> Pieces;
+		for (const FGLStructurePartRuntime& Part : Runtime->Parts)
+		{
+			Pieces.Add(Part.Piece);
+		}
+		const TArray<int32> Loose = GLCollapseRules::Unsupported(GLContent::Get(), Pieces, [&S](const FVector2D& At) { return S.Terrain->HeightAt(At); });
+		TestEqual(*FString::Printf(TEXT("%s: every part is supported where it was placed"), *Entry.Id.ToString()), Loose.Num(), 0);
+		TestEqual(*FString::Printf(TEXT("%s: every part spawned"), *Entry.Id.ToString()), S.PartActors(Entry.Id), Runtime->Parts.Num());
+	});
+	TestTrue(TEXT("there are structures to check"), Structures >= 4);
 	return true;
 }
 

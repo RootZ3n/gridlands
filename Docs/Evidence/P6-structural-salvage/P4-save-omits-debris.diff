@@ -1,0 +1,13 @@
+diff --git a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+index bfc3402..49b512f 100644
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -350,7 +350,7 @@ void UGLStructureSubsystem::CaptureCell(FName Cell, TArray<FGLSavedStructurePart
+ 		}
+ 		for (const FGLStructurePartRuntime& Part : Entry.Value.Parts)
+ 		{
+-			if (Part.State == EGLStructurePartState::Intact)
++			if (Part.State == EGLStructurePartState::Intact || Part.State == EGLStructurePartState::Debris) // PLANTED DEFECT: debris is not a saved fact
+ 			{
+ 				continue;
+ 			}

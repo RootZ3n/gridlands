@@ -60,6 +60,8 @@ Rules:
 | `settings` | world-setting presets | `settings.preset.relaxed` |
 | `yield` | yield category definitions | `yield.rare.material` |
 | `terraform` | one heightfield tool stroke (ADR-0022) | `terraform.shovel.dig` |
+| `structure` | an authored world structure: a part graph in the shared structural language (P6, ADR-0030) | `structure.modern.carport` |
+| `tuning` | provisional physical and noise tuning; exactly one (TUN-1) | `tuning.world.physical` |
 
 **[V] ID-9** A new kind is added only with a typed C++ definition (ADR-0021)
 and an entry here. It's a code change, reviewed.
@@ -69,6 +71,16 @@ and an entry here. It's a code change, reviewed.
 - **[V] KN-1** A knowledge entry's `sources` must be backed by content: `Source.Salvage`
   needs a salvage whose `onSalvageUnlocks` grants it, and `Source.Discovery` needs an item whose
   `onAcquireUnlocks` grants it. That way NC-2 cannot be satisfied on paper only.
+
+- **[V] BLD-5** A buildable piece has a cost. A world-only piece (`"buildable": false`: authored
+  structures, trees) has no cost or `unlockedBy` and is never offered to the player.
+- **[V] STR-1** A structure's part names are unique (saves refer to parts by name).
+- **[V] STR-2** A structure has a grounded part at z = 0.
+- **[V] STR-3** A structure placement is a transform whose yaw is a multiple of 90 degrees.
+- **[V] TUN-1** There is exactly one tuning entity: `tuning.world.physical`.
+- **[V] TUN-2** Its noise radii are keyed by declared `Noise.*` tags.
+- **[T]** Every authored structure placement stands on its cell's ground (all parts supported):
+  `Gridlands.Game.Structure.*`.
 
 ## 2a. Loader rules (C++, ADR-0021)
 
@@ -132,6 +144,7 @@ part      = upper *( alpha / digit )          ; PascalCase, 1..32 chars
 | `Command` | Pehlichi commands | `Command.Pehlichi.Scan` |
 | `Capability` | capability categories | `Capability.Pehlichi.Scan` |
 | `Requirement` | glitch requirement kinds | `Requirement.ObjectSalvaged` |
+| `Noise` | world noise actions (P6, ADR-0031): authoritative sounds creatures hear | `Noise.Terrain.Dig` |
 
 **[V] TAG-5** A new namespace needs a row here and a real owning system.
 

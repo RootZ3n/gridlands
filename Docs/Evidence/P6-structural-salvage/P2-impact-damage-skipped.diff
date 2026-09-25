@@ -1,0 +1,13 @@
+diff --git a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+index bfc3402..17a6b96 100644
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -298,7 +298,7 @@ void UGLStructureSubsystem::Land(FGLActiveCollapse& Collapse)
+ 			Record.Hit.Add(*It);
+ 			if (Collapse.Outcome.Damage > 0.0)
+ 			{
+-				Health->ApplyDamage(Collapse.Outcome.Damage, Collapse.Instigator.Get());
++				; // PLANTED DEFECT: the impact never reaches the health system
+ 			}
+ 		}
+ 	}

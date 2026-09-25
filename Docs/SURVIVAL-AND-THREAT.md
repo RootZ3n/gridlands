@@ -126,7 +126,7 @@ clearly.
   UI is not locked.
 - **Every visualization consumes the same authoritative values the AI uses.**
 
-## 9. Noise is systemic (LOCKED DESIGN INTENT; first implementation is the P6 milestone)
+## 9. Noise is systemic (LOCKED DESIGN INTENT; first slice IMPLEMENTED in P6, [ADR-0031](ADR/0031-authoritative-world-noise.md))
 **Which actions make noise.** Terrain manipulation must not be silent. These actions generate
 **authoritative world-noise events**:
 - digging, raising and flattening;
@@ -149,6 +149,15 @@ investigates; its sight cone moves; Zenny slips past.
 - **Loudness varies.** Material and action type may set noise radius and intensity.
 - **Visualization must be honest.** Pehlichi may eventually preview noise propagation, and any
   visualization consumes the same values used by AI hearing.
+
+**What P6 built:**
+- one noise model, with radii as data;
+- terraforming, salvage, chopping, building, demolition, breakage, collapse and Pehlichi's lure
+  all emit;
+- creatures hear only within `min(noise radius, hearing)`, investigate, and search the last known
+  position after losing sight.
+
+Proven in the real game and in tests.
 
 **Extensibility to preserve, not build yet:**
 - quieter or louder tools;

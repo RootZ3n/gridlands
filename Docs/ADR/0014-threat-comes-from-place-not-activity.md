@@ -40,3 +40,9 @@ investigate it.
 
 "Attracts" in the original decision is therefore narrowed to *creates or calls in*. Local hearing
 by creatures already there is a stealth rule, not a threat source (SURVIVAL-AND-THREAT §9).
+
+**Confirmed by the operator (canonical wording):** "Player-generated noise may be perceived and
+investigated by already-existing creatures according to their authoritative hearing model. Noise
+never causes hostile spawning, summoning, raid generation, or attraction outside that perception
+model." It supersedes the earlier broad wording only as far as local creature hearing requires.
+Implemented in [ADR-0031](0031-authoritative-world-noise.md).

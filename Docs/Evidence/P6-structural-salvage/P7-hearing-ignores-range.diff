@@ -1,0 +1,13 @@
+diff --git a/Source/GridlandsCore/Private/Combat/GLCreatureRules.cpp b/Source/GridlandsCore/Private/Combat/GLCreatureRules.cpp
+index 84a2ab3..928f6c2 100644
+--- a/Source/GridlandsCore/Private/Combat/GLCreatureRules.cpp
++++ b/Source/GridlandsCore/Private/Combat/GLCreatureRules.cpp
+@@ -99,7 +99,7 @@ FGLCreatureDecision GLCreatureRules::Decide(const FGLCreatureDef& Def, EGLCreatu
+ 
+ bool GLCreatureRules::Hears(const FGLCreatureDef& Def, const FVector& Self, const FVector& Noise, double NoiseRadiusCm)
+ {
+-	return FVector::Dist(Self, Noise) <= FMath::Min(NoiseRadiusCm, Def.Perception.HearingRadius * 100.0);
++	return NoiseRadiusCm > 0.0; // PLANTED DEFECT: every creature hears every noise
+ }
+ 
+ const TCHAR* GLCreatureRules::StateName(EGLCreatureState State)

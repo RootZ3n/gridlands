@@ -95,3 +95,13 @@ These are data or small constants, cheap to change:
 
 ## Reversal cost
 Low to moderate. The formula is one function, and every number is data.
+
+## Future decision point (recorded 2026-09-25, operator)
+P6 ([ADR-0030](0030-structural-salvage-and-deterministic-collapse.md)) gives **authored world
+structures** deterministic physical collapse: debris, impact damage and persistence. Player-built
+structures deliberately keep this ADR's behaviour for now:
+- demolition collapse refunds in full;
+- digging under a player structure is refused.
+
+**Whether player structures adopt the physical-collapse model is an open operator decision.** It
+will be evaluated later with gameplay and economy evidence. P6's scope is not a permanent answer.

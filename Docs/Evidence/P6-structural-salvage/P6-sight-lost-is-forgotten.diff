@@ -1,0 +1,13 @@
+diff --git a/Source/GridlandsCore/Private/Combat/GLCreatureRules.cpp b/Source/GridlandsCore/Private/Combat/GLCreatureRules.cpp
+index 84a2ab3..27f0771 100644
+--- a/Source/GridlandsCore/Private/Combat/GLCreatureRules.cpp
++++ b/Source/GridlandsCore/Private/Combat/GLCreatureRules.cpp
+@@ -68,7 +68,7 @@ FGLCreatureDecision GLCreatureRules::Decide(const FGLCreatureDef& Def, EGLCreatu
+ 	}
+ 	const double Leash = Def.LeashRadius * 100.0;
+ 	// Lost sight: it still knows where Zenny was, and goes to look (sight lost is not knowledge lost).
+-	if (bWasHunting && Facts.SearchSecondsLeft > 0.0 && FVector::Dist2D(Facts.LastKnown, Facts.Home) <= Leash)
++	if (false && bWasHunting && Facts.SearchSecondsLeft > 0.0 && FVector::Dist2D(Facts.LastKnown, Facts.Home) <= Leash) // PLANTED DEFECT: losing sight erases knowledge
+ 	{
+ 		D.State = EGLCreatureState::Search;
+ 		D.bMove = FVector::Dist2D(Facts.Self, Facts.LastKnown) > HomeToleranceCm;
