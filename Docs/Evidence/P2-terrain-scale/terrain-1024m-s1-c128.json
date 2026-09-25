@@ -1,0 +1,53 @@
+{
+	"cellMetres": 1024,
+	"spacingMetres": 1,
+	"chunkMetres": 128,
+	"chunks": 64,
+	"vertices": 1050625,
+	"triangles": 2097152,
+	"rhi": "Vulkan",
+	"gpu": "AMD Radeon RX 6800 (RADV NAVI21)",
+	"resX": 1920,
+	"resY": 1080,
+	"generateSeconds": 0.082546473015099764,
+	"buildSeconds": 3.3044798100600019,
+	"buildMeshSeconds": 1.8387023222167045,
+	"buildCollisionSeconds": 1.4490819222992286,
+	"heightfieldMb": 8.0156326293945312,
+	"memUsedMbBefore": 2250.00390625,
+	"memUsedMbAfterBuild": 2832.91015625,
+	"navFullBuildSeconds": 7.7826163879362866,
+	"memUsedMbAfterNav": 3266.08203125,
+	"memDeltaMbTerrainAndNav": 1016.078125,
+	"viewGround":
+	{
+		"frames": 400,
+		"frameMsMean": 3.5652143025072291,
+		"frameMsP95": 3.8829139666631818,
+		"fpsMean": 280.48804788445739,
+		"gameThreadMsMean": 1.6292724990844727,
+		"renderThreadMsMean": 2.2277224993705751,
+		"gpuMsMean": 3.0972050005197524,
+		"gpuMsP95": 3.1770000457763672
+	},
+	"viewOverlook":
+	{
+		"frames": 400,
+		"frameMsMean": 4.1227906825952232,
+		"frameMsP95": 4.4770600507035851,
+		"fpsMean": 242.55415251169575,
+		"gameThreadMsMean": 1.5982174995541572,
+		"renderThreadMsMean": 2.3892525017261503,
+		"gpuMsMean": 3.6604724967479707,
+		"gpuMsP95": 3.7349998950958252
+	},
+	"editMsMean": 51.689191469146557,
+	"editMsP95": 55.965907056815922,
+	"edits": 60,
+	"navUpdateAfterEditSecondsMean": 0.17106195561063942,
+	"navUpdateAfterEditSecondsMax": 0.29907460894901305,
+	"saveDeltaVertices": 470,
+	"saveTerrainBytes": 7568,
+	"reloadAllChunksSeconds": 3.1229160929797217,
+	"memUsedMbAtEnd": 3390.6640625
+}

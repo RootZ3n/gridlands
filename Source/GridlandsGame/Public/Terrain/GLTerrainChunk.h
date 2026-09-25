@@ -26,6 +26,12 @@ public:
 	bool Covers(const FIntRect& DirtyVertices) const;
 
 	FIntPoint GetFirstVertex() const { return FirstVertex; }
+
+	/** Cumulative rebuild cost across all chunks (performance harness). */
+	static inline double MeshSeconds = 0.0;
+	static inline double CollisionSeconds = 0.0;
+	static inline double NavigationSeconds = 0.0;
+	static inline int32 Rebuilds = 0;
 	UDynamicMeshComponent* GetMesh() const { return Mesh; }
 
 private:

@@ -38,6 +38,7 @@ bool AGLTerrainChunk::Covers(const FIntRect& Dirty) const
 void AGLTerrainChunk::Rebuild(const FGLHeightfield& Field, bool bNotifyNavigation)
 {
 	using namespace UE::Geometry;
+	const double Start = FPlatformTime::Seconds();
 	FDynamicMesh3 Built;
 	const FVector2D ChunkOrigin = Field.VertexLocation(FirstVertex.X, FirstVertex.Y);
 	for (int32 Y = 0; Y < VertsPerSide; ++Y)
@@ -61,9 +62,15 @@ void AGLTerrainChunk::Rebuild(const FGLHeightfield& Field, bool bNotifyNavigatio
 	FMeshNormals::QuickComputeVertexNormals(Built);
 	FMeshNormals::InitializeOverlayToPerVertexNormals(Built.Attributes()->PrimaryNormals(), true);
 	Mesh->SetMesh(MoveTemp(Built));
+	const double Meshed = FPlatformTime::Seconds();
 	Mesh->UpdateCollision(false); // synchronous: a trace right after an edit sees the new ground
+	const double Collided = FPlatformTime::Seconds();
 	if (bNotifyNavigation)
 	{
 		UNavigationSystemV1::UpdateComponentInNavOctree(*Mesh);
 	}
+	MeshSeconds += Meshed - Start;
+	CollisionSeconds += Collided - Meshed;
+	NavigationSeconds += FPlatformTime::Seconds() - Collided;
+	++Rebuilds;
 }

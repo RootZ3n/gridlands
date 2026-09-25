@@ -117,4 +117,33 @@ bool FGLHeightfieldDelta::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLHeightfieldAuthored, "Gridlands.Core.Terrain.AuthoredBaseIsTheReference", TerrainFlags)
+bool FGLHeightfieldAuthored::RunTest(const FString& Parameters)
+{
+	TArray<float> Hills = GLTerrainGen::Rolling(7, 65, 65, 100.0, 1500.0);
+	TestEqual(TEXT("generator is deterministic"), Hills, GLTerrainGen::Rolling(7, 65, 65, 100.0, 1500.0));
+	float Low = 1e9f, High = -1e9f;
+	for (const float H : Hills) { Low = FMath::Min(Low, H); High = FMath::Max(High, H); }
+	TestTrue(FString::Printf(TEXT("representative relief (%.0f..%.0f cm)"), Low, High), High - Low > 800.0f);
+
+	FGLHeightfield Field = Flat();
+	TArray<float> Base = Hills;
+	TestTrue(TEXT("base accepted"), Field.SetBase(MoveTemp(Base)));
+	TestFalse(TEXT("a wrong-sized base is refused"), Field.SetBase(TArray<float>{ 1.f, 2.f }));
+	TArray<int32> Indices, Deltas;
+	Field.EncodeDelta(Indices, Deltas);
+	TestEqual(TEXT("untouched authored ground saves nothing"), Indices.Num(), 0);
+
+	const float Before = Field.VertexHeight(32, 32);
+	for (int32 Stroke = 0; Stroke < 20 && Field.Apply(Edit(EGLTerrainOp::Dig, FVector2D(0, 0), 300.0, 100.0)).bApplied; ++Stroke) {}
+	TestEqual(TEXT("depth limit is relative to the authored base"), Field.VertexHeight(32, 32), FMath::RoundToFloat(Before) - 300.f);
+	Field.EncodeDelta(Indices, Deltas);
+	FGLHeightfield Restored = Flat();
+	TArray<float> Again = GLTerrainGen::Rolling(7, 65, 65, 100.0, 1500.0);
+	Restored.SetBase(MoveTemp(Again));
+	TestTrue(TEXT("delta restores onto the same authored base"), Restored.ApplyDelta(Indices, Deltas));
+	TestEqual(TEXT("exactly"), Restored.VertexHeight(32, 32), Field.VertexHeight(32, 32));
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

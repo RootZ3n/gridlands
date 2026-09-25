@@ -57,7 +57,14 @@ deterministically and be maintainable by agents.
      - a control shows stale navigation still offers the old route;
      - a mutation (edits don't tell navigation) fails the gate.
    - The same proof passes in the real game (`gl.Demo.NavProof`).
-2. **LOD and rendering cost** at cell scale on the target GPU.
+2. **LOD and rendering cost** at cell scale on the target GPU: **MEASURED (P2)**
+   ([evidence](../Evidence/P2-terrain-scale/README.md)).
+   - Rendering is not the limit: about 3 ms of GPU time at 1080p from 256 m to 2 km, with no LOD.
+   - Memory is the limit: about 1 GB per 1 km cell at 1 m spacing.
+   - Load time is the other limit: about 7 s at 1 km.
+   - Keep 64 m chunks.
+   - Authored base terrain is now per-vertex (`FGLHeightfield::SetBase`), and saves are deltas
+     against it.
 3. **World Partition streaming** of chunk actors.
 4. **Terrain material blending and foliage** on dynamic-mesh chunks.
 

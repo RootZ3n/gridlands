@@ -25,7 +25,7 @@ public:
 	bool SetupCell(FName CellId);
 	/** Explicit ground (tests, tools): ChunksX x ChunksY chunks of ChunkVerts vertices, SpacingCm apart. */
 	void Setup(const FVector2D& Origin, int32 ChunksX, int32 ChunksY, int32 ChunkVerts, double SpacingCm, float BaseHeightCm,
-		double MaxDigCm, double MaxRaiseCm);
+		double MaxDigCm, double MaxRaiseCm, TArray<float>* AuthoredBase = nullptr);
 
 	bool HasGround() const { return Chunks.Num() > 0; }
 	double HeightAt(const FVector2D& World) const { return Field.HeightAt(World); }
