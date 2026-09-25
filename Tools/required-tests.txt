@@ -41,7 +41,7 @@ Gridlands.Core.Stability 2
 Gridlands.Game.Stability 1
 
 # M9: the world save (loop steps 13-15), versions, mid-repair, stale ids.
-Gridlands.Core.Save 1
+Gridlands.Core.Save 2
 Gridlands.Game.Save 3
 
 # Puzzle proof (ADR-0023): PRESENT answers, capped hints, dialogue never solves, persistence.
@@ -58,3 +58,6 @@ Gridlands.Core.Combat 2
 Gridlands.Game.Combat 3
 Gridlands.Game.Storm 1
 Gridlands.Game.World 1
+
+# P3: Grid cells and streaming (ADR-0026): no loss, duplication or replay; save in the second cell; per-cell static/depth.
+Gridlands.Game.Grid 3

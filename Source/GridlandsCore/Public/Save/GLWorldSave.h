@@ -51,12 +51,34 @@ struct GRIDLANDSCORE_API FGLSavedPiece
 	UPROPERTY() int32 YawQuarter = 0;
 };
 
+/**
+ * Everything saved about one Grid cell (v2, P3): the state of what lives there. Kept while the
+ * cell is streamed out, so leaving and returning never loses or replays anything.
+ */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLSavedCell
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FName Cell;
+	UPROPERTY() TArray<FGLSavedGlitch> Glitches;
+	UPROPERTY() TArray<FName> SalvagedPlacements;
+	UPROPERTY() TArray<FName> DefeatedCreatures;
+	UPROPERTY() TArray<FGLSavedPiece> BuildPieces;
+	/** Sparse ground delta from the cell's authored base: vertex index -> whole centimetres. */
+	UPROPERTY() TArray<int32> TerrainIndices;
+	UPROPERTY() TArray<int32> TerrainDeltaCm;
+
+	bool IsEmpty() const { return Glitches.Num() == 0 && SalvagedPlacements.Num() == 0 && DefeatedCreatures.Num() == 0 && BuildPieces.Num() == 0 && TerrainIndices.Num() == 0; }
+};
+
 USTRUCT()
 struct GRIDLANDSCORE_API FGLWorldSave
 {
 	GENERATED_BODY()
 
-	static constexpr int32 CurrentVersion = 1;
+	/** v2 (P3): per-cell records in Cells; v1 files migrate (their flat cell fields become one record). */
+	static constexpr int32 CurrentVersion = 2;
 
 	UPROPERTY() int32 SchemaVersion = CurrentVersion;
 	UPROPERTY() FName Cell;
@@ -86,7 +108,11 @@ struct GRIDLANDSCORE_API FGLWorldSave
 	UPROPERTY() TArray<FName> Discoveries;
 	UPROPERTY() TArray<FName> StormsOccurred;
 	UPROPERTY() double ZennyHealth = -1.0;
+	/** v2: one record per Grid cell that has ever been changed (loaded or not). */
+	UPROPERTY() TArray<FGLSavedCell> Cells;
 	UPROPERTY() FGLSavedTransform Zenny;
+
+	const FGLSavedCell* FindCell(FName CellId) const { return Cells.FindByPredicate([CellId](const FGLSavedCell& C) { return C.Cell == CellId; }); }
 	UPROPERTY() FGLSavedTransform Pehlichi;
 };
 

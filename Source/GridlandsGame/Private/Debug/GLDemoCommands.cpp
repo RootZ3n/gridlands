@@ -28,6 +28,12 @@
 #include "NavigationSystem.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "TimerManager.h"
+#include "Engine/Level.h"
+#include "Engine/StaticMeshActor.h"
+#include "Engine/LevelStreaming.h"
+#include "World/GLAnchorComponent.h"
+#include "World/GLGridSubsystem.h"
+#include "Save/GLSaveSubsystem.h"
 #include "Combat/GLCreature.h"
 #include "Combat/GLHealthComponent.h"
 #include "Storm/GLStormSubsystem.h"
@@ -455,6 +461,160 @@ namespace GLDemo
 		TEXT("gl.Demo.ShotIn"),
 		TEXT("DEV ONLY: gl.Demo.ShotIn Seconds - takes a 1600x900 screenshot after a delay."),
 		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic(&ShotIn));
+
+	/** Moves Zenny, streams synchronously, then stands him on the (now loaded) ground. */
+	void GridMove(UWorld* World, const FVector2D& To)
+	{
+		APawn* Zenny = UGameplayStatics::GetPlayerPawn(World, 0);
+		UGLGridSubsystem* Grid = World->GetSubsystem<UGLGridSubsystem>();
+		UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>();
+		Zenny->SetActorLocation(FVector(To, 300.0), false, nullptr, ETeleportType::TeleportPhysics);
+		Grid->Update(Zenny->GetActorLocation());
+		Zenny->SetActorLocation(FVector(To, Terrain->HeightAt(To) + 110.0), false, nullptr, ETeleportType::TeleportPhysics);
+	}
+
+	/** Authored actors of a cell's streamed level that are in the world right now. */
+	int32 LevelActors(UWorld* World, const TCHAR* CellToken)
+	{
+		int32 Count = 0;
+		for (ULevel* Level : World->GetLevels())
+		{
+			if (Level && Level->GetOutermost()->GetName().Contains(CellToken))
+			{
+				for (AActor* Actor : Level->Actors)
+				{
+					Count += Actor && IsValid(Actor) && Actor->IsA<AStaticMeshActor>() ? 1 : 0;
+				}
+			}
+		}
+		return Count;
+	}
+
+	/** One line describing both cells (the real-game streaming evidence). */
+	void GridReport(UWorld* World)
+	{
+		UGLGridSubsystem* Grid = World->GetSubsystem<UGLGridSubsystem>();
+		UGLGlitchSubsystem* Glitches = World->GetSubsystem<UGLGlitchSubsystem>();
+		UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>();
+		UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>();
+		auto State = [Glitches](const TCHAR* Placement) -> FString
+		{
+			const AGLGlitch* G = Glitches->FindByPlacement(Placement);
+			return G ? FGLGlitchLifecycle::StateName(G->GetGlitch()->GetState()) : TEXT("(not loaded)");
+		};
+		int32 GlitchActors = 0, Creatures = 0;
+		for (TActorIterator<AGLGlitch> It(World); It; ++It) { GlitchActors += IsValid(*It) ? 1 : 0; }
+		for (TActorIterator<AGLCreature> It(World); It; ++It) { Creatures += IsValid(*It) ? 1 : 0; }
+		const APawn* Zenny = UGameplayStatics::GetPlayerPawn(World, 0);
+		UE_LOG(LogGridlands, Log, TEXT("gl.Demo.GridReport: in %s | loaded [%s] | origin: lamp %s, pieces %d, mound %.0f cm, level actors %d | lots: jukebox %s, pieces %d, level actors %d | glitch actors %d, creatures %d | loads %d unloads %d"),
+			*Grid->GetCurrentCell().ToString(), *FString::JoinBy(Grid->GetLoadedCells(), TEXT(","), [](FName N) { return N.ToString(); }),
+			*State(TEXT("placement.origin.glitch_flicker_lamp")), Building->PiecesOfCell(TEXT("cell.home.origin")).Num(),
+			Terrain->HasCell(TEXT("cell.home.origin")) ? Terrain->HeightAt(FVector2D(12700, -1500)) : -9999.0, LevelActors(World, TEXT("cell_home_origin")),
+			*State(TEXT("placement.diner_lots.glitch_jukebox")), Building->PiecesOfCell(TEXT("cell.outer.diner_lots")).Num(), LevelActors(World, TEXT("cell_outer_diner_lots")),
+			GlitchActors, Creatures, Grid->GetLoadCount(), Grid->GetUnloadCount());
+		(void)Zenny;
+	}
+
+	FAutoConsoleCommandWithWorld GridReportCommand(
+		TEXT("gl.Demo.GridReport"),
+		TEXT("DEV ONLY: logs both Grid cells' loaded state (glitches, pieces, ground, level actors)."),
+		FConsoleCommandWithWorldDelegate::CreateStatic(&GridReport));
+
+	FAutoConsoleCommandWithWorldAndArgs GridMoveCommand(
+		TEXT("gl.Demo.GridMove"),
+		TEXT("DEV ONLY: gl.Demo.GridMove X Y - moves Zenny there, streaming synchronously."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic([](const TArray<FString>& Args, UWorld* World)
+		{
+			if (Args.Num() >= 2)
+			{
+				GridMove(World, FVector2D(FCString::Atod(*Args[0]), FCString::Atod(*Args[1])));
+			}
+		}));
+
+	/**
+	 * The streaming torture walk (P3) in the real game, with level instances: change both cells,
+	 * cross back and forth, report after every return, then save while standing in the lots.
+	 */
+	struct FGridWalk { int32 Step = 0; FTimerHandle Timer; };
+	FGridWalk Walk;
+
+	void GridWalk(UWorld* World)
+	{
+		AGLCharacter* Zenny = Cast<AGLCharacter>(UGameplayStatics::GetPlayerPawn(World, 0));
+		if (!Zenny || !Zenny->GetPehlichi())
+		{
+			return;
+		}
+		Walk = FGridWalk();
+		World->GetTimerManager().SetTimer(Walk.Timer, FTimerDelegate::CreateLambda([World, Zenny]()
+		{
+			UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>();
+			UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>();
+			UGLGlitchSubsystem* Glitches = World->GetSubsystem<UGLGlitchSubsystem>();
+			AGLPehlichi* Pehlichi = Zenny->GetPehlichi();
+			switch (Walk.Step++)
+			{
+			case 0: // at the boundary: build right at the edge and raise a mound across it
+			{
+				GridMove(World, FVector2D(12650, 600));
+				World->GetSubsystem<UGLKnowledgeSubsystem>()->Learn(TEXT("knowledge.style.modern_timber_frame"));
+				Zenny->GetInventory()->AddItem(TEXT("item.material.timber_plank"), 10);
+				const FVector At(12500, 600, Terrain->HeightAt(FVector2D(12500, 600)));
+				const bool bFloor = Building->Place(Zenny, { 0, TEXT("buildpiece.modern.timber_foundation"), At, 0 }).IsAllowed();
+				const bool bWall = Building->Place(Zenny, { 0, TEXT("buildpiece.modern.timber_wall"), At + FVector(0, 100, 30), 0 }).IsAllowed();
+				FGLTerrainEdit Mound;
+				Mound.Op = EGLTerrainOp::Raise;
+				Mound.Centre = FVector2D(12800, -1500);
+				Mound.RadiusCm = 250.0;
+				Mound.AmountCm = 120.0;
+				const bool bMound = Terrain->ApplyEdit(Mound).bApplied;
+				UE_LOG(LogGridlands, Log, TEXT("gl.Demo.GridWalk: at the boundary: floor %d, wall %d, mound across the edge %d"), bFloor, bWall, bMound);
+				GridReport(World);
+				break;
+			}
+			case 1: // in the lots: repair its jukebox (Pehlichi, real components, fast-forwarded)
+			{
+				GridMove(World, FVector2D(25600 + 1500, -800 - 300));
+				if (AGLGlitch* Jukebox = Glitches->FindByPlacement(TEXT("placement.diner_lots.glitch_jukebox")))
+				{
+					Pehlichi->SetActorLocation(Jukebox->GetActorLocation() + FVector(0, -100, 0));
+					Pehlichi->GetScan()->Scan();
+					Glitches->EvaluateRequirements();
+					Pehlichi->GetCommands()->Issue(TEXT("Command.Pehlichi.Repair"), Zenny);
+					for (int32 I = 0; I < 120 && Pehlichi->GetRepair()->IsWorking(); ++I)
+					{
+						Glitches->EvaluateRequirements();
+						Pehlichi->GetPositioning()->Advance(0.1f);
+						Pehlichi->GetRepair()->Advance(0.1f);
+					}
+				}
+				UE_LOG(LogGridlands, Log, TEXT("gl.Demo.GridWalk: in the lots, jukebox repaired"));
+				GridReport(World);
+				break;
+			}
+			case 2: case 4: case 6: case 8:
+				GridMove(World, FVector2D(30000, 0)); // deep in the lots: the origin streams out
+				GridReport(World);
+				break;
+			case 3: case 5: case 7:
+				GridMove(World, FVector2D(0, -1200)); // home: the lots stream out
+				GridReport(World);
+				break;
+			case 9:
+				World->GetSubsystem<UGLSaveSubsystem>()->SaveToSlot(TEXT("world"));
+				UE_LOG(LogGridlands, Log, TEXT("gl.Demo.GridWalk: saved while standing in the lots (the origin is streamed out)"));
+				World->GetTimerManager().ClearTimer(Walk.Timer);
+				break;
+			}
+			Pehlichi->SetActorLocation(Zenny->GetActorLocation() + FVector(150, 0, -60));
+			Pehlichi->GetPositioning()->Follow(Zenny);
+		}), 1.0f, true, 1.0f);
+	}
+
+	FAutoConsoleCommandWithWorld GridWalkCommand(
+		TEXT("gl.Demo.GridWalk"),
+		TEXT("DEV ONLY: the Grid streaming torture walk (build/terraform at the boundary, repair in the lots, cross 7 times, save in the lots)."),
+		FConsoleCommandWithWorldDelegate::CreateStatic(&GridWalk));
 
 	FAutoConsoleCommandWithWorld RepairNearbyCommand(
 		TEXT("gl.Demo.RepairNearby"),

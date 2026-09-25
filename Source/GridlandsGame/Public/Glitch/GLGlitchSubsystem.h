@@ -22,6 +22,8 @@ public:
 	virtual TStatId GetStatId() const override { RETURN_QUICK_DECLARE_CYCLE_STAT(UGLGlitchSubsystem, STATGROUP_Tickables); }
 
 	void Register(AGLGlitch* Glitch);
+	/** Forgets glitches that no longer exist (a streamed-out cell's). */
+	void Compact() { Glitches.RemoveAll([](const TWeakObjectPtr<AGLGlitch>& G) { return !G.IsValid(); }); }
 	AGLGlitch* FindByPlacement(FName PlacementId) const;
 	/** Glitches within RadiusCm of Origin, nearest first. */
 	TArray<AGLGlitch*> GlitchesNear(const FVector& Origin, double RadiusCm) const;

@@ -45,9 +45,10 @@ namespace GLM4Tests
 }
 
 using namespace GLM4Tests;
-using namespace GLTestUtils;
+using GLTestUtils::FTestWorld;
+using GLTestUtils::Tag;
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLSalvageCompletes, "Gridlands.Game.Salvage.CompletesGrantsYieldsAndEvents", Flags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLSalvageCompletes, "Gridlands.Game.Salvage.CompletesGrantsYieldsAndEvents", GLTestUtils::Flags)
 bool FGLSalvageCompletes::RunTest(const FString& Parameters)
 {
 	FTestWorld Test;
@@ -74,7 +75,7 @@ bool FGLSalvageCompletes::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLSalvageSettings, "Gridlands.Game.Salvage.WorldSettingsScaleRepeatableYields", Flags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLSalvageSettings, "Gridlands.Game.Salvage.WorldSettingsScaleRepeatableYields", GLTestUtils::Flags)
 bool FGLSalvageSettings::RunTest(const FString& Parameters)
 {
 	FTestWorld Test;
@@ -87,7 +88,7 @@ bool FGLSalvageSettings::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLSalvagePryBar, "Gridlands.Game.Salvage.PryBarSalvagesFaster", Flags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLSalvagePryBar, "Gridlands.Game.Salvage.PryBarSalvagesFaster", GLTestUtils::Flags)
 bool FGLSalvagePryBar::RunTest(const FString& Parameters)
 {
 	FTestWorld Test;
@@ -102,7 +103,7 @@ bool FGLSalvagePryBar::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLOverencumbered, "Gridlands.Game.Inventory.OverencumbranceIsAnnouncedOnce", Flags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLOverencumbered, "Gridlands.Game.Inventory.OverencumbranceIsAnnouncedOnce", GLTestUtils::Flags)
 bool FGLOverencumbered::RunTest(const FString& Parameters)
 {
 	FTestWorld Test;
@@ -123,7 +124,7 @@ bool FGLOverencumbered::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLPlacementsSpawn, "Gridlands.Game.Placement.SpawnsSalvageNodesFromData", Flags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLPlacementsSpawn, "Gridlands.Game.Placement.SpawnsSalvageNodesFromData", GLTestUtils::Flags)
 bool FGLPlacementsSpawn::RunTest(const FString& Parameters)
 {
 	FTestWorld Test; // no map: anchored placements resolve through the exported anchor records

@@ -1,0 +1,13 @@
+diff --git a/Source/GridlandsGame/Private/World/GLGridSubsystem.cpp b/Source/GridlandsGame/Private/World/GLGridSubsystem.cpp
+index 32f664d..a65e0b4 100644
+--- a/Source/GridlandsGame/Private/World/GLGridSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLGridSubsystem.cpp
+@@ -127,7 +127,7 @@ bool UGLGridSubsystem::UnloadCell(FName Cell)
+ 	// Keep everything about it first, then take it out of the world.
+ 	if (UGLSaveSubsystem* Saves = World->GetSubsystem<UGLSaveSubsystem>())
+ 	{
+-		Saves->StowCell(Cell);
++		// MUTATION: the cell's state is not kept when it streams out
+ 	}
+ 	World->GetSubsystem<UGLBuildingSubsystem>()->RemoveCell(Cell);
+ 	World->GetSubsystem<UGLPlacementSubsystem>()->DespawnCell(Cell);

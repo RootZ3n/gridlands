@@ -28,6 +28,7 @@
 #include "Combat/GLHealthComponent.h"
 #include "Storm/GLStormSubsystem.h"
 #include "World/GLAmbientSubsystem.h"
+#include "World/GLGridCells.h"
 #include "Salvage/GLSalvageNode.h"
 #include "Salvage/GLSalvageableComponent.h"
 #include "World/GLPlacementSubsystem.h"
@@ -84,34 +85,6 @@ FGLWorldSave UGLSaveSubsystem::Capture() const
 	FGLWorldSave Save;
 	UWorld* World = GetWorld();
 	const UGLGlitchSubsystem* Glitches = World->GetSubsystem<UGLGlitchSubsystem>();
-	for (const TWeakObjectPtr<AGLGlitch>& Actor : Glitches->GetAll())
-	{
-		if (const UGLGlitchComponent* Glitch = Actor.IsValid() ? Actor->GetGlitch() : nullptr)
-		{
-			Save.Glitches.Add({ Glitch->GetPlacementId(), FGLGlitchLifecycle::ToPersistedState(Glitch->GetState()), Glitch->GetProgressSeconds(), Glitch->AreItemsDelivered() });
-			if (Save.Cell.IsNone())
-			{
-				// placement.<cell short>.<name> -> the cell whose id ends in that short name
-				const FString Short = Glitch->GetPlacementId().ToString().Mid(10).Left(Glitch->GetPlacementId().ToString().Mid(10).Find(TEXT(".")));
-				GLContent::Get().ForEachEntry([&](const FGLContentEntry& Entry)
-				{
-					if (Entry.Kind == TEXT("cell") && Entry.Id.ToString().EndsWith(TEXT(".") + Short))
-					{
-						Save.Cell = Entry.Id;
-					}
-				});
-			}
-		}
-	}
-	for (TActorIterator<AGLSalvageNode> It(World); It; ++It)
-	{
-		if (It->GetSalvageable()->IsSalvaged() && !It->PlacementId.IsNone())
-		{
-			Save.SalvagedPlacements.Add(It->PlacementId);
-		}
-	}
-	Save.SalvagedPlacements.Sort(FNameLexicalLess());
-
 	const AActor* Zenny = Glitches->GetCommander();
 	Save.Zenny = ToSaved(Zenny);
 	if (const UGLInventoryComponent* Inventory = Zenny ? Zenny->FindComponentByClass<UGLInventoryComponent>() : nullptr)
@@ -157,17 +130,6 @@ FGLWorldSave UGLSaveSubsystem::Capture() const
 	{
 		Save.SettingsPreset = Settings->GetPresetId();
 	}
-	if (const UGLPlacementSubsystem* Placed = World->GetSubsystem<UGLPlacementSubsystem>())
-	{
-		for (const TPair<FName, TWeakObjectPtr<AGLCreature>>& Entry : Placed->GetCreatures())
-		{
-			if (Entry.Value.IsValid() && Entry.Value->IsDefeated())
-			{
-				Save.DefeatedCreatures.Add(Entry.Key);
-			}
-		}
-		Save.DefeatedCreatures.Sort(FNameLexicalLess());
-	}
 	if (const UGLAmbientSubsystem* Ambient = World->GetSubsystem<UGLAmbientSubsystem>())
 	{
 		Save.Discoveries = Ambient->GetDiscovered();
@@ -183,16 +145,27 @@ FGLWorldSave UGLSaveSubsystem::Capture() const
 	}
 	if (const UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>())
 	{
-		for (const FGLPlacedPiece& Piece : Building->GetPieces())
-		{
-			Save.BuildPieces.Add({ Piece.Id, Piece.Def, Piece.Location, Piece.YawQuarter });
-		}
 		Save.NextPieceId = Building->GetNextId();
 	}
-	if (const UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>(); Terrain && Terrain->HasGround())
+	// Per-cell state (v2): live for loaded cells, the kept record for streamed-out ones.
+	const TSet<FName> Loaded = LoadedCells();
+	for (const FName& Cell : Loaded)
 	{
-		Terrain->CaptureDelta(Save.TerrainIndices, Save.TerrainDeltaCm);
+		FGLSavedCell Record = CaptureCell(Cell);
+		if (!Record.IsEmpty())
+		{
+			Save.Cells.Add(MoveTemp(Record));
+		}
 	}
+	for (const TPair<FName, FGLSavedCell>& Kept : Dormant)
+	{
+		if (!Loaded.Contains(Kept.Key) && !Kept.Value.IsEmpty())
+		{
+			Save.Cells.Add(Kept.Value);
+		}
+	}
+	Save.Cells.Sort([](const FGLSavedCell& A, const FGLSavedCell& B) { return A.Cell.LexicalLess(B.Cell); });
+	Save.Cell = Zenny ? GLGridCells::CellAt(FVector2D(Zenny->GetActorLocation())) : NAME_None;
 	if (const UGLPuzzleSubsystem* Puzzles = World->GetSubsystem<UGLPuzzleSubsystem>())
 	{
 		Save.SolvedPuzzles = Puzzles->GetSolved().Array();
@@ -209,8 +182,158 @@ FGLWorldSave UGLSaveSubsystem::Capture() const
 	Save.PehlichiCapabilities.Sort(ById);
 	Save.ExchangeUses.Sort(ById);
 	Save.EventCounts.Sort(ById);
-	Save.Glitches.Sort([](const FGLSavedGlitch& A, const FGLSavedGlitch& B) { return A.Placement.LexicalLess(B.Placement); });
 	return Save;
+}
+
+TSet<FName> UGLSaveSubsystem::LoadedCells() const
+{
+	UWorld* World = GetWorld();
+	TSet<FName> Cells;
+	if (const UGLPlacementSubsystem* Placements = World->GetSubsystem<UGLPlacementSubsystem>())
+	{
+		Cells.Append(Placements->GetSpawnedCells());
+	}
+	if (const UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>())
+	{
+		Cells.Append(Terrain->GetGroundCells());
+	}
+	if (const UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>())
+	{
+		Cells.Append(Building->CellsWithPieces());
+	}
+	return Cells;
+}
+
+FGLSavedCell UGLSaveSubsystem::CaptureCell(FName Cell) const
+{
+	UWorld* World = GetWorld();
+	FGLSavedCell Record;
+	Record.Cell = Cell;
+	for (const TWeakObjectPtr<AGLGlitch>& Actor : World->GetSubsystem<UGLGlitchSubsystem>()->GetAll())
+	{
+		const UGLGlitchComponent* Glitch = Actor.IsValid() ? Actor->GetGlitch() : nullptr;
+		if (Glitch && UGLPlacementSubsystem::IsPlacementOfCell(Glitch->GetPlacementId(), Cell))
+		{
+			Record.Glitches.Add({ Glitch->GetPlacementId(), FGLGlitchLifecycle::ToPersistedState(Glitch->GetState()), Glitch->GetProgressSeconds(), Glitch->AreItemsDelivered() });
+		}
+	}
+	for (TActorIterator<AGLSalvageNode> It(World); It; ++It)
+	{
+		if (IsValid(*It) && It->GetSalvageable()->IsSalvaged() && UGLPlacementSubsystem::IsPlacementOfCell(It->PlacementId, Cell))
+		{
+			Record.SalvagedPlacements.Add(It->PlacementId);
+		}
+	}
+	if (const UGLPlacementSubsystem* Placements = World->GetSubsystem<UGLPlacementSubsystem>())
+	{
+		for (const TPair<FName, TWeakObjectPtr<AGLCreature>>& Entry : Placements->GetCreatures())
+		{
+			if (Entry.Value.IsValid() && Entry.Value->IsDefeated() && UGLPlacementSubsystem::IsPlacementOfCell(Entry.Key, Cell))
+			{
+				Record.DefeatedCreatures.Add(Entry.Key);
+			}
+		}
+	}
+	if (const UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>())
+	{
+		for (const FGLPlacedPiece& Piece : Building->PiecesOfCell(Cell))
+		{
+			Record.BuildPieces.Add({ Piece.Id, Piece.Def, Piece.Location, Piece.YawQuarter });
+		}
+		Record.BuildPieces.Sort([](const FGLSavedPiece& A, const FGLSavedPiece& B) { return A.Id < B.Id; });
+	}
+	if (const UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>())
+	{
+		Terrain->CaptureCellDelta(Cell, Record.TerrainIndices, Record.TerrainDeltaCm);
+	}
+	Record.Glitches.Sort([](const FGLSavedGlitch& A, const FGLSavedGlitch& B) { return A.Placement.LexicalLess(B.Placement); });
+	Record.SalvagedPlacements.Sort(FNameLexicalLess());
+	Record.DefeatedCreatures.Sort(FNameLexicalLess());
+	return Record;
+}
+
+void UGLSaveSubsystem::ApplyCell(const FGLSavedCell& Record, TArray<FString>* OutProblems)
+{
+	auto Problem = [OutProblems](const FString& Message)
+	{
+		UE_LOG(LogGridlands, Warning, TEXT("Load: %s"), *Message);
+		if (OutProblems)
+		{
+			OutProblems->Add(Message);
+		}
+	};
+	UWorld* World = GetWorld();
+	UGLGlitchSubsystem* Glitches = World->GetSubsystem<UGLGlitchSubsystem>();
+	UGLPlacementSubsystem* Placements = World->GetSubsystem<UGLPlacementSubsystem>();
+	// Everything here restores silently: no events, so no dialogue replays because a cell came back.
+	for (const FGLSavedGlitch& Saved : Record.Glitches)
+	{
+		AGLGlitch* Glitch = Glitches->FindByPlacement(Saved.Placement);
+		if (!Glitch)
+		{
+			Problem(FString::Printf(TEXT("saved glitch placement %s no longer exists"), *Saved.Placement.ToString()));
+			continue;
+		}
+		if (!Glitch->GetGlitch()->RestoreFromSave(Saved.State, Saved.ProgressSeconds, Saved.ItemsDelivered, FGLRestoreAuthority()))
+		{
+			Problem(FString::Printf(TEXT("could not restore %s to %s"), *Saved.Placement.ToString(), FGLGlitchLifecycle::StateName(Saved.State)));
+		}
+	}
+	for (const FName& Id : Record.SalvagedPlacements)
+	{
+		if (AGLSalvageNode* Node = Placements->FindSalvageNode(Id))
+		{
+			Node->GetSalvageable()->RestoreSalvaged();
+		}
+		else
+		{
+			Problem(FString::Printf(TEXT("saved salvage placement %s no longer exists"), *Id.ToString()));
+		}
+	}
+	for (const FName& Id : Record.DefeatedCreatures)
+	{
+		if (AGLCreature* Creature = Placements->FindCreature(Id))
+		{
+			Creature->RestoreDefeated();
+		}
+		else
+		{
+			Problem(FString::Printf(TEXT("saved defeated creature %s no longer exists"), *Id.ToString()));
+		}
+	}
+	// Ground first, then the pieces that stand on it (support is derived from both).
+	if (UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>(); Terrain && Terrain->HasCell(Record.Cell))
+	{
+		if (!Terrain->RestoreCellDelta(Record.Cell, Record.TerrainIndices, Record.TerrainDeltaCm))
+		{
+			Problem(FString::Printf(TEXT("saved terrain does not fit %s's ground; ground left as authored"), *Record.Cell.ToString()));
+		}
+	}
+	if (UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>())
+	{
+		TArray<FGLPlacedPiece> Pieces;
+		for (const FGLSavedPiece& Saved : Record.BuildPieces)
+		{
+			if (!GLContent::Get().Find<FGLBuildPieceDef>(Saved.Def))
+			{
+				Problem(FString::Printf(TEXT("saved build piece %s no longer exists"), *Saved.Def.ToString()));
+				continue;
+			}
+			Pieces.Add({ Saved.Id, Saved.Def, Saved.Location, Saved.YawQuarter, Record.Cell });
+		}
+		Building->RemoveCell(Record.Cell);
+		Building->RestoreCell(Record.Cell, Pieces);
+	}
+}
+
+void UGLSaveSubsystem::StowCell(FName Cell)
+{
+	Dormant.Add(Cell, CaptureCell(Cell));
+}
+
+bool UGLSaveSubsystem::TakeDormant(FName Cell, FGLSavedCell& Out)
+{
+	return Dormant.RemoveAndCopyValue(Cell, Out);
 }
 
 void UGLSaveSubsystem::Apply(const FGLWorldSave& Save, TArray<FString>* OutProblems)
@@ -227,29 +350,33 @@ void UGLSaveSubsystem::Apply(const FGLWorldSave& Save, TArray<FString>* OutProbl
 	UGLGlitchSubsystem* Glitches = World->GetSubsystem<UGLGlitchSubsystem>();
 	UGLPlacementSubsystem* Placements = World->GetSubsystem<UGLPlacementSubsystem>();
 
-	for (const FGLSavedGlitch& Saved : Save.Glitches)
+	// Per-cell state (v2): loaded cells now, the rest kept until their cell streams in.
+	Dormant.Reset();
+	const TSet<FName> Loaded = LoadedCells();
+	for (const FGLSavedCell& Record : Save.Cells)
 	{
-		AGLGlitch* Glitch = Glitches->FindByPlacement(Saved.Placement);
-		if (!Glitch)
+		if (Loaded.Contains(Record.Cell))
 		{
-			Problem(FString::Printf(TEXT("saved glitch placement %s no longer exists"), *Saved.Placement.ToString()));
-			continue;
-		}
-		if (!Glitch->GetGlitch()->RestoreFromSave(Saved.State, Saved.ProgressSeconds, Saved.ItemsDelivered, FGLRestoreAuthority()))
-		{
-			Problem(FString::Printf(TEXT("could not restore %s to %s"), *Saved.Placement.ToString(), FGLGlitchLifecycle::StateName(Saved.State)));
-		}
-	}
-	for (const FName& Id : Save.SalvagedPlacements)
-	{
-		if (AGLSalvageNode* Node = Placements->FindSalvageNode(Id))
-		{
-			Node->GetSalvageable()->RestoreSalvaged();
+			ApplyCell(Record, OutProblems);
 		}
 		else
 		{
-			Problem(FString::Printf(TEXT("saved salvage placement %s no longer exists"), *Id.ToString()));
+			Dormant.Add(Record.Cell, Record);
 		}
+	}
+	// Flat v1-style fields (built in code, e.g. by tools and tests): applied to whatever is live.
+	FGLSavedCell Flat;
+	Flat.Cell = Save.Cell;
+	Flat.Glitches = Save.Glitches;
+	Flat.SalvagedPlacements = Save.SalvagedPlacements;
+	Flat.DefeatedCreatures = Save.DefeatedCreatures;
+	if (!Flat.IsEmpty())
+	{
+		ApplyCell(Flat, OutProblems);
+	}
+	if (UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>())
+	{
+		Building->SetNextId(Save.NextPieceId);
 	}
 
 	AActor* Zenny = Glitches->GetCommander();
@@ -303,17 +430,6 @@ void UGLSaveSubsystem::Apply(const FGLWorldSave& Save, TArray<FString>* OutProbl
 	{
 		Settings->SetPreset(Save.SettingsPreset);
 	}
-	for (const FName& Id : Save.DefeatedCreatures)
-	{
-		if (AGLCreature* Creature = Placements->FindCreature(Id))
-		{
-			Creature->RestoreDefeated();
-		}
-		else
-		{
-			Problem(FString::Printf(TEXT("saved defeated creature %s no longer exists"), *Id.ToString()));
-		}
-	}
 	if (UGLAmbientSubsystem* Ambient = World->GetSubsystem<UGLAmbientSubsystem>())
 	{
 		Ambient->Restore(Save.Discoveries);
@@ -326,28 +442,6 @@ void UGLSaveSubsystem::Apply(const FGLWorldSave& Save, TArray<FString>* OutProbl
 			Counts.Add(Count.Id, Count.Count);
 		}
 		Storms->Restore(Save.StormsOccurred, Counts);
-	}
-	// Ground first, then the pieces that stand on it (support is derived from both).
-	if (UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>(); Terrain && Terrain->HasGround())
-	{
-		if (!Terrain->RestoreDelta(Save.TerrainIndices, Save.TerrainDeltaCm))
-		{
-			Problem(TEXT("saved terrain does not fit this cell's ground; ground left as authored"));
-		}
-	}
-	if (UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>())
-	{
-		TArray<FGLPlacedPiece> Pieces;
-		for (const FGLSavedPiece& Saved : Save.BuildPieces)
-		{
-			if (!GLContent::Get().Find<FGLBuildPieceDef>(Saved.Def))
-			{
-				Problem(FString::Printf(TEXT("saved build piece %s no longer exists"), *Saved.Def.ToString()));
-				continue;
-			}
-			Pieces.Add({ Saved.Id, Saved.Def, Saved.Location, Saved.YawQuarter });
-		}
-		Building->Restore(Pieces, Save.NextPieceId);
 	}
 	if (UGLPuzzleSubsystem* Puzzles = World->GetSubsystem<UGLPuzzleSubsystem>())
 	{
@@ -388,8 +482,16 @@ bool UGLSaveSubsystem::LoadFromSlot(const FString& Slot, TArray<FString>* OutPro
 		return false;
 	}
 	Apply(Save, OutProblems);
-	UE_LOG(LogGridlands, Log, TEXT("Load: restored %d glitches, %d salvaged placements, %d build pieces, %d edited ground vertices from %s"),
-		Save.Glitches.Num(), Save.SalvagedPlacements.Num(), Save.BuildPieces.Num(), Save.TerrainIndices.Num(), *SlotPath(Slot));
+	int32 CellGlitches = 0, CellPieces = 0, CellGround = 0, CellSalvage = 0;
+	for (const FGLSavedCell& Record : Save.Cells)
+	{
+		CellGlitches += Record.Glitches.Num();
+		CellSalvage += Record.SalvagedPlacements.Num();
+		CellPieces += Record.BuildPieces.Num();
+		CellGround += Record.TerrainIndices.Num();
+	}
+	UE_LOG(LogGridlands, Log, TEXT("Load: %d cell records (%d loaded now, the rest when they stream in): %d glitches, %d salvaged placements, %d build pieces, %d edited ground vertices from %s"),
+		Save.Cells.Num(), Save.Cells.Num() - Dormant.Num(), CellGlitches, CellSalvage, CellPieces, CellGround, *SlotPath(Slot));
 	return true;
 }
 

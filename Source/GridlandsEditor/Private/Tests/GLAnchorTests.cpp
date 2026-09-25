@@ -7,6 +7,7 @@
 #include "GameFramework/WorldSettings.h"
 #include "Misc/AutomationTest.h"
 #include "World/GLTravelPoint.h"
+#include "Engine/StaticMeshActor.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
 #include "World/GLAnchorComponent.h"
@@ -90,9 +91,25 @@ bool FGLOriginBrief::RunTest(const FString& Parameters)
 	TestTrue(TEXT("one 1950s fragment"), Anchored.Contains(TEXT("anchor.origin.fragment_fifties_diner")));
 	TestTrue(TEXT("one Roman fragment"), Anchored.Contains(TEXT("anchor.origin.fragment_roman_columns")));
 	TestTrue(TEXT("one storm-drain entrance"), Anchored.Contains(TEXT("anchor.origin.storm_drain_entrance")));
-	TestEqual(TEXT("exactly one player start"), PlayerStarts, 1);
+	TestEqual(TEXT("the origin cell has no player start (the Grid map owns it, P3)"), PlayerStarts, 0);
 	TestEqual(TEXT("the storm drain has a way in and a way out (M11)"), TravelPoints, 2);
-	TestTrue(TEXT("the world uses the Gridlands game mode"), World->GetWorldSettings()->DefaultGameMode == AGLGameMode::StaticClass());
+
+	// P3: the persistent Grid map owns the start, the sky and the game mode; cells stream in.
+	UWorld* Grid = GLAnchorExport::LoadMap(TEXT("/Game/Gridlands/Maps/L_Grid"));
+	if (!TestNotNull(TEXT("L_Grid loads"), Grid))
+	{
+		return false;
+	}
+	int32 GridStarts = 0, GridMeshes = 0;
+	for (const AActor* Actor : Grid->PersistentLevel->Actors)
+	{
+		GridStarts += Actor && Actor->IsA<APlayerStart>() ? 1 : 0;
+		GridMeshes += Actor && Actor->IsA<AStaticMeshActor>() ? 1 : 0;
+	}
+	TestEqual(TEXT("exactly one player start, in the Grid map"), GridStarts, 1);
+	TestEqual(TEXT("the Grid map holds no cell geometry"), GridMeshes, 0);
+	TestTrue(TEXT("the Grid map uses the Gridlands game mode"), Grid->GetWorldSettings()->DefaultGameMode == AGLGameMode::StaticClass());
+	TestNotNull(TEXT("the second cell's level exists"), GLAnchorExport::LoadMap(TEXT("/Game/Gridlands/Maps/L_DinerLots")));
 	return true;
 }
 

@@ -7,6 +7,10 @@
 #include "GridlandsGame.h"
 #include "Save/GLSaveSubsystem.h"
 #include "Economy/GLWorldSettingsSubsystem.h"
+#include "Kismet/GameplayStatics.h"
+#include "World/GLGridCells.h"
+#include "World/GLGridSubsystem.h"
+#include "World/GLPlacementSubsystem.h"
 #include "UI/GLHUD.h"
 #include "Events/GLEventSubsystem.h"
 #include "GameFramework/Controller.h"
@@ -45,6 +49,16 @@ void AGLGameMode::StartPlay()
 			}
 		}
 		Saves->bAutosave = true;
+	}
+	// Stream the Grid around Zenny (P3); the first cells load now, before anything ticks.
+	if (UGLGridSubsystem* Grid = GetWorld()->GetSubsystem<UGLGridSubsystem>(); Grid && GLGridCells::CellAt(FVector2D::ZeroVector) != NAME_None
+		&& !GetWorld()->GetSubsystem<UGLPlacementSubsystem>()->IsCellSpawned(GLGridCells::CellAt(FVector2D::ZeroVector)))
+	{
+		Grid->Enable(true);
+		if (const APawn* Zenny = UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
+		{
+			Grid->Update(Zenny->GetActorLocation());
+		}
 	}
 	FGLGameplayEvent Started;
 	Started.Tag = UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Game.Started"));

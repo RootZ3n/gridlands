@@ -13,9 +13,10 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-using namespace GLTestUtils;
+using GLTestUtils::FTestWorld;
+using GLTestUtils::Tag;
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLEventBus, "Gridlands.Game.Events.SubscribersReceiveMatchingTags", Flags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLEventBus, "Gridlands.Game.Events.SubscribersReceiveMatchingTags", GLTestUtils::Flags)
 bool FGLEventBus::RunTest(const FString& Parameters)
 {
 	FTestWorld Test;
@@ -56,7 +57,7 @@ bool FGLEventBus::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLInteraction, "Gridlands.Game.Interaction.FocusAndInteract", Flags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLInteraction, "Gridlands.Game.Interaction.FocusAndInteract", GLTestUtils::Flags)
 bool FGLInteraction::RunTest(const FString& Parameters)
 {
 	FTestWorld Test;
@@ -90,7 +91,7 @@ bool FGLInteraction::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLCharacterInput, "Gridlands.Game.Character.InputIsDefinedInCode", Flags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLCharacterInput, "Gridlands.Game.Character.InputIsDefinedInCode", GLTestUtils::Flags)
 bool FGLCharacterInput::RunTest(const FString& Parameters)
 {
 	FTestWorld Test;

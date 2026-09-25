@@ -1,0 +1,13 @@
+diff --git a/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp b/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
+index 412b2ed..bb2461a 100644
+--- a/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
+@@ -171,7 +171,7 @@ int32 UGLPlacementSubsystem::DespawnCell(FName CellId)
+ 	CellActors.RemoveAndCopyValue(CellId, Owned);
+ 	for (const TWeakObjectPtr<AActor>& Actor : Owned)
+ 	{
+-		if (AActor* Live = Actor.Get())
++		if (AActor* Live = Actor.Get(); Live && !Live->IsA<AGLCreature>()) // MUTATION: creatures are left behind
+ 		{
+ 			Live->Destroy();
+ 			++Removed;

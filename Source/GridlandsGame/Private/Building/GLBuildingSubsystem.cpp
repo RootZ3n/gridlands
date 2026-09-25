@@ -9,6 +9,7 @@
 #include "Inventory/GLInventoryComponent.h"
 #include "Knowledge/GLKnowledgeSubsystem.h"
 #include "Terrain/GLTerrainSubsystem.h"
+#include "World/GLGridCells.h"
 
 double UGLBuildingSubsystem::GroundAt(const FVector2D& At) const
 {
@@ -48,6 +49,7 @@ FGLBuildCheck UGLBuildingSubsystem::Place(AActor* Builder, const FGLPlacedPiece&
 	}
 	FGLPlacedPiece Placed = Candidate;
 	Placed.Id = NextId++;
+	Placed.Cell = CellFor(Placed.Location);
 	Pieces.Add(Placed);
 	SpawnPiece(Placed);
 	Emit(TEXT("Event.Building.Placed"), Placed.Def, Builder, { { TEXT("support"), Result.Support } });
@@ -144,6 +146,48 @@ int32 UGLBuildingSubsystem::PieceIdOf(const AActor* Actor) const
 	return 0;
 }
 
+FName UGLBuildingSubsystem::CellFor(const FVector& Location) const
+{
+	FName Cell;
+	const UGLTerrainSubsystem* Terrain = GetWorld()->GetSubsystem<UGLTerrainSubsystem>();
+	if (Terrain && Terrain->GroundCellAt(FVector2D(Location), Cell))
+	{
+		return Cell;
+	}
+	return GLGridCells::CellAt(FVector2D(Location));
+}
+
+void UGLBuildingSubsystem::RestoreCell(FName Cell, const TArray<FGLPlacedPiece>& InPieces)
+{
+	for (const FGLPlacedPiece& In : InPieces)
+	{
+		if (!GLContent::Get().Find<FGLBuildPieceDef>(In.Def) || Pieces.ContainsByPredicate([&In](const FGLPlacedPiece& P) { return P.Id == In.Id; }))
+		{
+			continue; // stale content ids are reported by the save subsystem; never duplicate a piece
+		}
+		FGLPlacedPiece Piece = In;
+		Piece.Cell = Cell;
+		Pieces.Add(Piece);
+		SpawnPiece(Piece);
+		NextId = FMath::Max(NextId, Piece.Id + 1);
+	}
+}
+
+TArray<FGLPlacedPiece> UGLBuildingSubsystem::RemoveCell(FName Cell)
+{
+	TArray<FGLPlacedPiece> Removed = PiecesOfCell(Cell);
+	for (const FGLPlacedPiece& Piece : Removed)
+	{
+		TObjectPtr<AGLBuildPiece> Actor;
+		if (Actors.RemoveAndCopyValue(Piece.Id, Actor) && Actor)
+		{
+			Actor->Destroy();
+		}
+	}
+	Pieces.RemoveAll([Cell](const FGLPlacedPiece& P) { return P.Cell == Cell; });
+	return Removed;
+}
+
 void UGLBuildingSubsystem::Restore(const TArray<FGLPlacedPiece>& InPieces, int32 InNextId)
 {
 	for (const TPair<int32, TObjectPtr<AGLBuildPiece>>& Entry : Actors)
@@ -162,8 +206,13 @@ void UGLBuildingSubsystem::Restore(const TArray<FGLPlacedPiece>& InPieces, int32
 		{
 			continue; // stale content ids are reported by the save subsystem
 		}
-		Pieces.Add(Piece);
-		SpawnPiece(Piece);
+		FGLPlacedPiece Tagged = Piece;
+		if (Tagged.Cell.IsNone())
+		{
+			Tagged.Cell = CellFor(Tagged.Location);
+		}
+		Pieces.Add(Tagged);
+		SpawnPiece(Tagged);
 		NextId = FMath::Max(NextId, Piece.Id + 1);
 	}
 }

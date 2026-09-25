@@ -102,7 +102,7 @@ void UGLStormSubsystem::Step(float DeltaTime)
 		const double Angle = Random.FRandRange(0.0, 2.0 * PI);
 		const double Distance = FMath::Sqrt(Random.FRand()) * Storm->Radius * 100.0;
 		const FVector2D XY(Centre.X + FMath::Cos(Angle) * Distance, Centre.Y + FMath::Sin(Angle) * Distance);
-		const double Ground = Terrain && Terrain->HasGround() && Terrain->GetField().Contains(XY) ? Terrain->HeightAt(XY) : Centre.Z - 90.0;
+		const double Ground = Terrain && Terrain->HasGroundAt(XY) ? Terrain->HeightAt(XY) : Centre.Z - 90.0;
 		AGLStormArtifact* Artifact = GetWorld()->SpawnActor<AGLStormArtifact>(FVector(XY.X, XY.Y, Centre.Z + Random.FRandRange(1500.0, 2500.0)), FRotator::ZeroRotator);
 		if (Artifact)
 		{
