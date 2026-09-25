@@ -180,6 +180,7 @@ void UGLStructureSubsystem::HandlePartSalvaged(FName Placement, FName PartName, 
 
 void UGLStructureSubsystem::Collapse(FGLStructureRuntime& Structure, AActor* By, const FVector& From, bool bSilent)
 {
+	const double Began = FPlatformTime::Seconds();
 	const FGLContentRegistry& Content = GLContent::Get();
 	auto Ground = [this](const FVector2D& At) { return GroundAt(At); };
 	TArray<FGLPlacedPiece> Remaining;
@@ -235,7 +236,7 @@ void UGLStructureSubsystem::Collapse(FGLStructureRuntime& Structure, AActor* By,
 		Entry.Material = MaterialOf(Part->Piece);
 		Entry.Instigator = By;
 	}
-	UE_LOG(LogGridlands, Log, TEXT("Structures: %s lost support: %d part(s) collapse"), *Structure.Placement.ToString(), Plan.Outcomes.Num());
+	UE_LOG(LogGridlands, Log, TEXT("Structures: %s lost support: %d part(s) collapse (decided in %.3f ms)"), *Structure.Placement.ToString(), Plan.Outcomes.Num(), (FPlatformTime::Seconds() - Began) * 1000.0);
 	if (!bSilent)
 	{
 		EmitStructureEvent(this, TEXT("Event.Structure.Collapsed"), Structure.Def, By, Plan.Outcomes.Num());
@@ -270,6 +271,7 @@ void UGLStructureSubsystem::Advance(double Seconds)
 
 void UGLStructureSubsystem::Land(FGLActiveCollapse& Collapse)
 {
+	const double Began = FPlatformTime::Seconds();
 	Collapse.bImpacted = true;
 	FGLImpactRecord& Record = Impacts.AddDefaulted_GetRef();
 	Record.Placement = Collapse.Placement;
@@ -300,7 +302,7 @@ void UGLStructureSubsystem::Land(FGLActiveCollapse& Collapse)
 			}
 		}
 	}
-	UE_LOG(LogGridlands, Log, TEXT("Structures: %s/%s hit (%.0f damage, %d hit)"), *Collapse.Placement.ToString(), *Collapse.Part.ToString(), Record.Damage, Record.Hit.Num());
+	UE_LOG(LogGridlands, Log, TEXT("Structures: %s/%s hit (%.0f damage, %d hit; impact resolved in %.3f ms)"), *Collapse.Placement.ToString(), *Collapse.Part.ToString(), Record.Damage, Record.Hit.Num(), (FPlatformTime::Seconds() - Began) * 1000.0);
 	UGLNoiseSubsystem::EmitAction(this, TEXT("Noise.Structure.Collapse"), Collapse.Outcome.Impact.Centre, Collapse.Instigator.Get(), Collapse.Material);
 	FGLStructureRuntime* Structure = Structures.Find(Collapse.Placement);
 	FGLStructurePartRuntime* Part = Structure ? Structure->Find(Collapse.Part) : nullptr;

@@ -200,6 +200,20 @@ int32 UGLPlacementSubsystem::DespawnCell(FName CellId)
 	return Removed;
 }
 
+#if !UE_BUILD_SHIPPING
+AGLCreature* UGLPlacementSubsystem::SpawnProofCreature(FName Def, const FVector& Location, double Yaw, FName Cell)
+{
+	AGLCreature* Creature = GetWorld()->SpawnActor<AGLCreature>(Location + FVector(0, 0, 70), FRotator(0.0, Yaw, 0.0));
+	if (!Creature || !Creature->Setup(Def, TEXT("placement.proof.creature")))
+	{
+		return nullptr;
+	}
+	CellActors.FindOrAdd(Cell).Add(Creature);
+	UE_LOG(LogGridlands, Log, TEXT("Placements: DEV proof creature %s at %s"), *Def.ToString(), *Location.ToCompactString());
+	return Creature;
+}
+#endif
+
 bool UGLPlacementSubsystem::IsPlacementOfCell(FName PlacementId, FName CellId)
 {
 	return PlacementId.ToString().StartsWith(FString::Printf(TEXT("placement.%s."), *CellShortName(CellId)));
