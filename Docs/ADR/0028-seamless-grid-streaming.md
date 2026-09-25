@@ -92,6 +92,26 @@
   - a mid-load cancellation is forced in the real game (teleport) and in the tests;
   - save/restart in the second cell: ground usable 0.11 s after launch, and edits intact.
 
+## Operator decisions after P5 (2026-09-25): P5 is GREEN and CLOSED
+- **The ~34 ms authored-level unload hitch is accepted** as known engine-side debt. Do not chase it.
+  Revisit only if playtesting shows it is perceptible, or measurements regress.
+- **A regression budget guards it and the rest of P5:** `Tools/perf/budgets.json`. The checker
+  (`Tools/perf/check_budgets.py`) runs:
+  - at the end of `Tools/perf-crossing.sh`, which fails on a breach;
+  - in the tooling self-tests, against the accepted evidence.
+- **Budgets on the reference machine:**
+
+  | Budget | Limit | Headroom |
+  |---|---|---|
+  | Reversal / teleport worst frame | ≤ 40 ms | the accepted 34 ms plus < 20% |
+  | Straight / sprint worst frame | ≤ 30 ms | |
+  | p99 | ≤ 7–11 ms by mode | |
+  | Streaming game-thread worst | ≤ 12 ms | |
+  | Peak memory | ≤ 5.2 GB | |
+  | Emergency chunks | 0 | |
+
+  Raising a budget needs an operator decision.
+
 ## Consequences
 - **Streaming work is spread across frames.** What remains per frame is mostly engine work:
   navigation (ADR-0029), level-instance registration, and collision cooking completing.

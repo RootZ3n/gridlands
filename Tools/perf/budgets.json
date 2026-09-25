@@ -1,0 +1,22 @@
+{
+  "_comment": "P5 regression budgets (ADR-0028, ADR-0029), operator decision 2026-09-25. Reference machine: RX 6800 / i7-11700K / 32 GB, 1920x1080 offscreen, vsync off. The ~34 ms unload hitch (engine level removal) is ACCEPTED DEBT; it may not become materially worse. A budget is raised only with an operator decision.",
+  "reference": "Docs/Evidence/P5-seamless-grid/perf",
+  "all": {
+    "navInvokersOnly": {"equals": true, "why": "localized navigation is canonical (ADR-0029); whole-cell navigation is prohibited"},
+    "emergencyChunks": {"max": 0, "why": "the next cell's ground is always ready before Zenny reaches it"},
+    "navActiveTilesPeak": {"max": 600, "why": "invoker tiles only (P5: 301)"},
+    "navPendingTasksPeak": {"max": 500, "why": "navigation keeps up (P5: <= 51; whole-cell: ~21,500)"}
+  },
+  "modes": {
+    "straight": {"worstFrameMs": {"max": 30.0}, "frameMsP99": {"max": 7.0}, "streamingGameThreadMsWorst": {"max": 12.0}, "memPeakMb": {"max": 5200}},
+    "sprint": {"worstFrameMs": {"max": 30.0}, "frameMsP99": {"max": 11.0}, "streamingGameThreadMsWorst": {"max": 12.0}, "memPeakMb": {"max": 5200}},
+    "reversal": {"worstFrameMs": {"max": 40.0, "why": "the accepted ~34 ms authored-level unload hitch, plus under 20% headroom"}, "frameMsP99": {"max": 11.0}, "streamingGameThreadMsWorst": {"max": 12.0}, "memPeakMb": {"max": 5200}},
+    "teleport": {"worstFrameMs": {"max": 40.0}, "frameMsP99": {"max": 8.0}, "streamingGameThreadMsWorst": {"max": 12.0}, "memPeakMb": {"max": 5200}},
+    "resume": {"worstFrameMs": {"max": 25.0}}
+  },
+  "terrain": {
+    "navInvokersOnly": {"equals": true},
+    "navFullBuildSeconds": {"max": 1.5, "why": "localized initial navigation (P5: 0.53 s; whole-cell 7.64 s)"},
+    "initialNavActiveTiles": {"max": 600}
+  }
+}

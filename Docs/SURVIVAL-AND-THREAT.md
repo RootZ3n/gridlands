@@ -25,7 +25,7 @@ Status: **design; mostly not built.** Decision records:
 
 | # | Invariant |
 |---|---|
-| T-1 | No spawn, aggro or encounter is triggered by routine activity (build, salvage, gather, craft, terraform, inventory). |
+| T-1 | No **spawn, summons, raid or encounter** is triggered by routine activity (build, salvage, gather, craft, terraform, inventory). *Amended 2026-09-25 (§9, ADR-0014 amendment):* routine activity makes **authoritative noise**, and creatures **already present** within their hearing range may hear it and investigate. Noise never creates, calls in or reaches hostiles beyond their own hearing. |
 | T-2 | Every hostile presence has a spatial or authored source: territory, patrol route, encounter volume, NICE-controlled area or band spawn table. |
 | T-3 | Stabilization reduces hostile presence locally (radius and strength are data). |
 | T-4 | Home/stabilized territory supports long, low-attention play without mandatory combat. |
@@ -105,3 +105,88 @@ All progression lives in the world save ([ADR-0019](ADR/0019-world-save-bound-pr
 |---|---|
 | E-1 | Every yield passes through a world-settings multiplier for its category; no yield bypasses the settings. |
 | E-2 | Progression-critical, discovery and unique rewards are in non-scalable categories. |
+
+## 7. Readable telegraphs (LOCKED DESIGN INTENT, operator, 2026-09-25; NOT IMPLEMENTED)
+**WildStar-style gameplay readability is a major inspiration.** The world communicates hazards
+clearly.
+- Enemy attacks may use **truthful ground/space telegraphs**: cones, circles, lines, sweeps,
+  charges and other shapes.
+- **The rendered danger area derives from the same authoritative gameplay parameters as the
+  damaging area.** A telegraph never lies about hit geometry. In code, the telegraph is drawn
+  from the data that decides the hit; the two are never separate values that could drift.
+
+## 8. Perception and stealth visualization (LOCKED DESIGN INTENT; NOT IMPLEMENTED)
+- **Sight and hearing remain separate systems.** Today creatures have `perception.sightRadius`,
+  a view cone and `hearingRadius`.
+- **Pehlichi may expose perception information for analysed/scanned creatures:**
+  - the actual sight cone and effective range;
+  - alert state, and hearing information where appropriate;
+  - later, possibly patrol prediction.
+- **The eventual player option** is *Stealth Visualization = Off / Contextual / Always*. The exact
+  UI is not locked.
+- **Every visualization consumes the same authoritative values the AI uses.**
+
+## 9. Noise is systemic (LOCKED DESIGN INTENT; first implementation is the P6 milestone)
+**Which actions make noise.** Terrain manipulation must not be silent. These actions generate
+**authoritative world-noise events**:
+- digging, raising and flattening;
+- chopping and mining;
+- salvage;
+- building and demolition;
+- structural breakage and collapse.
+
+**Why.** Otherwise the player could silently terraform line-of-sight blockers next to enemies
+and trivialise stealth.
+
+**Noise as a tactical tool.** Dig, build or break something elsewhere; the creature
+investigates; its sight cone moves; Zenny slips past.
+
+**Rules:**
+- **Hearing only.** Noise reaches creatures only within their authoritative hearing (data). It
+  never spawns or summons anything (T-1, ADR-0014 as amended).
+- **Losing line of sight does not erase knowledge.** A creature that detected Zenny keeps a
+  last-known position and investigates it.
+- **Loudness varies.** Material and action type may set noise radius and intensity.
+- **Visualization must be honest.** Pehlichi may eventually preview noise propagation, and any
+  visualization consumes the same values used by AI hearing.
+
+**Extensibility to preserve, not build yet:**
+- quieter or louder tools;
+- material-dependent noise;
+- Pehlichi's noise visualization;
+- stealth gear and modifiers;
+- structural weapons such as Hammer Toe.
+
+## 10. Dungeons (LOCKED DESIGN INTENT; NOT IMPLEMENTED)
+See [DUNGEONS-AND-LEGENDARIES.md](DUNGEONS-AND-LEGENDARIES.md). The canonical starting rule is **one
+handcrafted dungeon per zone**. Dungeons are voluntary and never make combat mandatory.
+
+## 11. Hunger and thirst: expedition preparation (LOCKED DESIGN INTENT; NOT IMPLEMENTED; nothing tuned)
+**Hunger and thirst prepare expeditions. They are not base-maintenance chores.**
+- **Inside the home comfort area,** depletion **pauses**.
+  - Meters do **not** magically refill just because Zenny came home.
+  - The radius is about **100 m** from the recognised home/base as the initial assumption. It is
+    data-driven and tunable.
+- **Outside the comfort area,** depletion resumes.
+- **Future outposts and camps** may give smaller rest/comfort effects.
+- **Zero hunger or thirst does not simply kill Zenny.** It mainly reduces expedition benefits and
+  capability.
+- **Hoponi owns learned recipe knowledge.**
+- **Food and drink buffs serve non-combat players too:**
+  - exploration and stamina;
+  - gathering and salvage;
+  - stealth;
+  - building and fabrication;
+  - environmental resistance;
+  - other activities.
+- **Digestive effects stay part of food** ([KNOWLEDGE-AND-DISCOVERY §5](KNOWLEDGE-AND-DISCOVERY.md)):
+  - lower-quality or problematic food may cause visible and audible flatulence;
+  - higher cooking quality reduces or removes the probability;
+  - late-game players normally have to *choose* poor food to fart often;
+  - food tooltips may show the flatulence probability.
+- **A fart is a real world event:**
+  - an optional sound;
+  - a small, readable, stylized **green puff**, so muted players understand what happened;
+  - a **noise event through §9**, with AI hearing consequences;
+  - a possible Zenny reaction;
+  - possible but **not guaranteed** Pehlichi/NICE dialogue.

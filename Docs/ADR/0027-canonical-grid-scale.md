@@ -1,6 +1,8 @@
 # ADR-0027: Canonical Grid scale: 1 km cells, 1 m terrain, 64 m chunks
 
 - Status: **Accepted: operator decision, 2026-09-25.** Canonical, not a benchmark value.
+  **Confirmed after P5 (2026-09-25):** the canonical cell is **1024 m × 1024 m**, with 1 m spacing
+  and 64 m chunks. "1 km" is human-facing shorthand. Changing any of these needs operator approval.
 - Evidence: [P2 terrain scaling](../Evidence/P2-terrain-scale/README.md). Streaming:
   [ADR-0026](0026-grid-cells-and-streaming.md) and [ADR-0028](0028-seamless-grid-streaming.md).
 
