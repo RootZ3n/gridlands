@@ -23,7 +23,9 @@ void UGLGridSubsystem::Tick(float DeltaTime)
 {
 	if (const APawn* Zenny = UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
 	{
+		const double Start = FPlatformTime::Seconds();
 		Advance(Zenny->GetActorLocation());
+		LastAdvanceSeconds = FPlatformTime::Seconds() - Start;
 	}
 }
 
@@ -214,7 +216,7 @@ bool UGLGridSubsystem::UnloadCell(FName Cell)
 		Entry.Level->SetShouldBeLoaded(false);
 	}
 	++Unloads;
-	UE_LOG(LogGridlands, Log, TEXT("Grid: unloaded %s (epoch %d, %s)"), *Cell.ToString(), Entry.Epoch, Entry.bRuntime ? TEXT("was ready") : TEXT("cancelled mid-load"));
+	UE_LOG(LogGridlands, Log, TEXT("Grid: unloaded %s at frame %llu (epoch %d, %s)"), *Cell.ToString(), GFrameCounter, Entry.Epoch, Entry.bRuntime ? TEXT("was ready") : TEXT("cancelled mid-load"));
 	return true;
 }
 

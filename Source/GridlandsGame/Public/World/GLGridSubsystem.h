@@ -74,6 +74,8 @@ public:
 	int32 GetLoadCount() const { return Loads; }
 	int32 GetUnloadCount() const { return Unloads; }
 	const TArray<FGLCellLoadRecord>& GetLoadRecords() const { return Records; }
+	/** Game-thread time the last Advance took (streaming cost per frame, evidence). */
+	double GetLastAdvanceSeconds() const { return LastAdvanceSeconds; }
 
 	/** Start loading a neighbour this far (m) from its edge; unload beyond UnloadMarginM (hysteresis). */
 	UPROPERTY(EditAnywhere, Category = "Grid") float LoadMarginM = 256.f;
@@ -94,6 +96,7 @@ private:
 	int32 Loads = 0;
 	int32 Unloads = 0;
 	int32 EpochCounter = 0;
+	double LastAdvanceSeconds = 0.0;
 	TArray<FGLCellLoadRecord> Records;
 	UPROPERTY() TMap<FName, FGLLoadedCell> Loaded;
 	UPROPERTY() TMap<FName, TObjectPtr<ULevelStreamingDynamic>> CellLevels;

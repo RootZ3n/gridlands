@@ -1,0 +1,20 @@
+diff --git a/Source/GridlandsGame/Private/World/GLGridSubsystem.cpp b/Source/GridlandsGame/Private/World/GLGridSubsystem.cpp
+index f6dd0bf..cb7a851 100644
+--- a/Source/GridlandsGame/Private/World/GLGridSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLGridSubsystem.cpp
+@@ -189,13 +189,9 @@ bool UGLGridSubsystem::UnloadCell(FName Cell)
+ 	UGLSaveSubsystem* Saves = World->GetSubsystem<UGLSaveSubsystem>();
+ 	// Keep what this cell is, then take it out of the world. A cell whose runtime never came in
+ 	// still has its full kept record: only its ground (which may have been edited) is merged.
+-	if (Entry.bRuntime)
++	Saves->StowCell(Cell); // PLANTED DEFECT: capture on unload even when the runtime never came in
++	if (!Entry.bRuntime)
+ 	{
+-		Saves->StowCell(Cell);
+-	}
+-	else
+-	{
+-		Saves->StowTerrainOnly(Cell);
+ 		FGLCellLoadRecord& R = Records.AddDefaulted_GetRef();
+ 		R.Cell = Cell;
+ 		R.Epoch = Entry.Epoch;
