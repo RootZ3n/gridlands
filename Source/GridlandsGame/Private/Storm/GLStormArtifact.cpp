@@ -1,6 +1,7 @@
 #include "Storm/GLStormArtifact.h"
 
 #include "Components/SceneComponent.h"
+#include "Presentation/GLDerez.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInstanceDynamic.h"
@@ -84,7 +85,6 @@ bool AGLStormArtifact::Advance(float DeltaSeconds)
 		return true;
 	}
 	DerezLeft -= DeltaSeconds;
-	const float Scale = FMath::Max(0.f, static_cast<float>(DerezLeft / 1.5));
-	SetActorScale3D(FVector(Scale, Scale * (Random.FRand() > 0.5f ? 1.f : 0.3f), Scale)); // flickers flat as it goes
+	GLDerez::Apply(this, static_cast<float>(DerezLeft / 1.5), Random, FVector::OneVector); // the shared digital dissolve
 	return DerezLeft > 0.0;
 }

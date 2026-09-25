@@ -575,6 +575,8 @@ struct GRIDLANDSCORE_API FGLExchangeLineDef
 	/** NICE | Pehlichi. Zenny is silent (DLG-1). */
 	UPROPERTY() FName Speaker;
 	UPROPERTY() FString Text;
+	/** Optional voice (P4 hook): a sound asset path. Its length sets the subtitle duration. */
+	UPROPERTY() FString Voice;
 };
 
 USTRUCT()

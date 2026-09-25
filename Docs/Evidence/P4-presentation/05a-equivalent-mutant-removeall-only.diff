@@ -1,0 +1,13 @@
+diff --git a/Source/GridlandsGame/Private/UI/GLSubtitles.cpp b/Source/GridlandsGame/Private/UI/GLSubtitles.cpp
+index 2344612..050ed6d 100644
+--- a/Source/GridlandsGame/Private/UI/GLSubtitles.cpp
++++ b/Source/GridlandsGame/Private/UI/GLSubtitles.cpp
+@@ -39,7 +39,7 @@ void FGLSubtitleQueue::Push(const FGLDialogueLine& Line, double Now, double Voic
+ 	if (Line.ExchangeId != CurrentExchange)
+ 	{
+ 		// A new exchange: anything left of the previous one was interrupted (the director decided).
+-		Lines.RemoveAll([Now](const FGLSubtitle& S) { return S.Start > Now; });
++		// MUTATION: an interrupted exchange keeps its pending lines
+ 		for (FGLSubtitle& S : Lines)
+ 		{
+ 			S.End = FMath::Min(S.End, Now);

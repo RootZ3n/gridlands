@@ -19,6 +19,9 @@
 #include "HAL/FileManager.h"
 #include "Interaction/GLDebugInteractable.h"
 #include "Materials/MaterialInterface.h"
+#include "Materials/Material.h"
+#include "Materials/MaterialExpressionConstant.h"
+#include "Materials/MaterialExpressionVertexColor.h"
 #include "Misc/PackageName.h"
 #include "UObject/Package.h"
 #include "UObject/SavePackage.h"
@@ -110,9 +113,43 @@ namespace GLBlockout
 	}
 }
 
+namespace GLBlockout
+{
+	/**
+	 * The temporary terrain material (P4): base colour straight from the ground's vertex colours,
+	 * which the terrain chunks compute (lawn, rock on slopes, dirt where Zenny dug or raised).
+	 */
+	bool WriteTerrainMaterial()
+	{
+		const TCHAR* PackageName = TEXT("/Game/Gridlands/Materials/M_TerrainVertexColor");
+		const FString Filename = FPackageName::LongPackageNameToFilename(PackageName, FPackageName::GetAssetPackageExtension());
+		if (IFileManager::Get().FileExists(*Filename))
+		{
+			IFileManager::Get().Delete(*Filename);
+		}
+		UPackage* Package = CreatePackage(PackageName);
+		UMaterial* Material = NewObject<UMaterial>(Package, TEXT("M_TerrainVertexColor"), RF_Public | RF_Standalone);
+		UMaterialExpressionVertexColor* Colour = NewObject<UMaterialExpressionVertexColor>(Material);
+		Material->GetExpressionCollection().AddExpression(Colour);
+		UMaterialExpressionConstant* Rough = NewObject<UMaterialExpressionConstant>(Material);
+		Rough->R = 0.92f;
+		Material->GetExpressionCollection().AddExpression(Rough);
+		UMaterialEditorOnlyData* Editor = Material->GetEditorOnlyData();
+		Editor->BaseColor.Expression = Colour;
+		Editor->Roughness.Expression = Rough;
+		Material->PostEditChange();
+		FSavePackageArgs Args;
+		Args.TopLevelFlags = RF_Public | RF_Standalone;
+		const bool bSaved = UPackage::SavePackage(Package, Material, *Filename, Args);
+		UE_LOG(LogGridlandsEditor, Display, TEXT("BuildBlockout: %s %s"), bSaved ? TEXT("saved") : TEXT("FAILED to save"), *Filename);
+		return bSaved;
+	}
+}
+
 int32 UGLBuildBlockoutCommandlet::Main(const FString& Params)
 {
 	using namespace GLBlockout;
+	const bool bMaterial = WriteTerrainMaterial();
 
 	// The origin cell's authored geometry (cell-local coordinates; streamed in as a level instance).
 	const bool bOrigin = WriteMap(OriginPackage, TEXT("L_Origin"), TEXT("anchor.origin"), [](UWorld* World, FBuilder& B)
@@ -257,5 +294,5 @@ int32 UGLBuildBlockoutCommandlet::Main(const FString& Params)
 		World->GetWorldSettings()->DefaultGameMode = AGLGameMode::StaticClass();
 
 	});
-	return bOrigin && bLots && bGrid ? 0 : 1;
+	return bMaterial && bOrigin && bLots && bGrid ? 0 : 1;
 }

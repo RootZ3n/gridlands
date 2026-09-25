@@ -434,7 +434,9 @@ SCHEMAS: dict[str, Obj] = {
             "subject": Ref(),
             # History-aware conditions: how often an Event.* tag (or its children) has fired so far.
             "requires": List(Obj({"eventCount": Tag("Event"), "min": Int(0, 1000000), "max": Int(0, 1000000)}, required=("eventCount",))),
-            "lines": List(Obj({"speaker": Enum("NICE", "Pehlichi"), "text": Str(max_len=500)}, required=("speaker", "text")), min_items=1),
+            # voice (P4 hook): a sound asset path; when present, its length sets the subtitle duration.
+            "lines": List(Obj({"speaker": Enum("NICE", "Pehlichi"), "text": Str(max_len=500), "voice": Str(max_len=256)},
+                              required=("speaker", "text")), min_items=1),
         },
         required=("trigger", "category", "priority", "cooldownSeconds", "weight", "lines"),
     ),

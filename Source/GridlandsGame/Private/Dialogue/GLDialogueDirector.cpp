@@ -128,7 +128,7 @@ FGLDialogueChoice UGLDialogueDirector::Offer(FName EventTag, FName Subject)
 	for (int32 Index = 0; Index < Choice.Exchange->Lines.Num(); ++Index)
 	{
 		const FGLExchangeLineDef& Def = Choice.Exchange->Lines[Index];
-		const FGLDialogueLine Line{ Choice.Exchange->Id, Index, Def.Speaker, Def.Text, Delay };
+		const FGLDialogueLine Line{ Choice.Exchange->Id, Index, Def.Speaker, Def.Text, Delay, Def.Voice };
 		UE_LOG(LogGridlands, Log, TEXT("Dialogue [%s] %s: %s"), *Line.ExchangeId.ToString(), *Line.Speaker.ToString(), *Line.Text);
 		if (bShowOnScreen && GEngine)
 		{
