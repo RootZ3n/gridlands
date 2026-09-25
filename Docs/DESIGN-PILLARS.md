@@ -11,7 +11,9 @@ record. Overview: [DESIGN-BIBLE.md](DESIGN-BIBLE.md).
    interference, its encounters. The player is always inside her game, and
    she makes sure he knows it.
 
-2. **Zenny is the silent player avatar and NICE's toy.** He never speaks.
+2. **Zenny is the silent player avatar and NICE's toy.** He never speaks, and he
+   never answers through dialogue menus or text: puzzles are answered by acting in the
+   world ([ADR-0023](ADR/0023-puzzles-are-answered-through-gameplay.md)).
    NICE plays with him and taunts him at least as much as she spars with
    Pehlichi.
 

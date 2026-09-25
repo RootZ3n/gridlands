@@ -117,9 +117,10 @@ JSON. The bootstrap needs one or two, for example:
   object is wanted instead.)*
 
 Later: `NoHostilesWithin(Radius)`, `RepairPointReachable(TraversalClass)`,
-`NotJammed`, `PuzzleSolved(PuzzleId)` (riddles and environmental puzzles). **PuzzleSolved is
-deliberately not built**: how a silent Zenny answers a riddle is an open design question
-for the operator. Unknown requirement kinds are never met.
+`NotJammed`, `PuzzleSolved(PuzzleId)` (riddles and environmental puzzles). **PuzzleSolved follows
+[ADR-0023](ADR/0023-puzzles-are-answered-through-gameplay.md)**: Zenny answers through gameplay
+(PRESENT, MANIPULATE, PERFORM; CONSTRUCT later), never through dialogue or text. Pehlichi
+gives optional escalating hints. Unknown requirement kinds are never met.
 
 **As built (M7).**
 - Zenny commands with **Q** (scan), **R** (repair the nearest revealed glitch) and
