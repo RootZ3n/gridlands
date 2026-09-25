@@ -334,7 +334,12 @@ bool FGLNoiseHeard::RunTest(const FString& Parameters)
 	Gremlin->Think(0.1f);
 	TestEqual(TEXT("it does not see Zenny behind it"), Gremlin->GetState(), EGLCreatureState::Idle);
 	// Dig 8 m behind it: inside its hearing (16 m) and the dig's reach (12 m).
+	const int32 Before = S.Noise->GetEmittedCount();
 	TestTrue(TEXT("dug"), S.Terrain->Terraform(S.Zenny, TEXT("terraform.shovel.dig"), Home + FVector2D(-800, 0)).bApplied);
+	if (!TestTrue(TEXT("digging made a noise"), S.Noise->GetEmittedCount() > Before && S.Noise->GetRecent().Num() > 0))
+	{
+		return false;
+	}
 	const FGLNoiseEvent& Dig = S.Noise->GetRecent().Last();
 	TestEqual(TEXT("a dig noise"), Dig.Action, FName(TEXT("Noise.Terrain.Dig")));
 	TestEqual(TEXT("with its data radius (12 m)"), Dig.RadiusCm, 1200.0, 0.01);
@@ -350,7 +355,9 @@ bool FGLNoiseHeard::RunTest(const FString& Parameters)
 	// Dig 20 m behind it: out of range.
 	const int32 HeardBefore = S.Noise->GetRecent().Last().Heard;
 	S.Stand(Home + FVector2D(-1800, 0));
+	const int32 FarBefore = S.Noise->GetEmittedCount();
 	TestTrue(TEXT("dug far away"), S.Terrain->Terraform(S.Zenny, TEXT("terraform.shovel.dig"), Home + FVector2D(-2000, 0)).bApplied);
+	TestTrue(TEXT("digging far away made a noise too"), S.Noise->GetEmittedCount() > FarBefore);
 	TestEqual(TEXT("nobody heard it"), S.Noise->GetRecent().Last().Heard, 0);
 	Gremlin->Think(0.1f);
 	TestEqual(TEXT("it stays put"), Gremlin->GetState(), EGLCreatureState::Idle);
