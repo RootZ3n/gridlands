@@ -42,6 +42,16 @@ FGLCraftCheck UGLInventoryComponent::Craft(FName RecipeId, const FGLKnowledge& K
 	return Result;
 }
 
+void UGLInventoryComponent::RestoreContents(const TArray<TPair<FName, int32>>& Items)
+{
+	Inventory = FGLInventory(Inventory.GetMaxSlots(), Inventory.GetMaxWeight());
+	for (const TPair<FName, int32>& Item : Items)
+	{
+		Inventory.Add(GLContent::Get(), Item.Key, Item.Value);
+	}
+	UpdateEncumbrance(/*bAnnounce*/ false); // a load is not a new moment to announce
+}
+
 bool UGLInventoryComponent::RemoveItem(FName Item, int32 Count)
 {
 	const bool bRemoved = Inventory.Remove(Item, Count);
@@ -72,7 +82,7 @@ const FGLItemDef* UGLInventoryComponent::BestToolFor(const FGLSalvageDef& Salvag
 	return Best;
 }
 
-void UGLInventoryComponent::UpdateEncumbrance()
+void UGLInventoryComponent::UpdateEncumbrance(bool bAnnounce)
 {
 	const bool bNow = Inventory.IsOverencumbered(GLContent::Get());
 	if (bNow == bOverencumbered)
@@ -89,7 +99,7 @@ void UGLInventoryComponent::UpdateEncumbrance()
 		}
 		Movement->MaxWalkSpeed = bOverencumbered ? NormalWalkSpeed * OverencumberedSpeedFactor : NormalWalkSpeed;
 	}
-	if (bOverencumbered)
+	if (bOverencumbered && bAnnounce)
 	{
 		FGLGameplayEvent Event;
 		Event.Tag = UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Player.Overencumbered"));

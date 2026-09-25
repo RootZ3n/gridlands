@@ -44,6 +44,8 @@ public:
 	void SetTimeOverride(TOptional<double> Seconds) { TimeOverride = Seconds; }
 
 	const FGLDialogueState& GetState() const { return State; }
+	/** Restores history from a save: exchange uses and event counts. Timers start fresh. */
+	void RestoreHistory(const TArray<TPair<FName, int32>>& Uses, const TArray<TPair<FName, int32>>& EventCounts);
 	FGLOnDialogueLine OnLine;
 
 	/** Show lines as on-screen debug text (off in tests). */

@@ -5,6 +5,7 @@
 #include "Engine/DirectionalLight.h"
 #include "EngineUtils.h"
 #include "GridlandsGame.h"
+#include "Save/GLSaveSubsystem.h"
 #include "UI/GLHUD.h"
 #include "Events/GLEventSubsystem.h"
 #include "GameFramework/Controller.h"
@@ -24,6 +25,16 @@ void AGLGameMode::StartPlay()
 	for (TActorIterator<ADirectionalLight> It(GetWorld()); It; ++It)
 	{
 		UE_LOG(LogGridlands, Log, TEXT("Lighting: %s rotation %s, direction %s"), *It->GetName(), *It->GetActorRotation().ToString(), *It->GetComponent()->GetDirection().ToString());
+	}
+	// Continue the world if it was saved (ADR-0019); -GLNewWorld starts fresh. Load before
+	// Event.Game.Started so restored dialogue history keeps one-time lines from replaying.
+	if (UGLSaveSubsystem* Saves = GetWorld()->GetSubsystem<UGLSaveSubsystem>())
+	{
+		if (!FParse::Param(FCommandLine::Get(), TEXT("GLNewWorld")) && UGLSaveSubsystem::SlotExists(Saves->AutosaveSlot))
+		{
+			Saves->LoadFromSlot(Saves->AutosaveSlot);
+		}
+		Saves->bAutosave = true;
 	}
 	FGLGameplayEvent Started;
 	Started.Tag = UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Game.Started"));
@@ -47,4 +58,13 @@ void AGLGameMode::RestartPlayer(AController* NewPlayer)
 		Pehlichi->GetPositioning()->Follow(Zenny);
 		Character->SetPehlichi(Pehlichi);
 	}
+}
+
+void AGLGameMode::EndPlay(const EEndPlayReason::Type Reason)
+{
+	if (UGLSaveSubsystem* Saves = GetWorld() ? GetWorld()->GetSubsystem<UGLSaveSubsystem>() : nullptr; Saves && Saves->bAutosave)
+	{
+		Saves->SaveToSlot(Saves->AutosaveSlot); // quitting keeps the world
+	}
+	Super::EndPlay(Reason);
 }

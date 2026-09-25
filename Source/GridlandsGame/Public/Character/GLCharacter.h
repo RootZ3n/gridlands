@@ -53,6 +53,9 @@ private:
 	/** Zenny never speaks; he commands (ADR-0005): Q scan, R repair, G follow/stay. */
 	void CommandPehlichi(FName Command);
 	void ToggleFollow();
+	/** F5 / F9: the world save (Saved/SaveGames/Gridlands/world.json). */
+	void QuickSave();
+	void QuickLoad();
 
 	UPROPERTY(VisibleAnywhere) TObjectPtr<USpringArmComponent> CameraBoom;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UCameraComponent> Camera;

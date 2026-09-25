@@ -33,6 +33,15 @@ private:
 	friend class UGLGlitchSubsystem;
 };
 
+// Loading a save is not a gameplay transition: it restores a persisted fact. Only the save
+// system holds this key, and it cannot restore Repairing (never persisted).
+struct FGLRestoreAuthority
+{
+private:
+	FGLRestoreAuthority() = default;
+	friend class UGLSaveSubsystem;
+};
+
 DECLARE_MULTICAST_DELEGATE_TwoParams(FGLOnGlitchStateChanged, EGLGlitchState /*From*/, EGLGlitchState /*To*/);
 
 /**
@@ -59,6 +68,8 @@ public:
 	/** Pehlichi took the ItemDelivered items at repair start; they stay delivered through interruptions. */
 	void MarkItemsDelivered(const FGLRepairAuthority& Authority) { bItemsDelivered = true; }
 	bool AreItemsDelivered() const { return bItemsDelivered; }
+	/** Restores saved facts without emitting gameplay events. Refuses Repairing. */
+	bool RestoreFromSave(EGLGlitchState SavedState, double SavedProgress, bool bSavedItemsDelivered, const FGLRestoreAuthority& Authority);
 
 	EGLGlitchState GetState() const { return State; }
 	FName GetGlitchId() const { return GlitchId; }

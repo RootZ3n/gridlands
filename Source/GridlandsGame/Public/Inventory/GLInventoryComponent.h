@@ -27,6 +27,8 @@ public:
 	FGLCraftCheck Craft(FName RecipeId, const class FGLKnowledge& Knowledge, const TArray<FName>& StationsInReach);
 	int32 CountOf(FName Item) const { return Inventory.CountOf(Item); }
 	bool IsOverencumbered() const { return bOverencumbered; }
+	/** Replaces the contents from a save, without Item.Acquired or Overencumbered events. */
+	void RestoreContents(const TArray<TPair<FName, int32>>& Items);
 	const FGLInventory& GetInventory() const { return Inventory; }
 
 	/** The carried tool allowed on Salvage with the highest multiplier, or null if none is carried. */
@@ -35,7 +37,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Inventory") float OverencumberedSpeedFactor = 0.5f;
 
 private:
-	void UpdateEncumbrance();
+	void UpdateEncumbrance(bool bAnnounce = true);
 
 	FGLInventory Inventory;
 	bool bOverencumbered = false;
