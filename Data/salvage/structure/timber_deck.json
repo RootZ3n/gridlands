@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "salvage.structure.timber_deck",
+  "displayName": "Timber deck",
+  "integrity": 40.0,
+  "material": "material.timber.pine",
+  "yields": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 3,
+      "yieldCategory": "yield.common.salvage"
+    }
+  ],
+  "notes": "P6: a deck slab; its debris salvages the same (provisional)."
+}

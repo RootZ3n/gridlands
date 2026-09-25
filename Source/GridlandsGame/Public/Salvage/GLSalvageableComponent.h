@@ -5,6 +5,9 @@
 #include "Interaction/GLInteractable.h"
 #include "GLSalvageableComponent.generated.h"
 
+/** Salvage finished: yields paid to By (P6: structures react to losing a part). */
+DECLARE_MULTICAST_DELEGATE_OneParam(FGLOnSalvaged, AActor* /*By*/);
+
 /**
  * Makes its owner salvageable by a definition (salvage.*). Each Interact.Salvage is one hit
  * (GLSalvageRules); when integrity runs out, yields go to the interactor's inventory scaled by
@@ -27,6 +30,9 @@ public:
 	bool IsSalvaged() const { return bSalvaged; }
 	/** Restores a salvaged node from a save: hidden, no yields, no events. */
 	void RestoreSalvaged();
+
+	/** Fires once when salvage completes (after yields and events). */
+	FGLOnSalvaged OnSalvaged;
 
 private:
 	void Complete(AActor* Interactor);

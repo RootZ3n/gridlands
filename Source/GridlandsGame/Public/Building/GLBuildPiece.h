@@ -26,6 +26,9 @@ public:
 
 	const FGLPlacedPiece& GetPiece() const { return Piece; }
 
+	/** P6: solid (blocks, navigation reads it) or not (while a collapse moves it; gameplay is decided elsewhere). */
+	void SetSolid(bool bSolid);
+
 private:
 	UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> Boxes;
 	FGLPlacedPiece Piece;

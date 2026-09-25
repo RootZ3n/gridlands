@@ -10,6 +10,7 @@
 #include "GameplayTagsManager.h"
 #include "GridlandsGame.h"
 #include "Inventory/GLInventoryComponent.h"
+#include "Noise/GLNoiseSubsystem.h"
 #include "Salvage/GLSalvageRules.h"
 
 namespace
@@ -72,6 +73,9 @@ bool UGLSalvageableComponent::Interact(AActor* Interactor, FGameplayTag Verb)
 		return false;
 	}
 	Integrity -= GLSalvageRules::DamagePerHit(*Def, GLContent::Get().Find<FGLMaterialDef>(Def->Material), Tool);
+	// Every hit is heard (P6): salvage is never silent. Chopping a tree says so in its data.
+	UGLNoiseSubsystem::EmitAction(this, Def->Noise.IsNone() ? FName(TEXT("Noise.Salvage.Hit")) : Def->Noise,
+		GetOwner() ? GetOwner()->GetActorLocation() : FVector::ZeroVector, Interactor, Def->Material);
 	if (Integrity <= UE_KINDA_SMALL_NUMBER)
 	{
 		Complete(Interactor);
@@ -128,4 +132,5 @@ void UGLSalvageableComponent::Complete(AActor* Interactor)
 			Actor->SetActorEnableCollision(false);
 		}
 	}
+	OnSalvaged.Broadcast(Interactor);
 }

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "salvage.nature.pine_log",
+  "displayName": "Pine log",
+  "integrity": 40.0,
+  "material": "material.timber.pine",
+  "yields": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 6,
+      "yieldCategory": "yield.common.gather"
+    }
+  ],
+  "noise": "Noise.Gather.Chop",
+  "notes": "P6: a felled trunk. Provisional yields."
+}

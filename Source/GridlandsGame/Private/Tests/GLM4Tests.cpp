@@ -130,7 +130,7 @@ bool FGLPlacementsSpawn::RunTest(const FString& Parameters)
 	FTestWorld Test; // no map: anchored placements resolve through the exported anchor records
 	UGLPlacementSubsystem* Placements = Test.World->GetSubsystem<UGLPlacementSubsystem>();
 	// Every supported placement of the cell spawns (salvage nodes since M4, glitches since M7,
-	// puzzle sites since the ADR-0023 proof, creatures and discoveries since M11).
+	// puzzle sites since the ADR-0023 proof, creatures and discoveries since M11, structures since P6).
 	int32 Supported = 0, Salvage = 0;
 	GLContent::Get().ForEachEntry([&](const FGLContentEntry& Entry)
 	{
@@ -138,7 +138,7 @@ bool FGLPlacementsSpawn::RunTest(const FString& Parameters)
 		if (P && Entry.Id.ToString().StartsWith(TEXT("placement.origin.")))
 		{
 			Supported += (P->Kind == TEXT("salvage_node") || P->Kind == TEXT("glitch") || P->Kind == TEXT("puzzle_site")
-				|| P->Kind == TEXT("spawn") || P->Kind == TEXT("discovery")) ? 1 : 0;
+				|| P->Kind == TEXT("spawn") || P->Kind == TEXT("discovery") || P->Kind == TEXT("structure")) ? 1 : 0;
 			Salvage += P->Kind == TEXT("salvage_node") ? 1 : 0;
 		}
 	});

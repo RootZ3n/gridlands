@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.nature.pine_stump",
+  "displayName": "Pine stump",
+  "notes": "P6 world-only piece: the base of a tree, where it is cut.",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "role": "stump",
+  "grounded": true,
+  "buildable": false,
+  "size": [
+    0.6,
+    0.6,
+    0.4
+  ],
+  "shapes": [
+    {
+      "size": [
+        0.6,
+        0.6,
+        0.4
+      ],
+      "offset": [
+        0,
+        0,
+        0.2
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "top",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        0.4
+      ]
+    }
+  ]
+}

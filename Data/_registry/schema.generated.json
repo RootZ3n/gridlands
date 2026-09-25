@@ -11,6 +11,10 @@
    "tag"
   ],
   "buildpiece": [
+   "buildable",
+   "collapse",
+   "collapse.direction",
+   "collapse.motion",
    "cost",
    "cost[].count",
    "cost[].item",
@@ -91,6 +95,7 @@
    "perception",
    "perception.coneDegrees",
    "perception.hearingRadius",
+   "perception.memorySeconds",
    "perception.sightRadius",
    "schemaVersion",
    "walkSpeed"
@@ -182,6 +187,8 @@
   "material": [
    "displayName",
    "id",
+   "impactScale",
+   "noiseScale",
    "notes",
    "salvageHardness",
    "schemaVersion",
@@ -237,6 +244,7 @@
    "id",
    "integrity",
    "material",
+   "noise",
    "notes",
    "onSalvageEvents",
    "onSalvageUnlocks",
@@ -275,6 +283,21 @@
    "trigger.eventCount",
    "trigger.min"
   ],
+  "structure": [
+   "displayName",
+   "id",
+   "notes",
+   "parts",
+   "parts[].collapse",
+   "parts[].collapse.direction",
+   "parts[].collapse.motion",
+   "parts[].location",
+   "parts[].name",
+   "parts[].piece",
+   "parts[].salvage",
+   "parts[].yawQuarter",
+   "schemaVersion"
+  ],
   "terraform": [
    "amount",
    "cost",
@@ -290,6 +313,26 @@
    "yields",
    "yields[].count",
    "yields[].item"
+  ],
+  "tuning": [
+   "collapse",
+   "collapse.damageBase",
+   "collapse.damageMax",
+   "collapse.damagePerMetreFallen",
+   "collapse.gravity",
+   "collapse.impactHeightMetres",
+   "collapse.impactMarginMetres",
+   "collapse.startDelaySeconds",
+   "collapse.toppleStartDegrees",
+   "displayName",
+   "id",
+   "noise",
+   "noise.investigateSeconds",
+   "noise.memorySeconds",
+   "noise.radius",
+   "noise.radius{}",
+   "notes",
+   "schemaVersion"
   ],
   "yield": [
    "displayName",

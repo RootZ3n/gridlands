@@ -2,6 +2,7 @@
 
 #include "AIController.h"
 #include "Navigation/PathFollowingComponent.h"
+#include "Noise/GLNoiseSubsystem.h"
 #include "NavigationInvokerComponent.h"
 #include "Combat/GLHealthComponent.h"
 #include "Presentation/GLDerez.h"
@@ -67,11 +68,6 @@ bool AGLCreature::Setup(FName InDefId, FName InPlacementId)
 			Paint->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.35f, 0.05f, 0.45f)); // corrupted violet
 		}
 	}
-	if (UGLEventSubsystem* Bus = GetWorld()->GetSubsystem<UGLEventSubsystem>())
-	{
-		LureSubscription = Bus->Subscribe(UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Pehlichi.Lure")),
-			FGLGameplayEventDelegate::CreateUObject(this, &AGLCreature::HandleLure));
-	}
 	return true;
 }
 
@@ -82,10 +78,6 @@ void AGLCreature::BeginPlay()
 
 void AGLCreature::EndPlay(const EEndPlayReason::Type Reason)
 {
-	if (UGLEventSubsystem* Bus = GetWorld() ? GetWorld()->GetSubsystem<UGLEventSubsystem>() : nullptr)
-	{
-		Bus->Unsubscribe(LureSubscription);
-	}
 	Super::EndPlay(Reason);
 }
 
@@ -95,20 +87,24 @@ void AGLCreature::Tick(float DeltaSeconds)
 	Think(DeltaSeconds);
 }
 
-void AGLCreature::HandleLure(const FGLGameplayEvent& Event)
+bool AGLCreature::HearNoise(const FGLNoiseEvent& Heard)
 {
 	const FGLCreatureDef* Def = GLContent::Get().Find<FGLCreatureDef>(DefId);
-	const AActor* Source = Event.Instigator.Get();
-	if (!Def || IsDefeated() || !Source)
+	if (!Def || IsDefeated() || !GLCreatureRules::Hears(*Def, GetActorLocation(), Heard.Location, Heard.RadiusCm))
 	{
-		return;
+		return false;
 	}
-	// Heard only within hearing radius; the lure is where Pehlichi made the noise.
-	if (FVector::Dist(Source->GetActorLocation(), GetActorLocation()) <= Def->Perception.HearingRadius * 100.0)
+	if (Heard.bDistraction)
 	{
-		Lure = Source->GetActorLocation();
-		LureLeft = Event.Numbers.FindRef(TEXT("seconds"));
+		Lure = Heard.Location; // where Pehlichi made the noise
+		LureLeft = Heard.InvestigateSeconds;
 	}
+	else
+	{
+		Noise = Heard.Location;
+		NoiseLeft = Heard.InvestigateSeconds;
+	}
+	return true;
 }
 
 bool AGLCreature::LineOfSightTo(const AActor* Target) const
@@ -129,6 +125,11 @@ void AGLCreature::Think(float DeltaSeconds)
 	}
 	SinceAttack += DeltaSeconds;
 	LureLeft = FMath::Max(0.0, LureLeft - DeltaSeconds);
+	NoiseLeft = FMath::Max(0.0, NoiseLeft - DeltaSeconds);
+	if (State == EGLCreatureState::Search)
+	{
+		SearchLeft = FMath::Max(0.0, SearchLeft - DeltaSeconds);
+	}
 	APawn* Zenny = UGameplayStatics::GetPlayerPawn(this, 0);
 	if (!Zenny)
 	{
@@ -152,8 +153,19 @@ void AGLCreature::Think(float DeltaSeconds)
 	Facts.bLineOfSight = Zenny && LineOfSightTo(Zenny);
 	Facts.LureSecondsLeft = LureLeft;
 	Facts.Lure = Lure;
+	Facts.NoiseSecondsLeft = NoiseLeft;
+	Facts.Noise = Noise;
+	Facts.SearchSecondsLeft = SearchLeft;
+	Facts.LastKnown = LastKnown;
 	Facts.SecondsSinceAttack = SinceAttack;
 	const FGLCreatureDecision Decision = GLCreatureRules::Decide(*Def, State, Facts);
+	if ((Decision.State == EGLCreatureState::Chase || Decision.State == EGLCreatureState::Attack) && Zenny)
+	{
+		// It sees Zenny now: remember where, for when it stops seeing (P6).
+		LastKnown = Zenny->GetActorLocation();
+		SearchLeft = Def->Perception.MemorySeconds > 0.0 ? Def->Perception.MemorySeconds : GLContent::Tuning().Noise.MemorySeconds;
+		NoiseLeft = 0.0;
+	}
 	Enter(Decision.State);
 
 	AAIController* Brain = Cast<AAIController>(GetController());
@@ -200,9 +212,15 @@ void AGLCreature::Enter(EGLCreatureState Next)
 	}
 	else if (Next == EGLCreatureState::Investigate)
 	{
-		Emit(TEXT("Event.Creature.Distracted"));
+		// Pehlichi's distraction and an ordinary noise are different stories (dialogue tells them apart).
+		Emit(LureLeft > 0.0 ? TEXT("Event.Creature.Distracted") : TEXT("Event.Creature.Heard"));
 	}
-	else if (Next == EGLCreatureState::Return && (Was == EGLCreatureState::Chase || Was == EGLCreatureState::Attack))
+	else if (Next == EGLCreatureState::Search)
+	{
+		Emit(TEXT("Event.Creature.Searching"));
+	}
+	else if ((Next == EGLCreatureState::Return || Next == EGLCreatureState::Idle)
+		&& (Was == EGLCreatureState::Chase || Was == EGLCreatureState::Attack || Was == EGLCreatureState::Search))
 	{
 		Emit(TEXT("Event.Creature.Lost"));
 	}

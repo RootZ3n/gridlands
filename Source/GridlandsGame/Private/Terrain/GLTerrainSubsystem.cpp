@@ -1,5 +1,8 @@
 #include "Terrain/GLTerrainSubsystem.h"
 
+#include "Noise/GLNoiseSubsystem.h"
+#include "Structure/GLStructureSubsystem.h"
+
 #include "Building/GLBuildingSubsystem.h"
 #include "Content/GLContent.h"
 #include "Content/GLContentDefinitions.h"
@@ -667,7 +670,12 @@ FGLTerrainEditResult UGLTerrainSubsystem::Terraform(AActor* Instigator, FName Te
 	Edit.AmountCm = Def->Amount * 100.0;
 	Edit.TargetHeightCm = HeightAt(Centre);
 	const UGLBuildingSubsystem* Building = GetWorld()->GetSubsystem<UGLBuildingSubsystem>();
-	const FGLTerrainEditResult Result = ApplyEdit(Edit, [Building](const FVector2D& At) { return Building && Building->IsUnderStructure(At); });
+	const UGLStructureSubsystem* Structures = GetWorld()->GetSubsystem<UGLStructureSubsystem>();
+	// Ground under a player piece, an intact grounded authored part or debris does not move (P6: refused for now).
+	const FGLTerrainEditResult Result = ApplyEdit(Edit, [Building, Structures](const FVector2D& At)
+	{
+		return (Building && Building->IsUnderStructure(At)) || (Structures && Structures->IsUnderStructure(At));
+	});
 	if (!Result.bApplied)
 	{
 		return Refuse(Result.Refusal);
@@ -682,6 +690,9 @@ FGLTerrainEditResult UGLTerrainSubsystem::Terraform(AActor* Instigator, FName Te
 		verify(Inventory->AddItem(Yield.Item, Yield.Count) == Yield.Count);
 	}
 	Emit(TEXT("Event.Terrain.Edited"), TerraformId, Instigator, FString());
+	// Terraforming is never silent (P6): creatures in earshot hear it.
+	const TCHAR* Sound = Edit.Op == EGLTerrainOp::Raise ? TEXT("Noise.Terrain.Raise") : Edit.Op == EGLTerrainOp::Flatten ? TEXT("Noise.Terrain.Flatten") : TEXT("Noise.Terrain.Dig");
+	UGLNoiseSubsystem::EmitAction(this, Sound, FVector(Centre, HeightAt(Centre)), Instigator);
 	return Result;
 }
 

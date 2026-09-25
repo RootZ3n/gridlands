@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "salvage.structure.timber_post",
+  "displayName": "Timber post",
+  "integrity": 30.0,
+  "material": "material.timber.pine",
+  "yields": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 2,
+      "yieldCategory": "yield.common.salvage"
+    }
+  ],
+  "notes": "P6: a load-bearing post. Provisional yields (economy untuned)."
+}

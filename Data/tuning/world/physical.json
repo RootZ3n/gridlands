@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "tuning.world.physical",
+  "displayName": "Physical and noise tuning",
+  "notes": "P6 PROVISIONAL values (never tuned by feel; operator playtest decides). Metres and seconds.",
+  "collapse": {
+    "gravity": 9.81,
+    "startDelaySeconds": 0.3,
+    "impactMarginMetres": 0.3,
+    "impactHeightMetres": 2.0,
+    "damageBase": 10.0,
+    "damagePerMetreFallen": 20.0,
+    "damageMax": 150.0,
+    "toppleStartDegrees": 5.0
+  },
+  "noise": {
+    "investigateSeconds": 8.0,
+    "memorySeconds": 8.0,
+    "radius": {
+      "Noise.Terrain.Dig": 12.0,
+      "Noise.Terrain.Raise": 12.0,
+      "Noise.Terrain.Flatten": 10.0,
+      "Noise.Gather.Chop": 15.0,
+      "Noise.Salvage.Hit": 10.0,
+      "Noise.Structure.Break": 14.0,
+      "Noise.Structure.Collapse": 25.0,
+      "Noise.Build.Place": 8.0,
+      "Noise.Build.Demolish": 12.0,
+      "Noise.Pehlichi.Lure": 40.0
+    }
+  }
+}

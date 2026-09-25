@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.timber_post",
+  "displayName": "Timber post",
+  "notes": "P6 world-only piece (authored structures). Not offered to the player.",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "role": "post",
+  "grounded": true,
+  "buildable": false,
+  "size": [
+    0.3,
+    0.3,
+    2.5
+  ],
+  "shapes": [
+    {
+      "size": [
+        0.3,
+        0.3,
+        2.5
+      ],
+      "offset": [
+        0,
+        0,
+        1.25
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "top",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        2.5
+      ]
+    }
+  ],
+  "collapse": {
+    "motion": "topple",
+    "direction": "awayFromInstigator"
+  }
+}

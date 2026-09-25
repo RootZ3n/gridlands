@@ -1,5 +1,7 @@
 #include "Save/GLSaveSubsystem.h"
 
+#include "Structure/GLStructureSubsystem.h"
+
 #include "TimerManager.h"
 
 #include "Content/GLContent.h"
@@ -263,6 +265,10 @@ FGLSavedCell UGLSaveSubsystem::CaptureCell(FName Cell) const
 	{
 		Terrain->CaptureCellDelta(Cell, Record.TerrainIndices, Record.TerrainDeltaCm);
 	}
+	if (const UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>())
+	{
+		Structures->CaptureCell(Cell, Record.StructureParts);
+	}
 	Record.Glitches.Sort([](const FGLSavedGlitch& A, const FGLSavedGlitch& B) { return A.Placement.LexicalLess(B.Placement); });
 	Record.SalvagedPlacements.Sort(FNameLexicalLess());
 	Record.DefeatedCreatures.Sort(FNameLexicalLess());
@@ -340,6 +346,11 @@ void UGLSaveSubsystem::ApplyCell(const FGLSavedCell& Record, TArray<FString>* Ou
 		}
 		Building->RemoveCell(Record.Cell);
 		Building->RestoreCell(Record.Cell, Pieces);
+	}
+	// Structures after the ground (debris rests on it); silently, so no collapse replays.
+	if (UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>())
+	{
+		Structures->RestoreCell(Record.Cell, Record.StructureParts, OutProblems);
 	}
 }
 
