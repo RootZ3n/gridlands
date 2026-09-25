@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "recipe.tool.shovel",
+  "displayName": "Shovel",
+  "output": {
+    "item": "item.tool.shovel",
+    "count": 1
+  },
+  "inputs": [
+    {
+      "item": "item.material.scrap_metal",
+      "count": 2
+    },
+    {
+      "item": "item.material.timber_plank",
+      "count": 1
+    }
+  ],
+  "craftSeconds": 3.0
+}

@@ -191,6 +191,29 @@ class RuleTests(unittest.TestCase):
         self.box.edit("puzzle.home.map_riddle", lambda d: d["answer"].update(mode="CONSTRUCT"))
         self.assertRule("SCHEMA")
 
+    def test_bld1_piece_material_must_be_structural(self):
+        self.box.edit("material.timber.pine", lambda d: d.pop("support"))
+        self.assertRule("BLD-1")
+
+    def test_bld2_piece_must_rest_on_something(self):
+        self.box.edit("buildpiece.modern.timber_wall", lambda d: d.update(sockets=[s for s in d["sockets"] if s["role"] != "bottom"]))
+        self.assertRule("BLD-2")
+
+    def test_bld3_socket_names_unique(self):
+        self.box.edit("buildpiece.modern.timber_wall", lambda d: d["sockets"][1].update(name="bottom"))
+        self.assertRule("BLD-3")
+
+    def test_bld4_socket_inside_bounds(self):
+        self.box.edit("buildpiece.modern.timber_roof", lambda d: d["sockets"][0].update(offset=[0, -3, 0]))
+        self.assertRule("BLD-4")
+
+    def test_tf1_raising_is_never_free(self):
+        self.box.edit("terraform.shovel.raise", lambda d: d.pop("cost"))
+        self.assertRule("TF-1")
+        box = Sandbox()
+        box.edit("terraform.shovel.dig", lambda d: d.pop("yields"))
+        self.assertIn("TF-1", box.rules())
+
     def test_kn1_declared_source_must_be_backed(self):
         self.box.edit("knowledge.style.roman_masonry", lambda d: d.update(sources=["Source.Salvage"]))
         self.assertRule("KN-1")

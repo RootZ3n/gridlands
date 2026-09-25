@@ -114,7 +114,7 @@ bool FGLYieldRules::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLSalvageRulesTest, "Gridlands.Core.Salvage.ToolEfficiencyAndGating", M4CoreFlags)
 bool FGLSalvageRulesTest::RunTest(const FString& Parameters)
 {
-	const FGLItemDef* PryBar = Content().Find<FGLItemDef>(TEXT("item.tool.pry_bar"));
+	const FGLItemDef* PryBarDef = Content().Find<FGLItemDef>(TEXT("item.tool.pry_bar"));
 	const FGLItemDef* Wire = Content().Find<FGLItemDef>(TEXT("item.material.copper_wire"));
 	struct FCase { const TCHAR* Salvage; int32 BareHits; int32 PryHits; };
 	for (const FCase& Case : { FCase{ TEXT("salvage.yard.junk_pile"), 6, 3 }, FCase{ TEXT("salvage.yard.fence_panel"), 4, 2 }, FCase{ TEXT("salvage.house.wiring_run"), 3, 2 } })
@@ -126,7 +126,7 @@ bool FGLSalvageRulesTest::RunTest(const FString& Parameters)
 		}
 		const FGLMaterialDef* Material = Content().Find<FGLMaterialDef>(Salvage->Material);
 		TestEqual(FString::Printf(TEXT("%s bare-handed hits"), Case.Salvage), GLSalvageRules::HitsToSalvage(*Salvage, Material, nullptr), Case.BareHits);
-		TestEqual(FString::Printf(TEXT("%s pry-bar hits"), Case.Salvage), GLSalvageRules::HitsToSalvage(*Salvage, Material, PryBar), Case.PryHits);
+		TestEqual(FString::Printf(TEXT("%s pry-bar hits"), Case.Salvage), GLSalvageRules::HitsToSalvage(*Salvage, Material, PryBarDef), Case.PryHits);
 		TestTrue(FString::Printf(TEXT("%s: the pry bar is strictly better"), Case.Salvage), Case.PryHits < Case.BareHits);
 		TestEqual(TEXT("a non-tool item gives no bonus"), GLSalvageRules::ToolMultiplier(*Salvage, Wire), 1.0);
 	}
@@ -137,9 +137,9 @@ bool FGLSalvageRulesTest::RunTest(const FString& Parameters)
 	FText Reason;
 	TestFalse(TEXT("gated salvage refuses bare hands"), GLSalvageRules::CanSalvage(Gated, nullptr, &Reason));
 	TestFalse(TEXT("and says why"), Reason.IsEmpty());
-	TestTrue(TEXT("and accepts the right tool"), GLSalvageRules::CanSalvage(Gated, PryBar));
+	TestTrue(TEXT("and accepts the right tool"), GLSalvageRules::CanSalvage(Gated, PryBarDef));
 
-	FGLItemDef LowTier = *PryBar;
+	FGLItemDef LowTier = *PryBarDef;
 	LowTier.Tool.Tier = 0;
 	FGLSalvageDef Junk = *Content().Find<FGLSalvageDef>(TEXT("salvage.yard.junk_pile"));
 	TestEqual(TEXT("a tool below minTier earns no bonus"), GLSalvageRules::ToolMultiplier(Junk, &LowTier), 1.0);

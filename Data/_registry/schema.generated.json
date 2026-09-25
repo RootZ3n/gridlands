@@ -16,11 +16,21 @@
    "cost[].item",
    "displayName",
    "era",
+   "grounded",
    "id",
    "material",
    "notes",
+   "role",
    "schemaVersion",
+   "shapes",
+   "shapes[].offset",
+   "shapes[].pitch",
+   "shapes[].size",
+   "size",
    "sockets",
+   "sockets[].name",
+   "sockets[].offset",
+   "sockets[].role",
    "unlockedBy"
   ],
   "capability": [
@@ -49,7 +59,13 @@
    "level",
    "notes",
    "playableHalfExtent",
-   "schemaVersion"
+   "schemaVersion",
+   "terrain",
+   "terrain.baseHeight",
+   "terrain.chunkMetres",
+   "terrain.maxDigDepth",
+   "terrain.maxRaiseHeight",
+   "terrain.spacingMetres"
   ],
   "era": [
    "description",
@@ -209,6 +225,22 @@
    "yieldMultipliers",
    "yieldMultipliers.creatureDrops",
    "yieldMultipliers.resourceYield"
+  ],
+  "terraform": [
+   "amount",
+   "cost",
+   "cost[].count",
+   "cost[].item",
+   "displayName",
+   "id",
+   "notes",
+   "op",
+   "radius",
+   "requiresTool",
+   "schemaVersion",
+   "yields",
+   "yields[].count",
+   "yields[].item"
   ],
   "yield": [
    "displayName",

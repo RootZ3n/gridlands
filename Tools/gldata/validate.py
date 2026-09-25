@@ -199,6 +199,8 @@ def cross_check(ds: Dataset) -> None:
     check_dialogue(ds)
     check_placements(ds)
     check_puzzles(ds)
+    check_building(ds)
+    check_terraform(ds)
     check_generated_tags(ds)
 
 
@@ -338,6 +340,41 @@ def check_puzzles(ds: Dataset) -> None:
             for index, requirement in enumerate(entity.data.get("requirements", [])):
                 if isinstance(requirement, dict) and requirement.get("kind") == "Requirement.PuzzleSolved" and "puzzle" not in requirement:
                     ds.problem("PZ-2", entity.file, f".requirements[{index}]", "Requirement.PuzzleSolved must name its puzzle")
+
+
+def check_building(ds: Dataset) -> None:
+    """BLD-1 a piece's material is structural; BLD-2 a piece has a bottom socket at z = 0 (it rests on
+    something); BLD-3 socket names are unique; BLD-4 every socket lies within the piece's bounds."""
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        if entity.kind != "buildpiece":
+            continue
+        data, rel = entity.data, entity.file
+        material = ds.entities.get(data.get("material", ""))
+        if material and "support" not in material.data:
+            ds.problem("BLD-1", rel, ".material", f"{data['material']} has no support values; it cannot be built with")
+        sockets = [s for s in data.get("sockets", []) if isinstance(s, dict)]
+        if not any(s.get("role") == "bottom" and abs(s.get("offset", [0, 0, 1])[2]) < 1e-6 for s in sockets):
+            ds.problem("BLD-2", rel, ".sockets", "needs a bottom socket at z = 0 (what the piece rests on)")
+        names = [s.get("name") for s in sockets]
+        if len(names) != len(set(names)):
+            ds.problem("BLD-3", rel, ".sockets", "socket names must be unique")
+        size = data.get("size", [0, 0, 0])
+        for s in sockets:
+            x, y, z = (s.get("offset", [0, 0, 0]) + [0, 0, 0])[:3]
+            if abs(x) > size[0] / 2 + 1e-6 or abs(y) > size[1] / 2 + 1e-6 or z < -1e-6 or z > size[2] + 1e-6:
+                ds.problem("BLD-4", rel, ".sockets", f"socket '{s.get('name')}' lies outside the piece's size {size}")
+
+
+def check_terraform(ds: Dataset) -> None:
+    """TF-1 no free ground: raising costs items and digging yields them (conservation)."""
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        if entity.kind != "terraform":
+            continue
+        data, rel = entity.data, entity.file
+        if data.get("op") == "RAISE" and not data.get("cost"):
+            ds.problem("TF-1", rel, ".cost", "RAISE must cost what DIG yields (no free ground)")
+        if data.get("op") == "DIG" and not data.get("yields"):
+            ds.problem("TF-1", rel, ".yields", "DIG must yield what RAISE costs")
 
 
 def check_generated_tags(ds: Dataset) -> None:

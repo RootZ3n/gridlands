@@ -1,47 +1,51 @@
 {
   "schemaVersion": 1,
-  "id": "buildpiece.roman.masonry_wall",
-  "displayName": "Roman masonry wall",
-  "era": "era.memory.roman",
-  "material": "material.masonry.roman_concrete",
-  "role": "wall",
+  "id": "buildpiece.modern.timber_roof",
+  "displayName": "Timber roof",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "role": "roof",
   "grounded": false,
   "size": [
     2,
-    0.2,
-    2.5
+    2,
+    1.0
   ],
   "shapes": [
     {
       "size": [
         2,
-        0.2,
-        2.5
+        2.236,
+        0.15
       ],
       "offset": [
         0,
         0,
-        1.25
-      ]
+        0.5
+      ],
+      "pitch": 26.57
     }
   ],
   "sockets": [
     {
-      "name": "bottom",
+      "name": "eave",
       "role": "bottom",
       "offset": [
         0,
-        0,
+        -1,
         0
       ]
     },
     {
-      "name": "top",
-      "role": "top",
+      "name": "ridge",
+      "role": "side",
       "offset": [
         0,
-        0,
-        2.5
+        1,
+        1.0
       ]
     },
     {
@@ -50,7 +54,7 @@
       "offset": [
         -1,
         0,
-        1.25
+        0.5
       ]
     },
     {
@@ -59,17 +63,14 @@
       "offset": [
         1,
         0,
-        1.25
+        0.5
       ]
     }
   ],
   "cost": [
     {
-      "item": "item.material.cut_stone",
-      "count": 4
+      "item": "item.material.timber_plank",
+      "count": 2
     }
-  ],
-  "unlockedBy": [
-    "knowledge.style.roman_masonry"
   ]
 }

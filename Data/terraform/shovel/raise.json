@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "terraform.shovel.raise",
+  "displayName": "Raise",
+  "op": "RAISE",
+  "radius": 1.5,
+  "amount": 0.5,
+  "requiresTool": "Tool.Dig",
+  "cost": [
+    {
+      "item": "item.material.soil",
+      "count": 1
+    }
+  ]
+}

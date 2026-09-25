@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp	2026-09-25 05:35:16.232444032 -0500
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp	2026-09-25 05:35:16.239784034 -0500
+@@ -116,7 +116,7 @@
+ 		{
+ 			if (Chunk && Chunk->Covers(Result.DirtyVertices))
+ 			{
+-				Chunk->Rebuild(Field, bNotifyNavigation);
++				Chunk->Rebuild(Field, false); // MUTATION: edits never tell navigation
+ 			}
+ 		}
+ 	}

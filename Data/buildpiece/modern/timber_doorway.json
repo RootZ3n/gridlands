@@ -1,10 +1,13 @@
 {
   "schemaVersion": 1,
-  "id": "buildpiece.roman.masonry_wall",
-  "displayName": "Roman masonry wall",
-  "era": "era.memory.roman",
-  "material": "material.masonry.roman_concrete",
-  "role": "wall",
+  "id": "buildpiece.modern.timber_doorway",
+  "displayName": "Timber doorway",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "role": "doorway",
   "grounded": false,
   "size": [
     2,
@@ -14,14 +17,38 @@
   "shapes": [
     {
       "size": [
-        2,
+        0.4,
         0.2,
         2.5
       ],
       "offset": [
-        0,
+        -0.8,
         0,
         1.25
+      ]
+    },
+    {
+      "size": [
+        0.4,
+        0.2,
+        2.5
+      ],
+      "offset": [
+        0.8,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        1.2,
+        0.2,
+        0.4
+      ],
+      "offset": [
+        0,
+        0,
+        2.3
       ]
     }
   ],
@@ -65,11 +92,8 @@
   ],
   "cost": [
     {
-      "item": "item.material.cut_stone",
-      "count": 4
+      "item": "item.material.timber_plank",
+      "count": 2
     }
-  ],
-  "unlockedBy": [
-    "knowledge.style.roman_masonry"
   ]
 }

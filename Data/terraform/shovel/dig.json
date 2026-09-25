@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "terraform.shovel.dig",
+  "displayName": "Dig",
+  "op": "DIG",
+  "radius": 1.5,
+  "amount": 0.5,
+  "requiresTool": "Tool.Dig",
+  "yields": [
+    {
+      "item": "item.material.soil",
+      "count": 1
+    }
+  ]
+}
