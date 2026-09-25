@@ -42,6 +42,7 @@ public:
 	class UGLBuildModeComponent* GetBuildMode() const { return BuildMode; }
 	class UGLHealthComponent* GetHealth() const { return Health; }
 	class UGLCombatComponent* GetCombat() const { return Combat; }
+	class UNavigationInvokerComponent* GetNavInvoker() const { return NavInvoker; }
 	AGLPehlichi* GetPehlichi() const { return Pehlichi.Get(); }
 	void SetPehlichi(AGLPehlichi* InPehlichi) { Pehlichi = InPehlichi; }
 	const UInputMappingContext* GetMappingContext() const { return MappingContext; }
@@ -76,6 +77,7 @@ private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<class UGLBuildModeComponent> BuildMode;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<class UGLHealthComponent> Health;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<class UGLCombatComponent> Combat;
+	UPROPERTY(VisibleAnywhere) TObjectPtr<class UNavigationInvokerComponent> NavInvoker;
 
 	UPROPERTY(Transient) TObjectPtr<UInputMappingContext> MappingContext;
 	TWeakObjectPtr<AGLPehlichi> Pehlichi;

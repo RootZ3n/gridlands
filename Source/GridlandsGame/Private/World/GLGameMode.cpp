@@ -57,7 +57,7 @@ void AGLGameMode::StartPlay()
 		Grid->Enable(true);
 		if (const APawn* Zenny = UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
 		{
-			Grid->Update(Zenny->GetActorLocation());
+			Grid->Advance(Zenny->GetActorLocation());
 		}
 	}
 	FGLGameplayEvent Started;

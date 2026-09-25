@@ -38,7 +38,7 @@ double FGLHeightfield::HeightAt(const FVector2D& World) const
 	return FMath::Lerp(Top, Bottom, TY);
 }
 
-FGLTerrainEditResult FGLHeightfield::Apply(const FGLTerrainEdit& Edit, TFunctionRef<bool(const FVector2D& World)> IsProtected)
+FGLTerrainEditResult FGLHeightfield::Apply(const FGLTerrainEdit& Edit, TFunctionRef<bool(const FVector2D& World)> IsProtected, bool bDryRun)
 {
 	FGLTerrainEditResult Result;
 	if (Edit.RadiusCm <= 0.0 || (Edit.Op != EGLTerrainOp::Flatten && Edit.AmountCm <= 0.0))
@@ -120,7 +120,10 @@ FGLTerrainEditResult FGLHeightfield::Apply(const FGLTerrainEdit& Edit, TFunction
 	for (const FChange& Change : Changes)
 	{
 		Result.VolumeM3 += (Change.NewHeight - Heights[Change.Index]) / 100.0 * CellAreaM2;
-		Heights[Change.Index] = Change.NewHeight;
+		if (!bDryRun)
+		{
+			Heights[Change.Index] = Change.NewHeight;
+		}
 		const int32 X = Change.Index % VertsX, Y = Change.Index / VertsX;
 		Result.DirtyVertices.Min.X = FMath::Min(Result.DirtyVertices.Min.X, X);
 		Result.DirtyVertices.Min.Y = FMath::Min(Result.DirtyVertices.Min.Y, Y);

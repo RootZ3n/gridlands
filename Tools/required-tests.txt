@@ -60,7 +60,10 @@ Gridlands.Game.Storm 1
 Gridlands.Game.World 1
 
 # P3: Grid cells and streaming (ADR-0026): no loss, duplication or replay; save in the second cell; per-cell static/depth.
-Gridlands.Game.Grid 3
+Gridlands.Game.Grid 5
 
 # P4 presentation: subtitle layer (speaker styling, director timing, interruption, voice hook, accessibility).
 Gridlands.Game.Presentation 3
+
+# P5: localized navigation around invokers (ADR-0029), across boundaries, cleaned up on unload.
+Gridlands.Game.Navigation 3

@@ -1,0 +1,14 @@
+diff --git a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+index 8adad65..8003071 100644
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+@@ -406,7 +406,8 @@ bool UGLTerrainSubsystem::RemoveCell(FName CellId)
+ 	}
+ 	if (Ground.NavBounds)
+ 	{
+-		Ground.NavBounds->Destroy();
++		// PLANTED DEFECT: the unloaded cell's navigation bounds are left behind
++		// Ground.NavBounds->Destroy();
+ 	}
+ 	return true;
+ }

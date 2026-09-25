@@ -45,6 +45,13 @@ namespace GLTerrainNavTests
 			Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(Test.World);
 			Terrain = Test.World->GetSubsystem<UGLTerrainSubsystem>();
 			Terrain->Setup(FVector2D::ZeroVector, 2, 1, 65, 100.0, 0.f, 400.0, 400.0);
+			// Navigation is built only around invokers (ADR-0029): one over the middle of the field.
+			AActor* Watcher = Test.World->SpawnActor<AActor>();
+			USceneComponent* Root = NewObject<USceneComponent>(Watcher);
+			Watcher->SetRootComponent(Root);
+			Root->RegisterComponent();
+			Watcher->SetActorLocation(FVector(SeamX, 3200, 0));
+			Nav->RegisterInvoker(*Watcher, 10000.f, 12000.f, FNavAgentSelector(), ENavigationInvokerPriority::Default);
 		}
 
 		~FNavScene()
@@ -61,7 +68,7 @@ namespace GLTerrainNavTests
 			for (int32 Tick = 0; Tick < 2000; ++Tick)
 			{
 				Nav->Tick(0.05f);
-				if (Tick > 2 && !Nav->IsNavigationBuildInProgress() && !Nav->HasDirtyAreasQueued())
+				if (Tick > 12 && !Nav->IsNavigationBuildInProgress() && !Nav->HasDirtyAreasQueued())
 				{
 					return true;
 				}

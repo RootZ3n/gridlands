@@ -57,9 +57,11 @@ explore --> notice / scan (Pehlichi) --> salvage & discover --> fabricate & buil
 
 Full detail: [WORLD-AND-PROGRESSION.md](WORLD-AND-PROGRESSION.md).
 
-- The world is made of **large physical Grid cells**, each a world region of
-  roughly 1 km (planning assumption). Grid lines are region boundaries, not
-  surface decoration.
+- The world is made of **large physical Grid cells**. They are **1 km × 1 km**
+  (1024 m, with 1 m terrain and 64 m chunks), canonical per
+  [ADR-0027](ADR/0027-canonical-grid-scale.md). Grid lines are region
+  boundaries, not surface decoration. Neighbouring cells' eras **bleed in before
+  the boundary**; crossing is never an abrupt biome switch.
 - Progression is **radial**. Zenny starts in the stable outer Gridlands, and
   danger, corruption and NICE's control rise **toward her central city/core**.
   Moving sideways at a similar distance keeps a similar difficulty.
@@ -97,7 +99,8 @@ story-critical lines ignore it.
 |---|---|
 | **Zenny (body)** | use-based skills: running, jumping, weapon families, other practiced actions |
 | **Pehlichi (mind)** | exploration, glitch repair, knowledge, understanding NICE's systems |
-| **The world** | stabilization derived from repaired glitches; knowledge unlocks from discovery (materials teach uses, scanned structures teach building styles) |
+| **The world** | stabilization derived from repaired glitches |
+| **Knowledge** | discovery, not levels. **Chukka** (what Zenny knows), **Ofi** (what he can make), **Hoponi** (what he can cook), with Pehlichi as the investigator. See [KNOWLEDGE-AND-DISCOVERY.md](KNOWLEDGE-AND-DISCOVERY.md) |
 
 Bosses are optional. The **whole game is completable without combat**
 ([ADR-0009](ADR/0009-non-combat-completion-path.md)). That path is not easy

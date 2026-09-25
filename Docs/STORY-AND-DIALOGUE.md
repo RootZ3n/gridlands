@@ -133,6 +133,38 @@ composure is not stored; it is derived.
 **Out of scope for now:** voice acting, lip sync, cinematic cutscenes and
 localization tooling. Text ids are stable so these can be added later.
 
+## 6a. Dialogue north star (operator decision, 2026-09-25)
+**The primary purpose of ambient and reactive NICE/Pehlichi dialogue is to make the player laugh.**
+
+Story, lore, characterisation and exposition travel *through* that comedic relationship far more
+often than they replace it.
+
+**Adult tone is intentional.** Allowed:
+- profanity, crude humour and sexual innuendo;
+- fart jokes;
+- dark comedy and gallows humour;
+- insults, and deliberately tasteless jokes where they land.
+
+Do not sanitise to broaden the audience.
+
+**Craft rules:**
+- Not every line is a joke. Serious and emotional moments stay serious.
+- NICE and Pehlichi have **distinct comedic voices**.
+- Timing, restraint, callbacks and relevance matter more than quantity.
+- Pehlichi eventually uses "that's what she said", contextually and sparingly.
+
+## 6b. Digestive comedy (writing requirements; mechanics in KNOWLEDGE-AND-DISCOVERY §5–6)
+- **Zenny is "silent but deadly"**, a recurring canonical joke.
+- **Pehlichi escalates:** a snicker, then "Seriously?", shushing, "You're gonna have to learn how
+  to control that thing.", "Dude, put a plug in that thing.", and finally "Bro."
+- **NICE reads the context:** the food and its quality, recent repeats, stealth, whether a creature
+  heard it, whether it caused detection, and whether Zenny died of it ("Zenny, are you lactose
+  intolerant?").
+- **Restraint:** silence is a valid outcome. Callbacks and escalation, never a random bucket.
+- **Setting:** it can be turned off (removing the events and their dialogue consequences).
+- The dialogue system's history requirements (`requires.eventCount`), cooldowns, maxUses and
+  subject matching already support escalation and callbacks.
+
 ## 7. Invariants
 
 | # | Invariant |

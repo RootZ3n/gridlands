@@ -1,0 +1,213 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0D9D2C28B7AC59A640A50D6E7E8DB",
+			"instanceName": "Pehverse-865028",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.25-18.28.07",
+	"succeeded": 0,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 10.109774589538574,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BuiltOnlyAroundInvokersAndFollowsEdits",
+			"fullTestPath": "Gridlands.Game.Navigation.BuiltOnlyAroundInvokersAndFollowsEdits",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D9D2C28B7AC59A640A50D6E7E8DB"
+			],
+			"duration": 10.109774589538574,
+			"dateTime": "2026.09.25-18.27.57",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "active tiles around Zenny: 160 (a whole 1 km cell: 10816)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.28.00"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "active tiles after the walk: 173; old place on navigation: yes",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.28.03"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "DIAG after another settle: tiles 173, old place yes",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.28.03"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "DIAG after another settle: tiles 173, old place yes",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.28.04"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "DIAG after another settle: tiles 173, old place yes",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.28.04"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "DIAG after going back and away again: tiles 173, old place yes",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.28.07"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "DIAG probe X=0.000 Y=-1200.000: nav",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.28.07"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "DIAG probe X=3000.000 Y=-1200.000: none",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.28.07"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "DIAG probe X=-3000.000 Y=-1200.000: none",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.28.07"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "DIAG probe X=0.000 Y=2000.000: nav",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.28.07"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "DIAG probe X=0.000 Y=-4500.000: nav",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.28.07"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "DIAG probe X=6000.000 Y=9500.000: none",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.28.07"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'removed where Zenny was (beyond the removal radius)' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLLocalizedNavigationTests.cpp",
+					"lineNumber": 167,
+					"timestamp": "2026.09.25-18.28.07"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "navmesh at the mound: 10 -> 175 cm (ground 300)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.28.07"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		}
+	]
+}

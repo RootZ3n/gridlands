@@ -1,0 +1,37 @@
+diff --git a/Source/GridlandsGame/Private/World/GLGridSubsystem.cpp b/Source/GridlandsGame/Private/World/GLGridSubsystem.cpp
+index 422d7ad..bed3307 100644
+--- a/Source/GridlandsGame/Private/World/GLGridSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLGridSubsystem.cpp
+@@ -180,8 +180,10 @@ void UGLGridSubsystem::TryFinishRuntime(FName Cell, FGLLoadedCell& Entry)
+ 	UE_LOG(LogGridlands, Log, TEXT("Grid: %s runtime layer in (epoch %d, kept state: %s)"), *Cell.ToString(), Entry.Epoch, bHadState ? TEXT("yes") : TEXT("no"));
+ }
+ 
++static TAutoConsoleVariable<int32> CVarGLBisect(TEXT("gl.Grid.Bisect"), 0, TEXT("TEMPORARY hitch bisect"));
+ bool UGLGridSubsystem::UnloadCell(FName Cell)
+ {
++	const int32 Skip = CVarGLBisect.GetValueOnGameThread();
+ 	FGLLoadedCell Entry;
+ 	if (!Loaded.RemoveAndCopyValue(Cell, Entry))
+ 	{
+@@ -204,16 +206,16 @@ bool UGLGridSubsystem::UnloadCell(FName Cell)
+ 		R.bCancelled = true;
+ 	}
+ 	World->GetSubsystem<UGLBuildingSubsystem>()->RemoveCell(Cell);
+-	World->GetSubsystem<UGLPlacementSubsystem>()->DespawnCell(Cell);
+-	World->GetSubsystem<UGLTerrainSubsystem>()->RemoveCell(Cell);
+-	if (Entry.Boundary)
++	if (!(Skip & 4)) World->GetSubsystem<UGLPlacementSubsystem>()->DespawnCell(Cell);
++	if (!(Skip & 2)) World->GetSubsystem<UGLTerrainSubsystem>()->RemoveCell(Cell);
++	if (Entry.Boundary && !(Skip & 8))
+ 	{
+ 		Entry.Boundary->Destroy();
+ 	}
+-	if (Entry.Level)
++	if (Entry.Level && !(Skip & 1))
+ 	{
+ 		Entry.Level->SetShouldBeVisible(false);
+-		Entry.Level->SetShouldBeLoaded(false);
++		if (!(Skip & 16)) Entry.Level->SetShouldBeLoaded(false);
+ 	}
+ 	++Unloads;
+ 	UE_LOG(LogGridlands, Log, TEXT("Grid: unloaded %s at frame %llu (epoch %d, %s)"), *Cell.ToString(), GFrameCounter, Entry.Epoch, Entry.bRuntime ? TEXT("was ready") : TEXT("cancelled mid-load"));

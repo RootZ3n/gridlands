@@ -1,0 +1,14 @@
+diff --git a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+index 8adad65..31fae0f 100644
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+@@ -268,8 +268,7 @@ void UGLTerrainSubsystem::Pump(const FVector2D& Near, double BudgetSeconds, int3
+ 	{
+ 		const TSharedPtr<FGLMeshJob> Job = Jobs[I];
+ 		FGLCellGround* Ground = Grounds.Find(Job->Cell);
+-		const bool bStale = !Ground || Ground->Generation != Job->Generation || !Ground->Slots.IsValidIndex(Job->Slot)
+-			|| Ground->Slots[Job->Slot].Version != Job->Version;
++		const bool bStale = !Ground || Ground->Generation != Job->Generation || !Ground->Slots.IsValidIndex(Job->Slot); // PLANTED DEFECT: no version check
+ 		if (bStale)
+ 		{
+ 			if (Ground && Ground->Generation == Job->Generation && Ground->Slots.IsValidIndex(Job->Slot))
