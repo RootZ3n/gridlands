@@ -1,0 +1,16 @@
+diff --git a/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp b/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
+index 0452db5..7ad1cb8 100644
+--- a/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
+@@ -214,10 +214,7 @@ void UGLSaveSubsystem::Apply(const FGLWorldSave& Save, TArray<FString>* OutProbl
+ 	if (AGLPehlichi* Pehlichi = FindPehlichi())
+ 	{
+ 		ApplyTransform(Pehlichi, Save.Pehlichi);
+-		for (const FGLSavedCount& Level : Save.PehlichiCapabilities)
+-		{
+-			Pehlichi->GetCapabilities()->Grant(Level.Id, Level.Count);
+-		}
++		// MUTATION: Pehlichi's upgrades are not restored
+ 	}
+ 	if (UGLDialogueDirector* Director = World->GetSubsystem<UGLDialogueDirector>())
+ 	{

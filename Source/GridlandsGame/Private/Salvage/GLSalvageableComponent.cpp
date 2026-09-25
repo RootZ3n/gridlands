@@ -79,6 +79,20 @@ bool UGLSalvageableComponent::Interact(AActor* Interactor, FGameplayTag Verb)
 	return true;
 }
 
+void UGLSalvageableComponent::RestoreSalvaged()
+{
+	bSalvaged = true;
+	Integrity = 0.0;
+	for (AActor* Actor : { GetOwner(), LinkedVisual.Get() })
+	{
+		if (Actor)
+		{
+			Actor->SetActorHiddenInGame(true);
+			Actor->SetActorEnableCollision(false);
+		}
+	}
+}
+
 void UGLSalvageableComponent::Complete(AActor* Interactor)
 {
 	const FGLSalvageDef* Def = GLContent::Get().Find<FGLSalvageDef>(SalvageId);

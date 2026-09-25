@@ -85,6 +85,16 @@ fog density, scan confidence and banter (`Event.World.Stabilized`,
 `Event.World.InterferenceTierChanged`). Outside a cell's `playableHalfExtent`, the next
 band's baseline applies. Dev command: `gl.Demo.RepairNearby` fast-forwards the real loop.
 
+**The world save (M9, ADR-0019).** `FGLWorldSave` (Core) holds facts only: glitch states
+(persisted form, never Repairing), progress and delivered items, salvaged placements, inventory,
+knowledge, Pehlichi's capabilities, dialogue history and settings preset, plus Zenny's and
+Pehlichi's positions. It is encoded by `GLSaveCodec` as versioned JSON (newer versions are refused;
+migrations go in one place). `UGLSaveSubsystem` captures and applies it. Restoring a glitch uses
+its own passkey (`FGLRestoreAuthority`, save system only); systems restore silently (no replayed
+events). Files: `Saved/SaveGames/Gridlands/world.json`. The game mode loads it at start (skip with
+`-GLNewWorld`) and autosaves on every repair and on quit; F5/F9 quick save/load. Derived values are
+recomputed on load (S-1).
+
 **Dialogue (M5, ADR-0015).** `GLDialogueRules` (Core, pure, seeded) chooses at most one
 exchange per event: trigger and subject match, history requirements, maxUses, cooldowns,
 busy rule (only StoryCritical may interrupt, never another StoryCritical), then the

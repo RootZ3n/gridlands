@@ -10,7 +10,8 @@ SOURCE = Path(__file__).resolve().parents[2] / "Source"
 class DialogueIsEventDriven(unittest.TestCase):
     """D-4 (ADR-0015): gameplay systems emit events; only dialogue code, UI and tests touch the director."""
 
-    ALLOWED = re.compile(r"/(Dialogue|Tests|UI)/")
+    # Save/ may include it to persist dialogue HISTORY (ADR-0019); it never makes anyone speak.
+    ALLOWED = re.compile(r"/(Dialogue|Tests|UI|Save)/")
 
     def test_no_gameplay_code_includes_the_director(self):
         offenders = []
@@ -35,14 +36,15 @@ class OnlyPehlichiRepairs(unittest.TestCase):
         # Parse the component class itself, not the passkey structs above it.
         body = text[text.index("class GRIDLANDSGAME_API UGLGlitchComponent"):]
         public = body.split("public:", 1)[1].split("private:", 1)[0]
-        mutators = re.findall(r"^\s*(?:bool|void)\s+(Reveal|SetRequirementsMet|BeginRepair|AddRepairProgress|Interrupt|MarkItemsDelivered)\((.*?)\)", public, re.M)
-        self.assertGreaterEqual(len(mutators), 6)
+        mutators = re.findall(r"^\s*(?:bool|void)\s+(Reveal|SetRequirementsMet|BeginRepair|AddRepairProgress|Interrupt|MarkItemsDelivered|RestoreFromSave)\((.*?)\)", public, re.M)
+        self.assertGreaterEqual(len(mutators), 7)
         for name, params in mutators:
-            self.assertRegex(params, r"FGL(Scan|Repair|World)Authority", f"{name} must require an authority passkey")
+            self.assertRegex(params, r"FGL(Scan|Repair|World|Restore)Authority", f"{name} must require an authority passkey")
 
     def test_passkeys_are_private_and_befriend_one_class(self):
         text = self.HEADER.read_text()
-        for key, friend in (("FGLScanAuthority", "UGLScanComponent"), ("FGLRepairAuthority", "UGLRepairComponent"), ("FGLWorldAuthority", "UGLGlitchSubsystem")):
+        for key, friend in (("FGLScanAuthority", "UGLScanComponent"), ("FGLRepairAuthority", "UGLRepairComponent"),
+                            ("FGLWorldAuthority", "UGLGlitchSubsystem"), ("FGLRestoreAuthority", "UGLSaveSubsystem")):
             block = re.search(r"struct " + key + r"\s*\{(.*?)\};", text, re.S).group(1)
             self.assertIn("private:", block, f"{key} constructor must be private")
             self.assertEqual(re.findall(r"friend class (\w+);", block), [friend], f"{key} may only befriend {friend}")

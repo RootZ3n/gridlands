@@ -1,0 +1,38 @@
+{
+ "succeeded": 2,
+ "succeededWithWarnings": 0,
+ "failed": 1,
+ "notRun": 0,
+ "inProcess": 0,
+ "totalDuration": 0.036531347781419754,
+ "tests": [
+  {
+   "fullTestPath": "Gridlands.Game.Save.MidRepairLoadsAsInterrupted",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Save.StaleIdsAreReportedNotFatal",
+   "state": "Success",
+   "warnings": 0,
+   "errors": 0,
+   "entries": []
+  },
+  {
+   "fullTestPath": "Gridlands.Game.Save.WorldStaysChangedAcrossReload",
+   "state": "Fail",
+   "warnings": 0,
+   "errors": 1,
+   "entries": [
+    {
+     "event": {
+      "type": "Error",
+      "message": "Expected '15: Pehlichi's scan upgrade persisted' to be 2, but it was 1."
+     }
+    }
+   ]
+  }
+ ]
+}

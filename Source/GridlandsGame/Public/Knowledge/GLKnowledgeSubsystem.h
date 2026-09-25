@@ -23,6 +23,8 @@ public:
 	bool Learn(FName Id);
 	bool Knows(FName Id) const { return Knowledge.Knows(Id); }
 	const FGLKnowledge& GetKnowledge() const { return Knowledge; }
+	/** Replaces what is known from a save, without Event.Knowledge.Unlocked. */
+	void Restore(const TArray<FName>& Known) { Knowledge = FGLKnowledge(); for (const FName& Id : Known) { Knowledge.Learn(Id); } }
 
 private:
 	void HandleItemAcquired(const FGLGameplayEvent& Event);

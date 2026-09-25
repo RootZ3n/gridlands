@@ -25,6 +25,8 @@ public:
 	FName GetSalvageId() const { return SalvageId; }
 	double GetIntegrity() const { return Integrity; }
 	bool IsSalvaged() const { return bSalvaged; }
+	/** Restores a salvaged node from a save: hidden, no yields, no events. */
+	void RestoreSalvaged();
 
 private:
 	void Complete(AActor* Interactor);

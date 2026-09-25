@@ -9,6 +9,6 @@ public class GridlandsCore : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Json" });
-		PrivateDependencyModuleNames.AddRange(new string[] { "JsonUtilities" });
+		PublicDependencyModuleNames.AddRange(new string[] { "JsonUtilities" });
 	}
 }

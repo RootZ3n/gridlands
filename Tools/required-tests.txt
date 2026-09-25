@@ -39,3 +39,7 @@ Gridlands.Game.Pehlichi 4
 # M8: derived stability (ADR-0013, S-1) and static receding when Pehlichi repairs.
 Gridlands.Core.Stability 2
 Gridlands.Game.Stability 1
+
+# M9: the world save (loop steps 13-15), versions, mid-repair, stale ids.
+Gridlands.Core.Save 1
+Gridlands.Game.Save 3

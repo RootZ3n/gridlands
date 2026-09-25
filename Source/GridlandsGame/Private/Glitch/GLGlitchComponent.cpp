@@ -89,6 +89,20 @@ bool UGLGlitchComponent::BeginRepair(const FGLRepairAuthority&)
 	return Transition(EGLGlitchState::Repairing, EGLGlitchAuthority::PehlichiRepair);
 }
 
+bool UGLGlitchComponent::RestoreFromSave(EGLGlitchState SavedState, double SavedProgress, bool bSavedItemsDelivered, const FGLRestoreAuthority&)
+{
+	if (SavedState == EGLGlitchState::Repairing || SavedState >= EGLGlitchState::Count)
+	{
+		return false;
+	}
+	const EGLGlitchState From = State;
+	State = SavedState;
+	ProgressSeconds = FMath::Clamp(SavedProgress, 0.0, GetRequiredSeconds());
+	bItemsDelivered = bSavedItemsDelivered;
+	OnStateChanged.Broadcast(From, State); // visuals only; no Event.Glitch.* for a restore
+	return true;
+}
+
 bool UGLGlitchComponent::ApplyInterruptPolicy()
 {
 	const FGLGlitchDef* Def = GLContent::Get().Find<FGLGlitchDef>(GlitchId);

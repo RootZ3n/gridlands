@@ -35,6 +35,19 @@ void UGLDialogueDirector::Deinitialize()
 	Super::Deinitialize();
 }
 
+void UGLDialogueDirector::RestoreHistory(const TArray<TPair<FName, int32>>& Uses, const TArray<TPair<FName, int32>>& EventCounts)
+{
+	State = FGLDialogueState();
+	for (const TPair<FName, int32>& Use : Uses)
+	{
+		State.Exchanges.Add(Use.Key).Uses = Use.Value;
+	}
+	for (const TPair<FName, int32>& Count : EventCounts)
+	{
+		State.EventCounts.Add(Count.Key, Count.Value);
+	}
+}
+
 double UGLDialogueDirector::Now() const
 {
 	return TimeOverride.IsSet() ? TimeOverride.GetValue() : (GetWorld() ? GetWorld()->GetTimeSeconds() : 0.0);

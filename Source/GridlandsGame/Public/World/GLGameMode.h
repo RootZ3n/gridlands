@@ -13,4 +13,5 @@ public:
 	AGLGameMode();
 	virtual void StartPlay() override;
 	virtual void RestartPlayer(AController* NewPlayer) override;
+	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 };
