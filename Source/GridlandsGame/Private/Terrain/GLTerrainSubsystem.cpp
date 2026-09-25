@@ -1,6 +1,10 @@
 #include "Terrain/GLTerrainSubsystem.h"
 
+#include "Building/GLBuildingSubsystem.h"
 #include "Content/GLContent.h"
+#include "Events/GLEventSubsystem.h"
+#include "GameplayTagsManager.h"
+#include "Inventory/GLInventoryComponent.h"
 #include "Content/GLContentDefinitions.h"
 #include "Engine/World.h"
 #include "GridlandsGame.h"
@@ -123,12 +127,101 @@ FGLTerrainEditResult UGLTerrainSubsystem::ApplyEdit(const FGLTerrainEdit& Edit, 
 	return Result;
 }
 
+FGLTerrainEditResult UGLTerrainSubsystem::Terraform(AActor* Instigator, FName TerraformId, const FVector2D& Centre)
+{
+	FGLTerrainEditResult Refused;
+	const FGLTerraformDef* Def = GLContent::Get().Find<FGLTerraformDef>(TerraformId);
+	UGLInventoryComponent* Inventory = Instigator ? Instigator->FindComponentByClass<UGLInventoryComponent>() : nullptr;
+	auto Refuse = [&](const FString& Reason)
+	{
+		Refused.Refusal = Reason;
+		Emit(TEXT("Event.Terrain.Refused"), TerraformId, Instigator, Reason);
+		return Refused;
+	};
+	if (!Def || !Inventory)
+	{
+		return Refuse(TEXT("unknown tool stroke"));
+	}
+	const bool bHasTool = Inventory->GetInventory().GetStacks().ContainsByPredicate([Def](const FGLInventoryStack& Stack)
+	{
+		const FGLItemDef* Item = GLContent::Get().Find<FGLItemDef>(Stack.Item);
+		return Item && Item->Tool.ToolClass == Def->RequiresTool;
+	});
+	if (!bHasTool)
+	{
+		return Refuse(TEXT("needs a digging tool"));
+	}
+	for (const FGLItemStackDef& Cost : Def->Cost)
+	{
+		if (Inventory->CountOf(Cost.Item) < Cost.Count)
+		{
+			return Refuse(TEXT("nothing to build the ground up with"));
+		}
+	}
+	FGLInventory Trial = Inventory->GetInventory();
+	for (const FGLItemStackDef& Cost : Def->Cost)
+	{
+		Trial.Remove(Cost.Item, Cost.Count);
+	}
+	for (const FGLItemStackDef& Yield : Def->Yields)
+	{
+		if (Trial.Add(GLContent::Get(), Yield.Item, Yield.Count) != Yield.Count)
+		{
+			return Refuse(TEXT("no room to carry the soil"));
+		}
+	}
+
+	FGLTerrainEdit Edit;
+	Edit.Op = Def->Op == TEXT("RAISE") ? EGLTerrainOp::Raise : Def->Op == TEXT("FLATTEN") ? EGLTerrainOp::Flatten : EGLTerrainOp::Dig;
+	Edit.Centre = Centre;
+	Edit.RadiusCm = Def->Radius * 100.0;
+	Edit.AmountCm = Def->Amount * 100.0;
+	Edit.TargetHeightCm = HeightAt(Centre);
+	const UGLBuildingSubsystem* Building = GetWorld()->GetSubsystem<UGLBuildingSubsystem>();
+	const FGLTerrainEditResult Result = ApplyEdit(Edit, [Building](const FVector2D& At) { return Building && Building->IsUnderStructure(At); });
+	if (!Result.bApplied)
+	{
+		return Refuse(Result.Refusal);
+	}
+	// The ground changed: settle the items (the trial above proved they fit).
+	for (const FGLItemStackDef& Cost : Def->Cost)
+	{
+		verify(Inventory->RemoveItem(Cost.Item, Cost.Count));
+	}
+	for (const FGLItemStackDef& Yield : Def->Yields)
+	{
+		verify(Inventory->AddItem(Yield.Item, Yield.Count) == Yield.Count);
+	}
+	Emit(TEXT("Event.Terrain.Edited"), TerraformId, Instigator, FString());
+	return Result;
+}
+
+void UGLTerrainSubsystem::Emit(const TCHAR* Tag, FName Subject, AActor* Instigator, const FString& Reason)
+{
+	FGLGameplayEvent Event;
+	Event.Tag = UGameplayTagsManager::Get().RequestGameplayTag(Tag);
+	Event.Subject = Subject;
+	Event.Instigator = Instigator;
+	UGLEventSubsystem::Emit(this, MoveTemp(Event));
+	if (!Reason.IsEmpty())
+	{
+		UE_LOG(LogGridlands, Log, TEXT("Terrain: %s refused: %s"), *Subject.ToString(), *Reason);
+	}
+}
+
 bool UGLTerrainSubsystem::RestoreDelta(TConstArrayView<int32> Indices, TConstArrayView<int32> DeltaCm)
 {
-	if (!HasGround() || !Field.ApplyDelta(Indices, DeltaCm))
+	if (!HasGround())
 	{
 		return false;
 	}
+	FGLHeightfield Fresh = Field;
+	Fresh.ResetToBase();
+	if (!Fresh.ApplyDelta(Indices, DeltaCm))
+	{
+		return false;
+	}
+	Field = MoveTemp(Fresh);
 	for (AGLTerrainChunk* Chunk : Chunks)
 	{
 		Chunk->Rebuild(Field, true);

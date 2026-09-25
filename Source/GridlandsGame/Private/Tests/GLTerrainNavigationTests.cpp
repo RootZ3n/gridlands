@@ -6,6 +6,7 @@
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
 #include "Navigation/PathFollowingComponent.h"
+#include "Building/GLBuildingSubsystem.h"
 #include "Terrain/GLTerrainChunk.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "Tests/GLTestUtils.h"
@@ -27,12 +28,31 @@ namespace GLTerrainNavTests
 		UGLTerrainSubsystem* Terrain = nullptr;
 		UNavigationSystemV1* Nav = nullptr;
 
-		explicit FNavScene(const TCHAR* Name) : Test(Name)
+		/**
+		 * The AI module creates its crowd manager when the navigation system starts, before any
+		 * navmesh exists in a bare test world (the cell's runtime bounds come later) and warns once.
+		 */
+		static void ExpectCrowdWarning(FAutomationTestBase& Owner)
 		{
+			Owner.AddExpectedMessagePlain(TEXT("Unable to find RecastNavMesh instance while trying to create UCrowdManager"),
+				ELogVerbosity::Warning, EAutomationExpectedMessageFlags::Contains, 1);
+		}
+
+		FNavScene(const TCHAR* Name, FAutomationTestBase& Owner) : Test(Name)
+		{
+			ExpectCrowdWarning(Owner);
 			FNavigationSystem::AddNavigationSystemToWorld(*Test.World, FNavigationSystemRunMode::GameMode);
 			Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(Test.World);
 			Terrain = Test.World->GetSubsystem<UGLTerrainSubsystem>();
 			Terrain->Setup(FVector2D::ZeroVector, 2, 1, 65, 100.0, 0.f, 400.0, 400.0);
+		}
+
+		~FNavScene()
+		{
+			if (Test.World->HasBegunPlay())
+			{
+				Test.World->EndPlay(EEndPlayReason::Quit); // pair the walker test's begin-play
+			}
 		}
 
 		/** Ticks navigation until no build is pending (async tiles), bounded. Returns false on timeout. */
@@ -89,16 +109,16 @@ namespace GLTerrainNavTests
 		}
 	};
 
-	/** Where a polyline crosses x = SeamX (the y of the first crossing), or -1e9 if it never does. */
-	double CrossingY(const TArray<FVector>& Points)
+	/** Where a polyline crosses x = LineX (the y of the first crossing), or -1e9 if it never does. */
+	double CrossingY(const TArray<FVector>& Points, double LineX = SeamX)
 	{
 		for (int32 I = 1; I < Points.Num(); ++I)
 		{
 			const FVector& P = Points[I - 1];
 			const FVector& Q = Points[I];
-			if ((P.X - SeamX) * (Q.X - SeamX) <= 0.0 && P.X != Q.X)
+			if ((P.X - LineX) * (Q.X - LineX) <= 0.0 && P.X != Q.X)
 			{
-				const double T = (SeamX - P.X) / (Q.X - P.X);
+				const double T = (LineX - P.X) / (Q.X - P.X);
 				return FMath::Lerp(P.Y, Q.Y, T);
 			}
 		}
@@ -122,7 +142,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLNavFollowsEdits, "Gridlands.Game.Terrain.Nav
 bool FGLNavFollowsEdits::RunTest(const FString& Parameters)
 {
 	// M10 HARD GATE (ADR-0022 open proof 1): paths follow runtime terrain edits.
-	FNavScene Scene(TEXT("GLTerrainNavWorld"));
+	FNavScene Scene(TEXT("GLTerrainNavWorld"), *this);
 	if (!TestNotNull(TEXT("navigation system"), Scene.Nav) || !TestTrue(TEXT("initial navmesh builds"), Scene.Settle()))
 	{
 		return false;
@@ -159,7 +179,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLNavAgentWalks, "Gridlands.Game.Terrain.AIWal
 bool FGLNavAgentWalks::RunTest(const FString& Parameters)
 {
 	// An AI-controlled character actually walks the new route; it never goes through the old one.
-	FNavScene Scene(TEXT("GLTerrainAgentWorld"));
+	FNavScene Scene(TEXT("GLTerrainAgentWorld"), *this);
 	TestTrue(TEXT("initial navmesh"), Scene.Settle());
 	Scene.RaiseRidge();
 	TestTrue(TEXT("rebuilt after the ridge"), Scene.Settle());
@@ -223,7 +243,7 @@ bool FGLNavStaleControl::RunTest(const FString& Parameters)
 	// Control: if edits do NOT tell navigation, the old straight route over the ridge is still
 	// offered. This is what the acceptance tests above would see if navigation were not updated,
 	// so their "detours through the gap" assertions can fail.
-	FNavScene Scene(TEXT("GLTerrainNavControlWorld"));
+	FNavScene Scene(TEXT("GLTerrainNavControlWorld"), *this);
 	TestTrue(TEXT("initial navmesh"), Scene.Settle());
 	Scene.Terrain->bNotifyNavigation = false;
 	Scene.RaiseRidge();
@@ -233,6 +253,29 @@ bool FGLNavStaleControl::RunTest(const FString& Parameters)
 	const double Crossing = CrossingY(Scene.Path(A, B, &bPartial));
 	TestTrue(FString::Printf(TEXT("stale navigation still offers the straight route over the ridge (y = %.0f)"), Crossing), !bPartial && FMath::Abs(Crossing - 3200.0) < 200.0);
 	AddInfo(FString::Printf(TEXT("control (navigation not told): path crosses x = 64 m at y = %.0f, straight over the ridge"), Crossing));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLNavAroundWalls, "Gridlands.Game.Building.PiecesBlockNavigation", GLTestUtils::Flags)
+bool FGLNavAroundWalls::RunTest(const FString& Parameters)
+{
+	// Built walls are obstacles too: a wall line across the route, with a gap, forces a detour.
+	FNavScene Scene(TEXT("GLBuildNavWorld"), *this);
+	TestTrue(TEXT("initial navmesh"), Scene.Settle());
+	TArray<FGLPlacedPiece> Line;
+	int32 Id = 1;
+	for (double Y = 100.0; Y < GapFromY; Y += 200.0)
+	{
+		Line.Add({ Id++, TEXT("buildpiece.modern.timber_foundation"), FVector(SeamX, Y, 0.0), 0 });
+		Line.Add({ Id++, TEXT("buildpiece.modern.timber_wall"), FVector(SeamX + 100.0, Y, 30.0), 1 });
+	}
+	Scene.Test.World->GetSubsystem<UGLBuildingSubsystem>()->Restore(Line, Id);
+	TestTrue(TEXT("navigation rebuilds around the pieces"), Scene.Settle());
+	bool bPartial = true;
+	const double WallX = SeamX + 100.0; // the walls stand on the floors' east edge
+	const double Crossing = CrossingY(Scene.Path(A, B, &bPartial), WallX);
+	TestTrue(FString::Printf(TEXT("the path passes the wall line through the gap (crosses at y = %.0f)"), Crossing), !bPartial && Crossing > GapFromY - 50.0);
+	AddInfo(FString::Printf(TEXT("wall line with a gap: path crosses the wall line x = 65 m at y = %.0f"), Crossing));
 	return true;
 }
 

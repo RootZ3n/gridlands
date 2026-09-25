@@ -47,8 +47,16 @@ deterministically and be maintainable by agents.
   Player-dug caves are out of scope unless a later ADR adds a local voxel layer.
 
 ## What must be proven before production terrain is "done"
-1. **Navigation** follows edits in a real level with an editor-placed
-   `NavMeshBoundsVolume` (not demonstrated in the spike, see evidence).
+1. **Navigation** follows edits: **PROVEN in M10** ([evidence](../Evidence/M10/README.md)).
+   Cells declare their navigation bounds at runtime (`AGLCellNavBounds`, a bounds volume with a
+   box extent, sized from cell data) instead of an editor-placed brush. `RecastNavMesh`
+   runtime generation is `Dynamic`, and each edit dirties only the rebuilt chunks.
+   - Automated tests:
+     - a path detours a ridge raised at runtime and returns when the ridge is flattened;
+     - an AI walker takes the gap and never climbs the ridge;
+     - a control shows stale navigation still offers the old route;
+     - a mutation (edits don't tell navigation) fails the gate.
+   - The same proof passes in the real game (`gl.Demo.NavProof`).
 2. **LOD and rendering cost** at cell scale on the target GPU.
 3. **World Partition streaming** of chunk actors.
 4. **Terrain material blending and foliage** on dynamic-mesh chunks.

@@ -141,7 +141,7 @@ bool FGLPlacementsSpawn::RunTest(const FString& Parameters)
 		}
 	});
 	TestEqual(TEXT("every supported origin placement spawns"), Placements->SpawnCell(TEXT("cell.home.origin")), Supported);
-	TestEqual(TEXT("including the four salvage nodes (the glovebox holds the riddle's map)"), Salvage, 4);
+	TestEqual(TEXT("including the nine salvage nodes (four fences and two sheds give shelter timber; the glovebox holds the map)"), Salvage, 9);
 
 	const AGLSalvageNode* Junk = Placements->FindSalvageNode(TEXT("placement.origin.junk_pile_01"));
 	TestTrue(TEXT("transform placement at its authored location"), Junk && Junk->GetActorLocation().Equals(FVector(1200, 300, 0)));

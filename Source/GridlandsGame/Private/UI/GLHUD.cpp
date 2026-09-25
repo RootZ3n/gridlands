@@ -1,5 +1,7 @@
 #include "UI/GLHUD.h"
 
+#include "Building/GLBuildModeComponent.h"
+
 #include "Engine/Canvas.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
@@ -44,5 +46,9 @@ void AGLHUD::DrawHUD()
 		const FString Readout = FString::Printf(TEXT("Grid: %s (%.2f)   NICE composure %d%%"),
 			GLStabilityModel::TierName(GLStabilityModel::TierFor(Interference)), Interference, FMath::RoundToInt(Stability->NiceComposure() * 100.0));
 		DrawText(Readout, FLinearColor(0.f, 1.f, 1.f), 24.f, 24.f, GEngine->GetMediumFont(), 1.2f);
+	}
+	if (const UGLBuildModeComponent* Tools = Zenny->FindComponentByClass<UGLBuildModeComponent>(); Tools && !Tools->StatusLine().IsEmpty())
+	{
+		DrawText(Tools->StatusLine(), FLinearColor(1.f, 0.85f, 0.3f), 24.f, Canvas->ClipY - 60.f, GEngine->GetMediumFont(), 1.2f);
 	}
 }

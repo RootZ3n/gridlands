@@ -94,8 +94,8 @@ int32 UGLBuildBlockoutCommandlet::Main(const FString& Params)
 		return 1;
 	}
 
-	// Ground: 250 m x 250 m, top face at z = 0.
-	B.Box(TEXT("Ground"), FVector(0, 0, -0.5 * M), FVector(250, 250, 1), 0.0, B.Grid);
+	// No static ground: the cell's runtime heightfield (ADR-0022, cell data "terrain") is the ground,
+	// top face at z = 0, spawned when the level begins play.
 	// Streets: a main street along X and a cross street along Y.
 	B.Box(TEXT("Street_Main"), FVector(0, 0, 0.02 * M), FVector(250, 10, 0.04));
 	B.Box(TEXT("Street_Cross"), FVector(60 * M, 0, 0.02 * M), FVector(10, 250, 0.04));

@@ -16,6 +16,7 @@
 #include "Fabrication/GLFabricatorComponent.h"
 #include "Pehlichi/GLPehlichi.h"
 #include "Puzzle/GLPuzzleSubsystem.h"
+#include "Building/GLBuildModeComponent.h"
 #include "Save/GLSaveSubsystem.h"
 #include "Pehlichi/GLPehlichiCommandComponent.h"
 #include "GridlandsGame.h"
@@ -35,6 +36,14 @@ namespace GLCharacterInput
 	const FName Follow(TEXT("CommandFollowToggle"));
 	const FName QuickSave(TEXT("QuickSave"));
 	const FName Hint(TEXT("AskPehlichiForHint"));
+	// M10 building and terraforming (provisional bindings, pending operator playtest).
+	const FName BuildToggle(TEXT("BuildToggle"));
+	const FName TerraformCycle(TEXT("TerraformCycle"));
+	const FName ToolPrimary(TEXT("ToolPrimary"));
+	const FName PieceNext(TEXT("PieceNext"));
+	const FName PiecePrevious(TEXT("PiecePrevious"));
+	const FName PieceRotate(TEXT("PieceRotate"));
+	const FName PieceDemolish(TEXT("PieceDemolish"));
 	const FName QuickLoad(TEXT("QuickLoad"));
 }
 
@@ -72,6 +81,7 @@ AGLCharacter::AGLCharacter()
 	Interactor = CreateDefaultSubobject<UGLInteractorComponent>(TEXT("Interactor"));
 	Inventory = CreateDefaultSubobject<UGLInventoryComponent>(TEXT("Inventory"));
 	Fabricator = CreateDefaultSubobject<UGLFabricatorComponent>(TEXT("Fabricator"));
+	BuildMode = CreateDefaultSubobject<UGLBuildModeComponent>(TEXT("BuildMode"));
 }
 
 void AGLCharacter::BuildInput()
@@ -128,6 +138,13 @@ void AGLCharacter::BuildInput()
 	MappingContext->MapKey(MakeAction(GLCharacterInput::Follow, EInputActionValueType::Boolean), EKeys::G);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::QuickSave, EInputActionValueType::Boolean), EKeys::F5);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::Hint, EInputActionValueType::Boolean), EKeys::H);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::BuildToggle, EInputActionValueType::Boolean), EKeys::B);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::TerraformCycle, EInputActionValueType::Boolean), EKeys::T);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::ToolPrimary, EInputActionValueType::Boolean), EKeys::LeftMouseButton);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::PieceNext, EInputActionValueType::Boolean), EKeys::MouseScrollUp);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::PiecePrevious, EInputActionValueType::Boolean), EKeys::MouseScrollDown);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::PieceRotate, EInputActionValueType::Boolean), EKeys::Z);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::PieceDemolish, EInputActionValueType::Boolean), EKeys::X);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::QuickLoad, EInputActionValueType::Boolean), EKeys::F9);
 }
 
@@ -167,6 +184,13 @@ void AGLCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		Input->BindAction(FindInputAction(GLCharacterInput::Follow), ETriggerEvent::Started, this, &AGLCharacter::ToggleFollow);
 		Input->BindAction(FindInputAction(GLCharacterInput::QuickSave), ETriggerEvent::Started, this, &AGLCharacter::QuickSave);
 		Input->BindAction(FindInputAction(GLCharacterInput::Hint), ETriggerEvent::Started, this, &AGLCharacter::AskForHint);
+		Input->BindAction(FindInputAction(GLCharacterInput::BuildToggle), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::ToggleBuild);
+		Input->BindAction(FindInputAction(GLCharacterInput::TerraformCycle), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::CycleTerraform);
+		Input->BindAction(FindInputAction(GLCharacterInput::ToolPrimary), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::Primary);
+		Input->BindAction(FindInputAction(GLCharacterInput::PieceNext), ETriggerEvent::Started, this, &AGLCharacter::NextPiece);
+		Input->BindAction(FindInputAction(GLCharacterInput::PiecePrevious), ETriggerEvent::Started, this, &AGLCharacter::PreviousPiece);
+		Input->BindAction(FindInputAction(GLCharacterInput::PieceRotate), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::Rotate);
+		Input->BindAction(FindInputAction(GLCharacterInput::PieceDemolish), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::Demolish);
 		Input->BindAction(FindInputAction(GLCharacterInput::QuickLoad), ETriggerEvent::Started, this, &AGLCharacter::QuickLoad);
 	}
 }
@@ -197,11 +221,11 @@ void AGLCharacter::Interact()
 
 void AGLCharacter::FabricateFirstAvailable()
 {
-	const TArray<FName> Recipes = Fabricator->CraftableRecipes();
-	if (Recipes.Num() > 0)
+	const FName Recipe = Fabricator->PreferredRecipe();
+	if (!Recipe.IsNone())
 	{
-		Fabricator->Fabricate(Recipes[0]);
-		UE_LOG(LogGridlands, Log, TEXT("Fabricated %s"), *Recipes[0].ToString());
+		Fabricator->Fabricate(Recipe);
+		UE_LOG(LogGridlands, Log, TEXT("Fabricated %s"), *Recipe.ToString());
 	}
 }
 
@@ -212,6 +236,16 @@ void AGLCharacter::CommandPehlichi(FName Command)
 		const EGLCommandRejection Result = Companion->GetCommands()->Issue(Command, this);
 		UE_LOG(LogGridlands, Log, TEXT("Command %s -> %s"), *Command.ToString(), *StaticEnum<EGLCommandRejection>()->GetNameStringByValue(static_cast<int64>(Result)));
 	}
+}
+
+void AGLCharacter::NextPiece()
+{
+	BuildMode->CyclePiece(1);
+}
+
+void AGLCharacter::PreviousPiece()
+{
+	BuildMode->CyclePiece(-1);
 }
 
 void AGLCharacter::AskForHint()

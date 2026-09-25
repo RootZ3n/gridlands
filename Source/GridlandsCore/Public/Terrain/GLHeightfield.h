@@ -65,6 +65,8 @@ public:
 
 	/** Sparse difference from the flat base: vertex index -> whole centimetres. Deterministic order. */
 	void EncodeDelta(TArray<int32>& OutIndices, TArray<int32>& OutDeltaCm) const;
+	/** Every vertex back to the base height (limits and layout unchanged). */
+	void ResetToBase() { for (float& H : Heights) { H = BaseHeight; } }
 	/** Restores a saved delta onto a freshly initialised base. False (and no change) if malformed. */
 	bool ApplyDelta(TConstArrayView<int32> Indices, TConstArrayView<int32> DeltaCm);
 

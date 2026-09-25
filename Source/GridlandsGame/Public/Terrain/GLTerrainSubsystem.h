@@ -36,6 +36,14 @@ public:
 	FGLTerrainEditResult ApplyEdit(const FGLTerrainEdit& Edit, TFunctionRef<bool(const FVector2D&)> IsProtected);
 	FGLTerrainEditResult ApplyEdit(const FGLTerrainEdit& Edit) { return ApplyEdit(Edit, [](const FVector2D&) { return false; }); }
 
+	/**
+	 * A player's terraforming stroke (data: terraform.*). Needs the tool; pays the cost and
+	 * receives the yields only if the ground actually changes (no free soil, no lost soil);
+	 * the ground under structures is protected. Flatten levels to the ground height at Centre.
+	 * Emits Event.Terrain.Edited or Event.Terrain.Refused.
+	 */
+	FGLTerrainEditResult Terraform(AActor* Instigator, FName TerraformId, const FVector2D& Centre);
+
 	/** Save support: sparse delta from the base (whole cm), restored onto a freshly set-up ground. */
 	void CaptureDelta(TArray<int32>& OutIndices, TArray<int32>& OutDeltaCm) const { Field.EncodeDelta(OutIndices, OutDeltaCm); }
 	bool RestoreDelta(TConstArrayView<int32> Indices, TConstArrayView<int32> DeltaCm);
@@ -45,6 +53,7 @@ public:
 
 private:
 	void Clear();
+	void Emit(const TCHAR* Tag, FName Subject, AActor* Instigator, const FString& Reason);
 
 	FGLHeightfield Field;
 	int32 VertsPerChunk = 0;

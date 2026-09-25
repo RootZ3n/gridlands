@@ -120,4 +120,19 @@ bool FGLStationReach::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLPreferredRecipe, "Gridlands.Game.Fabrication.FMakesWhatZennyLacks", GLTestUtils::Flags)
+bool FGLPreferredRecipe::RunTest(const FString& Parameters)
+{
+	// With enough for either tool, F makes the critical-path pry bar first (lexical order), and
+	// then the shovel rather than a second pry bar.
+	GLTestUtils::FTestWorld Test(TEXT("GLPreferredRecipeWorld"));
+	FCrafter Zenny = SpawnCrafter(Test.World);
+	Zenny.Inventory->AddItem(TEXT("item.material.scrap_metal"), 5);
+	Zenny.Inventory->AddItem(TEXT("item.material.timber_plank"), 1);
+	TestEqual(TEXT("first: the pry bar"), Zenny.Fabricator->PreferredRecipe(), FName(TEXT("recipe.tool.pry_bar")));
+	Zenny.Fabricator->Fabricate(TEXT("recipe.tool.pry_bar"));
+	TestEqual(TEXT("then: the shovel, not a second pry bar"), Zenny.Fabricator->PreferredRecipe(), FName(TEXT("recipe.tool.shovel")));
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

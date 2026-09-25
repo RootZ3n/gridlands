@@ -1,0 +1,14 @@
+LogStreaming: Display: AsyncLoading2 - Created: Async Loading Thread: false, Async Post Load: false, Multithreaded: false
+LogLoad: LoadMap: /Game/Gridlands/Maps/L_Origin?Name=Player
+LogLoad: Game class is 'GLGameMode'
+LogGridlands: Terrain: cell.home.origin ground 4x4 chunks of 64 m
+LogLoad: Took 0.257446 seconds to LoadMap(/Game/Gridlands/Maps/L_Origin)
+LogLoad: (Engine Initialization) Total time: 7.19 seconds
+LogGridlands: gl.Demo.BuildShelter: 16/16 pieces placed, planks left 0
+LogGridlands: Terrain: terraform.shovel.dig refused: the ground here is holding up a structure
+LogGridlands: gl.Demo.Terraform: dug 4, raised 4, soil left 0; pit -200 cm, mound 200 cm; dig under shelter applied=0
+LogGridlands: gl.Demo.NavProof: before: route crosses x = 3250 at y = -8000 (straight)
+LogGridlands: gl.Demo.NavProof: ridge raised to 338 cm across the old route
+LogGridlands: gl.Demo.NavProof: after: route crosses x = 3250 at y = -5958 (gap from -6000)
+LogGridlands: gl.Demo.NavProof: PASS - the AI walker arrived 113 cm from B after 10.8 s, crossed the ridge line at y = -5947 (gap from -6000), max z 116
+LogGridlands: Save: wrote <repo>/Saved/SaveGames/Gridlands/world.json
