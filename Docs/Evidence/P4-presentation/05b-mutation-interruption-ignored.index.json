@@ -1,0 +1,99 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0D8C462C07ED0B274B99D32EB9C0E",
+			"instanceName": "Pehverse-3605464",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.25-13.32.38",
+	"succeeded": 2,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.031208544969558716,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "DefeatedCreatureDerezzesThenIsGone",
+			"fullTestPath": "Gridlands.Game.Presentation.DefeatedCreatureDerezzesThenIsGone",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0D8C462C07ED0B274B99D32EB9C0E"
+			],
+			"duration": 0.01219968032091856,
+			"dateTime": "2026.09.25-13.32.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DirectorLinesBecomeSubtitles",
+			"fullTestPath": "Gridlands.Game.Presentation.DirectorLinesBecomeSubtitles",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0D8C462C07ED0B274B99D32EB9C0E"
+			],
+			"duration": 0.010743612423539162,
+			"dateTime": "2026.09.25-13.32.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SubtitleTimelineFollowsTheDirector",
+			"fullTestPath": "Gridlands.Game.Presentation.SubtitleTimelineFollowsTheDirector",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D8C462C07ED0B274B99D32EB9C0E"
+			],
+			"duration": 0.0082652531564235687,
+			"dateTime": "2026.09.25-13.32.38",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the interrupting line shows alone' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLPresentationTests.cpp",
+					"lineNumber": 52,
+					"timestamp": "2026.09.25-13.32.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the interrupted exchange's pending line never appears' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<engine>/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1240,
+					"timestamp": "2026.09.25-13.32.38"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		}
+	]
+}
