@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.discovery.storm_drain",
+  "trigger": [
+    "Event.Discovery.Found"
+  ],
+  "subject": "knowledge.place.storm_drain",
+  "category": "Contextual",
+  "priority": 70,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "Pehlichi",
+      "text": "There's something down in that drain. It's... chewing on the signal."
+    },
+    {
+      "speaker": "NICE",
+      "text": "It's my pet. It bites. Go on, pet it."
+    }
+  ]
+}

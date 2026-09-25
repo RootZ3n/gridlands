@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.discovery.roman_colonnade",
+  "trigger": [
+    "Event.Discovery.Found"
+  ],
+  "subject": "knowledge.memory.roman_colonnade",
+  "category": "Contextual",
+  "priority": 70,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "Pehlichi",
+      "text": "Those columns are older than this whole street. By about two thousand years."
+    },
+    {
+      "speaker": "NICE",
+      "text": "They're load-bearing nostalgia. Leave them alone."
+    }
+  ]
+}

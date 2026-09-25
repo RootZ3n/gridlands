@@ -1,0 +1,84 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0D86DC37878528DDC8BE3E436B532",
+			"instanceName": "Pehverse-2824960",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.25-11.58.01",
+	"succeeded": 1,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.0092970980331301689,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "CreatureSeesOnlyWhatItShould",
+			"fullTestPath": "Gridlands.Core.Combat.CreatureSeesOnlyWhatItShould",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0D86DC37878528DDC8BE3E436B532"
+			],
+			"duration": 0.0011409560684114695,
+			"dateTime": "2026.09.25-11.58.01",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LureBeatsChaseAttackRespectsCooldown",
+			"fullTestPath": "Gridlands.Core.Combat.LureBeatsChaseAttackRespectsCooldown",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D86DC37878528DDC8BE3E436B532"
+			],
+			"duration": 0.0081561421975493431,
+			"dateTime": "2026.09.25-11.58.01",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "lure overrides the chase: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<engine>/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-11.58.01"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'it goes to the noise, not to Zenny' to be X=0.000 Y=900.000 Z=0.000, but it was X=300.000 Y=0.000 Z=0.000 and outside tolerance 0.000100.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsCore/Private/Tests/GLCreatureRulesTests.cpp",
+					"lineNumber": 73,
+					"timestamp": "2026.09.25-11.58.01"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		}
+	]
+}

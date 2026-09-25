@@ -214,6 +214,18 @@ class RuleTests(unittest.TestCase):
         box.edit("terraform.shovel.dig", lambda d: d.pop("yields"))
         self.assertIn("TF-1", box.rules())
 
+    def test_cr1_creature_drops_are_combat_sources(self):
+        self.box.edit("item.material.static_residue", lambda d: d.update(sources=["Source.Salvage"]))
+        self.assertRule("CR-1")
+
+    def test_cr2_creatures_come_from_places(self):
+        self.box.path("placement.origin.drain_gremlin_den").unlink()
+        self.assertRule("CR-2")
+
+    def test_storm_must_say_whether_it_harms(self):
+        self.box.edit("storm.playful.cats_and_dogs", lambda d: d.pop("harmless"))
+        self.assertRule("SCHEMA")
+
     def test_kn1_declared_source_must_be_backed(self):
         self.box.edit("knowledge.style.roman_masonry", lambda d: d.update(sources=["Source.Salvage"]))
         self.assertRule("KN-1")
@@ -268,9 +280,36 @@ class RuleTests(unittest.TestCase):
         self.assertEqual(self.box.problems(), [])
 
 
+class SliceDialogueTests(unittest.TestCase):
+    """M11: smart-ass dialogue is a core feature; the slice carries ~40 exchanges across these categories."""
+
+    FAMILIES = {
+        "salvage": "Event.Salvage", "overencumbrance": "Event.Player.Overencumbered", "building": "Event.Building",
+        "death": "Event.Player.Died", "exploration": "Event.Discovery", "glitches": "Event.Glitch",
+        "riddle": "Event.Puzzle", "silence": "Event.Player.Silent", "ambient": "Event.Ambient",
+        "creature": "Event.Creature", "storm": "Event.Storm", "terraform": "Event.Terrain",
+    }
+
+    def test_breadth(self):
+        ds = validate.run(REPO)
+        exchanges = [e for e in ds.entities.values() if e.kind == "exchange"]
+        self.assertGreaterEqual(len(exchanges), 40)
+        triggers = [t for e in exchanges for t in e.data.get("trigger", [])]
+        for family, prefix in self.FAMILIES.items():
+            self.assertTrue(any(t == prefix or t.startswith(prefix + ".") for t in triggers), f"no {family} exchange ({prefix})")
+        antagonism = [e for e in exchanges if {"NICE", "Pehlichi"} <= {l.get("speaker") for l in e.data.get("lines", [])}]
+        self.assertGreaterEqual(len(antagonism), 15, "NICE and Pehlichi should spar often")
+
+    def test_every_exchange_is_rate_limited(self):
+        ds = validate.run(REPO)
+        for e in ds.entities.values():
+            if e.kind == "exchange" and e.data.get("category") != "StoryCritical":
+                self.assertTrue(e.data.get("maxUses") or e.data.get("cooldownSeconds", 0) > 0, f"{e.id} could repeat forever")
+
+
 class GenerateTests(unittest.TestCase):
     def test_generated_tag_file_is_in_sync(self):
-        ds = validate.load(REPO)
+        ds = validate.run(REPO)
         expected = tagfiles.render_generated(ds)
         self.assertEqual((REPO / tagfiles.GENERATED_FILE).read_text(), expected)
 

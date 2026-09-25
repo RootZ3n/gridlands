@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "creature.drain.static_gremlin",
+  "displayName": "Static gremlin",
+  "health": 60.0,
+  "walkSpeed": 1.6,
+  "chaseSpeed": 3.4,
+  "perception": {
+    "sightRadius": 12.0,
+    "coneDegrees": 110.0,
+    "hearingRadius": 16.0
+  },
+  "attack": {
+    "damage": 12.0,
+    "reach": 1.6,
+    "cooldownSeconds": 1.4
+  },
+  "leashRadius": 14.0,
+  "drops": [
+    {
+      "item": "item.material.static_residue",
+      "count": 2,
+      "yieldCategory": "yield.creature.drop"
+    }
+  ]
+}

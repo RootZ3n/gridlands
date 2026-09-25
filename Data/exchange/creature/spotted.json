@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.creature.spotted",
+  "trigger": [
+    "Event.Creature.Spotted"
+  ],
+  "category": "Contextual",
+  "priority": 75,
+  "cooldownSeconds": 45,
+  "maxUses": 5,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "Pehlichi",
+      "text": "It's seen you. Run, hit it, or let me make some noise. Your call."
+    }
+  ]
+}

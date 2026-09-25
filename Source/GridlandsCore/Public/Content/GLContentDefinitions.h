@@ -118,6 +118,17 @@ struct GRIDLANDSCORE_API FGLToolDef
 	UPROPERTY() int32 Tier = 0;
 };
 
+/** Zenny can fight with this item (Pehlichi never deals damage, ADR-0017). Metres, seconds. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLWeaponDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() double Damage = 0.0;
+	UPROPERTY() double Reach = 0.0;
+	UPROPERTY() double CooldownSeconds = 0.0;
+};
+
 USTRUCT()
 struct GRIDLANDSCORE_API FGLItemDef : public FGLDefinitionBase
 {
@@ -129,6 +140,8 @@ struct GRIDLANDSCORE_API FGLItemDef : public FGLDefinitionBase
 	UPROPERTY() FName Material;
 	/** Optional. Absent means the item is not a tool (ToolClass is None). */
 	UPROPERTY() FGLToolDef Tool;
+	/** Optional. Absent means it is not a weapon (Damage == 0). */
+	UPROPERTY() FGLWeaponDef Weapon;
 	UPROPERTY() bool CriticalPath = false;
 	UPROPERTY() TArray<FName> Sources;
 	UPROPERTY() TArray<FName> OnAcquireUnlocks;
@@ -430,6 +443,8 @@ struct GRIDLANDSCORE_API FGLPlacementDef : public FGLDefinitionBase
 	UPROPERTY() FGLPlacementTransformDef Transform;
 	/** Glitch requirement name -> target placement id. */
 	UPROPERTY() TMap<FString, FName> Bindings;
+	/** Discovery: metres within which Zenny finds it (0 = default). */
+	UPROPERTY() double Radius = 0.0;
 
 	bool IsAnchored() const { return !Anchor.IsNone(); }
 };
@@ -461,6 +476,68 @@ enum class EGLExchangeCategory : uint8
 	StoryCritical,
 	Contextual,
 	Ambient,
+};
+
+USTRUCT()
+struct GRIDLANDSCORE_API FGLCreaturePerceptionDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() double SightRadius = 0.0;
+	UPROPERTY() double ConeDegrees = 0.0;
+	UPROPERTY() double HearingRadius = 0.0;
+};
+
+USTRUCT()
+struct GRIDLANDSCORE_API FGLCreatureAttackDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() double Damage = 0.0;
+	UPROPERTY() double Reach = 0.0;
+	UPROPERTY() double CooldownSeconds = 0.0;
+};
+
+/** A corrupted creature (M11). Exists only through placements (ADR-0014, CR-2). Metres, seconds. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLCreatureDef : public FGLDefinitionBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString DisplayName;
+	UPROPERTY() double Health = 0.0;
+	UPROPERTY() double WalkSpeed = 0.0;
+	UPROPERTY() double ChaseSpeed = 0.0;
+	UPROPERTY() FGLCreaturePerceptionDef Perception;
+	UPROPERTY() FGLCreatureAttackDef Attack;
+	UPROPERTY() double LeashRadius = 0.0;
+	UPROPERTY() TArray<FGLSalvageYieldDef> Drops;
+};
+
+USTRUCT()
+struct GRIDLANDSCORE_API FGLStormTriggerDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FName EventCount;
+	UPROPERTY() int32 Min = 0;
+};
+
+/** A bounded Glitch Storm NICE sets off (M11). Metres, seconds. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLStormDef : public FGLDefinitionBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString DisplayName;
+	UPROPERTY() double DurationSeconds = 0.0;
+	UPROPERTY() double Radius = 0.0;
+	UPROPERTY() double SpawnPerSecond = 0.0;
+	UPROPERTY() int32 MaxArtifacts = 0;
+	/** cat | dog */
+	UPROPERTY() TArray<FName> Artifacts;
+	UPROPERTY() FGLStormTriggerDef Trigger;
+	UPROPERTY() bool Harmless = true;
 };
 
 USTRUCT()

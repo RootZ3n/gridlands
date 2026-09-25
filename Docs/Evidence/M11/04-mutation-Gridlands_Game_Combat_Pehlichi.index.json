@@ -1,0 +1,81 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0D86E0806721EB82670D9A9618F91",
+			"instanceName": "Pehverse-2830497",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.25-11.58.19",
+	"succeeded": 0,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.011358411051332951,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "PehlichiDistractionIsNonLethal",
+			"fullTestPath": "Gridlands.Game.Combat.PehlichiDistractionIsNonLethal",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D86E0806721EB82670D9A9618F91"
+			],
+			"duration": 0.011358411051332951,
+			"dateTime": "2026.09.25-11.58.19",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "the gremlin goes after the noise: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<engine>/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-11.58.19"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'while lured, it never touched Zenny' to be 100.000000, but it was 40.000000 and outside tolerance 0.000100.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<engine>/Engine/Source/Runtime/CoreUObject/Public/UObject/ObjectPtr.h",
+					"lineNumber": 303,
+					"timestamp": "2026.09.25-11.58.19"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Event.Creature.Distracted' to be 1, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLSliceTests.cpp",
+					"lineNumber": 154,
+					"timestamp": "2026.09.25-11.58.19"
+				}
+			],
+			"warnings": 0,
+			"errors": 3,
+			"artifacts": []
+		}
+	]
+}

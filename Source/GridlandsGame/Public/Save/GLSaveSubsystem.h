@@ -29,9 +29,13 @@ public:
 
 	/** When on, every repair autosaves to AutosaveSlot. The game mode enables it; tests leave it off. */
 	bool bAutosave = false;
+	/** Seconds after a build or terrain edit before the autosave (edits in between share it). */
+	float AutosaveDelaySeconds = 5.f;
 	FString AutosaveSlot = TEXT("world");
 
 private:
 	void HandleGlitchRepaired(const struct FGLGameplayEvent& Event);
+	void HandleWorldEdited(const struct FGLGameplayEvent& Event);
+	FTimerHandle DebouncedSave;
 	class AGLPehlichi* FindPehlichi() const;
 };

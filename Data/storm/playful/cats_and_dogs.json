@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "storm.playful.cats_and_dogs",
+  "displayName": "Raining Cats and Dogs",
+  "durationSeconds": 40.0,
+  "radius": 18.0,
+  "spawnPerSecond": 3.0,
+  "maxArtifacts": 60,
+  "artifacts": [
+    "cat",
+    "dog"
+  ],
+  "trigger": {
+    "eventCount": "Event.Glitch.Repaired",
+    "min": 2
+  },
+  "harmless": true
+}

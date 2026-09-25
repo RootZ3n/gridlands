@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.storm.over",
+  "trigger": [
+    "Event.Storm.Ended"
+  ],
+  "subject": "storm.playful.cats_and_dogs",
+  "category": "StoryCritical",
+  "priority": 80,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "Pehlichi",
+      "text": "They're just sprites. Nobody got hurt. Not even the sprites."
+    },
+    {
+      "speaker": "NICE",
+      "text": "...I'm keeping one."
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.building.first_piece",
+  "trigger": [
+    "Event.Building.Placed"
+  ],
+  "category": "Contextual",
+  "priority": 60,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Oh, you're building now. In MY world. Without a permit."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "She doesn't have permits."
+    },
+    {
+      "speaker": "NICE",
+      "text": "I could have permits."
+    }
+  ]
+}

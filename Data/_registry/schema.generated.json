@@ -67,6 +67,28 @@
    "terrain.maxRaiseHeight",
    "terrain.spacingMetres"
   ],
+  "creature": [
+   "attack",
+   "attack.cooldownSeconds",
+   "attack.damage",
+   "attack.reach",
+   "chaseSpeed",
+   "displayName",
+   "drops",
+   "drops[].count",
+   "drops[].item",
+   "drops[].yieldCategory",
+   "health",
+   "id",
+   "leashRadius",
+   "notes",
+   "perception",
+   "perception.coneDegrees",
+   "perception.hearingRadius",
+   "perception.sightRadius",
+   "schemaVersion",
+   "walkSpeed"
+  ],
   "era": [
    "description",
    "displayName",
@@ -135,6 +157,10 @@
    "tool",
    "tool.tier",
    "tool.toolClass",
+   "weapon",
+   "weapon.cooldownSeconds",
+   "weapon.damage",
+   "weapon.reach",
    "weight"
   ],
   "knowledge": [
@@ -167,6 +193,7 @@
    "kind",
    "notes",
    "offset",
+   "radius",
    "schemaVersion",
    "transform",
    "transform.location",
@@ -225,6 +252,21 @@
    "yieldMultipliers",
    "yieldMultipliers.creatureDrops",
    "yieldMultipliers.resourceYield"
+  ],
+  "storm": [
+   "artifacts",
+   "displayName",
+   "durationSeconds",
+   "harmless",
+   "id",
+   "maxArtifacts",
+   "notes",
+   "radius",
+   "schemaVersion",
+   "spawnPerSecond",
+   "trigger",
+   "trigger.eventCount",
+   "trigger.min"
   ],
   "terraform": [
    "amount",

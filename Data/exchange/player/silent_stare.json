@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.player.silent_stare",
+  "trigger": [
+    "Event.Player.Silent"
+  ],
+  "category": "Ambient",
+  "priority": 30,
+  "cooldownSeconds": 300,
+  "maxUses": 3,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "You know you're allowed to talk, right? No? Just the staring? Fine."
+    }
+  ]
+}

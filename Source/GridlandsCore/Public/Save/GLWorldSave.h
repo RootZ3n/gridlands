@@ -81,6 +81,11 @@ struct GRIDLANDSCORE_API FGLWorldSave
 	/** Sparse ground delta from the cell's base: vertex index -> whole centimetres (ADR-0022). */
 	UPROPERTY() TArray<int32> TerrainIndices;
 	UPROPERTY() TArray<int32> TerrainDeltaCm;
+	/** M11. Additive: absent means none / full health. */
+	UPROPERTY() TArray<FName> DefeatedCreatures;
+	UPROPERTY() TArray<FName> Discoveries;
+	UPROPERTY() TArray<FName> StormsOccurred;
+	UPROPERTY() double ZennyHealth = -1.0;
 	UPROPERTY() FGLSavedTransform Zenny;
 	UPROPERTY() FGLSavedTransform Pehlichi;
 };

@@ -32,4 +32,11 @@ public:
 
 	/** How far from the commander Pehlichi looks for a glitch to repair. */
 	UPROPERTY(EditAnywhere, Category = "Gridlands") float RepairSearchRadius = 2000.f;
+	/** Seconds between distractions (provisional). */
+	UPROPERTY(EditAnywhere, Category = "Gridlands") float DistractCooldownSeconds = 10.f;
+
+private:
+	double DistractReadyAt = -1e9;
+
+public:
 };

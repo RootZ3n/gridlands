@@ -234,6 +234,9 @@ SCHEMAS: dict[str, Obj] = {
             "weight": Num(0, 1000),
             "material": Ref("material"),
             "tool": Obj({"toolClass": Tag("Tool"), "tier": Int(1, 10)}, required=("toolClass", "tier")),
+            # M11: Zenny can fight with it (Pehlichi never deals damage, ADR-0017). Metres, seconds.
+            "weapon": Obj({"damage": Num(positive=True), "reach": Num(0.5, 10), "cooldownSeconds": Num(0.1, 10)},
+                          required=("damage", "reach", "cooldownSeconds")),
             "criticalPath": Bool(),
             "sources": List(Tag("Source"), min_items=1, unique=True),
             "onAcquireUnlocks": List(Ref("knowledge"), unique=True),
@@ -360,9 +363,45 @@ SCHEMAS: dict[str, Obj] = {
             "offset": VEC3,
             "transform": Obj({"location": VEC3, "yaw": Num(-360, 360)}, required=("location",)),
             "bindings": Map(Ref("placement")),  # glitch requirement name -> target placement (rules PLC-2)
+            # discovery: metres within which Zenny finds it (default 8).
+            "radius": Num(0.5, 200),
         },
         required=("kind", "definition"),
         one_of=(("anchor", "transform"),),
+    ),
+    # M11: a corrupted creature. Threat comes from places (ADR-0014): creatures exist only through
+    # placements, never because of what the player is doing. Metres and seconds.
+    "creature": kind(
+        {
+            "displayName": Str(),
+            "health": Num(positive=True),
+            "walkSpeed": Num(0.5, 20),
+            "chaseSpeed": Num(0.5, 20),
+            "perception": Obj({"sightRadius": Num(1, 200), "coneDegrees": Num(10, 360), "hearingRadius": Num(0, 200)},
+                              required=("sightRadius", "coneDegrees", "hearingRadius")),
+            "attack": Obj({"damage": Num(positive=True), "reach": Num(0.5, 10), "cooldownSeconds": Num(0.1, 30)},
+                          required=("damage", "reach", "cooldownSeconds")),
+            # How far from its home it will chase before giving up and going back.
+            "leashRadius": Num(1, 500),
+            "drops": List(Obj({"item": Ref("item"), "count": COUNT, "yieldCategory": Ref("yield")},
+                              required=("item", "count", "yieldCategory"))),
+        },
+        required=("displayName", "health", "walkSpeed", "chaseSpeed", "perception", "attack", "leashRadius"),
+    ),
+    # M11: a bounded Glitch Storm NICE sets off (one representative event, not a weather system).
+    "storm": kind(
+        {
+            "displayName": Str(),
+            "durationSeconds": Num(1, 600),
+            "radius": Num(1, 200),
+            "spawnPerSecond": Num(0.1, 50),
+            "maxArtifacts": Int(1, 500),  # at most this many falling at once
+            "artifacts": List(Enum("cat", "dog"), min_items=1, unique=True),
+            # Starts the first time this many Event.* have fired (e.g. NICE retaliates after repairs).
+            "trigger": Obj({"eventCount": Tag("Event"), "min": Int(1, 1000)}, required=("eventCount", "min")),
+            "harmless": Bool(),
+        },
+        required=("displayName", "durationSeconds", "radius", "spawnPerSecond", "maxArtifacts", "artifacts", "trigger", "harmless"),
     ),
     # ADR-0023: Zenny answers through gameplay. CONSTRUCT is reserved until building exists.
     "puzzle": kind(

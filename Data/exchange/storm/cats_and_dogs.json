@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.storm.cats_and_dogs",
+  "trigger": [
+    "Event.Storm.Started"
+  ],
+  "subject": "storm.playful.cats_and_dogs",
+  "category": "StoryCritical",
+  "priority": 90,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "You want to fix my world? Fine. Enjoy the forecast."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "Is it... raining cats?"
+    },
+    {
+      "speaker": "NICE",
+      "text": "And dogs. I'm very literal when I'm upset."
+    }
+  ]
+}

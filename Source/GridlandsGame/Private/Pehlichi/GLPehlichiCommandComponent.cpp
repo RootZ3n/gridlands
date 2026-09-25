@@ -9,6 +9,10 @@
 #include "Pehlichi/GLCompanionPositioningComponent.h"
 #include "Pehlichi/GLRepairComponent.h"
 #include "Pehlichi/GLScanComponent.h"
+#include "Content/GLContent.h"
+#include "Content/GLContentDefinitions.h"
+#include "Pehlichi/GLCapabilityComponent.h"
+#include "Pehlichi/GLCapabilityRules.h"
 
 namespace
 {
@@ -42,6 +46,32 @@ EGLCommandRejection UGLPehlichiCommandComponent::Issue(FName Command, AActor* Co
 	{
 		Repair->Stop();
 		Positioning->Stay();
+	}
+	else if (Command == TEXT("Command.Pehlichi.Distract"))
+	{
+		// A glitchy noise where Pehlichi is: nearby creatures go and look (zero damage, ADR-0017).
+		const UGLCapabilityComponent* Capabilities = Pehlichi->FindComponentByClass<UGLCapabilityComponent>();
+		const FGLCapabilityDef* Distract = GLContent::Get().Find<FGLCapabilityDef>(TEXT("capability.pehlichi.distract"));
+		const int32 Level = Capabilities ? Capabilities->Level(TEXT("capability.pehlichi.distract")) : 0;
+		const double Seconds = Distract && Level > 0 ? GLCapabilityRules::EffectValue(*Distract, Level, TEXT("distract")) : 0.0;
+		const double Now = GetWorld()->GetTimeSeconds();
+		if (Seconds <= 0.0)
+		{
+			Result = EGLCommandRejection::UnknownCommand;
+		}
+		else if (Now < DistractReadyAt)
+		{
+			Result = EGLCommandRejection::Busy;
+		}
+		else
+		{
+			DistractReadyAt = Now + DistractCooldownSeconds;
+			FGLGameplayEvent Lure;
+			Lure.Tag = UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Pehlichi.Lure"));
+			Lure.Instigator = Pehlichi;
+			Lure.Numbers.Add(TEXT("seconds"), Seconds);
+			UGLEventSubsystem::Emit(this, MoveTemp(Lure));
+		}
 	}
 	else if (Command == TEXT("Command.Pehlichi.Scan"))
 	{
