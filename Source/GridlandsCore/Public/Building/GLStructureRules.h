@@ -16,6 +16,8 @@ struct GRIDLANDSCORE_API FGLPlacedPiece
 	FVector Location = FVector::ZeroVector;
 	/** Yaw in quarter turns (0..3). Pieces are axis-aligned so bounds stay exact. */
 	int32 YawQuarter = 0;
+	/** The Grid cell it belongs to (P3): streamed and saved with that cell. Not used by the rules. */
+	FName Cell;
 };
 
 /** A socket in world space. */

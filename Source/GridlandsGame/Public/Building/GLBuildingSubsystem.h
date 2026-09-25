@@ -51,6 +51,15 @@ public:
 
 	/** Save support: replaces all pieces silently (no events, no costs). */
 	void Restore(const TArray<FGLPlacedPiece>& InPieces, int32 InNextId);
+	/** Streaming (P3): adds a cell's saved pieces silently. */
+	void RestoreCell(FName Cell, const TArray<FGLPlacedPiece>& InPieces);
+	/** Streaming (P3): removes a cell's pieces and their actors, returning them (for its record). */
+	TArray<FGLPlacedPiece> RemoveCell(FName Cell);
+	TArray<FGLPlacedPiece> PiecesOfCell(FName Cell) const { return Pieces.FilterByPredicate([Cell](const FGLPlacedPiece& P) { return P.Cell == Cell; }); }
+	TSet<FName> CellsWithPieces() const { TSet<FName> Out; for (const FGLPlacedPiece& P : Pieces) { Out.Add(P.Cell); } return Out; }
+	void SetNextId(int32 InNextId) { NextId = FMath::Max(NextId, InNextId); }
+	/** The cell a piece at this location belongs to: the loaded ground under it, else the Grid cell. */
+	FName CellFor(const FVector& Location) const;
 	int32 GetNextId() const { return NextId; }
 
 private:

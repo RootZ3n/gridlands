@@ -15,6 +15,7 @@ struct FGLDiscoverySite
 	FName Knowledge;
 	FVector Location = FVector::ZeroVector;
 	double RadiusCm = 800.0;
+	FName Cell;
 };
 
 /**
@@ -34,6 +35,13 @@ public:
 	/** Spawns every supported placement of CellId. Returns how many actors were spawned. */
 	int32 SpawnCell(FName CellId);
 
+	/** Destroys everything SpawnCell made for CellId (P3 streaming). Returns how many actors. */
+	int32 DespawnCell(FName CellId);
+	bool IsCellSpawned(FName CellId) const { return SpawnedCells.Contains(CellId); }
+	const TSet<FName>& GetSpawnedCells() const { return SpawnedCells; }
+	/** Placement ids name their cell: placement.<cell short name>.* (ID-10). */
+	static bool IsPlacementOfCell(FName PlacementId, FName CellId);
+
 	AGLSalvageNode* FindSalvageNode(FName PlacementId) const;
 	AGLCreature* FindCreature(FName PlacementId) const { const TWeakObjectPtr<AGLCreature>* Found = Creatures.Find(PlacementId); return Found ? Found->Get() : nullptr; }
 	const TMap<FName, TWeakObjectPtr<AGLCreature>>& GetCreatures() const { return Creatures; }
@@ -43,4 +51,6 @@ private:
 	TMap<FName, TWeakObjectPtr<AGLSalvageNode>> SalvageNodes;
 	TMap<FName, TWeakObjectPtr<AGLCreature>> Creatures;
 	TArray<FGLDiscoverySite> Discoveries;
+	TSet<FName> SpawnedCells;
+	TMap<FName, TArray<TWeakObjectPtr<AActor>>> CellActors;
 };

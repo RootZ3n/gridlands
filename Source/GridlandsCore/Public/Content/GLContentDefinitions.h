@@ -389,6 +389,17 @@ struct GRIDLANDSCORE_API FGLEraWeightDef
 	UPROPERTY() double Weight = 0.0;
 };
 
+/** Authored relief for a cell's ground (GLTerrainGen), flat near the cell edges. Metres. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLCellReliefDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() int32 Seed = 0;
+	UPROPERTY() double AmplitudeMetres = 0.0;
+	UPROPERTY() double EdgeBlendMetres = 1.0;
+};
+
 /** A cell's runtime heightfield ground (ADR-0022). Metres. */
 USTRUCT()
 struct GRIDLANDSCORE_API FGLCellTerrainDef
@@ -400,6 +411,8 @@ struct GRIDLANDSCORE_API FGLCellTerrainDef
 	UPROPERTY() double BaseHeight = 0.0;
 	UPROPERTY() double MaxDigDepth = 0.0;
 	UPROPERTY() double MaxRaiseHeight = 0.0;
+	/** Absent (AmplitudeMetres == 0) means flat at BaseHeight. */
+	UPROPERTY() FGLCellReliefDef Relief;
 };
 
 USTRUCT()
@@ -414,8 +427,22 @@ struct GRIDLANDSCORE_API FGLCellDef : public FGLDefinitionBase
 	UPROPERTY() FString Level;
 	/** Metres; 0 when absent (no limit). */
 	UPROPERTY() double PlayableHalfExtent = 0.0;
+	/** Grid pitch, metres (GRID-1: the same for every cell). */
+	UPROPERTY() double SizeMetres = 0.0;
+	/** Local static intensity added to the band's baseline (independent of depth and era). */
+	UPROPERTY() double InterferenceOffset = 0.0;
 	/** Absent (ChunkMetres == 0) means the cell has no runtime ground. */
 	UPROPERTY() FGLCellTerrainDef Terrain;
+
+	/** World-space centre of the cell (cm). */
+	FVector2D CentreCm() const { return FVector2D(Coord.X, Coord.Y) * SizeMetres * 100.0; }
+	/** True when a world point (cm) lies in this cell (edges belong to the lower cell). */
+	bool ContainsCm(const FVector2D& P) const
+	{
+		const double Half = SizeMetres * 50.0;
+		const FVector2D L = P - CentreCm();
+		return L.X >= -Half && L.X < Half && L.Y >= -Half && L.Y < Half;
+	}
 
 	bool HasTerrain() const { return Terrain.ChunkMetres > 0; }
 };

@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "cell.outer.diner_lots",
+  "displayName": "Diner lots (east of home)",
+  "band": "band.ring.outer_gridlands",
+  "coord": {
+    "x": 1,
+    "y": 0
+  },
+  "eraComposition": [
+    {
+      "era": "era.memory.fifties",
+      "weight": 0.6
+    },
+    {
+      "era": "era.memory.modern_day",
+      "weight": 0.3
+    },
+    {
+      "era": "era.memory.roman",
+      "weight": 0.1
+    }
+  ],
+  "level": "/Game/Gridlands/Maps/L_DinerLots",
+  "playableHalfExtent": 128.0,
+  "sizeMetres": 256.0,
+  "interferenceOffset": 0.15,
+  "terrain": {
+    "chunkMetres": 64,
+    "spacingMetres": 1.0,
+    "baseHeight": 0.0,
+    "maxDigDepth": 4.0,
+    "maxRaiseHeight": 4.0,
+    "relief": {
+      "seed": 1957,
+      "amplitudeMetres": 6.0,
+      "edgeBlendMetres": 24.0
+    }
+  }
+}

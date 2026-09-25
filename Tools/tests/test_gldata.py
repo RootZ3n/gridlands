@@ -226,6 +226,18 @@ class RuleTests(unittest.TestCase):
         self.box.edit("storm.playful.cats_and_dogs", lambda d: d.pop("harmless"))
         self.assertRule("SCHEMA")
 
+    def test_grid1_one_pitch(self):
+        self.box.edit("cell.outer.diner_lots", lambda d: d.update(sizeMetres=512.0))
+        self.assertRule("GRID-1")
+
+    def test_grid2_unique_coords(self):
+        self.box.edit("cell.outer.diner_lots", lambda d: d.update(coord={"x": 0, "y": 0}))
+        self.assertRule("GRID-2")
+
+    def test_grid3_terrain_tiles_the_cell(self):
+        self.box.edit("cell.outer.diner_lots", lambda d: d["terrain"].update(chunkMetres=60))
+        self.assertRule("GRID-3")
+
     def test_kn1_declared_source_must_be_backed(self):
         self.box.edit("knowledge.style.roman_masonry", lambda d: d.update(sources=["Source.Salvage"]))
         self.assertRule("KN-1")

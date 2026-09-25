@@ -22,6 +22,19 @@ public:
 	/** Applies Save to this world. Facts about ids the current content no longer has are reported, not fatal. */
 	void Apply(const FGLWorldSave& Save, TArray<FString>* OutProblems = nullptr);
 
+	/** Grid streaming (P3): the cells whose state is live (placements, ground or pieces present). */
+	TSet<FName> LoadedCells() const;
+	/** One cell's live state. */
+	FGLSavedCell CaptureCell(FName Cell) const;
+	/** Applies a cell record to that cell's live actors (silently: no events). */
+	void ApplyCell(const FGLSavedCell& Record, TArray<FString>* OutProblems = nullptr);
+	/** Keeps a cell's state before it streams out. */
+	void StowCell(FName Cell);
+	/** Hands back (and forgets) a streamed-out cell's kept state. False if there is none. */
+	bool TakeDormant(FName Cell, FGLSavedCell& Out);
+	const FGLSavedCell* PeekDormant(FName Cell) const { return Dormant.Find(Cell); }
+	const TMap<FName, FGLSavedCell>& GetDormant() const { return Dormant; }
+
 	bool SaveToSlot(const FString& Slot) const;
 	bool LoadFromSlot(const FString& Slot, TArray<FString>* OutProblems = nullptr);
 	static FString SlotPath(const FString& Slot);
@@ -37,5 +50,7 @@ private:
 	void HandleGlitchRepaired(const struct FGLGameplayEvent& Event);
 	void HandleWorldEdited(const struct FGLGameplayEvent& Event);
 	FTimerHandle DebouncedSave;
+	/** State of cells that are not loaded (from the save file, or captured when they streamed out). */
+	TMap<FName, FGLSavedCell> Dormant;
 	class AGLPehlichi* FindPehlichi() const;
 };

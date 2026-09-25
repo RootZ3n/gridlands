@@ -202,6 +202,7 @@ def cross_check(ds: Dataset) -> None:
     check_building(ds)
     check_terraform(ds)
     check_creatures(ds)
+    check_grid(ds)
     check_generated_tags(ds)
 
 
@@ -394,6 +395,28 @@ def check_creatures(ds: Dataset) -> None:
                 ds.problem("CR-1", entity.file, f".drops[{index}]", f"{drop['item']} must list Source.CreatureDrop among its sources")
         if entity.id not in placed:
             ds.problem("CR-2", entity.file, "", "a creature must be placed somewhere (threat comes from places, ADR-0014)")
+
+
+def check_grid(ds: Dataset) -> None:
+    """GRID-1 every cell declares the same sizeMetres (one Grid pitch); GRID-2 no two cells share a coord;
+    GRID-3 a cell's terrain tiles its size exactly in whole chunks (neighbours meet edge to edge)."""
+    cells = sorted((e for e in ds.entities.values() if e.kind == "cell"), key=lambda e: e.id)
+    sizes = {e.data.get("sizeMetres") for e in cells}
+    if len(sizes) > 1 or None in sizes:
+        for e in cells:
+            ds.problem("GRID-1", e.file, ".sizeMetres", f"every cell needs the same sizeMetres (found {sorted(map(str, sizes))})")
+    seen: dict[tuple, str] = {}
+    for e in cells:
+        coord = e.data.get("coord", {})
+        key = (coord.get("x"), coord.get("y"))
+        if key in seen:
+            ds.problem("GRID-2", e.file, ".coord", f"coord {key} already used by {seen[key]}")
+        seen[key] = e.id
+        terrain, size = e.data.get("terrain"), e.data.get("sizeMetres")
+        if terrain and size:
+            chunk, spacing = terrain.get("chunkMetres", 0), terrain.get("spacingMetres", 1)
+            if chunk <= 0 or abs(size / chunk - round(size / chunk)) > 1e-9 or abs(chunk / spacing - round(chunk / spacing)) > 1e-9:
+                ds.problem("GRID-3", e.file, ".terrain", f"{chunk} m chunks at {spacing} m spacing must tile a {size} m cell exactly")
 
 
 def check_generated_tags(ds: Dataset) -> None:

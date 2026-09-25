@@ -348,9 +348,18 @@ SCHEMAS: dict[str, Obj] = {
             "level": Str(),
             # Half-width of the playable area in metres; beyond it the next band's interference applies.
             "playableHalfExtent": Num(1, 5000),
-            # Runtime heightfield ground (ADR-0022); covers the playable extent, rounded up to whole chunks.
+            # Grid pitch (P3, ADR-0026): the cell is a square of this edge, centred on coord * sizeMetres.
+            # Every cell uses the same pitch (GRID-1); it is data, not yet a final design decision.
+            "sizeMetres": Num(64, 8192),
+            # Local static intensity on top of the band's baseline (P3): independent of depth and era.
+            "interferenceOffset": Num(-1, 1),
+            # Runtime heightfield ground (ADR-0022); covers the whole cell (sizeMetres), in whole chunks.
             "terrain": Obj({"chunkMetres": Int(8, 256), "spacingMetres": Num(0.25, 4), "baseHeight": Num(-1000, 1000),
-                            "maxDigDepth": Num(0, 50), "maxRaiseHeight": Num(0, 50)},
+                            "maxDigDepth": Num(0, 50), "maxRaiseHeight": Num(0, 50),
+                            # Authored relief (GLTerrainGen), flattened to baseHeight within edgeBlendMetres of the
+                            # cell edge so neighbouring cells always meet seamlessly.
+                            "relief": Obj({"seed": Int(0, 2147483647), "amplitudeMetres": Num(0, 200), "edgeBlendMetres": Num(1, 1000)},
+                                          required=("seed", "amplitudeMetres", "edgeBlendMetres"))},
                            required=("chunkMetres", "spacingMetres", "baseHeight", "maxDigDepth", "maxRaiseHeight")),
         },
         required=("displayName", "band", "coord", "eraComposition"),

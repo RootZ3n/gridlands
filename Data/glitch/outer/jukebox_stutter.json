@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "glitch.outer.jukebox_stutter",
+  "displayName": "Jukebox stutter",
+  "detection": {
+    "capability": "capability.pehlichi.scan",
+    "minLevel": 1
+  },
+  "repair": {
+    "seconds": 6.0,
+    "interruptPolicy": "KeepProgress"
+  },
+  "stabilityWeight": 1.5,
+  "influenceRadius": 60.0,
+  "rewards": [
+    {
+      "recipient": "Zenny",
+      "item": "item.material.copper_wire",
+      "count": 2,
+      "yieldCategory": "yield.reward.glitch"
+    }
+  ]
+}

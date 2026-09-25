@@ -12,6 +12,7 @@
 #include "Glitch/GLGlitchComponent.h"
 #include "Glitch/GLGlitchSubsystem.h"
 #include "Kismet/GameplayStatics.h"
+#include "Save/GLSaveSubsystem.h"
 
 namespace
 {
@@ -75,14 +76,17 @@ double UGLStabilitySubsystem::BaselineAt(const FVector& Location) const
 		{
 			return;
 		}
-		const FVector2D Centre(Cell->Coord.X * CellSizeCm, Cell->Coord.Y * CellSizeCm);
+		// The cell's pitch (P3) where declared; the historical 1 km otherwise.
+		const double Pitch = Cell->SizeMetres > 0.0 ? Cell->SizeMetres * MetresToCm : CellSizeCm;
+		const FVector2D Centre(Cell->Coord.X * Pitch, Cell->Coord.Y * Pitch);
 		const FVector2D Offset = FVector2D(Location) - Centre;
-		const double Half = Cell->PlayableHalfExtent > 0.0 ? Cell->PlayableHalfExtent * MetresToCm : CellSizeCm * 0.5;
+		const double Half = Cell->PlayableHalfExtent > 0.0 ? Cell->PlayableHalfExtent * MetresToCm : Pitch * 0.5;
 		if (FMath::Abs(Offset.X) <= Half && FMath::Abs(Offset.Y) <= Half)
 		{
-			Baseline = Band->BaselineInterference;
+			// Depth (band) and local static intensity (cell offset) are separate data (P3).
+			Baseline = FMath::Clamp(Band->BaselineInterference + Cell->InterferenceOffset, 0.0, 1.0);
 		}
-		else if (FMath::Abs(Offset.X) <= CellSizeCm * 0.5 && FMath::Abs(Offset.Y) <= CellSizeCm * 0.5)
+		else if (FMath::Abs(Offset.X) <= Pitch * 0.5 && FMath::Abs(Offset.Y) <= Pitch * 0.5)
 		{
 			InsideDepth = Band->Depth; // in the cell but beyond its playable area
 		}
@@ -111,7 +115,42 @@ double UGLStabilitySubsystem::InterferenceAt(const FVector& Location) const
 
 double UGLStabilitySubsystem::NiceComposure() const
 {
-	return GLStabilityModel::NiceComposure(Samples());
+	// NICE's composure is about the whole Grid: loaded glitches as they are, plus every glitch in
+	// a cell that is streamed out, as its kept state says (unrepaired if never touched).
+	TArray<FGLStabilitySample> All = Samples();
+	TSet<FName> Live;
+	for (const TWeakObjectPtr<AGLGlitch>& Actor : GetWorld()->GetSubsystem<UGLGlitchSubsystem>()->GetAll())
+	{
+		if (Actor.IsValid())
+		{
+			Live.Add(Actor->GetGlitch()->GetPlacementId());
+		}
+	}
+	const UGLSaveSubsystem* Saves = GetWorld()->GetSubsystem<UGLSaveSubsystem>();
+	GLContent::Get().ForEachEntry([&](const FGLContentEntry& Entry)
+	{
+		const FGLPlacementDef* Placement = Entry.Definition.GetPtr<FGLPlacementDef>();
+		if (!Placement || Placement->Kind != TEXT("glitch") || Live.Contains(Entry.Id))
+		{
+			return;
+		}
+		bool bRepaired = false;
+		if (Saves)
+		{
+			for (const TPair<FName, FGLSavedCell>& Kept : Saves->GetDormant())
+			{
+				if (const FGLSavedGlitch* Saved = Kept.Value.Glitches.FindByPredicate([&Entry](const FGLSavedGlitch& G) { return G.Placement == Entry.Id; }))
+				{
+					bRepaired = Saved->State == EGLGlitchState::Repaired;
+				}
+			}
+		}
+		const FGLGlitchDef* Def = GLContent::Get().Find<FGLGlitchDef>(Placement->Definition);
+		FGLStabilitySample& Sample = All.AddDefaulted_GetRef();
+		Sample.Weight = Def ? Def->StabilityWeight : 1.0;
+		Sample.bRepaired = bRepaired;
+	});
+	return GLStabilityModel::NiceComposure(All);
 }
 
 void UGLStabilitySubsystem::HandleGlitchRepaired(const FGLGameplayEvent& Event)

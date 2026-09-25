@@ -2,6 +2,9 @@
 
 #include "Building/GLBuildModeComponent.h"
 #include "Combat/GLHealthComponent.h"
+#include "Content/GLContent.h"
+#include "Content/GLContentDefinitions.h"
+#include "World/GLGridCells.h"
 
 #include "Engine/Canvas.h"
 #include "Engine/Engine.h"
@@ -47,6 +50,13 @@ void AGLHUD::DrawHUD()
 		const FString Readout = FString::Printf(TEXT("Grid: %s (%.2f)   NICE composure %d%%"),
 			GLStabilityModel::TierName(GLStabilityModel::TierFor(Interference)), Interference, FMath::RoundToInt(Stability->NiceComposure() * 100.0));
 		DrawText(Readout, FLinearColor(0.f, 1.f, 1.f), 24.f, 24.f, GEngine->GetMediumFont(), 1.2f);
+		// Development readout: which Grid cell Zenny is in (P3).
+		const FName CellId = GLGridCells::CellAt(FVector2D(Zenny->GetActorLocation()));
+		if (const FGLCellDef* Cell = GLContent::Get().Find<FGLCellDef>(CellId))
+		{
+			const FGLBandDef* Band = GLContent::Get().Find<FGLBandDef>(Cell->Band);
+			DrawText(FString::Printf(TEXT("Cell: %s   depth %d"), *Cell->DisplayName, Band ? Band->Depth : -1), FLinearColor(0.f, 1.f, 1.f), 24.f, 84.f, GEngine->GetSmallFont(), 1.1f);
+		}
 	}
 	if (const UGLHealthComponent* Life = Zenny->FindComponentByClass<UGLHealthComponent>())
 	{
