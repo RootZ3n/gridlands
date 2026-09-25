@@ -22,7 +22,7 @@
 | `perf/unload-hitch-bisect.*` | The investigation of the unload-frame hitch (see D) |
 | `10-*`, `11-*` | Planted streaming race defects, both caught |
 | `20-*` … `23-*` | Planted navigation defects, all caught |
-| `24-diagnostic-invoker-strip-leftover.index.json` | Diagnostic run behind a known limit (see J) |
+| `24-diagnostic-invoker-strip-leftover.index.json` | Diagnostic run behind a known limit (ADR-0029, Limits) |
 | `30-full-gate.index.json` | Full automation gate: 91/91, 36 requirements |
 | `40-real-game-torture-walk.log-excerpt.txt` | Real game: build at the boundary, repair in the lots, 7 crossings, save in the lots |
 | `41-session2-restore-in-second-cell.log-excerpt.txt` | Real game: relaunch from that save and walk home |
@@ -135,7 +135,7 @@ Automation: **91/91** (`30-full-gate.index.json`), 36 requirements met, 0 warnin
 | `10` stow a half-loaded cell as if it were live (a realistic race) | `RapidReversalMidLoadKeepsEverything`: the jukebox's kept repair is overwritten |
 | `11` apply a mesh built before an edit (no version check) | `StaleAsyncWorkNeverLandsAndZennyNeverFalls`: trace −103 vs field 47 |
 | `20` Zenny's invoker never activates | `BuiltOnlyAround…` and `CrossesBoundaries…`: no navigation near Zenny, no path across the boundary |
-| `21` creatures carry no invoker | `CreaturesPathFarFromThePlayer`: no navigation or path at the creature. `BuiltOnlyAround…` also fails, through the known limit in J. |
+| `21` creatures carry no invoker | `CreaturesPathFarFromThePlayer`: no navigation or path at the creature. `BuiltOnlyAround…` also fails, through the known limit in ADR-0029 (Limits). |
 | `22` an unloading cell leaves its nav bounds | `CrossesBoundaries…`: 2 then 3 bounds actors; the origin stays navigable |
 | `23` whole-cell navigation (config) | all 3: 10,816 tiles; navigation 300 m away and between creature and player |
 
