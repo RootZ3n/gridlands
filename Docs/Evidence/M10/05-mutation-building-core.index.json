@@ -1,0 +1,166 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0D8435CD47DC6B8C0AEE591A53F76",
+			"instanceName": "Pehverse-2527776",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.25-11.11.43",
+	"succeeded": 3,
+	"succeededWithWarnings": 0,
+	"failed": 2,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.040310222655534744,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "GroundDecidesWhereFloorsGo",
+			"fullTestPath": "Gridlands.Core.Building.GroundDecidesWhereFloorsGo",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0D8435CD47DC6B8C0AEE591A53F76"
+			],
+			"duration": 0.0082027940079569817,
+			"dateTime": "2026.09.25-11.11.42",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "KnowledgeItemsAndSnapping",
+			"fullTestPath": "Gridlands.Core.Building.KnowledgeItemsAndSnapping",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0D8435CD47DC6B8C0AEE591A53F76"
+			],
+			"duration": 0.0080641740933060646,
+			"dateTime": "2026.09.25-11.11.42",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemovingASupportCollapsesWhatItHeld",
+			"fullTestPath": "Gridlands.Core.Building.RemovingASupportCollapsesWhatItHeld",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D8435CD47DC6B8C0AEE591A53F76"
+			],
+			"duration": 0.008433259092271328,
+			"dateTime": "2026.09.25-11.11.43",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "removing the wall under a roof slope drops exactly that slope: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<engine>/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-11.11.43"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the corner walls hold on sideways, weakly' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<engine>/Engine/Source/Runtime/Core/Public/Templates/UnrealTemplate.h",
+					"lineNumber": 49,
+					"timestamp": "2026.09.25-11.11.43"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "and only the roof slope above falls: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<engine>/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-11.11.43"
+				}
+			],
+			"warnings": 0,
+			"errors": 3,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShelterStandsAndEveryPlacementIsValid",
+			"fullTestPath": "Gridlands.Core.Building.ShelterStandsAndEveryPlacementIsValid",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0D8435CD47DC6B8C0AEE591A53F76"
+			],
+			"duration": 0.0077112000435590744,
+			"dateTime": "2026.09.25-11.11.43",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SupportWeakensUpAndOut",
+			"fullTestPath": "Gridlands.Core.Building.SupportWeakensUpAndOut",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D8435CD47DC6B8C0AEE591A53F76"
+			],
+			"duration": 0.0078987963497638702,
+			"dateTime": "2026.09.25-11.11.43",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'with reduced support' to be 1.000000, but it was 3.000000 and outside tolerance 0.000100.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsCore/Private/Tests/GLStructureRulesTests.cpp",
+					"lineNumber": 102,
+					"timestamp": "2026.09.25-11.11.43"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "two steps out does not: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<engine>/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-11.11.43"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		}
+	]
+}

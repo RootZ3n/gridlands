@@ -1,0 +1,26 @@
+diff --git a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+index 0dfe350..ac0b09c 100644
+--- a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+@@ -162,7 +162,7 @@ TMap<int32, double> GLStructureRules::ComputeSupport(const FGLContentRegistry& C
+ 			{
+ 				continue;
+ 			}
+-			const double Loss = Link.bVertical ? VerticalLoss[Link.To] : LossPerMetre[Link.To] * Link.Metres;
++			const double Loss = Link.bVertical ? VerticalLoss[Link.To] : 0.0; // MUTATION: no loss outward
+ 			const double Candidate = FMath::Min(Support[Link.From], Strength[Link.To]) - Loss;
+ 			if (Candidate > Support[Link.To] + 1e-9)
+ 			{
+diff --git a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+index 48dd187..747fee0 100644
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -81,7 +81,7 @@ FGLDemolishResult UGLBuildingSubsystem::Demolish(AActor* Builder, int32 PieceId)
+ 	FGLInventory Trial = Inventory->GetInventory();
+ 	for (const TPair<FName, int32>& Refund : Result.Refunded)
+ 	{
+-		if (Trial.Add(GLContent::Get(), Refund.Key, Refund.Value) != Refund.Value)
++		if (false && Trial.Add(GLContent::Get(), Refund.Key, Refund.Value) != Refund.Value) // MUTATION: refund fit unchecked
+ 		{
+ 			Result.Refusal = EGLDemolishRefusal::NoRoomForRefund;
+ 			Result.Removed.Reset();
