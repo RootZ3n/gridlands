@@ -109,6 +109,15 @@ against inventory and knowledge and spawns `AGLBuildPiece` actors (data boxes, b
 collision). Pieces are saved; support is recomputed on load. `UGLBuildModeComponent` is the
 player's hands (aim, ghost preview, input).
 
+**Creature, combat, storm (ADR-0025, M11).** `GLCreatureRules` (Core, pure) decides; `AGLCreature`
+senses (distance, cone, line of sight, Pehlichi's `Event.Pehlichi.Lure`) and moves by navigation.
+Only `UGLPlacementSubsystem` spawns creatures (static rule; CR-2). `UGLHealthComponent` +
+`UGLCombatComponent` give Zenny a swing, death and respawn; Pehlichi's code never calls
+`ApplyDamage` (P-3). `UGLStormSubsystem` starts a storm from its trigger count, drives
+`AGLStormArtifact`s and destroys them all when it ends (Storm code never damages: static rule).
+`UGLAmbientSubsystem` turns arrival at discovery placements, the ambient beat and Zenny's silence
+into events; `AGLTravelPoint` links authored spaces (the storm drain).
+
 **Puzzles (ADR-0023).** Zenny answers through gameplay, never through dialogue. `UGLPuzzleSubsystem`
 poses a puzzle when a glitch that requires it is revealed (`Event.Puzzle.Posed`), gives Pehlichi's
 hints on request (`Event.Puzzle.Hint.TierN`, capped by his Analysis capability, else

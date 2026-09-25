@@ -1,5 +1,7 @@
 #include "Save/GLSaveSubsystem.h"
 
+#include "TimerManager.h"
+
 #include "Content/GLContent.h"
 #include "Content/GLContentDefinitions.h"
 #include "Dialogue/GLDialogueDirector.h"
@@ -59,6 +61,12 @@ void UGLSaveSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	{
 		Bus->Subscribe(UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Glitch.Repaired")),
 			FGLGameplayEventDelegate::CreateUObject(this, &UGLSaveSubsystem::HandleGlitchRepaired));
+		// Building and terraforming are world changes too: save them soon after, not only on quit.
+		for (const TCHAR* Tag : { TEXT("Event.Building.Placed"), TEXT("Event.Building.Demolished"), TEXT("Event.Terrain.Edited") })
+		{
+			Bus->Subscribe(UGameplayTagsManager::Get().RequestGameplayTag(Tag),
+				FGLGameplayEventDelegate::CreateUObject(this, &UGLSaveSubsystem::HandleWorldEdited));
+		}
 	}
 }
 
@@ -383,6 +391,23 @@ bool UGLSaveSubsystem::LoadFromSlot(const FString& Slot, TArray<FString>* OutPro
 	UE_LOG(LogGridlands, Log, TEXT("Load: restored %d glitches, %d salvaged placements, %d build pieces, %d edited ground vertices from %s"),
 		Save.Glitches.Num(), Save.SalvagedPlacements.Num(), Save.BuildPieces.Num(), Save.TerrainIndices.Num(), *SlotPath(Slot));
 	return true;
+}
+
+void UGLSaveSubsystem::HandleWorldEdited(const FGLGameplayEvent&)
+{
+	UWorld* World = GetWorld();
+	if (!bAutosave || !World || World->GetTimerManager().IsTimerActive(DebouncedSave))
+	{
+		return;
+	}
+	// Debounced: a burst of edits (a whole wall, ten shovel strokes) becomes one write.
+	World->GetTimerManager().SetTimer(DebouncedSave, FTimerDelegate::CreateWeakLambda(this, [this]()
+	{
+		if (bAutosave)
+		{
+			SaveToSlot(AutosaveSlot);
+		}
+	}), AutosaveDelaySeconds, false);
 }
 
 void UGLSaveSubsystem::HandleGlitchRepaired(const FGLGameplayEvent&)

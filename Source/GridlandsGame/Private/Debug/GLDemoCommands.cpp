@@ -28,6 +28,10 @@
 #include "NavigationSystem.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "TimerManager.h"
+#include "Combat/GLCreature.h"
+#include "Combat/GLHealthComponent.h"
+#include "Storm/GLStormSubsystem.h"
+#include "World/GLTravelPoint.h"
 #include "Puzzle/GLPuzzleSite.h"
 #include "Puzzle/GLPuzzleSubsystem.h"
 #include "Salvage/GLSalvageNode.h"
@@ -343,6 +347,114 @@ namespace GLDemo
 		TEXT("gl.Demo.PlaceZenny"),
 		TEXT("DEV ONLY: gl.Demo.PlaceZenny X Y Yaw [Pitch] - moves Zenny onto the ground there (evidence framing)."),
 		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic(&PlaceZenny));
+
+	/** Starts NICE's Raining Cats and Dogs storm around Zenny now (dev: skips its repair trigger). */
+	void Storm(UWorld* World)
+	{
+		const bool bStarted = World->GetSubsystem<UGLStormSubsystem>()->Start(TEXT("storm.playful.cats_and_dogs"), UGameplayStatics::GetPlayerPawn(World, 0));
+		UE_LOG(LogGridlands, Log, TEXT("gl.Demo.Storm: started=%d"), bStarted ? 1 : 0);
+	}
+
+	FAutoConsoleCommandWithWorld StormCommand(
+		TEXT("gl.Demo.Storm"),
+		TEXT("DEV ONLY: starts the Raining Cats and Dogs Glitch Storm around Zenny now."),
+		FConsoleCommandWithWorldDelegate::CreateStatic(&Storm));
+
+	/** Uses the storm drain's real travel point, as a player pressing E would. */
+	void EnterDrain(UWorld* World)
+	{
+		APawn* Zenny = UGameplayStatics::GetPlayerPawn(World, 0);
+		for (TActorIterator<AGLTravelPoint> It(World); It; ++It)
+		{
+			if (It->AreaName == TEXT("area.origin.storm_drain") && Zenny)
+			{
+				Zenny->SetActorLocation(It->GetActorLocation() + FVector(0, -150, 100));
+				It->Interact(Zenny, UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Interact.Travel")));
+				UE_LOG(LogGridlands, Log, TEXT("gl.Demo.EnterDrain: Zenny now at %s"), *Zenny->GetActorLocation().ToCompactString());
+				return;
+			}
+		}
+		UE_LOG(LogGridlands, Warning, TEXT("gl.Demo.EnterDrain: no travel point"));
+	}
+
+	FAutoConsoleCommandWithWorld EnterDrainCommand(
+		TEXT("gl.Demo.EnterDrain"),
+		TEXT("DEV ONLY: climbs down into the storm drain through its travel point."),
+		FConsoleCommandWithWorldDelegate::CreateStatic(&EnterDrain));
+
+	/**
+	 * The creature in the real game: Zenny steps into the gremlin's view, it chases on the room's
+	 * navmesh; Pehlichi (parked across the room) makes a noise and it goes there instead.
+	 */
+	struct FDrainProof
+	{
+		int32 Ticks = 0;
+		double StartDistance = 0.0;
+		double LureDistanceAtNoise = 0.0;
+		FTimerHandle Timer;
+	};
+	FDrainProof Drain;
+
+	void DrainProof(UWorld* World)
+	{
+		AGLCharacter* Zenny = Cast<AGLCharacter>(UGameplayStatics::GetPlayerPawn(World, 0));
+		AGLCreature* Gremlin = World->GetSubsystem<UGLPlacementSubsystem>()->FindCreature(TEXT("placement.origin.drain_gremlin_den"));
+		if (!Zenny || !Gremlin || !Zenny->GetPehlichi())
+		{
+			UE_LOG(LogGridlands, Warning, TEXT("gl.Demo.DrainProof: scene incomplete"));
+			return;
+		}
+		const FVector Den = Gremlin->GetHome();
+		Zenny->SetActorLocation(Den + FVector(-800, 0, 30), false, nullptr, ETeleportType::TeleportPhysics);
+		Zenny->GetPehlichi()->GetPositioning()->Stay();
+		Zenny->GetPehlichi()->SetActorLocation(Den + FVector(-300, -600, 60)); // across the main hall
+		Drain = FDrainProof();
+		Drain.StartDistance = FVector::Dist2D(Gremlin->GetActorLocation(), Zenny->GetActorLocation());
+		World->GetTimerManager().SetTimer(Drain.Timer, FTimerDelegate::CreateLambda([World, Zenny, Gremlin]()
+		{
+			++Drain.Ticks;
+			const double Distance = FVector::Dist2D(Gremlin->GetActorLocation(), Zenny->GetActorLocation());
+			if (Drain.Ticks == 6)
+			{
+				UE_LOG(LogGridlands, Log, TEXT("gl.Demo.DrainProof: after 1.5 s the gremlin is %s, %.0f cm from Zenny (was %.0f)"),
+					GLCreatureRules::StateName(Gremlin->GetState()), Distance, Drain.StartDistance);
+				Zenny->SetActorLocation(Zenny->GetActorLocation() + FVector(-400, 0, 0), false, nullptr, ETeleportType::TeleportPhysics); // back off
+				Drain.LureDistanceAtNoise = FVector::Dist2D(Gremlin->GetActorLocation(), Zenny->GetPehlichi()->GetActorLocation());
+				const EGLCommandRejection Result = Zenny->GetPehlichi()->GetCommands()->Issue(TEXT("Command.Pehlichi.Distract"), Zenny);
+				UE_LOG(LogGridlands, Log, TEXT("gl.Demo.DrainProof: Pehlichi distracts: %s"), Result == EGLCommandRejection::None ? TEXT("accepted") : TEXT("refused"));
+			}
+			else if (Drain.Ticks == 18)
+			{
+				const double ToLure = FVector::Dist2D(Gremlin->GetActorLocation(), Zenny->GetPehlichi()->GetActorLocation());
+				const bool bPass = Gremlin->GetState() == EGLCreatureState::Investigate && ToLure < Drain.LureDistanceAtNoise - 200.0;
+				UE_LOG(LogGridlands, Log, TEXT("gl.Demo.DrainProof: %s - 3 s later the gremlin is %s, %.0f cm from Pehlichi's noise (was %.0f); Zenny health %.0f; gremlin health %.0f"),
+					bPass ? TEXT("PASS") : TEXT("FAIL"), GLCreatureRules::StateName(Gremlin->GetState()), ToLure, Drain.LureDistanceAtNoise,
+					Zenny->GetHealth()->GetCurrent(), Gremlin->GetHealth()->GetCurrent());
+				World->GetTimerManager().ClearTimer(Drain.Timer);
+			}
+		}), 0.25f, true, 0.25f);
+	}
+
+	FAutoConsoleCommandWithWorld DrainProofCommand(
+		TEXT("gl.Demo.DrainProof"),
+		TEXT("DEV ONLY: shows the gremlin chasing on the drain navmesh and following Pehlichi's distraction."),
+		FConsoleCommandWithWorldDelegate::CreateStatic(&DrainProof));
+
+	/** gl.Demo.ShotIn Seconds: a HighResShot after a delay (evidence of things that take time to happen). */
+	void ShotIn(const TArray<FString>& Args, UWorld* World)
+	{
+		const float Seconds = Args.Num() > 0 ? FCString::Atof(*Args[0]) : 3.f;
+		FTimerHandle Handle;
+		World->GetTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda([World]()
+		{
+			GEngine->DeferredCommands.Add(TEXT("HighResShot 1600x900")); // the viewport handles it, as for -ExecCmds
+		}), FMath::Max(0.1f, Seconds), false);
+	}
+
+	FAutoConsoleCommandWithWorldAndArgs ShotInCommand(
+		TEXT("gl.Demo.ShotIn"),
+		TEXT("DEV ONLY: gl.Demo.ShotIn Seconds - takes a 1600x900 screenshot after a delay."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic(&ShotIn));
 
 	FAutoConsoleCommandWithWorld RepairNearbyCommand(
 		TEXT("gl.Demo.RepairNearby"),

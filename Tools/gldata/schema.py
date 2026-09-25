@@ -395,7 +395,7 @@ SCHEMAS: dict[str, Obj] = {
             "durationSeconds": Num(1, 600),
             "radius": Num(1, 200),
             "spawnPerSecond": Num(0.1, 50),
-            "maxArtifacts": Int(1, 500),
+            "maxArtifacts": Int(1, 500),  # at most this many falling at once
             "artifacts": List(Enum("cat", "dog"), min_items=1, unique=True),
             # Starts the first time this many Event.* have fired (e.g. NICE retaliates after repairs).
             "trigger": Obj({"eventCount": Tag("Event"), "min": Int(1, 1000)}, required=("eventCount", "min")),

@@ -1,0 +1,26 @@
+--- a/Source/GridlandsCore/Private/Combat/GLCreatureRules.cpp
++++ b/Source/GridlandsCore/Private/Combat/GLCreatureRules.cpp
+@@ -41,7 +41,7 @@
+ 		return D;
+ 	}
+ 	// A lure wins over everything else, even a chase: that is what makes distraction a real option.
+-	if (Facts.LureSecondsLeft > 0.0)
++	if (Facts.LureSecondsLeft > 0.0 && Previous != EGLCreatureState::Chase && Previous != EGLCreatureState::Attack) // MUTATION: a chase ignores lures
+ 	{
+ 		D.State = EGLCreatureState::Investigate;
+ 		D.bMove = true;
+--- a/Source/GridlandsGame/Private/Storm/GLStormSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Storm/GLStormSubsystem.cpp
+@@ -124,11 +124,9 @@
+ 	{
+ 		if (Artifact && IsValid(Artifact))
+ 		{
+-			Artifact->Destroy();
+-			++CleanedUp;
++			++CleanedUp; // MUTATION: no clean-up at the end
+ 		}
+ 	}
+-	Artifacts.Reset();
+ 	UE_LOG(LogGridlands, Log, TEXT("Storm: %s ends (%d artifacts fell, %d cleaned up mid-air)"), *Ended.ToString(), Spawned, CleanedUp);
+ 	Emit(TEXT("Event.Storm.Ended"), Ended);
+ }

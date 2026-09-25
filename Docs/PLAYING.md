@@ -1,7 +1,8 @@
 # Playing the current build
 
-What exists: the modern-suburbia origin cell on runtime ground you can dig, raise and flatten;
-building a small timber shelter;, NICE's static, salvage and fabrication, Pehlichi's
+What exists: the first vertical slice. The modern-suburbia origin cell sits on runtime ground you can
+dig, raise and flatten. You can build a small timber shelter. There's a storm drain with a gremlin
+you can fight, sneak past, or let Pehlichi distract, and NICE's Raining Cats and Dogs storm., NICE's static, salvage and fabrication, Pehlichi's
 scan and repair, one riddle answered through gameplay, and a world that stays changed across quits.
 
 ## Launch
@@ -9,7 +10,10 @@ scan and repair, one riddle answered through gameplay, and a world that stays ch
 /pehverse/engines/UE_5.8.3/Engine/Binaries/Linux/UnrealEditor "$PWD/Gridlands.uproject" -game
 ```
 The game loads `Saved/SaveGames/Gridlands/world.json` if it exists. To start a new world, add
-`-GLNewWorld` or delete that file. It autosaves after every repair and on quit.
+`-GLNewWorld` or delete that file.
+- It autosaves after every repair, a few seconds after building or terraforming, and on quit.
+- A new world can take a resource-yield setting: `-GLSettings=settings.preset.relaxed` doubles
+  repeatable yields. The default is `settings.preset.default`.
 
 ## Controls
 | Key | What it does |
@@ -28,6 +32,8 @@ The game loads `Saved/SaveGames/Gridlands/world.json` if it exists. To start a n
 | left mouse | place the piece (build mode) or use the shovel (terraform mode) |
 | X | demolish the piece you're aiming at; anything it held up falls, and you get everything back |
 | T | terraform mode: dig, then raise, then flatten, then off (needs a shovel) |
+| left mouse (no tool out) | swing at a creature in front of you (best weapon you carry: pry bar > shovel > fists) |
+| V | Pehlichi makes a glitchy noise where he is; creatures nearby go and look (he never hurts anything) |
 
 Building and terraforming bindings are provisional; tell me what feels wrong.
 
@@ -46,10 +52,27 @@ Zenny never talks. Pehlichi is the only one who repairs anything; you make repai
 Shovel: press F with 2 scrap metal and a plank (F makes a tool you don't already have).
 Digging gives soil; raising spends it. You can't dig under your own floors.
 
+## The storm drain and its gremlin (spoilers)
+The culvert is at the north end of the cross street. Press E on the manhole to climb down, and E
+on the one below to come back up. A static gremlin guards the drain's glitch, and there are three
+ways past it:
+- **Sneak:** it faces the way you came in. The walled side channel on your right leads around it.
+- **Distract:** tell Pehlichi to stay somewhere (G), walk away, then press V. It goes to look.
+- **Fight:** three hits with the pry bar. It hits back (12 a strike); if you go down, you wake at
+  the start with everything you carried.
+
+Your health bar is top left.
+
+## NICE's storm (spoilers)
+After Pehlichi's second repair, NICE loses her temper and it rains cats and dogs for 40 seconds.
+They're glitch sprites and they don't hurt.
+
 ## Things to find (spoilers)
 - The flickering lamp: clear the junk pile blocking it, then scan and repair.
 - The dead transformer needs a fuse (fabricate one).
 - The buried signal only shows up once Pehlichi's scan has improved.
+- The echo loop, in the storm drain (see above).
+- The diner and the Roman columns: go and look, and NICE and Pehlichi have opinions.
 - The cartographer's error, east along the road (about 90 m): scanning it makes NICE pose a riddle.
   Talk solves nothing. Answer by bringing her what she describes and placing it on the stand
   beside the glitch. Look in the car glovebox on the way there.

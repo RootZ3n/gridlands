@@ -1,0 +1,69 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0D8718F877327BD5122ACF95ECA13",
+			"instanceName": "Pehverse-2878368",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.25-12.02.10",
+	"succeeded": 0,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.093245573341846466,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "RainingCatsAndDogsIsBoundedAndCleansUp",
+			"fullTestPath": "Gridlands.Game.Storm.RainingCatsAndDogsIsBoundedAndCleansUp",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D8718F877327BD5122ACF95ECA13"
+			],
+			"duration": 0.093245573341846466,
+			"dateTime": "2026.09.25-12.02.10",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'clean-up: no storm artifact remains anywhere in the world' to be 0, but it was 10.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLSliceTests.cpp",
+					"lineNumber": 263,
+					"timestamp": "2026.09.25-12.02.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'and the storm tracks none' to be 0, but it was 10.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "<repo>/Source/GridlandsGame/Private/Tests/GLSliceTests.cpp",
+					"lineNumber": 86,
+					"timestamp": "2026.09.25-12.02.10"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		}
+	]
+}

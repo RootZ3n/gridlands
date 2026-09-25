@@ -21,7 +21,9 @@
 #include "Pehlichi/GLRepairComponent.h"
 #include "Pehlichi/GLScanComponent.h"
 #include "Save/GLSaveSubsystem.h"
+#include "Storm/GLStormArtifact.h"
 #include "Storm/GLStormSubsystem.h"
+#include "EngineUtils.h"
 #include "Tests/GLTestUtils.h"
 #include "World/GLAmbientSubsystem.h"
 #include "World/GLPlacementSubsystem.h"
@@ -82,6 +84,17 @@ namespace GLSliceTests
 		}
 
 		int32 Count(const TCHAR* Tag) const { return Events.FilterByPredicate([Tag](FName E) { return E == FName(Tag); }).Num(); }
+
+		/** Storm artifacts actually in the world (not just the ones the storm still tracks). */
+		int32 ArtifactsInWorld() const
+		{
+			int32 Alive = 0;
+			for (TActorIterator<AGLStormArtifact> It(Test.World); It; ++It)
+			{
+				Alive += IsValid(*It) ? 1 : 0;
+			}
+			return Alive;
+		}
 	};
 }
 
@@ -231,16 +244,23 @@ bool FGLSliceStorm::RunTest(const FString& Parameters)
 		int32 MostAtOnce = 0;
 		double Elapsed = 0.0;
 		bool bSawFalling = false;
+		int32 AliveNearTheEnd = 0;
 		while (Storms->IsRaining() && Elapsed < 60.0)
 		{
+			if (Elapsed > 39.0)
+			{
+				AliveNearTheEnd = FMath::Max(AliveNearTheEnd, Arena.ArtifactsInWorld());
+			}
 			Storms->Step(0.1f);
 			Elapsed += 0.1;
-			MostAtOnce = FMath::Max(MostAtOnce, Storms->NumArtifacts());
-			bSawFalling |= Storms->NumArtifacts() > 0;
+			MostAtOnce = FMath::Max(MostAtOnce, Arena.ArtifactsInWorld());
+			bSawFalling |= Arena.ArtifactsInWorld() > 0;
 		}
 		TestTrue(TEXT("it rained artifacts"), bSawFalling && MostAtOnce > 5);
+		TestTrue(FString::Printf(TEXT("it rains all storm long (%d still falling just before the end)"), AliveNearTheEnd), AliveNearTheEnd > 3);
 		TestTrue(FString::Printf(TEXT("bounded: it stopped after its duration (%.1f s)"), Elapsed), FMath::IsNearlyEqual(Elapsed, 40.0, 0.2));
-		TestEqual(TEXT("clean-up: nothing from the storm remains"), Storms->NumArtifacts(), 0);
+		TestEqual(TEXT("clean-up: no storm artifact remains anywhere in the world"), Arena.ArtifactsInWorld(), 0);
+		TestEqual(TEXT("and the storm tracks none"), Storms->NumArtifacts(), 0);
 		TestEqual(TEXT("Event.Storm.Ended"), Arena.Count(TEXT("Event.Storm.Ended")), 1);
 		TestEqual(TEXT("harmless: Zenny untouched"), Arena.Health->GetCurrent(), 100.0);
 		Repaired(Arena.Test.World);

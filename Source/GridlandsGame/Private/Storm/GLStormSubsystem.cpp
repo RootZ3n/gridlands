@@ -95,7 +95,7 @@ void UGLStormSubsystem::Step(float DeltaTime)
 	}
 	SpawnDebt += Storm->SpawnPerSecond * DeltaTime;
 	const UGLTerrainSubsystem* Terrain = GetWorld()->GetSubsystem<UGLTerrainSubsystem>();
-	while (SpawnDebt >= 1.0 && Spawned < Storm->MaxArtifacts)
+	while (SpawnDebt >= 1.0 && Artifacts.Num() < Storm->MaxArtifacts) // at most this many at once, all storm long
 	{
 		SpawnDebt -= 1.0;
 		const FVector Centre = CenterActor->GetActorLocation();
@@ -119,15 +119,17 @@ void UGLStormSubsystem::Stop()
 	const FName Ended = Active;
 	Active = NAME_None;
 	// Clean up: nothing from the storm outlives it.
+	int32 CleanedUp = 0;
 	for (AGLStormArtifact* Artifact : Artifacts)
 	{
 		if (Artifact && IsValid(Artifact))
 		{
 			Artifact->Destroy();
+			++CleanedUp;
 		}
 	}
 	Artifacts.Reset();
-	UE_LOG(LogGridlands, Log, TEXT("Storm: %s ends (%d artifacts fell)"), *Ended.ToString(), Spawned);
+	UE_LOG(LogGridlands, Log, TEXT("Storm: %s ends (%d artifacts fell, %d cleaned up mid-air)"), *Ended.ToString(), Spawned, CleanedUp);
 	Emit(TEXT("Event.Storm.Ended"), Ended);
 }
 
