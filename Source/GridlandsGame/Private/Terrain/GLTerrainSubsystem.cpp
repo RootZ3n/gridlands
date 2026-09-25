@@ -53,13 +53,17 @@ bool UGLTerrainSubsystem::SetupCell(FName CellId)
 }
 
 void UGLTerrainSubsystem::Setup(const FVector2D& Origin, int32 ChunksX, int32 ChunksY, int32 ChunkVerts, double SpacingCm, float BaseHeightCm,
-	double MaxDigCm, double MaxRaiseCm)
+	double MaxDigCm, double MaxRaiseCm, TArray<float>* AuthoredBase)
 {
 	Clear();
 	UWorld* World = GetWorld();
 	VertsPerChunk = ChunkVerts;
 	// Neighbouring chunks share their edge vertices, so seams can never open.
 	Field.Init(Origin, ChunksX * (ChunkVerts - 1) + 1, ChunksY * (ChunkVerts - 1) + 1, SpacingCm, BaseHeightCm, MaxDigCm, MaxRaiseCm);
+	if (AuthoredBase && !Field.SetBase(MoveTemp(*AuthoredBase)))
+	{
+		UE_LOG(LogGridlands, Error, TEXT("Terrain: authored base has the wrong size; using flat ground"));
+	}
 	for (int32 CY = 0; CY < ChunksY; ++CY)
 	{
 		for (int32 CX = 0; CX < ChunksX; ++CX)

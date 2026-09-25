@@ -77,15 +77,15 @@ FGLTerrainEditResult FGLHeightfield::Apply(const FGLTerrainEdit& Edit, TFunction
 			switch (Edit.Op)
 			{
 			case EGLTerrainOp::Dig:
-				New = FMath::Max(Old - Edit.AmountCm * Weight, BaseHeight - MaxDig);
+				New = FMath::Max(Old - Edit.AmountCm * Weight, VertexBase(Index) - MaxDig);
 				Nominal += Edit.AmountCm * Weight;
 				break;
 			case EGLTerrainOp::Raise:
-				New = FMath::Min(Old + Edit.AmountCm * Weight, BaseHeight + MaxRaise);
+				New = FMath::Min(Old + Edit.AmountCm * Weight, VertexBase(Index) + MaxRaise);
 				Nominal += Edit.AmountCm * Weight;
 				break;
 			case EGLTerrainOp::Flatten:
-				New = FMath::Lerp(Old, FMath::Clamp(Edit.TargetHeightCm, BaseHeight - MaxDig, BaseHeight + MaxRaise), Weight);
+				New = FMath::Lerp(Old, FMath::Clamp(Edit.TargetHeightCm, VertexBase(Index) - MaxDig, VertexBase(Index) + MaxRaise), Weight);
 				Nominal += FMath::Abs(New - Old);
 				break;
 			}
@@ -138,7 +138,7 @@ void FGLHeightfield::EncodeDelta(TArray<int32>& OutIndices, TArray<int32>& OutDe
 	OutDeltaCm.Reset();
 	for (int32 Index = 0; Index < Heights.Num(); ++Index)
 	{
-		const int32 Delta = FMath::RoundToInt(Heights[Index] - BaseHeight);
+		const int32 Delta = FMath::RoundToInt(Heights[Index] - VertexBase(Index));
 		if (Delta != 0)
 		{
 			OutIndices.Add(Index);
@@ -162,7 +162,67 @@ bool FGLHeightfield::ApplyDelta(TConstArrayView<int32> Indices, TConstArrayView<
 	}
 	for (int32 I = 0; I < Indices.Num(); ++I)
 	{
-		Heights[Indices[I]] = BaseHeight + DeltaCm[I];
+		Heights[Indices[I]] = VertexBase(Indices[I]) + DeltaCm[I];
 	}
 	return true;
+}
+
+bool FGLHeightfield::SetBase(TArray<float>&& InBase)
+{
+	if (InBase.Num() != VertsX * VertsY)
+	{
+		return false;
+	}
+	for (float& H : InBase)
+	{
+		H = FMath::RoundToFloat(H); // whole centimetres, so deltas reproduce exactly
+	}
+	Base = MoveTemp(InBase);
+	Heights = Base;
+	return true;
+}
+
+namespace
+{
+	float Lattice(int32 Seed, int32 X, int32 Y)
+	{
+		uint32 H = static_cast<uint32>(X) * 374761393u + static_cast<uint32>(Y) * 668265263u + static_cast<uint32>(Seed) * 2147483647u;
+		H = (H ^ (H >> 13)) * 1274126177u;
+		return static_cast<float>((H ^ (H >> 16)) & 0xFFFF) / 65535.f * 2.f - 1.f;
+	}
+
+	float ValueNoise(int32 Seed, double X, double Y)
+	{
+		const int32 X0 = FMath::FloorToInt(X), Y0 = FMath::FloorToInt(Y);
+		const double TX = X - X0, TY = Y - Y0;
+		const double SX = TX * TX * (3.0 - 2.0 * TX), SY = TY * TY * (3.0 - 2.0 * TY);
+		const double A = FMath::Lerp<double>(Lattice(Seed, X0, Y0), Lattice(Seed, X0 + 1, Y0), SX);
+		const double B = FMath::Lerp<double>(Lattice(Seed, X0, Y0 + 1), Lattice(Seed, X0 + 1, Y0 + 1), SX);
+		return static_cast<float>(FMath::Lerp(A, B, SY));
+	}
+}
+
+TArray<float> GLTerrainGen::Rolling(int32 Seed, int32 VertsX, int32 VertsY, double SpacingCm, double AmplitudeCm)
+{
+	TArray<float> Out;
+	Out.SetNumUninitialized(VertsX * VertsY);
+	for (int32 Y = 0; Y < VertsY; ++Y)
+	{
+		for (int32 X = 0; X < VertsX; ++X)
+		{
+			const double WX = X * SpacingCm / 100.0, WY = Y * SpacingCm / 100.0; // metres
+			double H = 0.0, Amp = 1.0, Freq = 1.0 / 120.0, Norm = 0.0;
+			for (int32 Octave = 0; Octave < 4; ++Octave)
+			{
+				H += Amp * ValueNoise(Seed + Octave * 101, WX * Freq, WY * Freq);
+				Norm += Amp;
+				Amp *= 0.5;
+				Freq *= 2.3;
+			}
+			// Ridges: folded noise adds occasional steep features (representative, not a best case).
+			const double Ridge = 1.0 - FMath::Abs(ValueNoise(Seed + 777, WX / 60.0, WY / 60.0));
+			Out[Y * VertsX + X] = static_cast<float>((H / Norm) * AmplitudeCm + FMath::Pow(Ridge, 6.0) * AmplitudeCm * 0.4);
+		}
+	}
+	return Out;
 }

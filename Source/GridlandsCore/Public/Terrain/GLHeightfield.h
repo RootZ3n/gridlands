@@ -43,6 +43,15 @@ public:
 	void Init(const FVector2D& InOrigin, int32 InVertsX, int32 InVertsY, double InSpacingCm, float InBaseHeightCm,
 		double InMaxDigDepthCm, double InMaxRaiseHeightCm);
 
+	/**
+	 * Authored ground: Base holds one height per vertex (cm, row-major, VertsX * VertsY). Edit
+	 * limits and saved deltas are relative to each vertex's base. False (unchanged) on a size mismatch.
+	 */
+	bool SetBase(TArray<float>&& InBase);
+	bool HasAuthoredBase() const { return Base.Num() > 0; }
+	float VertexBase(int32 Index) const { return Base.Num() > 0 ? Base[Index] : BaseHeight; }
+	SIZE_T GetAllocatedBytes() const { return Heights.GetAllocatedSize() + Base.GetAllocatedSize(); }
+
 	int32 GetVertsX() const { return VertsX; }
 	int32 GetVertsY() const { return VertsY; }
 	double GetSpacing() const { return Spacing; }
@@ -66,7 +75,7 @@ public:
 	/** Sparse difference from the flat base: vertex index -> whole centimetres. Deterministic order. */
 	void EncodeDelta(TArray<int32>& OutIndices, TArray<int32>& OutDeltaCm) const;
 	/** Every vertex back to the base height (limits and layout unchanged). */
-	void ResetToBase() { for (float& H : Heights) { H = BaseHeight; } }
+	void ResetToBase() { for (int32 I = 0; I < Heights.Num(); ++I) { Heights[I] = VertexBase(I); } }
 	/** Restores a saved delta onto a freshly initialised base. False (and no change) if malformed. */
 	bool ApplyDelta(TConstArrayView<int32> Indices, TConstArrayView<int32> DeltaCm);
 
@@ -82,4 +91,15 @@ private:
 	double MaxDig = 300.0;
 	double MaxRaise = 300.0;
 	TArray<float> Heights;
+	TArray<float> Base; // empty: flat at BaseHeight
 };
+
+/** Deterministic authored-ground generators (tests, tools, performance harnesses). */
+namespace GLTerrainGen
+{
+	/**
+	 * Rolling hills: value noise, four octaves, about +/- AmplitudeCm, with a few steeper ridges.
+	 * The same seed gives the same heights on every machine.
+	 */
+	GRIDLANDSCORE_API TArray<float> Rolling(int32 Seed, int32 VertsX, int32 VertsY, double SpacingCm, double AmplitudeCm);
+}
