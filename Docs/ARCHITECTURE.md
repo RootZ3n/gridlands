@@ -75,6 +75,16 @@ reach) are pure Core. `UGLKnowledgeSubsystem` learns only by listening to events
 `UGLFabricatorComponent` crafts through the inventory. F is a temporary "fabricate the first
 available recipe" key until crafting UI exists.
 
+**Stability and interference (M8, ADR-0013).** `GLStabilityModel` (Core, pure): interference
+at a point = band baseline + corruption of unrepaired glitches - relief of repaired ones
+(smooth falloff over each glitch's `influenceRadius`), clamped 0..1 and tiered
+Clear/Hazy/Static/Blizzard. NICE's composure = the unrepaired share of glitch weight.
+`UGLStabilitySubsystem` computes it on demand from live glitch states: nothing is stored
+(S-1, checked statically). It drives the placeholder static HUD (`AGLHUD`, drawn in C++),
+fog density, scan confidence and banter (`Event.World.Stabilized`,
+`Event.World.InterferenceTierChanged`). Outside a cell's `playableHalfExtent`, the next
+band's baseline applies. Dev command: `gl.Demo.RepairNearby` fast-forwards the real loop.
+
 **Dialogue (M5, ADR-0015).** `GLDialogueRules` (Core, pure, seeded) chooses at most one
 exchange per event: trigger and subject match, history requirements, maxUses, cooldowns,
 busy rule (only StoryCritical may interrupt, never another StoryCritical), then the

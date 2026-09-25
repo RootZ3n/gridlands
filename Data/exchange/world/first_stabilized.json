@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.world.first_stabilized",
+  "trigger": [
+    "Event.World.Stabilized"
+  ],
+  "category": "Contextual",
+  "priority": 50,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "Pehlichi",
+      "text": "Feel that? The noise dropped. That patch of world is ours now."
+    },
+    {
+      "speaker": "NICE",
+      "text": "Enjoy it. It's a rental."
+    }
+  ]
+}

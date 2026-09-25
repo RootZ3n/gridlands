@@ -304,6 +304,8 @@ struct GRIDLANDSCORE_API FGLGlitchDef : public FGLDefinitionBase
 	UPROPERTY() TArray<FGLGlitchRequirementDef> Requirements;
 	UPROPERTY() FGLGlitchRepairDef Repair;
 	UPROPERTY() double StabilityWeight = 0.0;
+	/** Metres; 0 when absent (the game uses 40). */
+	UPROPERTY() double InfluenceRadius = 0.0;
 	UPROPERTY() TArray<FGLGlitchRewardDef> Rewards;
 };
 
@@ -335,6 +337,8 @@ struct GRIDLANDSCORE_API FGLCellDef : public FGLDefinitionBase
 	UPROPERTY() FGLCellCoordDef Coord;
 	UPROPERTY() TArray<FGLEraWeightDef> EraComposition;
 	UPROPERTY() FString Level;
+	/** Metres; 0 when absent (no limit). */
+	UPROPERTY() double PlayableHalfExtent = 0.0;
 };
 
 USTRUCT()

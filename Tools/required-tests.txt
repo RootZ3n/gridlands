@@ -35,3 +35,7 @@ Gridlands.Game.Knowledge 1
 
 # M7: Pehlichi scan/repair, requirements, the lamp loop (steps 5-12), delivery and interruption.
 Gridlands.Game.Pehlichi 4
+
+# M8: derived stability (ADR-0013, S-1) and static receding when Pehlichi repairs.
+Gridlands.Core.Stability 2
+Gridlands.Game.Stability 1

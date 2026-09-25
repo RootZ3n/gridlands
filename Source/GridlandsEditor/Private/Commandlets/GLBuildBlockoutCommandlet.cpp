@@ -12,6 +12,7 @@
 #include "GameFramework/PlayerStart.h"
 #include "GameFramework/WorldSettings.h"
 #include "GridlandsEditor.h"
+#include "HAL/FileManager.h"
 #include "Interaction/GLDebugInteractable.h"
 #include "Materials/MaterialInterface.h"
 #include "Misc/PackageName.h"
@@ -75,8 +76,15 @@ int32 UGLBuildBlockoutCommandlet::Main(const FString& Params)
 {
 	using namespace GLBlockout;
 
+	// The generator is the map's source: start from nothing. (Loading the old package and creating
+	// a second world inside it crashed with "Cannot generate unique name for 'WorldSettings'".)
+	const FString Existing = FPackageName::LongPackageNameToFilename(MapPackage, FPackageName::GetMapPackageExtension());
+	if (IFileManager::Get().FileExists(*Existing) && !IFileManager::Get().Delete(*Existing))
+	{
+		UE_LOG(LogGridlandsEditor, Error, TEXT("BuildBlockout: could not replace %s"), *Existing);
+		return 1;
+	}
 	UPackage* Package = CreatePackage(MapPackage);
-	Package->FullyLoad();
 	UWorld* World = UWorld::CreateWorld(EWorldType::Inactive, false, TEXT("L_Origin"), Package);
 	World->SetFlags(RF_Public | RF_Standalone);
 	FBuilder B{ World };
@@ -141,13 +149,20 @@ int32 UGLBuildBlockoutCommandlet::Main(const FString& Params)
 
 	World->SpawnActor<APlayerStart>(FVector(0, -12 * M, 1.0 * M), FRotator(0.0, 90.0, 0.0));
 
-	// Movable lights: no lighting build needed for a blockout.
-	ADirectionalLight* Sun = World->SpawnActor<ADirectionalLight>(FVector(0, 0, 50 * M), FRotator(-45.0, 30.0, 0.0));
+	// Movable lights: no lighting build needed for a blockout. The sun sits low behind the player
+	// start (which faces +Y) and shines along +Y, so everything Zenny sees at spawn is front-lit.
+	// SetActorRotation after spawning: SpawnActor composes the spawn rotation with the light's own
+	// default -46 degree pitch, which once put the sun almost overhead and left every wall dark.
+	ADirectionalLight* Sun = World->SpawnActor<ADirectionalLight>(FVector(0, 0, 50 * M), FRotator::ZeroRotator);
+	Sun->SetActorRotation(FRotator(-35.0, 72.0, 0.0));
 	Sun->GetComponent()->SetMobility(EComponentMobility::Movable);
 	Sun->GetComponent()->SetAtmosphereSunLight(true);
+	Sun->GetComponent()->SetIntensity(8.f);
+	UE_LOG(LogGridlandsEditor, Display, TEXT("BuildBlockout: sun rotation %s, light direction %s"), *Sun->GetActorRotation().ToString(), *Sun->GetComponent()->GetDirection().ToString());
 	ASkyLight* Sky = World->SpawnActor<ASkyLight>(FVector(0, 0, 40 * M), FRotator::ZeroRotator);
 	Sky->GetLightComponent()->SetMobility(EComponentMobility::Movable);
 	Sky->GetLightComponent()->bRealTimeCapture = true;
+	Sky->GetLightComponent()->SetIntensity(1.6f);
 	World->SpawnActor<ASkyAtmosphere>(FVector::ZeroVector, FRotator::ZeroRotator);
 
 	World->GetWorldSettings()->DefaultGameMode = AGLGameMode::StaticClass();

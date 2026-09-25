@@ -11,6 +11,7 @@
 #include "Glitch/GLGlitchSubsystem.h"
 #include "Pehlichi/GLCapabilityComponent.h"
 #include "Pehlichi/GLCapabilityRules.h"
+#include "World/GLStabilitySubsystem.h"
 
 FGLScanResult UGLScanComponent::Scan()
 {
@@ -40,7 +41,10 @@ FGLScanResult UGLScanComponent::Scan()
 		}
 		if (FGLGlitchLifecycle::IsVisibleToPlayer(Component->GetState()))
 		{
-			Result.Findings.Add({ TEXT("Glitch"), Component->GetGlitchId(), Glitch->GetActorLocation(), 1.0 });
+			// Interference blurs what Pehlichi reads (WORLD-AND-PROGRESSION section 4).
+			const UGLStabilitySubsystem* Stability = GetWorld()->GetSubsystem<UGLStabilitySubsystem>();
+			const double Confidence = Stability ? 1.0 - Stability->InterferenceAt(Glitch->GetActorLocation()) : 1.0;
+			Result.Findings.Add({ TEXT("Glitch"), Component->GetGlitchId(), Glitch->GetActorLocation(), Confidence });
 		}
 	}
 	FGLGameplayEvent Event;

@@ -1,6 +1,11 @@
 #include "World/GLGameMode.h"
 
 #include "Character/GLCharacter.h"
+#include "Components/DirectionalLightComponent.h"
+#include "Engine/DirectionalLight.h"
+#include "EngineUtils.h"
+#include "GridlandsGame.h"
+#include "UI/GLHUD.h"
 #include "Events/GLEventSubsystem.h"
 #include "GameFramework/Controller.h"
 #include "Pehlichi/GLCompanionPositioningComponent.h"
@@ -10,11 +15,16 @@
 AGLGameMode::AGLGameMode()
 {
 	DefaultPawnClass = AGLCharacter::StaticClass();
+	HUDClass = AGLHUD::StaticClass();
 }
 
 void AGLGameMode::StartPlay()
 {
 	Super::StartPlay();
+	for (TActorIterator<ADirectionalLight> It(GetWorld()); It; ++It)
+	{
+		UE_LOG(LogGridlands, Log, TEXT("Lighting: %s rotation %s, direction %s"), *It->GetName(), *It->GetActorRotation().ToString(), *It->GetComponent()->GetDirection().ToString());
+	}
 	FGLGameplayEvent Started;
 	Started.Tag = UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Game.Started"));
 	UGLEventSubsystem::Emit(this, MoveTemp(Started));
