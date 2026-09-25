@@ -59,6 +59,7 @@ Rules:
 | `exchange` | dialogue exchanges | `exchange.salvage.wire_bike` |
 | `settings` | world-setting presets | `settings.preset.relaxed` |
 | `yield` | yield category definitions | `yield.rare.material` |
+| `terraform` | one heightfield tool stroke (ADR-0022) | `terraform.shovel.dig` |
 
 **[V] ID-9** A new kind is added only with a typed C++ definition (ADR-0021)
 and an entry here. It's a code change, reviewed.

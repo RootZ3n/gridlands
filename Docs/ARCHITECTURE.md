@@ -95,6 +95,20 @@ events). Files: `Saved/SaveGames/Gridlands/world.json`. The game mode loads it a
 `-GLNewWorld`) and autosaves on every repair and on quit; F5/F9 quick save/load. Derived values are
 recomputed on load (S-1).
 
+**Terrain (ADR-0022, M10).** `FGLHeightfield` (Core) is pure: dig/raise/flatten are atomic
+(whole-centimetre heights, depth limits, no-free-stroke rule) and saves hold sparse deltas.
+`UGLTerrainSubsystem` builds a cell's ground from cell data (`terrain`), spawns `AGLTerrainChunk`
+dynamic meshes (complex collision, navigation-relevant) and the cell's runtime navigation bounds
+(`AGLCellNavBounds`); an edit rebuilds only touched chunks and dirties navigation (Recast runtime
+generation `Dynamic`). `Terraform()` is the player transaction (tool, cost, yields, protection
+under structures).
+
+**Building (ADR-0024, M10).** `GLStructureRules` (Core, pure) derives support from sockets and
+materials and checks placements; `UGLBuildingSubsystem` runs the place/demolish transactions
+against inventory and knowledge and spawns `AGLBuildPiece` actors (data boxes, blocking
+collision). Pieces are saved; support is recomputed on load. `UGLBuildModeComponent` is the
+player's hands (aim, ghost preview, input).
+
 **Puzzles (ADR-0023).** Zenny answers through gameplay, never through dialogue. `UGLPuzzleSubsystem`
 poses a puzzle when a glitch that requires it is revealed (`Event.Puzzle.Posed`), gives Pehlichi's
 hints on request (`Event.Puzzle.Hint.TierN`, capped by his Analysis capability, else

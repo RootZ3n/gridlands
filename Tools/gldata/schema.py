@@ -271,16 +271,39 @@ SCHEMAS: dict[str, Obj] = {
         },
         required=("displayName", "integrity", "yields"),
     ),
+    # M10 building v0 (Docs/ADR/0024). Metres, piece-local, origin at the bottom centre, +X along the piece.
     "buildpiece": kind(
         {
             "displayName": Str(),
             "era": Ref("era"),
             "material": Ref("material"),
-            "sockets": List(Str(max_len=64), min_items=1, unique=True),
+            "role": Enum("foundation", "wall", "doorway", "roof", "post", "beam"),
+            # May rest directly on terrain (foundations, posts); otherwise it needs another piece.
+            "grounded": Bool(),
+            # Axis-aligned bounds in piece space (overlap tests, terrain protection).
+            "size": VEC3,
+            # Visual and collision boxes; pitch tilts a box about its local X axis (roofs).
+            "shapes": List(Obj({"size": VEC3, "offset": VEC3, "pitch": Num(-89, 89)}, required=("size", "offset")), min_items=1),
+            # bottom meets top: the upper piece rests on the lower; side meets side: a lateral link.
+            "sockets": List(Obj({"name": Str(max_len=64), "role": Enum("bottom", "top", "side"), "offset": VEC3},
+                                required=("name", "role", "offset")), min_items=1),
             "cost": List(ITEM_STACK, min_items=1),
             "unlockedBy": List(Ref("knowledge"), unique=True),
         },
-        required=("displayName", "era", "material", "sockets", "cost"),
+        required=("displayName", "era", "material", "role", "grounded", "size", "shapes", "sockets", "cost"),
+    ),
+    # M10 terraforming v0 (ADR-0022): one stroke of a heightfield tool. Metres.
+    "terraform": kind(
+        {
+            "displayName": Str(),
+            "op": Enum("DIG", "RAISE", "FLATTEN"),
+            "radius": Num(0.5, 20),
+            "amount": Num(0, 5),
+            "requiresTool": Tag("Tool"),
+            "cost": List(ITEM_STACK),
+            "yields": List(ITEM_STACK),
+        },
+        required=("displayName", "op", "radius", "amount", "requiresTool"),
     ),
     "capability": kind(
         {
@@ -322,6 +345,10 @@ SCHEMAS: dict[str, Obj] = {
             "level": Str(),
             # Half-width of the playable area in metres; beyond it the next band's interference applies.
             "playableHalfExtent": Num(1, 5000),
+            # Runtime heightfield ground (ADR-0022); covers the playable extent, rounded up to whole chunks.
+            "terrain": Obj({"chunkMetres": Int(8, 256), "spacingMetres": Num(0.25, 4), "baseHeight": Num(-1000, 1000),
+                            "maxDigDepth": Num(0, 50), "maxRaiseHeight": Num(0, 50)},
+                           required=("chunkMetres", "spacingMetres", "baseHeight", "maxDigDepth", "maxRaiseHeight")),
         },
         required=("displayName", "band", "coord", "eraComposition"),
     ),

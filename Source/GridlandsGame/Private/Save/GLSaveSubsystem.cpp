@@ -19,6 +19,9 @@
 #include "Pehlichi/GLCapabilityComponent.h"
 #include "Pehlichi/GLPehlichi.h"
 #include "Puzzle/GLPuzzleSubsystem.h"
+#include "Building/GLBuildingSubsystem.h"
+#include "Content/GLContentDefinitions.h"
+#include "Terrain/GLTerrainSubsystem.h"
 #include "Salvage/GLSalvageNode.h"
 #include "Salvage/GLSalvageableComponent.h"
 #include "World/GLPlacementSubsystem.h"
@@ -142,6 +145,18 @@ FGLWorldSave UGLSaveSubsystem::Capture() const
 	{
 		Save.SettingsPreset = Settings->GetPresetId();
 	}
+	if (const UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>())
+	{
+		for (const FGLPlacedPiece& Piece : Building->GetPieces())
+		{
+			Save.BuildPieces.Add({ Piece.Id, Piece.Def, Piece.Location, Piece.YawQuarter });
+		}
+		Save.NextPieceId = Building->GetNextId();
+	}
+	if (const UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>(); Terrain && Terrain->HasGround())
+	{
+		Terrain->CaptureDelta(Save.TerrainIndices, Save.TerrainDeltaCm);
+	}
 	if (const UGLPuzzleSubsystem* Puzzles = World->GetSubsystem<UGLPuzzleSubsystem>())
 	{
 		Save.SolvedPuzzles = Puzzles->GetSolved().Array();
@@ -248,6 +263,28 @@ void UGLSaveSubsystem::Apply(const FGLWorldSave& Save, TArray<FString>* OutProbl
 	{
 		Settings->SetPreset(Save.SettingsPreset);
 	}
+	// Ground first, then the pieces that stand on it (support is derived from both).
+	if (UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>(); Terrain && Terrain->HasGround())
+	{
+		if (!Terrain->RestoreDelta(Save.TerrainIndices, Save.TerrainDeltaCm))
+		{
+			Problem(TEXT("saved terrain does not fit this cell's ground; ground left as authored"));
+		}
+	}
+	if (UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>())
+	{
+		TArray<FGLPlacedPiece> Pieces;
+		for (const FGLSavedPiece& Saved : Save.BuildPieces)
+		{
+			if (!GLContent::Get().Find<FGLBuildPieceDef>(Saved.Def))
+			{
+				Problem(FString::Printf(TEXT("saved build piece %s no longer exists"), *Saved.Def.ToString()));
+				continue;
+			}
+			Pieces.Add({ Saved.Id, Saved.Def, Saved.Location, Saved.YawQuarter });
+		}
+		Building->Restore(Pieces, Save.NextPieceId);
+	}
 	if (UGLPuzzleSubsystem* Puzzles = World->GetSubsystem<UGLPuzzleSubsystem>())
 	{
 		TArray<TPair<FName, int32>> Hints;
@@ -287,7 +324,8 @@ bool UGLSaveSubsystem::LoadFromSlot(const FString& Slot, TArray<FString>* OutPro
 		return false;
 	}
 	Apply(Save, OutProblems);
-	UE_LOG(LogGridlands, Log, TEXT("Load: restored %d glitches, %d salvaged placements from %s"), Save.Glitches.Num(), Save.SalvagedPlacements.Num(), *SlotPath(Slot));
+	UE_LOG(LogGridlands, Log, TEXT("Load: restored %d glitches, %d salvaged placements, %d build pieces, %d edited ground vertices from %s"),
+		Save.Glitches.Num(), Save.SalvagedPlacements.Num(), Save.BuildPieces.Num(), Save.TerrainIndices.Num(), *SlotPath(Slot));
 	return true;
 }
 

@@ -30,7 +30,7 @@ Gridlands.Game.Dialogue 2
 
 # M6: transactional fabrication, knowledge gates, loop steps 2-4, data-driven knowledge.
 Gridlands.Core.Fabrication 2
-Gridlands.Game.Fabrication 2
+Gridlands.Game.Fabrication 3
 Gridlands.Game.Knowledge 1
 
 # M7: Pehlichi scan/repair, requirements, the lamp loop (steps 5-12), delivery and interruption.
@@ -46,3 +46,9 @@ Gridlands.Game.Save 3
 
 # Puzzle proof (ADR-0023): PRESENT answers, capped hints, dialogue never solves, persistence.
 Gridlands.Game.Puzzle 3
+
+# M10: heightfield terrain, building v0, and the navigation hard gate (ADR-0022 proof 1, ADR-0024).
+Gridlands.Core.Terrain 3
+Gridlands.Core.Building 5
+Gridlands.Game.Building 4
+Gridlands.Game.Terrain 4

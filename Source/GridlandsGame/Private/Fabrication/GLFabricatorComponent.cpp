@@ -68,6 +68,21 @@ FGLCraftCheck UGLFabricatorComponent::Fabricate(FName RecipeId)
 	return Result;
 }
 
+FName UGLFabricatorComponent::PreferredRecipe() const
+{
+	const TArray<FName> Recipes = CraftableRecipes();
+	const UGLInventoryComponent* Inventory = GetOwner() ? GetOwner()->FindComponentByClass<UGLInventoryComponent>() : nullptr;
+	for (const FName& Id : Recipes)
+	{
+		const FGLRecipeDef* Recipe = GLContent::Get().Find<FGLRecipeDef>(Id);
+		if (Recipe && Inventory && Inventory->CountOf(Recipe->Output.Item) == 0)
+		{
+			return Id;
+		}
+	}
+	return Recipes.Num() > 0 ? Recipes[0] : NAME_None;
+}
+
 TArray<FName> UGLFabricatorComponent::CraftableRecipes() const
 {
 	TArray<FName> Recipes;

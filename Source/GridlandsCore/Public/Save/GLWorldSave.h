@@ -39,6 +39,18 @@ struct GRIDLANDSCORE_API FGLSavedTransform
 	UPROPERTY() double Yaw = 0.0;
 };
 
+/** A placed build piece (ADR-0024). Support is never saved; it is derived on load. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLSavedPiece
+{
+	GENERATED_BODY()
+
+	UPROPERTY() int32 Id = 0;
+	UPROPERTY() FName Def;
+	UPROPERTY() FVector Location = FVector::ZeroVector;
+	UPROPERTY() int32 YawQuarter = 0;
+};
+
 USTRUCT()
 struct GRIDLANDSCORE_API FGLWorldSave
 {
@@ -63,6 +75,12 @@ struct GRIDLANDSCORE_API FGLWorldSave
 	UPROPERTY() TArray<FName> SolvedPuzzles;
 	UPROPERTY() TArray<FName> PosedPuzzles;
 	UPROPERTY() TArray<FGLSavedCount> PuzzleHints;
+	/** Building and terraforming (M10). Additive to v1: absent means none. */
+	UPROPERTY() TArray<FGLSavedPiece> BuildPieces;
+	UPROPERTY() int32 NextPieceId = 1;
+	/** Sparse ground delta from the cell's base: vertex index -> whole centimetres (ADR-0022). */
+	UPROPERTY() TArray<int32> TerrainIndices;
+	UPROPERTY() TArray<int32> TerrainDeltaCm;
 	UPROPERTY() FGLSavedTransform Zenny;
 	UPROPERTY() FGLSavedTransform Pehlichi;
 };

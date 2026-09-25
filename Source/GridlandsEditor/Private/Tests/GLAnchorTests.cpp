@@ -71,6 +71,7 @@ bool FGLOriginBrief::RunTest(const FString& Parameters)
 			continue;
 		}
 		PlayerStarts += Actor->IsA<APlayerStart>() ? 1 : 0;
+		TestFalse(TEXT("no static ground box: the runtime heightfield is the ground (ADR-0022)"), Actor->GetActorLabel() == TEXT("Ground"));
 		if (const UGLAnchorComponent* Anchor = Actor->FindComponentByClass<UGLAnchorComponent>())
 		{
 			Anchored.Add(Anchor->AnchorId.ToString(), Actor);

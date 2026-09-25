@@ -39,6 +39,7 @@ public:
 	UGLInteractorComponent* GetInteractor() const { return Interactor; }
 	UGLInventoryComponent* GetInventory() const { return Inventory; }
 	UGLFabricatorComponent* GetFabricator() const { return Fabricator; }
+	class UGLBuildModeComponent* GetBuildMode() const { return BuildMode; }
 	AGLPehlichi* GetPehlichi() const { return Pehlichi.Get(); }
 	void SetPehlichi(AGLPehlichi* InPehlichi) { Pehlichi = InPehlichi; }
 	const UInputMappingContext* GetMappingContext() const { return MappingContext; }
@@ -58,6 +59,8 @@ private:
 	void QuickLoad();
 	/** H: ask Pehlichi about NICE's current puzzle (ADR-0023). Zenny still says nothing. */
 	void AskForHint();
+	void NextPiece();
+	void PreviousPiece();
 
 	UPROPERTY(VisibleAnywhere) TObjectPtr<USpringArmComponent> CameraBoom;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UCameraComponent> Camera;
@@ -65,6 +68,7 @@ private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGLInteractorComponent> Interactor;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGLInventoryComponent> Inventory;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGLFabricatorComponent> Fabricator;
+	UPROPERTY(VisibleAnywhere) TObjectPtr<class UGLBuildModeComponent> BuildMode;
 
 	UPROPERTY(Transient) TObjectPtr<UInputMappingContext> MappingContext;
 	TWeakObjectPtr<AGLPehlichi> Pehlichi;

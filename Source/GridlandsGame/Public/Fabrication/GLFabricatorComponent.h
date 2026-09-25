@@ -19,6 +19,8 @@ public:
 	FGLCraftCheck Fabricate(FName RecipeId);
 	/** Recipes this owner could make right now, sorted by id. */
 	TArray<FName> CraftableRecipes() const;
+	/** What F makes: the first craftable recipe whose output Zenny does not already carry, else the first craftable. */
+	FName PreferredRecipe() const;
 	/** Station.* tags within reach of the owner. */
 	TArray<FName> StationsInReach() const;
 };

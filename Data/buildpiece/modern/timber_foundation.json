@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.timber_foundation",
+  "displayName": "Timber floor",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "role": "foundation",
+  "grounded": true,
+  "size": [
+    2,
+    2,
+    0.3
+  ],
+  "shapes": [
+    {
+      "size": [
+        2,
+        2,
+        0.3
+      ],
+      "offset": [
+        0,
+        0,
+        0.15
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "ground_0",
+      "role": "bottom",
+      "offset": [
+        -1,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "ground_1",
+      "role": "bottom",
+      "offset": [
+        1,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "ground_2",
+      "role": "bottom",
+      "offset": [
+        -1,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "ground_3",
+      "role": "bottom",
+      "offset": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "edge_n",
+      "role": "top",
+      "offset": [
+        0,
+        1,
+        0.3
+      ]
+    },
+    {
+      "name": "edge_s",
+      "role": "top",
+      "offset": [
+        0,
+        -1,
+        0.3
+      ]
+    },
+    {
+      "name": "edge_e",
+      "role": "top",
+      "offset": [
+        1,
+        0,
+        0.3
+      ]
+    },
+    {
+      "name": "edge_w",
+      "role": "top",
+      "offset": [
+        -1,
+        0,
+        0.3
+      ]
+    },
+    {
+      "name": "side_n",
+      "role": "side",
+      "offset": [
+        0,
+        1,
+        0.15
+      ]
+    },
+    {
+      "name": "side_s",
+      "role": "side",
+      "offset": [
+        0,
+        -1,
+        0.15
+      ]
+    },
+    {
+      "name": "side_e",
+      "role": "side",
+      "offset": [
+        1,
+        0,
+        0.15
+      ]
+    },
+    {
+      "name": "side_w",
+      "role": "side",
+      "offset": [
+        -1,
+        0,
+        0.15
+      ]
+    }
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 2
+    }
+  ]
+}

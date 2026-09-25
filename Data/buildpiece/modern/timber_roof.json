@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.timber_roof",
+  "displayName": "Timber roof",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "role": "roof",
+  "grounded": false,
+  "size": [
+    2,
+    2,
+    1.0
+  ],
+  "shapes": [
+    {
+      "size": [
+        2,
+        2.236,
+        0.15
+      ],
+      "offset": [
+        0,
+        0,
+        0.5
+      ],
+      "pitch": 26.57
+    }
+  ],
+  "sockets": [
+    {
+      "name": "eave",
+      "role": "bottom",
+      "offset": [
+        0,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "ridge",
+      "role": "side",
+      "offset": [
+        0,
+        1,
+        1.0
+      ]
+    },
+    {
+      "name": "left",
+      "role": "side",
+      "offset": [
+        -1,
+        0,
+        0.5
+      ]
+    },
+    {
+      "name": "right",
+      "role": "side",
+      "offset": [
+        1,
+        0,
+        0.5
+      ]
+    }
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 2
+    }
+  ]
+}

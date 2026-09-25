@@ -38,6 +38,7 @@ namespace GLContentRegistry
 		{ TEXT("placement"), &FGLPlacementDef::StaticStruct },
 		{ TEXT("exchange"), &FGLExchangeDef::StaticStruct },
 		{ TEXT("puzzle"), &FGLPuzzleDef::StaticStruct },
+		{ TEXT("terraform"), &FGLTerraformDef::StaticStruct },
 	};
 
 	/** Top-level entries under Data/ that are not entity kinds. */

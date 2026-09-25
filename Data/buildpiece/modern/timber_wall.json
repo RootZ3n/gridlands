@@ -4,19 +4,72 @@
   "displayName": "Timber wall",
   "era": "era.memory.modern_day",
   "material": "material.timber.pine",
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "role": "wall",
+  "grounded": false,
+  "size": [
+    2,
+    0.2,
+    2.5
+  ],
+  "shapes": [
+    {
+      "size": [
+        2,
+        0.2,
+        2.5
+      ],
+      "offset": [
+        0,
+        0,
+        1.25
+      ]
+    }
+  ],
   "sockets": [
-    "bottom",
-    "top",
-    "left",
-    "right"
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "top",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        2.5
+      ]
+    },
+    {
+      "name": "left",
+      "role": "side",
+      "offset": [
+        -1,
+        0,
+        1.25
+      ]
+    },
+    {
+      "name": "right",
+      "role": "side",
+      "offset": [
+        1,
+        0,
+        1.25
+      ]
+    }
   ],
   "cost": [
     {
       "item": "item.material.timber_plank",
-      "count": 4
+      "count": 2
     }
-  ],
-  "unlockedBy": [
-    "knowledge.style.modern_timber_frame"
   ]
 }

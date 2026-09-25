@@ -196,6 +196,30 @@ struct GRIDLANDSCORE_API FGLSalvageDef : public FGLDefinitionBase
 	UPROPERTY() TArray<FName> OnSalvageEvents;
 };
 
+/** A visual/collision box of a build piece, piece-local metres (ADR-0024). */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLBuildShapeDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() TArray<double> Size;
+	UPROPERTY() TArray<double> Offset;
+	/** Degrees about the piece's local X axis; positive lifts +Y (roof slopes). */
+	UPROPERTY() double Pitch = 0.0;
+};
+
+/** Where a piece connects: bottom meets top (resting), side meets side (lateral). */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLBuildSocketDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString Name;
+	/** bottom | top | side */
+	UPROPERTY() FName Role;
+	UPROPERTY() TArray<double> Offset;
+};
+
 USTRUCT()
 struct GRIDLANDSCORE_API FGLBuildPieceDef : public FGLDefinitionBase
 {
@@ -206,9 +230,32 @@ struct GRIDLANDSCORE_API FGLBuildPieceDef : public FGLDefinitionBase
 	UPROPERTY() FName Era;
 	/** Physics and capability come from the material. */
 	UPROPERTY() FName Material;
-	UPROPERTY() TArray<FString> Sockets;
+	/** foundation | wall | doorway | roof | post | beam */
+	UPROPERTY() FName Role;
+	/** May rest directly on terrain. */
+	UPROPERTY() bool Grounded = false;
+	/** Piece-space bounds, metres, origin at the bottom centre. */
+	UPROPERTY() TArray<double> Size;
+	UPROPERTY() TArray<FGLBuildShapeDef> Shapes;
+	UPROPERTY() TArray<FGLBuildSocketDef> Sockets;
 	UPROPERTY() TArray<FGLItemStackDef> Cost;
 	UPROPERTY() TArray<FName> UnlockedBy;
+};
+
+/** One stroke of a terraforming tool (ADR-0022). Metres. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLTerraformDef : public FGLDefinitionBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString DisplayName;
+	/** DIG | RAISE | FLATTEN */
+	UPROPERTY() FName Op;
+	UPROPERTY() double Radius = 0.0;
+	UPROPERTY() double Amount = 0.0;
+	UPROPERTY() FName RequiresTool;
+	UPROPERTY() TArray<FGLItemStackDef> Cost;
+	UPROPERTY() TArray<FGLItemStackDef> Yields;
 };
 
 USTRUCT()
@@ -329,6 +376,19 @@ struct GRIDLANDSCORE_API FGLEraWeightDef
 	UPROPERTY() double Weight = 0.0;
 };
 
+/** A cell's runtime heightfield ground (ADR-0022). Metres. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLCellTerrainDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() int32 ChunkMetres = 0;
+	UPROPERTY() double SpacingMetres = 1.0;
+	UPROPERTY() double BaseHeight = 0.0;
+	UPROPERTY() double MaxDigDepth = 0.0;
+	UPROPERTY() double MaxRaiseHeight = 0.0;
+};
+
 USTRUCT()
 struct GRIDLANDSCORE_API FGLCellDef : public FGLDefinitionBase
 {
@@ -341,6 +401,10 @@ struct GRIDLANDSCORE_API FGLCellDef : public FGLDefinitionBase
 	UPROPERTY() FString Level;
 	/** Metres; 0 when absent (no limit). */
 	UPROPERTY() double PlayableHalfExtent = 0.0;
+	/** Absent (ChunkMetres == 0) means the cell has no runtime ground. */
+	UPROPERTY() FGLCellTerrainDef Terrain;
+
+	bool HasTerrain() const { return Terrain.ChunkMetres > 0; }
 };
 
 USTRUCT()

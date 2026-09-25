@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.timber_doorway",
+  "displayName": "Timber doorway",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "role": "doorway",
+  "grounded": false,
+  "size": [
+    2,
+    0.2,
+    2.5
+  ],
+  "shapes": [
+    {
+      "size": [
+        0.4,
+        0.2,
+        2.5
+      ],
+      "offset": [
+        -0.8,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.4,
+        0.2,
+        2.5
+      ],
+      "offset": [
+        0.8,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        1.2,
+        0.2,
+        0.4
+      ],
+      "offset": [
+        0,
+        0,
+        2.3
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "top",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        2.5
+      ]
+    },
+    {
+      "name": "left",
+      "role": "side",
+      "offset": [
+        -1,
+        0,
+        1.25
+      ]
+    },
+    {
+      "name": "right",
+      "role": "side",
+      "offset": [
+        1,
+        0,
+        1.25
+      ]
+    }
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 2
+    }
+  ]
+}

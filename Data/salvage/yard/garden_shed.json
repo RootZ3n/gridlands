@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "salvage.yard.garden_shed",
+  "displayName": "Garden shed",
+  "integrity": 90.0,
+  "material": "material.timber.pine",
+  "yields": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 12,
+      "yieldCategory": "yield.common.salvage"
+    }
+  ],
+  "toolEfficiency": [
+    {
+      "toolClass": "Tool.Pry",
+      "minTier": 1,
+      "multiplier": 2.5
+    }
+  ]
+}
