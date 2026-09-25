@@ -79,4 +79,33 @@ bool FGLDirectorReacts::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLDirectorDefersCritical, "Gridlands.Game.Dialogue.StoryCriticalIsDeferredNotDropped", GLTestUtils::Flags)
+bool FGLDirectorDefersCritical::RunTest(const FString& Parameters)
+{
+	// Found in the real game: NICE's riddle, posed while her opening played, was never heard.
+	GLTestUtils::FTestWorld Test(TEXT("GLDialogueDeferWorld"));
+	UGLDialogueDirector* Director = Test.World->GetSubsystem<UGLDialogueDirector>();
+	Director->bShowOnScreen = false;
+	TArray<FName> Played;
+	Director->OnLine.AddLambda([&](const FGLDialogueLine& Line) { Played.AddUnique(Line.ExchangeId); });
+	Director->SetTimeOverride(0.0);
+	GLDialogueDirectorTests::Emit(Test.World, TEXT("Event.Game.Started"));
+	Director->SetTimeOverride(1.0);
+	GLDialogueDirectorTests::Emit(Test.World, TEXT("Event.Puzzle.Posed"), TEXT("puzzle.home.map_riddle"));
+	GLDialogueDirectorTests::Emit(Test.World, TEXT("Event.Puzzle.Hint.Tier1"), TEXT("puzzle.home.map_riddle"));
+	TestEqual(TEXT("only the opening has played"), Played.Num(), 1);
+	TestEqual(TEXT("both story-critical exchanges wait"), Director->NumDeferred(), 2);
+	Director->PlayDeferred();
+	TestEqual(TEXT("still waiting while the opening plays"), Director->NumDeferred(), 2);
+	Director->SetTimeOverride(60.0);
+	Director->PlayDeferred();
+	TestTrue(TEXT("the riddle is heard once the opening ends"), Played.Contains(FName(TEXT("exchange.puzzle.map_riddle_posed"))));
+	TestEqual(TEXT("the hint waits for the riddle (order kept)"), Director->NumDeferred(), 1);
+	Director->SetTimeOverride(120.0);
+	Director->PlayDeferred();
+	TestTrue(TEXT("then the hint"), Played.Contains(FName(TEXT("exchange.puzzle.map_hint_1"))));
+	TestEqual(TEXT("nothing left"), Director->NumDeferred(), 0);
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

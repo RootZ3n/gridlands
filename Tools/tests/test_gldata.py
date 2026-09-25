@@ -178,6 +178,19 @@ class RuleTests(unittest.TestCase):
         self.box.edit("item.part.fuse", lambda d: d.update(sources=["Source.Salvage", "Source.CreatureDrop"]))
         self.assertNotIn("NC-2", self.box.rules())
 
+    def test_pz1_present_answer_needs_item(self):
+        self.box.edit("puzzle.home.map_riddle", lambda d: d["answer"].pop("item"))
+        self.assertRule("PZ-1")
+
+    def test_puzzles_cannot_be_answered_by_text_or_choice(self):
+        # ADR-0023: no dialogue / free-text / multiple-choice answer modes exist in the schema.
+        self.box.edit("puzzle.home.map_riddle", lambda d: d["answer"].update(mode="TEXT"))
+        self.assertRule("SCHEMA")
+
+    def test_construct_is_reserved(self):
+        self.box.edit("puzzle.home.map_riddle", lambda d: d["answer"].update(mode="CONSTRUCT"))
+        self.assertRule("SCHEMA")
+
     def test_kn1_declared_source_must_be_backed(self):
         self.box.edit("knowledge.style.roman_masonry", lambda d: d.update(sources=["Source.Salvage"]))
         self.assertRule("KN-1")

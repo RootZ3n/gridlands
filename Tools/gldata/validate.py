@@ -198,6 +198,7 @@ def cross_check(ds: Dataset) -> None:
     check_yields(ds)
     check_dialogue(ds)
     check_placements(ds)
+    check_puzzles(ds)
     check_generated_tags(ds)
 
 
@@ -324,6 +325,19 @@ def check_placements(ds: Dataset) -> None:
                 ds.problem("PLC-2", entity.file, ".bindings", f"requirement '{name}' ({requirement.get('kind')}) needs a binding")
             elif target is not None and target.data.get("kind") != target_kind:
                 ds.problem("PLC-2", entity.file, f".bindings.{name}", f"must bind a {target_kind} placement")
+
+
+def check_puzzles(ds: Dataset) -> None:
+    """PZ-1: a PRESENT answer names its item. PZ-2: a PuzzleSolved requirement names its puzzle."""
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        if entity.kind == "puzzle":
+            answer = entity.data.get("answer", {})
+            if isinstance(answer, dict) and answer.get("mode") == "PRESENT" and "item" not in answer:
+                ds.problem("PZ-1", entity.file, ".answer", "a PRESENT answer must name the item Zenny presents")
+        if entity.kind == "glitch":
+            for index, requirement in enumerate(entity.data.get("requirements", [])):
+                if isinstance(requirement, dict) and requirement.get("kind") == "Requirement.PuzzleSolved" and "puzzle" not in requirement:
+                    ds.problem("PZ-2", entity.file, f".requirements[{index}]", "Requirement.PuzzleSolved must name its puzzle")
 
 
 def check_generated_tags(ds: Dataset) -> None:

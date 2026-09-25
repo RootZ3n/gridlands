@@ -59,6 +59,10 @@ struct GRIDLANDSCORE_API FGLWorldSave
 	/** Dialogue history: exchange -> uses, and Event.* tag -> count. */
 	UPROPERTY() TArray<FGLSavedCount> ExchangeUses;
 	UPROPERTY() TArray<FGLSavedCount> EventCounts;
+	/** Puzzles (ADR-0023): solved, posed, and hint level reached. Additive to v1: absent means none. */
+	UPROPERTY() TArray<FName> SolvedPuzzles;
+	UPROPERTY() TArray<FName> PosedPuzzles;
+	UPROPERTY() TArray<FGLSavedCount> PuzzleHints;
 	UPROPERTY() FGLSavedTransform Zenny;
 	UPROPERTY() FGLSavedTransform Pehlichi;
 };

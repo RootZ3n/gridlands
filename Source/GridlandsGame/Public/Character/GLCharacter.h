@@ -56,6 +56,8 @@ private:
 	/** F5 / F9: the world save (Saved/SaveGames/Gridlands/world.json). */
 	void QuickSave();
 	void QuickLoad();
+	/** H: ask Pehlichi about NICE's current puzzle (ADR-0023). Zenny still says nothing. */
+	void AskForHint();
 
 	UPROPERTY(VisibleAnywhere) TObjectPtr<USpringArmComponent> CameraBoom;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UCameraComponent> Camera;

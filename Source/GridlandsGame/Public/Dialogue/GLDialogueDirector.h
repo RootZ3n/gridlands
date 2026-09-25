@@ -46,6 +46,11 @@ public:
 	const FGLDialogueState& GetState() const { return State; }
 	/** Restores history from a save: exchange uses and event counts. Timers start fresh. */
 	void RestoreHistory(const TArray<TPair<FName, int32>>& Uses, const TArray<TPair<FName, int32>>& EventCounts);
+	/** Story-critical events waiting for the current story-critical exchange to finish. */
+	int32 NumDeferred() const { return Deferred.Num(); }
+	/** Offers deferred events to the rules again (called by a timer; tests call it after moving time). */
+	void PlayDeferred();
+
 	FGLOnDialogueLine OnLine;
 
 	/** Show lines as on-screen debug text (off in tests). */
@@ -53,6 +58,9 @@ public:
 
 private:
 	void HandleEvent(const FGLGameplayEvent& Event);
+	/** Runs the rules for one event and delivers the lines. Returns the choice. */
+	FGLDialogueChoice Offer(FName EventTag, FName Subject);
+	void ScheduleDeferred();
 	double Now() const;
 
 	FGLDialogueState State;
@@ -61,4 +69,6 @@ private:
 	TOptional<double> TimeOverride;
 	FDelegateHandle Subscription;
 	TArray<const FGLExchangeDef*> Exchanges;
+	TArray<TPair<FName, FName>> Deferred; // (event tag, subject), oldest first
+	FTimerHandle DeferredTimer;
 };

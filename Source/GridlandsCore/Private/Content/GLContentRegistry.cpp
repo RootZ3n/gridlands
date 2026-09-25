@@ -37,6 +37,7 @@ namespace GLContentRegistry
 		{ TEXT("cell"), &FGLCellDef::StaticStruct },
 		{ TEXT("placement"), &FGLPlacementDef::StaticStruct },
 		{ TEXT("exchange"), &FGLExchangeDef::StaticStruct },
+		{ TEXT("puzzle"), &FGLPuzzleDef::StaticStruct },
 	};
 
 	/** Top-level entries under Data/ that are not entity kinds. */

@@ -94,6 +94,7 @@
    "requirements[].item",
    "requirements[].kind",
    "requirements[].name",
+   "requirements[].puzzle",
    "rewards",
    "rewards[].capability",
    "rewards[].count",
@@ -154,6 +155,17 @@
    "transform",
    "transform.location",
    "transform.yaw"
+  ],
+  "puzzle": [
+   "answer",
+   "answer.item",
+   "answer.mode",
+   "displayName",
+   "family",
+   "id",
+   "notes",
+   "poseExchange",
+   "schemaVersion"
   ],
   "recipe": [
    "craftSeconds",

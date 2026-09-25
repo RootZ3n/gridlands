@@ -128,19 +128,20 @@ bool FGLPlacementsSpawn::RunTest(const FString& Parameters)
 {
 	FTestWorld Test; // no map: anchored placements resolve through the exported anchor records
 	UGLPlacementSubsystem* Placements = Test.World->GetSubsystem<UGLPlacementSubsystem>();
-	// Every supported placement of the cell spawns (salvage nodes since M4, glitches since M7).
+	// Every supported placement of the cell spawns (salvage nodes since M4, glitches since M7,
+	// puzzle sites since the ADR-0023 proof).
 	int32 Supported = 0, Salvage = 0;
 	GLContent::Get().ForEachEntry([&](const FGLContentEntry& Entry)
 	{
 		const FGLPlacementDef* P = Entry.Definition.GetPtr<FGLPlacementDef>();
 		if (P && Entry.Id.ToString().StartsWith(TEXT("placement.origin.")))
 		{
-			Supported += (P->Kind == TEXT("salvage_node") || P->Kind == TEXT("glitch")) ? 1 : 0;
+			Supported += (P->Kind == TEXT("salvage_node") || P->Kind == TEXT("glitch") || P->Kind == TEXT("puzzle_site")) ? 1 : 0;
 			Salvage += P->Kind == TEXT("salvage_node") ? 1 : 0;
 		}
 	});
 	TestEqual(TEXT("every supported origin placement spawns"), Placements->SpawnCell(TEXT("cell.home.origin")), Supported);
-	TestEqual(TEXT("including the three salvage nodes"), Salvage, 3);
+	TestEqual(TEXT("including the four salvage nodes (the glovebox holds the riddle's map)"), Salvage, 4);
 
 	const AGLSalvageNode* Junk = Placements->FindSalvageNode(TEXT("placement.origin.junk_pile_01"));
 	TestTrue(TEXT("transform placement at its authored location"), Junk && Junk->GetActorLocation().Equals(FVector(1200, 300, 0)));

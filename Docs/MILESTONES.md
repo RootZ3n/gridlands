@@ -25,6 +25,7 @@ with evidence under `Docs/Evidence/<milestone>/`. Gates are not traded for speed
 | M7 | Pehlichi command/scan/repair from placements; requirements (salvaged blocker, delivered item, riddle) | **DONE 2026-09-24**: loop steps 5-12 automated; 43/43 + 62 tooling tests ([evidence](Evidence/M7/README.md)). Riddles deferred: design question for the operator |
 | M8 | Stability model + interference tiers; static recedes after repair | **DONE 2026-09-25**: static and fog visibly recede (before/after frames); the sun is up; 46/46 + 64 tooling tests ([evidence](Evidence/M8/README.md)) |
 | M9 | World save of everything above (ADR-0019) | **DONE 2026-09-25**: loop steps 13-15 automated; real quit/relaunch keeps the world changed; 50/50 + 64 tooling tests ([evidence](Evidence/M9/README.md)) |
+| P1 | Puzzle proof (ADR-0023): one PRESENT riddle, capped escalating hints, persisted | **DONE 2026-09-25**: 54/54 + tooling; real game plays it end to end; story-critical deferral fix ([evidence](Evidence/P1-puzzle/README.md)) |
 | M10 | Building v0 (snap, small mixed-era set, simple support) + terraform v0 per the approved terrain ADR | specs + manual build |
 | M11 | **Vertical slice**: avoidable creature + one demonstrated non-combat solution, Raining Cats and Dogs storm, one-room storm drain, ~40 exchanges, automated first-playable loop | full loop green headless |
 

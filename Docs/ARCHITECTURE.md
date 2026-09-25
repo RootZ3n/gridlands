@@ -95,9 +95,16 @@ events). Files: `Saved/SaveGames/Gridlands/world.json`. The game mode loads it a
 `-GLNewWorld`) and autosaves on every repair and on quit; F5/F9 quick save/load. Derived values are
 recomputed on load (S-1).
 
+**Puzzles (ADR-0023).** Zenny answers through gameplay, never through dialogue. `UGLPuzzleSubsystem`
+poses a puzzle when a glitch that requires it is revealed (`Event.Puzzle.Posed`), gives Pehlichi's
+hints on request (`Event.Puzzle.Hint.TierN`, capped by his Analysis capability, else
+`.Exhausted`) and records solutions. Only a puzzle site's interaction calls `Solve`
+(`test_architecture_rules.py`). Solved, posed and hint levels are world-save facts.
+
 **Dialogue (M5, ADR-0015).** `GLDialogueRules` (Core, pure, seeded) chooses at most one
 exchange per event: trigger and subject match, history requirements, maxUses, cooldowns,
-busy rule (only StoryCritical may interrupt, never another StoryCritical), then the
+busy rule (only StoryCritical may interrupt, never another StoryCritical; a StoryCritical held back
+by another is deferred and played when it ends, never dropped), then the
 frequency setting's silence gap and chance for optional categories. `UGLDialogueDirector`
 (world subsystem) listens to every `Event.*` and delivers lines via `OnLine`. Gameplay code
 never includes it; `Tools/tests/test_architecture_rules.py` enforces that (D-4).

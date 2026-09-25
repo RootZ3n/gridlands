@@ -38,5 +38,19 @@
   (MANIPULATE), the event bus (PERFORM), and later building (CONSTRUCT).
 - Hints are exchanges in the dialogue system, gated by hint level and capability.
 
+## Proof (2026-09-25): the map riddle, PRESENT
+[Evidence](../Evidence/P1-puzzle/README.md). Data: `puzzle.home.map_riddle` (answer
+`PRESENT item.misc.paper_map`), `glitch.home.cartographer_error` (requires it), a `puzzle_site`
+placement (the stand) and a glovebox that yields the map. Runtime: `UGLPuzzleSubsystem` (posed /
+solved / hint level; hints capped by `capability.pehlichi.analysis` `puzzle_insight`),
+`AGLPuzzleSite` (the only caller of `Solve`, enforced by a static rule; dialogue code never calls
+it), `Requirement.PuzzleSolved` in `GLGlitchRules`, and puzzle state in the world save.
+Validator: PZ-1 (answer item must exist), PZ-2 (TEXT answers and the reserved CONSTRUCT are
+refused). MANIPULATE and PERFORM exist in the schema only; each gets its runtime with its first puzzle.
+
+Found by playing it: a riddle posed while another story-critical exchange played was never heard,
+though its hint level still advanced. Story-critical exchanges are now **deferred, never dropped**
+(`FGLDialogueChoice::bDeferred`, the director's queue).
+
 ## Reversal cost
 Identity-level for the "no dialogue answers" rule; the answer modes are extensible data.

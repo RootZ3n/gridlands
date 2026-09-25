@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.puzzle.hints_exhausted",
+  "trigger": [
+    "Event.Puzzle.Hint.Exhausted"
+  ],
+  "category": "StoryCritical",
+  "priority": 70,
+  "cooldownSeconds": 20,
+  "maxUses": 5,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "Pehlichi",
+      "text": "That's all I can pull out of it for now. My analysis isn't there yet."
+    }
+  ]
+}

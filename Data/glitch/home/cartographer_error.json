@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "glitch.home.cartographer_error",
+  "displayName": "Cartographer's error",
+  "detection": {
+    "capability": "capability.pehlichi.scan",
+    "minLevel": 1
+  },
+  "requirements": [
+    {
+      "name": "riddle",
+      "kind": "Requirement.PuzzleSolved",
+      "puzzle": "puzzle.home.map_riddle"
+    }
+  ],
+  "repair": {
+    "seconds": 6.0,
+    "interruptPolicy": "KeepProgress"
+  },
+  "stabilityWeight": 1.2,
+  "rewards": [
+    {
+      "recipient": "Pehlichi",
+      "capability": "capability.pehlichi.analysis",
+      "delta": 1
+    }
+  ]
+}
