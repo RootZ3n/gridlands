@@ -67,6 +67,16 @@ These establish tone. **They must not become constantly repeated lines.**
 - Pehlichi: "Curiosity can't kill me. I'm not a cat."
 - Eventually NICE offers Pehlichi a dozen nuts to stop repairing glitches.
 
+## 4a. Riddles and hints (ADR-0023)
+
+- NICE poses riddles; Pehlichi and NICE may argue about them; **the dialogue never
+  solves them**. Zenny answers by acting: presenting an item, manipulating something,
+  or performing an action.
+- Pehlichi gives hints on request, escalating from vague to explicit. NICE mocks
+  excessive help: "Would you like me to solve it for you too?" / "That's literally
+  what I'm here for."
+- Riddles are one puzzle family among many; don't let every hidden glitch become a riddle.
+
 ## 5. Commentary frequency setting
 
 A player setting controls **optional** NICE commentary:

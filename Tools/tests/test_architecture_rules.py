@@ -51,6 +51,25 @@ class OnlyPehlichiRepairs(unittest.TestCase):
         self.assertNotRegex(self.HEADER.read_text(), r"FGLPlayerAuthority")
 
 
+class DerivedValuesAreNeverStored(unittest.TestCase):
+    """S-1 (ADR-0013): stability, interference and NICE composure are computed, never kept as state."""
+
+    def test_the_rule_can_fail(self):
+        sample = "UPROPERTY() double CachedInterference = 0.0;"
+        self.assertTrue(re.search(r"(Interference|Composure|Stability)", re.search(r"UPROPERTY\([^)]*\)\s*[\w<>:, ]+\s+(\w+)", sample).group(1)))
+
+    def test_no_uproperty_stores_a_derived_value(self):
+        offenders = []
+        for path in SOURCE.rglob("*.h"):
+            # Content definitions hold authored INPUTS (a band's baseline, a glitch's weight), not derived state.
+            if path.name == "GLContentDefinitions.h":
+                continue
+            for match in re.finditer(r"UPROPERTY\([^)]*\)\s*[\w<>:, ]+\s+(\w+)", path.read_text(encoding="utf-8", errors="replace")):
+                if re.search(r"(Interference|Composure|Stability)", match.group(1)):
+                    offenders.append(f"{path.relative_to(SOURCE).as_posix()}: {match.group(1)}")
+        self.assertEqual(offenders, [], "derived values must be computed from glitch states, not stored (S-1)")
+
+
 class PehlichiDealsNoDamage(unittest.TestCase):
     """P-3 (ADR-0017): no Pehlichi source applies damage."""
 

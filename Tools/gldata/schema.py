@@ -302,6 +302,8 @@ SCHEMAS: dict[str, Obj] = {
             "repair": Obj({"seconds": Num(positive=True), "interruptPolicy": Enum("KeepProgress", "ResetProgress")},
                           required=("seconds", "interruptPolicy")),
             "stabilityWeight": Num(0, 1000),
+            # Metres over which the glitch corrupts (unrepaired) or stabilizes (repaired); default 40.
+            "influenceRadius": Num(1, 2000),
             "rewards": List(Obj({
                 "recipient": Enum("Pehlichi", "Zenny"),
                 "capability": Ref("capability"), "delta": Int(1, 10),
@@ -318,6 +320,8 @@ SCHEMAS: dict[str, Obj] = {
             "coord": Obj({"x": Int(-1000, 1000), "y": Int(-1000, 1000)}, required=("x", "y")),
             "eraComposition": List(Obj({"era": Ref("era"), "weight": Num(positive=True)}, required=("era", "weight")), min_items=1),
             "level": Str(),
+            # Half-width of the playable area in metres; beyond it the next band's interference applies.
+            "playableHalfExtent": Num(1, 5000),
         },
         required=("displayName", "band", "coord", "eraComposition"),
     ),
