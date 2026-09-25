@@ -12,6 +12,8 @@ struct GRIDLANDSCORE_API FGLRequirementFacts
 	TFunction<bool(FName PlacementId)> IsSalvaged;
 	/** How many of an item the commanding player carries. */
 	TFunction<int32(FName Item)> CarriedCount;
+	/** Has this puzzle been solved (by gameplay, ADR-0023)? */
+	TFunction<bool(FName PuzzleId)> IsPuzzleSolved;
 };
 
 /** Glitch rules beyond the lifecycle table (pure). */

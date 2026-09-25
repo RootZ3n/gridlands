@@ -15,6 +15,7 @@
 #include "InputModifiers.h"
 #include "Fabrication/GLFabricatorComponent.h"
 #include "Pehlichi/GLPehlichi.h"
+#include "Puzzle/GLPuzzleSubsystem.h"
 #include "Save/GLSaveSubsystem.h"
 #include "Pehlichi/GLPehlichiCommandComponent.h"
 #include "GridlandsGame.h"
@@ -33,6 +34,7 @@ namespace GLCharacterInput
 	const FName Repair(TEXT("CommandRepair"));
 	const FName Follow(TEXT("CommandFollowToggle"));
 	const FName QuickSave(TEXT("QuickSave"));
+	const FName Hint(TEXT("AskPehlichiForHint"));
 	const FName QuickLoad(TEXT("QuickLoad"));
 }
 
@@ -125,6 +127,7 @@ void AGLCharacter::BuildInput()
 	MappingContext->MapKey(MakeAction(GLCharacterInput::Repair, EInputActionValueType::Boolean), EKeys::R);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::Follow, EInputActionValueType::Boolean), EKeys::G);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::QuickSave, EInputActionValueType::Boolean), EKeys::F5);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::Hint, EInputActionValueType::Boolean), EKeys::H);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::QuickLoad, EInputActionValueType::Boolean), EKeys::F9);
 }
 
@@ -163,6 +166,7 @@ void AGLCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		Input->BindAction(FindInputAction(GLCharacterInput::Repair), ETriggerEvent::Started, this, &AGLCharacter::CommandPehlichi, FName(TEXT("Command.Pehlichi.Repair")));
 		Input->BindAction(FindInputAction(GLCharacterInput::Follow), ETriggerEvent::Started, this, &AGLCharacter::ToggleFollow);
 		Input->BindAction(FindInputAction(GLCharacterInput::QuickSave), ETriggerEvent::Started, this, &AGLCharacter::QuickSave);
+		Input->BindAction(FindInputAction(GLCharacterInput::Hint), ETriggerEvent::Started, this, &AGLCharacter::AskForHint);
 		Input->BindAction(FindInputAction(GLCharacterInput::QuickLoad), ETriggerEvent::Started, this, &AGLCharacter::QuickLoad);
 	}
 }
@@ -207,6 +211,14 @@ void AGLCharacter::CommandPehlichi(FName Command)
 	{
 		const EGLCommandRejection Result = Companion->GetCommands()->Issue(Command, this);
 		UE_LOG(LogGridlands, Log, TEXT("Command %s -> %s"), *Command.ToString(), *StaticEnum<EGLCommandRejection>()->GetNameStringByValue(static_cast<int64>(Result)));
+	}
+}
+
+void AGLCharacter::AskForHint()
+{
+	if (UGLPuzzleSubsystem* Puzzles = GetWorld()->GetSubsystem<UGLPuzzleSubsystem>())
+	{
+		Puzzles->RequestHint(Pehlichi.Get());
 	}
 }
 

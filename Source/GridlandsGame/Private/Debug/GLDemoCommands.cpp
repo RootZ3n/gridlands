@@ -17,6 +17,9 @@
 #include "Pehlichi/GLPehlichiCommandComponent.h"
 #include "Pehlichi/GLRepairComponent.h"
 #include "Pehlichi/GLScanComponent.h"
+#include "EngineUtils.h"
+#include "Puzzle/GLPuzzleSite.h"
+#include "Puzzle/GLPuzzleSubsystem.h"
 #include "Salvage/GLSalvageNode.h"
 #include "Salvage/GLSalvageableComponent.h"
 #include "World/GLPlacementSubsystem.h"
@@ -85,6 +88,44 @@ namespace GLDemo
 		Pehlichi->SetActorLocation(Zenny->GetActorLocation() + FVector(150, 0, -60));
 		Pehlichi->GetPositioning()->Follow(Zenny);
 	}
+
+	/** Plays the map riddle the way a player would: reveal, ask for hints, fetch the map, place it. */
+	void SolveRiddle(UWorld* World)
+	{
+		AGLCharacter* Zenny = Cast<AGLCharacter>(UGameplayStatics::GetPlayerPawn(World, 0));
+		AGLPehlichi* Pehlichi = Zenny ? Zenny->GetPehlichi() : nullptr;
+		AGLGlitch* Cartographer = World->GetSubsystem<UGLGlitchSubsystem>()->FindByPlacement(TEXT("placement.origin.glitch_cartographer"));
+		AGLSalvageNode* Glovebox = World->GetSubsystem<UGLPlacementSubsystem>()->FindSalvageNode(TEXT("placement.origin.glovebox_01"));
+		TActorIterator<AGLPuzzleSite> Site(World);
+		UGLPuzzleSubsystem* Puzzles = World->GetSubsystem<UGLPuzzleSubsystem>();
+		if (!Pehlichi || !Cartographer || !Glovebox || !Site)
+		{
+			UE_LOG(LogGridlands, Warning, TEXT("gl.Demo.SolveRiddle: scene incomplete"));
+			return;
+		}
+		Zenny->SetActorLocation(Cartographer->GetActorLocation() + FVector(0, -300, 100));
+		Pehlichi->SetActorLocation(Cartographer->GetActorLocation() + FVector(0, -100, 0));
+		Pehlichi->GetScan()->Scan();
+		for (int32 Ask = 0; Ask < 3; ++Ask)
+		{
+			UE_LOG(LogGridlands, Log, TEXT("gl.Demo.SolveRiddle: hint request -> tier %d"), Puzzles->RequestHint(Pehlichi));
+		}
+		Zenny->SetActorLocation(Glovebox->GetActorLocation() + FVector(0, -150, 100));
+		const FGameplayTag Salvage = UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Interact.Salvage"));
+		while (!Glovebox->GetSalvageable()->IsSalvaged())
+		{
+			Glovebox->GetSalvageable()->Interact(Zenny, Salvage);
+		}
+		Zenny->SetActorLocation(Site->GetActorLocation() + FVector(0, -150, 100));
+		const bool bPlaced = Site->Interact(Zenny, UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Interact.Present")));
+		UE_LOG(LogGridlands, Log, TEXT("gl.Demo.SolveRiddle: placed map=%d solved=%d"), bPlaced ? 1 : 0, Puzzles->IsSolved(Site->GetPuzzleId()) ? 1 : 0);
+		Pehlichi->GetPositioning()->Follow(Zenny);
+	}
+
+	FAutoConsoleCommandWithWorld SolveRiddleCommand(
+		TEXT("gl.Demo.SolveRiddle"),
+		TEXT("DEV ONLY: plays the map riddle through the real interactions (scan, hints, glovebox, place the map)."),
+		FConsoleCommandWithWorldDelegate::CreateStatic(&SolveRiddle));
 
 	FAutoConsoleCommandWithWorld RepairNearbyCommand(
 		TEXT("gl.Demo.RepairNearby"),

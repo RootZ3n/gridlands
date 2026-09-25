@@ -48,6 +48,11 @@ struct GRIDLANDSCORE_API FGLDialogueChoice
 	const FGLExchangeDef* Exchange = nullptr;
 	/** Why nothing was chosen (for logs and tests); empty when an exchange was chosen. */
 	FString WhyNot;
+	/**
+	 * True when a StoryCritical exchange was held back only because another StoryCritical one
+	 * is playing. Story-critical lines are deferred, never dropped: ask again when free.
+	 */
+	bool bDeferred = false;
 };
 
 /**

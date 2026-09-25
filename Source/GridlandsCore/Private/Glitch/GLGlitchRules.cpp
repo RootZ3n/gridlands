@@ -20,7 +20,11 @@ namespace GLGlitchRules
 			{
 				bMet = Facts.CarriedCount && Facts.CarriedCount(Requirement.Item) >= FMath::Max(1, Requirement.Count);
 			}
-			// Requirement.PuzzleSolved and future kinds: not met until their system exists.
+			else if (Requirement.Kind == TEXT("Requirement.PuzzleSolved"))
+			{
+				bMet = !Requirement.Puzzle.IsNone() && Facts.IsPuzzleSolved && Facts.IsPuzzleSolved(Requirement.Puzzle);
+			}
+			// Future kinds: not met until their system exists.
 			if (!bMet)
 			{
 				bAll = false;

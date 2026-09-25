@@ -58,6 +58,7 @@ namespace GLDialogueRules
 		EGLCommentaryFrequency Frequency, const FGLDialogueState& State, FRandomStream& Random)
 	{
 		const bool bBusy = Now < State.PlayingUntil;
+		bool bDeferredCritical = false;
 		TArray<const FGLExchangeDef*> Eligible;
 		for (const FGLExchangeDef* Exchange : Exchanges)
 		{
@@ -79,12 +80,17 @@ namespace GLDialogueRules
 			const bool bCritical = Exchange->Category == EGLExchangeCategory::StoryCritical;
 			if (bBusy && (!bCritical || State.bPlayingStoryCritical))
 			{
+				bDeferredCritical |= bCritical;
 				continue;
 			}
 			Eligible.Add(Exchange);
 		}
 		if (Eligible.Num() == 0)
 		{
+			if (bDeferredCritical)
+			{
+				return { nullptr, TEXT("deferred: a story-critical exchange is playing"), true };
+			}
 			return { nullptr, bBusy ? TEXT("busy: an exchange is playing") : TEXT("no eligible exchange") };
 		}
 

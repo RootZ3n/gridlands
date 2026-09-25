@@ -34,4 +34,5 @@ AGLPehlichi::AGLPehlichi()
 	// Starting levels (a new world); later loaded from the world save (M9).
 	Capabilities->Grant(TEXT("capability.pehlichi.scan"), 1);
 	Capabilities->Grant(TEXT("capability.pehlichi.distract"), 1);
+	Capabilities->Grant(TEXT("capability.pehlichi.analysis"), 1);
 }

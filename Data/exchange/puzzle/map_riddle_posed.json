@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.puzzle.map_riddle_posed",
+  "trigger": [
+    "Event.Puzzle.Posed"
+  ],
+  "subject": "puzzle.home.map_riddle",
+  "category": "StoryCritical",
+  "priority": 95,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "I have cities, but no houses. Mountains, but no trees. Water, but no fish. Bring me what I am, little developer."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "She's doing riddles now. Give me a minute with it. Or ask me."
+    }
+  ]
+}

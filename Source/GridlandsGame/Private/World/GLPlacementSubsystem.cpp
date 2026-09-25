@@ -8,6 +8,7 @@
 #include "Glitch/GLGlitchComponent.h"
 #include "Glitch/GLGlitchSubsystem.h"
 #include "GridlandsGame.h"
+#include "Puzzle/GLPuzzleSite.h"
 #include "Salvage/GLSalvageNode.h"
 #include "Salvage/GLSalvageableComponent.h"
 #include "World/GLAnchorComponent.h"
@@ -59,7 +60,7 @@ int32 UGLPlacementSubsystem::SpawnCell(FName CellId)
 	{
 		const FGLPlacementDef* Placement = Entry.Definition.GetPtr<FGLPlacementDef>();
 		if (!Placement || Entry.Kind != TEXT("placement") || !Entry.Id.ToString().StartsWith(Prefix)
-			|| (Placement->Kind != TEXT("salvage_node") && Placement->Kind != TEXT("glitch")))
+			|| (Placement->Kind != TEXT("salvage_node") && Placement->Kind != TEXT("glitch") && Placement->Kind != TEXT("puzzle_site")))
 		{
 			return;
 		}
@@ -86,6 +87,17 @@ int32 UGLPlacementSubsystem::SpawnCell(FName CellId)
 		{
 			Location = FVector(Placement->Transform.Location[0], Placement->Transform.Location[1], Placement->Transform.Location[2]);
 			Yaw = Placement->Transform.Yaw;
+		}
+		if (Placement->Kind == TEXT("puzzle_site"))
+		{
+			AGLPuzzleSite* Site = World->SpawnActor<AGLPuzzleSite>(Location, FRotator(0.0, Yaw, 0.0));
+			if (!Site || !Site->Setup(Placement->Definition))
+			{
+				UE_LOG(LogGridlands, Error, TEXT("%s: could not spawn puzzle site %s"), *Entry.Id.ToString(), *Placement->Definition.ToString());
+				return;
+			}
+			++Spawned;
+			return;
 		}
 		if (Placement->Kind == TEXT("glitch"))
 		{

@@ -260,6 +260,8 @@ struct GRIDLANDSCORE_API FGLGlitchRequirementDef
 	UPROPERTY() FName Kind;
 	UPROPERTY() FName Item;
 	UPROPERTY() int32 Count = 0;
+	/** For Requirement.PuzzleSolved. */
+	UPROPERTY() FName Puzzle;
 };
 
 UENUM()
@@ -366,6 +368,27 @@ struct GRIDLANDSCORE_API FGLPlacementDef : public FGLDefinitionBase
 	UPROPERTY() TMap<FString, FName> Bindings;
 
 	bool IsAnchored() const { return !Anchor.IsNone(); }
+};
+
+USTRUCT()
+struct GRIDLANDSCORE_API FGLPuzzleAnswerDef
+{
+	GENERATED_BODY()
+
+	/** PRESENT | MANIPULATE | PERFORM (ADR-0023; CONSTRUCT reserved). Never a dialogue or text answer. */
+	UPROPERTY() FName Mode;
+	UPROPERTY() FName Item;
+};
+
+USTRUCT()
+struct GRIDLANDSCORE_API FGLPuzzleDef : public FGLDefinitionBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString DisplayName;
+	UPROPERTY() FName Family;
+	UPROPERTY() FGLPuzzleAnswerDef Answer;
+	UPROPERTY() FName PoseExchange;
 };
 
 UENUM()

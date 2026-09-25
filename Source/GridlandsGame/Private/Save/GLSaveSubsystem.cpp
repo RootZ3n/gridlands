@@ -18,6 +18,7 @@
 #include "Misc/Paths.h"
 #include "Pehlichi/GLCapabilityComponent.h"
 #include "Pehlichi/GLPehlichi.h"
+#include "Puzzle/GLPuzzleSubsystem.h"
 #include "Salvage/GLSalvageNode.h"
 #include "Salvage/GLSalvageableComponent.h"
 #include "World/GLPlacementSubsystem.h"
@@ -141,6 +142,17 @@ FGLWorldSave UGLSaveSubsystem::Capture() const
 	{
 		Save.SettingsPreset = Settings->GetPresetId();
 	}
+	if (const UGLPuzzleSubsystem* Puzzles = World->GetSubsystem<UGLPuzzleSubsystem>())
+	{
+		Save.SolvedPuzzles = Puzzles->GetSolved().Array();
+		Save.SolvedPuzzles.Sort(FNameLexicalLess());
+		Save.PosedPuzzles = Puzzles->GetPosed();
+		for (const TPair<FName, int32>& Hint : Puzzles->GetHintLevels())
+		{
+			Save.PuzzleHints.Add({ Hint.Key, Hint.Value });
+		}
+		Save.PuzzleHints.Sort([](const FGLSavedCount& A, const FGLSavedCount& B) { return A.Id.LexicalLess(B.Id); });
+	}
 	auto ById = [](const FGLSavedCount& A, const FGLSavedCount& B) { return A.Id.LexicalLess(B.Id); };
 	Save.Inventory.Sort(ById);
 	Save.PehlichiCapabilities.Sort(ById);
@@ -235,6 +247,15 @@ void UGLSaveSubsystem::Apply(const FGLWorldSave& Save, TArray<FString>* OutProbl
 	if (UGLWorldSettingsSubsystem* Settings = World->GetSubsystem<UGLWorldSettingsSubsystem>(); Settings && !Save.SettingsPreset.IsNone())
 	{
 		Settings->SetPreset(Save.SettingsPreset);
+	}
+	if (UGLPuzzleSubsystem* Puzzles = World->GetSubsystem<UGLPuzzleSubsystem>())
+	{
+		TArray<TPair<FName, int32>> Hints;
+		for (const FGLSavedCount& Hint : Save.PuzzleHints)
+		{
+			Hints.Emplace(Hint.Id, Hint.Count);
+		}
+		Puzzles->Restore(Save.SolvedPuzzles, Save.PosedPuzzles, Hints);
 	}
 	Glitches->EvaluateRequirements();
 }

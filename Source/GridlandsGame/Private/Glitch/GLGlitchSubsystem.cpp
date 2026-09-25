@@ -8,6 +8,7 @@
 #include "Glitch/GLGlitchRules.h"
 #include "Inventory/GLInventoryComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Puzzle/GLPuzzleSubsystem.h"
 #include "Salvage/GLSalvageNode.h"
 #include "Salvage/GLSalvageableComponent.h"
 #include "World/GLPlacementSubsystem.h"
@@ -70,6 +71,8 @@ void UGLGlitchSubsystem::EvaluateRequirements()
 		return Node && Node->GetSalvageable()->IsSalvaged();
 	};
 	Facts.CarriedCount = [Inventory](FName Item) { return Inventory ? Inventory->CountOf(Item) : 0; };
+	const UGLPuzzleSubsystem* Puzzles = GetWorld()->GetSubsystem<UGLPuzzleSubsystem>();
+	Facts.IsPuzzleSolved = [Puzzles](FName Puzzle) { return Puzzles && Puzzles->IsSolved(Puzzle); };
 
 	for (const TWeakObjectPtr<AGLGlitch>& Actor : Glitches)
 	{

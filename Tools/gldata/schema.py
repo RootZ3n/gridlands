@@ -184,7 +184,7 @@ NON_SCALING_CLASSES = ("unique", "glitch_reward", "knowledge", "reward_blueprint
 
 # Pehlichi's capability effects (ADR-0017: none of these deals damage).
 CAPABILITY_EFFECTS = (
-    "scan_range", "scan_strength", "weak_point_analysis", "signal_analysis", "distract",
+    "scan_range", "scan_strength", "weak_point_analysis", "signal_analysis", "puzzle_insight", "distract",
     "jam", "disable_temporary", "pacify", "escape_assist", "traversal",
 )
 
@@ -297,7 +297,7 @@ SCHEMAS: dict[str, Obj] = {
         {
             "displayName": Str(),
             "detection": Obj({"capability": Ref("capability"), "minLevel": Int(1, 20)}, required=("capability", "minLevel")),
-            "requirements": List(Obj({"name": Str(max_len=64), "kind": Tag("Requirement"), "item": Ref("item"), "count": COUNT},
+            "requirements": List(Obj({"name": Str(max_len=64), "kind": Tag("Requirement"), "item": Ref("item"), "count": COUNT, "puzzle": Ref("puzzle")},
                                      required=("name", "kind"))),
             "repair": Obj({"seconds": Num(positive=True), "interruptPolicy": Enum("KeepProgress", "ResetProgress")},
                           required=("seconds", "interruptPolicy")),
@@ -327,7 +327,7 @@ SCHEMAS: dict[str, Obj] = {
     ),
     "placement": kind(
         {
-            "kind": Enum("glitch", "salvage_node", "spawn", "patrol", "discovery", "encounter"),
+            "kind": Enum("glitch", "salvage_node", "spawn", "patrol", "discovery", "encounter", "puzzle_site"),
             "definition": Ref("glitch", "salvage", "creature", "knowledge", "puzzle"),
             "anchor": Ref("anchor"),
             "offset": VEC3,
@@ -336,6 +336,16 @@ SCHEMAS: dict[str, Obj] = {
         },
         required=("kind", "definition"),
         one_of=(("anchor", "transform"),),
+    ),
+    # ADR-0023: Zenny answers through gameplay. CONSTRUCT is reserved until building exists.
+    "puzzle": kind(
+        {
+            "displayName": Str(),
+            "family": Enum("riddle", "environmental", "signal", "construction", "observation", "navigation", "electrical", "memory"),
+            "answer": Obj({"mode": Enum("PRESENT", "MANIPULATE", "PERFORM"), "item": Ref("item")}, required=("mode",)),
+            "poseExchange": Ref("exchange"),
+        },
+        required=("displayName", "family", "answer"),
     ),
     "exchange": kind(
         {
@@ -371,4 +381,4 @@ def key_paths(spec: Spec, prefix: str = "") -> list[str]:
 
 
 PLACEMENT_KIND_DEFINITION = {"glitch": "glitch", "salvage_node": "salvage", "spawn": "creature", "patrol": "creature",
-                             "discovery": "knowledge", "encounter": "creature"}
+                             "discovery": "knowledge", "encounter": "creature", "puzzle_site": "puzzle"}

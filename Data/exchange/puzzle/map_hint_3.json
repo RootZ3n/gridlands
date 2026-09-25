@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.puzzle.map_hint_3",
+  "trigger": [
+    "Event.Puzzle.Hint.Tier3"
+  ],
+  "subject": "puzzle.home.map_riddle",
+  "category": "StoryCritical",
+  "priority": 80,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "Pehlichi",
+      "text": "It's a map, Zenny. Find a map."
+    },
+    {
+      "speaker": "NICE",
+      "text": "Would you like me to solve it for you too?"
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "That's literally what I'm here for."
+    }
+  ]
+}

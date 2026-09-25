@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.puzzle.map_hint_2",
+  "trigger": [
+    "Event.Puzzle.Hint.Tier2"
+  ],
+  "subject": "puzzle.home.map_riddle",
+  "category": "StoryCritical",
+  "priority": 80,
+  "cooldownSeconds": 0,
+  "maxUses": 1,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "Pehlichi",
+      "text": "Think about something that shows places without actually containing them."
+    }
+  ]
+}

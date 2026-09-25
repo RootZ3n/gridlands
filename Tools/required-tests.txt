@@ -26,7 +26,7 @@ Gridlands.Game.Placement 1
 
 # M5: dialogue selection (ADR-0015 D-2, D-3, D-5) and the director on real gameplay events.
 Gridlands.Core.Dialogue 5
-Gridlands.Game.Dialogue 1
+Gridlands.Game.Dialogue 2
 
 # M6: transactional fabrication, knowledge gates, loop steps 2-4, data-driven knowledge.
 Gridlands.Core.Fabrication 2
@@ -43,3 +43,6 @@ Gridlands.Game.Stability 1
 # M9: the world save (loop steps 13-15), versions, mid-repair, stale ids.
 Gridlands.Core.Save 1
 Gridlands.Game.Save 3
+
+# Puzzle proof (ADR-0023): PRESENT answers, capped hints, dialogue never solves, persistence.
+Gridlands.Game.Puzzle 3

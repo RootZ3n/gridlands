@@ -72,6 +72,22 @@ class DerivedValuesAreNeverStored(unittest.TestCase):
         self.assertEqual(offenders, [], "derived values must be computed from glitch states, not stored (S-1)")
 
 
+class DialogueNeverSolvesPuzzles(unittest.TestCase):
+    """ADR-0023: NICE and Pehlichi may discuss a puzzle; only gameplay completes it."""
+
+    def test_no_dialogue_code_calls_solve(self):
+        offenders = [p.relative_to(SOURCE).as_posix() for p in SOURCE.rglob("*.*")
+                     if p.suffix in (".h", ".cpp") and "/Dialogue/" in p.as_posix()
+                     and re.search(r"\bSolve\s*\(", p.read_text(encoding="utf-8", errors="replace"))]
+        self.assertEqual(offenders, [])
+
+    def test_only_puzzle_sites_and_tests_call_solve(self):
+        callers = [p.relative_to(SOURCE).as_posix() for p in SOURCE.rglob("*.cpp")
+                   if re.search(r"->Solve\s*\(", p.read_text(encoding="utf-8", errors="replace"))
+                   and "/Tests/" not in p.as_posix()]
+        self.assertEqual(callers, ["GridlandsGame/Private/Puzzle/GLPuzzleSite.cpp"])
+
+
 class PehlichiDealsNoDamage(unittest.TestCase):
     """P-3 (ADR-0017): no Pehlichi source applies damage."""
 
