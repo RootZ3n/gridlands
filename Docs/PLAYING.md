@@ -68,8 +68,8 @@ After Pehlichi's second repair, NICE loses her temper and it rains cats and dogs
 They're glitch sprites and they don't hurt.
 
 ## A second cell (architecture proof, not a new zone)
-East of home, past the cyan posts (about 128 m east of the start), is a second Grid cell: the
-Diner Lots. It is deeper (more static), mostly 1950s, and has one glitch and a junk pile. The
+East of home, past the cyan posts (about 512 m east of the start: cells are 1 km, ADR-0027), is a
+second Grid cell: the Diner Lots. It streams in while you walk, with no loading screen (ADR-0028). It is deeper (more static), mostly 1950s, and has one glitch and a junk pile. The
 posts and the "Cell:" line on the HUD are temporary development markers. Walk back and forth:
 whatever you change on either side should still be there when you return.
 

@@ -253,6 +253,12 @@ namespace GLDemo
 			return;
 		}
 		Proof = FNavProof();
+		// Navigation exists only around invokers (ADR-0029): Zenny stands by the route to watch.
+		if (APawn* Zenny = UGameplayStatics::GetPlayerPawn(World, 0))
+		{
+			const FVector2D Watch(3250.0, -10000.0);
+			Zenny->SetActorLocation(FVector(Watch, Terrain->HeightAt(Watch) + 120.0), false, nullptr, ETeleportType::TeleportPhysics);
+		}
 		World->GetTimerManager().SetTimer(Proof.Timer, FTimerDelegate::CreateLambda([World, Terrain, Nav]()
 		{
 			const FVector A(1500, -8000, 0), B(5000, -8000, 0);

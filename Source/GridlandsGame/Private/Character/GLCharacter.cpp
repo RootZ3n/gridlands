@@ -4,6 +4,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "EnhancedInputComponent.h"
+#include "NavigationInvokerComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/StaticMesh.h"
@@ -87,6 +88,11 @@ AGLCharacter::AGLCharacter()
 	BuildMode = CreateDefaultSubobject<UGLBuildModeComponent>(TEXT("BuildMode"));
 	Health = CreateDefaultSubobject<UGLHealthComponent>(TEXT("Health"));
 	Combat = CreateDefaultSubobject<UGLCombatComponent>(TEXT("Combat"));
+
+	// Navigation exists around Zenny, not across the whole cell (ADR-0029): one chunk (64 m) out,
+	// kept until 96 m so walking back and forth does not rebuild the same tiles.
+	NavInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>(TEXT("NavInvoker"));
+	NavInvoker->SetGenerationRadii(6400.f, 9600.f);
 }
 
 void AGLCharacter::BuildInput()

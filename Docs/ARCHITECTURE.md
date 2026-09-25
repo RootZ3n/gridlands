@@ -256,7 +256,7 @@ performing.
 | Hostile AI jamming / decoys | lifecycle has hostile-authority transitions; scan findings carry a kind and confidence |
 | Pehlichi-only access and traversal | reachability is asked through `IGLReachability`, so specialized traversal replaces the default nav query without touching repair |
 | Non-combat completion checks (ADR-0009) | items, capabilities and knowledge tag acquisition sources; glitches declare guards and stability weights, so the validator can check NC-2 and, with the stability model, NC-3 |
-| Grid cells, streaming (ADR-0010/0012) | persistent ids are stable `FGuid`s, safe under level streaming; no system assumes one loaded level; streaming choice is a later ADR |
+| Grid cells, streaming (ADR-0010/0012) | persistent ids are stable `FGuid`s, safe under level streaming; no system assumes one loaded level; cells stream through the Grid layer (ADR-0026), asynchronously and incrementally at the canonical 1 km (ADR-0027, ADR-0028); navigation exists only around invokers (ADR-0029) |
 | Nonlethal creature outcomes | creature state includes disabled/pacified/fled beside dead; weak points are a scan finding kind |
 | Rewards to player, Pehlichi or both | `FGLReward` names its recipient; the capability component is generic and can sit on either |
 

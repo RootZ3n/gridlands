@@ -38,6 +38,7 @@ public:
 	FName GetPlacementId() const { return PlacementId; }
 	UGLHealthComponent* GetHealth() const { return Health; }
 	class UGLDerezComponent* GetDerez() const { return Derez; }
+	class UNavigationInvokerComponent* GetNavInvoker() const { return NavInvoker; }
 	const FVector& GetHome() const { return Home; }
 
 private:
@@ -49,6 +50,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGLHealthComponent> Health;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<class UGLDerezComponent> Derez;
+	UPROPERTY(VisibleAnywhere) TObjectPtr<class UNavigationInvokerComponent> NavInvoker;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<class UStaticMeshComponent> Body;
 	FName DefId;
 	FName PlacementId;

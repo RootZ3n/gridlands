@@ -2,6 +2,7 @@
 
 #include "AIController.h"
 #include "Navigation/PathFollowingComponent.h"
+#include "NavigationInvokerComponent.h"
 #include "Combat/GLHealthComponent.h"
 #include "Presentation/GLDerez.h"
 #include "Components/CapsuleComponent.h"
@@ -28,6 +29,10 @@ AGLCreature::AGLCreature()
 	GetCapsuleComponent()->InitCapsuleSize(40.f, 60.f);
 	Health = CreateDefaultSubobject<UGLHealthComponent>(TEXT("Health"));
 	Derez = CreateDefaultSubobject<UGLDerezComponent>(TEXT("Derez"));
+	// A creature carries its own navigation (ADR-0029), so it paths wherever it is, player or not.
+	// Its reach (sight, hearing, leash) is at most 16 m in data: 32 m covers twice that.
+	NavInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>(TEXT("NavInvoker"));
+	NavInvoker->SetGenerationRadii(3200.f, 4800.f);
 	Body = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
 	Body->SetupAttachment(GetCapsuleComponent());
 	Body->SetCollisionEnabled(ECollisionEnabled::NoCollision);

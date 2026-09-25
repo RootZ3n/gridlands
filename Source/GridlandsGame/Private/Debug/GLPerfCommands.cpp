@@ -18,6 +18,7 @@
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
 #include "NavigationSystem.h"
+#include "NavMesh/RecastNavMesh.h"
 #include "RenderTimer.h"
 #include "Save/GLWorldSave.h"
 #include "Serialization/JsonSerializer.h"
@@ -87,6 +88,25 @@ namespace GLPerf
 
 	double UsedMb() { return FPlatformMemory::GetStats().UsedPhysical / (1024.0 * 1024.0); }
 
+	ARecastNavMesh* Recast(UWorld* World)
+	{
+		UNavigationSystemV1* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
+		return Nav ? Cast<ARecastNavMesh>(Nav->GetDefaultNavDataInstance(FNavigationSystem::DontCreate)) : nullptr;
+	}
+
+	/** Navigation state for comparing localized (invoker) and whole-cell navigation (ADR-0029). */
+	void AddNavigation(UWorld* World, FJsonObject& Out, const TCHAR* Prefix)
+	{
+		UNavigationSystemV1* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
+		const ARecastNavMesh* R = Recast(World);
+		Out.SetBoolField(TEXT("navInvokersOnly"), Nav && Nav->IsActiveTilesGenerationEnabled());
+		Out.SetNumberField(FString(Prefix) + TEXT("NavActiveTiles"), R ? R->GetNumActiveTiles() : 0);
+		// The engine's memory walk asserts while tile tasks are queued: only read it when idle.
+		const bool bIdle = Nav && !Nav->IsNavigationBuildInProgress() && Nav->GetNumRemainingBuildTasks() == 0;
+		Out.SetNumberField(FString(Prefix) + TEXT("NavTileMb"), R && bIdle ? R->LogMemUsed() / (1024.0 * 1024.0) : -1.0);
+		Out.SetNumberField(FString(Prefix) + TEXT("NavPendingTasks"), Nav ? Nav->GetNumRemainingBuildTasks() : 0);
+	}
+
 	void Place(UWorld* World, const FVector2D& At, double Yaw, double Pitch)
 	{
 		APawn* Zenny = UGameplayStatics::GetPlayerPawn(World, 0);
@@ -108,6 +128,7 @@ namespace GLPerf
 		Run.Out->SetObjectField(TEXT("viewOverlook"), Run.Overlook.Json());
 		Run.Out->SetNumberField(TEXT("editMsMean"), FFrameStats::Mean(Run.EditMs));
 		Run.Out->SetNumberField(TEXT("editMsP95"), FFrameStats::P95(Run.EditMs));
+		AddNavigation(World, *Run.Out, TEXT("final"));
 		Run.Out->SetNumberField(TEXT("edits"), Run.EditMs.Num());
 		Run.Out->SetNumberField(TEXT("navUpdateAfterEditSecondsMean"), FFrameStats::Mean(Run.NavUpdateSeconds));
 		Run.Out->SetNumberField(TEXT("navUpdateAfterEditSecondsMax"), Run.NavUpdateSeconds.Num() ? FMath::Max(Run.NavUpdateSeconds) : 0.0);
@@ -154,6 +175,7 @@ namespace GLPerf
 				Run.Out->SetNumberField(TEXT("navFullBuildSeconds"), Now - Run.NavStart);
 				Run.Out->SetNumberField(TEXT("memUsedMbAfterNav"), UsedMb());
 				Run.Out->SetNumberField(TEXT("memDeltaMbTerrainAndNav"), UsedMb() - Run.MemBefore / (1024.0 * 1024.0));
+				AddNavigation(World, *Run.Out, TEXT("initial"));
 				Place(World, FVector2D(-Half + 3000.0, -Half + 3000.0), 45.0, -4.0); // low, looking across the whole cell
 				Run.Phase = 1;
 				Run.Frames = 0;
@@ -217,7 +239,10 @@ namespace GLPerf
 			{
 				FGLTerrainEdit Edit;
 				Edit.Op = EGLTerrainOp::Dig;
-				Edit.Centre = FVector2D(Run.Random.FRandRange(-Half * 0.8, Half * 0.8), Run.Random.FRandRange(-Half * 0.8, Half * 0.8));
+				// Within 40 m of Zenny: an edit the player makes, where navigation exists in both modes.
+				const APawn* Zenny = UGameplayStatics::GetPlayerPawn(World, 0);
+				const FVector2D Near = Zenny ? FVector2D(Zenny->GetActorLocation()) : FVector2D::ZeroVector;
+				Edit.Centre = Near + FVector2D(Run.Random.FRandRange(-4000.0, 4000.0), Run.Random.FRandRange(-4000.0, 4000.0));
 				Edit.RadiusCm = 200.0;
 				Edit.AmountCm = 100.0;
 				Terrain->ApplyEdit(Edit);
@@ -290,6 +315,7 @@ namespace GLPerf
 		FString Mode;
 		double Speed = 600.0; // cm/s
 		TArray<double> Route; // x waypoints (cm) along y = RouteY
+		int32 TeleportLeg = -1; // this leg is a jump (fast travel, respawn), not a walk
 		double RouteY = 0.0;
 		int32 Leg = 0;
 		double X = 0.0;
@@ -297,6 +323,8 @@ namespace GLPerf
 		int32 Warmup = 0;
 		TArray<double> FrameMs, AdvanceMs, GameMs, GpuMs;
 		double PeakMb = 0.0;
+		int32 PeakNavTiles = 0;
+		int32 PeakNavTasks = 0;
 		double StartMb = 0.0;
 		int32 EmergencyAtStart = 0;
 		bool bArrivalLogged = false;
@@ -319,8 +347,9 @@ namespace GLPerf
 		{
 			return false;
 		}
-		// Wait until the starting cell is complete (startup is not what is being measured).
-		if (Crossing.Warmup < 1000 && !Grid->IsComplete(TEXT("cell.home.origin")))
+		// Wait until the starting cell is complete (startup is not what is being measured), except
+		// when resuming a save, where startup is the measurement.
+		if (Crossing.Mode != TEXT("resume") && Crossing.Warmup < 1000 && !Grid->IsComplete(TEXT("cell.home.origin")))
 		{
 			++Crossing.Warmup;
 			return true;
@@ -355,9 +384,20 @@ namespace GLPerf
 			Crossing.GpuMs.Add(FPlatformTime::ToMilliseconds(RHIGetGPUFrameCycles()));
 		}
 		Crossing.PeakMb = FMath::Max(Crossing.PeakMb, FPlatformMemory::GetStats().UsedPhysical / (1024.0 * 1024.0));
+		if (Crossing.Frames % 30 == 0)
+		{
+			if (const ARecastNavMesh* R = Recast(World))
+			{
+				Crossing.PeakNavTiles = FMath::Max(Crossing.PeakNavTiles, R->GetNumActiveTiles());
+			}
+			if (const UNavigationSystemV1* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World))
+			{
+				Crossing.PeakNavTasks = FMath::Max(Crossing.PeakNavTasks, Nav->GetNumRemainingBuildTasks());
+			}
+		}
 		// Walk (a fixed step per frame at the measured frame time: real speed, no teleport jumps).
 		const double Target = Crossing.Route[Crossing.Leg];
-		const double Step = Crossing.Speed * FMath::Min(Dt, 0.1f);
+		const double Step = Crossing.Leg == Crossing.TeleportLeg ? 1.0e9 : Crossing.Speed * FMath::Min(Dt, 0.1f);
 		Crossing.X += FMath::Clamp(Target - Crossing.X, -Step, Step);
 		const FVector2D At(Crossing.X, Crossing.RouteY);
 		// Where Zenny arrives, the ground must already be there (not built in an emergency).
@@ -397,6 +437,9 @@ namespace GLPerf
 				O->SetNumberField(TEXT("gpuMsMean"), FFrameStats::Mean(Crossing.GpuMs));
 				O->SetNumberField(TEXT("memStartMb"), Crossing.StartMb);
 				O->SetNumberField(TEXT("memPeakMb"), Crossing.PeakMb);
+				O->SetNumberField(TEXT("navActiveTilesPeak"), Crossing.PeakNavTiles);
+				O->SetNumberField(TEXT("navPendingTasksPeak"), Crossing.PeakNavTasks);
+				AddNavigation(World, *O, TEXT("end"));
 				O->SetNumberField(TEXT("emergencyChunks"), Terrain->GetStats().EmergencyChunks - Crossing.EmergencyAtStart);
 				O->SetNumberField(TEXT("staleResultsDropped"), Terrain->GetStats().StaleDropped);
 				O->SetNumberField(TEXT("chunksReused"), Terrain->GetStats().ChunksReused);
@@ -415,11 +458,33 @@ namespace GLPerf
 				}
 				O->SetArrayField(TEXT("cellLoads"), Loads);
 				O->SetArrayField(TEXT("hitches"), Crossing.Hitches);
+				// Save/restart proof: the teleport run leaves a 2 m mound 5 m ahead in the lots (saved
+				// on quit); the resume run reads the ground there once the lots are complete.
+				const FVector2D Mark(90500.0, Crossing.RouteY);
+				if (Crossing.Mode == TEXT("teleport"))
+				{
+					O->SetNumberField(TEXT("markBeforeCm"), Terrain->HeightAt(Mark));
+					for (int32 I = 0; I < 2; ++I)
+					{
+						FGLTerrainEdit Raise;
+						Raise.Op = EGLTerrainOp::Raise;
+						Raise.Centre = Mark;
+						Raise.RadiusCm = 300.0;
+						Raise.AmountCm = 100.0;
+						Terrain->ApplyEdit(Raise);
+					}
+					O->SetNumberField(TEXT("markAfterCm"), Terrain->HeightAt(Mark));
+				}
+				else if (Crossing.Mode == TEXT("resume"))
+				{
+					O->SetNumberField(TEXT("markCm"), Terrain->HeightAt(Mark));
+				}
 				O->SetNumberField(TEXT("garbageCollections"), Crossing.GcCount);
 				FString Text;
 				FJsonSerializer::Serialize(O, TJsonWriterFactory<>::Create(&Text));
 				FFileHelper::SaveStringToFile(Text, *(FPaths::ProjectSavedDir() / TEXT("Perf") / FString::Printf(TEXT("crossing-%s.json"), *Crossing.Mode)));
 				UE_LOG(LogGridlands, Log, TEXT("gl.Perf.CrossingResult %s"), *Text);
+				GEngine->Exec(World, TEXT("gl.Demo.GridReport"));
 				GEngine->DeferredCommands.Add(TEXT("quit"));
 				return false;
 			}
@@ -429,7 +494,7 @@ namespace GLPerf
 
 	FAutoConsoleCommandWithWorldAndArgs CrossingCommand(
 		TEXT("gl.Perf.Crossing"),
-		TEXT("DEV ONLY: gl.Perf.Crossing straight|reversal|sprint - walks Zenny across the 1 km Grid and records every frame."),
+		TEXT("DEV ONLY: gl.Perf.Crossing straight|reversal|sprint|teleport|resume - walks Zenny across the 1 km Grid and records every frame."),
 		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic([](const TArray<FString>& Args, UWorld* World)
 		{
 			Crossing = FCrossing();
@@ -439,10 +504,25 @@ namespace GLPerf
 			Crossing.X = 0.0;
 			if (Crossing.Mode == TEXT("reversal"))
 			{
-				// Toward the lots (they start loading 256 m out), turn back before they finish, go
-				// home past the unload margin, then cross for real.
+				// Toward the lots (they start loading 256 m out), turn back while their chunks are still
+				// building, go home past the unload margin, then cross for real.
 				Crossing.Route = { 26500.0, 8000.0, 26500.0, 5000.0, 90000.0 };
 				Crossing.Speed = 1200.0;
+			}
+			else if (Crossing.Mode == TEXT("teleport"))
+			{
+				// Walking can never cancel a load (it completes in ~2.5 s; the unload margin is 128 m
+				// further). A jump can: step 10 cm into the load margin, then jump home at once, while
+				// the lots' level and ground are still in flight. Then walk across and arrive.
+				Crossing.Route = { 25610.0, -20000.0, 90000.0 };
+				Crossing.TeleportLeg = 1;
+				Crossing.Speed = 1200.0;
+			}
+			else if (Crossing.Mode == TEXT("resume"))
+			{
+				// Launched from a save made in the lots: stand still and measure the start.
+				Crossing.Route = { 90000.0 };
+				Crossing.X = 90000.0;
 			}
 			else if (Crossing.Mode == TEXT("sprint"))
 			{
@@ -453,7 +533,15 @@ namespace GLPerf
 			{
 				Crossing.Route = { 90000.0 };
 			}
-			if (APawn* Zenny = UGameplayStatics::GetPlayerPawn(World, 0))
+			APawn* Zenny = UGameplayStatics::GetPlayerPawn(World, 0);
+			if (Zenny && Crossing.Mode == TEXT("resume"))
+			{
+				Crossing.X = Zenny->GetActorLocation().X; // where the save put Zenny
+				Crossing.RouteY = Zenny->GetActorLocation().Y;
+				Crossing.Route = { Crossing.X };
+				Zenny->DisableInput(nullptr);
+			}
+			else if (Zenny)
 			{
 				Zenny->SetActorLocation(FVector(0.0, Crossing.RouteY, 300.0));
 				Zenny->DisableInput(nullptr);
