@@ -41,12 +41,12 @@
 
 | | Whole-cell | Localized |
 |---|---|---|
-| Initial navigation, 1 km cell | 7.64 s | **0.51 s** |
+| Initial navigation, 1 km cell | 7.64 s | **0.53 s** |
 | Active navmesh tiles | 20,581 | **324** (Zenny only) |
-| Process memory growth during the nav phase | +1,662 MB | **+527 MB** |
+| Process memory growth during the nav phase | +1,662 MB | **+509 MB** |
 | Navigation update after an edit near Zenny | 42 ms | 39 ms |
-| Worst crossing frame (straight / reversal / sprint) | see evidence | 26.1 / 28.8 / 18.4 ms |
-| Tile tasks pending while crossing (peak) | see evidence | ≤ 101 |
+| Worst crossing frame (straight / reversal / sprint) | 30.3 / 47.1 / 28.2 ms | **22.9 / 34.1 / 18.0 ms** |
+| Tile tasks pending while crossing (peak) | 21,235–21,548 (never caught up) | **8–51** |
 
 ## Tests (Gridlands.Game.Navigation, 3, plus the M10 navigation tests)
 - **Built only around invokers:** 209 tiles, where the cell would need 10,816.
@@ -70,5 +70,10 @@
   - That future need is **not** a reason to return to whole-cell navigation.
 - **An invoker's tiles take up to 0.5 s plus build time to appear** after a teleport. Zenny's own
   movement is covered by the 64 m radius.
+- **With Zenny as the only invoker, a column of about 13 tiles along x ≈ 0 can survive Zenny
+  leaving** (`24-diagnostic-*`).
+  - The count stays at 173 after revisiting, and no other tiles linger.
+  - It looks like an engine tile-removal corner.
+  - It is bounded (it does not grow) and goes when its cell unloads (its bounds go).
 - **Test worlds never advance world time**, and invoker updates are scheduled on it. The
   navigation tests advance it explicitly.

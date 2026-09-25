@@ -1,0 +1,12 @@
+diff --git a/Source/GridlandsGame/Private/Character/GLCharacter.cpp b/Source/GridlandsGame/Private/Character/GLCharacter.cpp
+index 31b99b0..afd1099 100644
+--- a/Source/GridlandsGame/Private/Character/GLCharacter.cpp
++++ b/Source/GridlandsGame/Private/Character/GLCharacter.cpp
+@@ -93,6 +93,7 @@ AGLCharacter::AGLCharacter()
+ 	// kept until 96 m so walking back and forth does not rebuild the same tiles.
+ 	NavInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>(TEXT("NavInvoker"));
+ 	NavInvoker->SetGenerationRadii(6400.f, 9600.f);
++	NavInvoker->bAutoActivate = false; // PLANTED DEFECT: Zenny's invoker never activates
+ }
+ 
+ void AGLCharacter::BuildInput()

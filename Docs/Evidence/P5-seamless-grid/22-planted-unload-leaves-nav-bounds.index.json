@@ -1,0 +1,136 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0D9CBACD2779E905765290FD45A0B",
+			"instanceName": "Pehverse-803492",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.25-18.20.33",
+	"succeeded": 2,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 19.756610870361328,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BuiltOnlyAroundInvokersAndFollowsEdits",
+			"fullTestPath": "Gridlands.Game.Navigation.BuiltOnlyAroundInvokersAndFollowsEdits",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0D9CBACD2779E905765290FD45A0B"
+			],
+			"duration": 6.7055501937866211,
+			"dateTime": "2026.09.25-18.20.13",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "active tiles around Zenny: 209 (a whole 1 km cell: 10816)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.20.16"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "navmesh at the mound: 10 -> 175 cm (ground 300)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.20.19"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CreaturesPathFarFromThePlayer",
+			"fullTestPath": "Gridlands.Game.Navigation.CreaturesPathFarFromThePlayer",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0D9CBACD2779E905765290FD45A0B"
+			],
+			"duration": 3.3117105960845947,
+			"dateTime": "2026.09.25-18.20.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CrossesBoundariesAndUnloadsCleanly",
+			"fullTestPath": "Gridlands.Game.Navigation.CrossesBoundariesAndUnloadsCleanly",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D9CBACD2779E905765290FD45A0B"
+			],
+			"duration": 9.739349365234375,
+			"dateTime": "2026.09.25-18.20.23",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the unloaded cell's nav bounds are gone' to be 1, but it was 2.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Math/Vector2D.h",
+					"lineNumber": 833,
+					"timestamp": "2026.09.25-18.20.29"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the navigable world no longer includes the origin' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLLocalizedNavigationTests.cpp",
+					"lineNumber": 225,
+					"timestamp": "2026.09.25-18.20.29"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'one set of nav bounds again' to be 1, but it was 3.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Math/Vector2D.h",
+					"lineNumber": 833,
+					"timestamp": "2026.09.25-18.20.32"
+				}
+			],
+			"warnings": 0,
+			"errors": 3,
+			"artifacts": []
+		}
+	]
+}

@@ -1,0 +1,11 @@
+diff --git a/Config/DefaultEngine.ini b/Config/DefaultEngine.ini
+index a93d5f4..52458ed 100644
+--- a/Config/DefaultEngine.ini
++++ b/Config/DefaultEngine.ini
+@@ -16,5 +16,5 @@ RuntimeGeneration=Dynamic
+ ; Localized navigation (ADR-0029): tiles are built only around navigation invokers (Zenny and each
+ ; creature), never across a whole 1 km cell. Cells still declare their bounds; invokers choose tiles.
+ [/Script/NavigationSystem.NavigationSystemV1]
+-bGenerateNavigationOnlyAroundNavigationInvokers=True
++bGenerateNavigationOnlyAroundNavigationInvokers=False
+ ActiveTilesUpdateInterval=0.5

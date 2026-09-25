@@ -62,13 +62,14 @@ namespace GLLocalNavTests
 			Nav->Tick(0.05f);
 		}
 
-		/** Ticks navigation until nothing is pending. False on timeout. */
+		/** Ticks navigation until nothing is pending or running. False on timeout. */
 		bool Settle()
 		{
 			for (int32 Tick = 0; Tick < 4000; ++Tick)
 			{
 				TickNav();
-				if (Tick > 24 && !Nav->IsNavigationBuildInProgress() && !Nav->HasDirtyAreasQueued())
+				// Idle means no tile task either: one finishing after its tile was removed would put it back.
+				if (Tick > 24 && !Nav->IsNavigationBuildInProgress() && !Nav->HasDirtyAreasQueued() && Nav->GetNumRemainingBuildTasks() == 0)
 				{
 					return true;
 				}
@@ -148,6 +149,7 @@ bool FGLNavLocalOnly::RunTest(const FString& Parameters)
 	// Zenny walks 300 m: navigation arrives with Zenny and leaves the old place.
 	S.GoTo(FVector(30000, -1200, 100));
 	TestTrue(TEXT("settles after the walk"), S.Settle());
+	AddInfo(FString::Printf(TEXT("active tiles after the walk: %d; old place on navigation: %s"), S.ActiveTiles(), S.OnNav(FVector2D(0, -1200)) ? TEXT("yes") : TEXT("no")));
 	TestTrue(TEXT("navigation where Zenny now is"), S.OnNav(FVector2D(31500, -1200)));
 	TestFalse(TEXT("removed where Zenny was (beyond the removal radius)"), S.OnNav(FVector2D(0, -1200)));
 	TestTrue(TEXT("still bounded after moving"), S.ActiveTiles() < S.WholeCellTiles() / 10.0);

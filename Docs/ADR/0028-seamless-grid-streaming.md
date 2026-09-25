@@ -77,10 +77,20 @@
   frame.
 - Memory stays bounded over the torture rounds (< 1.5 GB growth, with garbage collection as the game runs it).
 
-## Measured
-See the evidence README (real game, 1920×1080, RX 6800): crossing straight, sprint and
-reversal; worst hitch and its cause; ground-ready and cell-complete times; peak memory with two
-cells overlapping.
+## Measured (real game, 1920×1080, RX 6800; localized navigation; details in the evidence)
+- **Crossing at 6 / 18 / 12 m/s** (straight / sprint / reversal):
+  - worst frame 22.9 / 18.0 / 34.1 ms;
+  - p99 4.6 / 8.5 / 8.2 ms;
+  - streaming game thread averages 0.05–0.12 ms per frame, 9.5 ms at worst.
+- **Readiness:** ground under the player 0.1 s, runtime layer 0.1 s, every chunk 2.2–2.4 s after
+  a cell starts loading. The next cell is complete long before Zenny arrives, and emergency chunks
+  stay at 0.
+- **Worst hitch: 34 ms, once per cell unload.** It is bisected to the engine removing the
+  authored level from the world, not to Gridlands streaming work.
+- **Memory:** a peak of 4.4–4.6 GB process with two cells overlapping (3.3 GB with one).
+- **Cancel and resume:**
+  - a mid-load cancellation is forced in the real game (teleport) and in the tests;
+  - save/restart in the second cell: ground usable 0.11 s after launch, and edits intact.
 
 ## Consequences
 - **Streaming work is spread across frames.** What remains per frame is mostly engine work:

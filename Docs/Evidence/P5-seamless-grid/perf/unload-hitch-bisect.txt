@@ -1,0 +1,6 @@
+skip 1 worst 24.8 unload-point hitches [] all [(17.7, 257), (16.9, 257), (24.8, 196), (16.8, 257), (23.1, 638)]
+skip 2 worst 24.5 unload-point hitches [22.3, 23.5] all [(17.1, 257), (22.3, 128), (23.5, 128), (24.5, 705)]
+skip 4 worst 33.8 unload-point hitches [33.3, 33.8] all [(18.4, 257), (33.3, 128), (17.2, 257), (33.8, 128), (16.7, 257), (22.4, 705)]
+skip 8 worst 33.1 unload-point hitches [29.6, 33.1] all [(17.7, 257), (16.8, 261), (29.6, 128), (17.7, 257), (33.1, 128), (16.9, 257), (19.0, 705)]
+skip 16 (hide the level, keep its package loaded) worst 42.8: repeated 20-43 ms hitches near 110 m and 220 m (worse)
+s.UnregisterComponentsTimeLimit 0.5 + s.LevelStreamingComponentsUnregistrationGranularity 1 (no skip) worst 31.7: unload-point hitches 28.8, 31.7 (unchanged)

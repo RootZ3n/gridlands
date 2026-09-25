@@ -1,0 +1,185 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0D9CC9D62772490B3715E49F1B107",
+			"instanceName": "Pehverse-814124",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.25-18.21.59",
+	"succeeded": 0,
+	"succeededWithWarnings": 0,
+	"failed": 3,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 45.067237854003906,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BuiltOnlyAroundInvokersAndFollowsEdits",
+			"fullTestPath": "Gridlands.Game.Navigation.BuiltOnlyAroundInvokersAndFollowsEdits",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D9CC9D62772490B3715E49F1B107"
+			],
+			"duration": 15.530816078186035,
+			"dateTime": "2026.09.25-18.21.14",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "active tiles around Zenny: 10816 (a whole 1 km cell: 10816)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.21.20"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'no whole-cell navigation: under a tenth of the cell's tiles' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Math/Vector2D.h",
+					"lineNumber": 833,
+					"timestamp": "2026.09.25-18.21.20"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'nothing 300 m away' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Math/Vector.h",
+					"lineNumber": 1486,
+					"timestamp": "2026.09.25-18.21.20"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'removed where Zenny was (beyond the removal radius)' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLLocalizedNavigationTests.cpp",
+					"lineNumber": 152,
+					"timestamp": "2026.09.25-18.21.30"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'still bounded after moving' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Math/Vector2D.h",
+					"lineNumber": 833,
+					"timestamp": "2026.09.25-18.21.30"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "navmesh at the mound: 10 -> 175 cm (ground 300)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-18.21.30"
+				}
+			],
+			"warnings": 0,
+			"errors": 4,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CreaturesPathFarFromThePlayer",
+			"fullTestPath": "Gridlands.Game.Navigation.CreaturesPathFarFromThePlayer",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D9CC9D62772490B3715E49F1B107"
+			],
+			"duration": 6.1806192398071289,
+			"dateTime": "2026.09.25-18.21.30",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'but not a tile between it and Zenny' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLLocalizedNavigationTests.cpp",
+					"lineNumber": 190,
+					"timestamp": "2026.09.25-18.21.36"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'no navigation left where it was' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTestUtils.h",
+					"lineNumber": 33,
+					"timestamp": "2026.09.25-18.21.36"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CrossesBoundariesAndUnloadsCleanly",
+			"fullTestPath": "Gridlands.Game.Navigation.CrossesBoundariesAndUnloadsCleanly",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0D9CC9D62772490B3715E49F1B107"
+			],
+			"duration": 23.355800628662109,
+			"dateTime": "2026.09.25-18.21.36",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'bounded in the lots' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLLocalizedNavigationTests.cpp",
+					"lineNumber": 50,
+					"timestamp": "2026.09.25-18.21.52"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		}
+	]
+}

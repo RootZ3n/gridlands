@@ -407,7 +407,29 @@ namespace GLDemo
 	};
 	FDrainProof Drain;
 
+	/**
+	 * Runs Then once the drain gremlin exists. Cells stream in asynchronously (ADR-0028), so a
+	 * command given at startup (-ExecCmds) may run before the origin's placements spawn.
+	 */
+	void WhenGremlinPlaced(UWorld* World, TFunction<void()> Then, int32 Tries = 0)
+	{
+		if (World->GetSubsystem<UGLPlacementSubsystem>()->FindCreature(TEXT("placement.origin.drain_gremlin_den")) || Tries >= 80)
+		{
+			Then();
+			return;
+		}
+		FTimerHandle Handle;
+		World->GetTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda([World, Then, Tries]() { WhenGremlinPlaced(World, Then, Tries + 1); }), 0.25f, false);
+	}
+
+	void DrainProofNow(UWorld* World);
+
 	void DrainProof(UWorld* World)
+	{
+		WhenGremlinPlaced(World, [World]() { DrainProofNow(World); });
+	}
+
+	void DrainProofNow(UWorld* World)
 	{
 		AGLCharacter* Zenny = Cast<AGLCharacter>(UGameplayStatics::GetPlayerPawn(World, 0));
 		AGLCreature* Gremlin = World->GetSubsystem<UGLPlacementSubsystem>()->FindCreature(TEXT("placement.origin.drain_gremlin_den"));
@@ -516,7 +538,7 @@ namespace GLDemo
 		UE_LOG(LogGridlands, Log, TEXT("gl.Demo.GridReport: in %s | loaded [%s] | origin: lamp %s, pieces %d, mound %.0f cm, level actors %d | lots: jukebox %s, pieces %d, level actors %d | glitch actors %d, creatures %d | loads %d unloads %d"),
 			*Grid->GetCurrentCell().ToString(), *FString::JoinBy(Grid->GetLoadedCells(), TEXT(","), [](FName N) { return N.ToString(); }),
 			*State(TEXT("placement.origin.glitch_flicker_lamp")), Building->PiecesOfCell(TEXT("cell.home.origin")).Num(),
-			Terrain->HasCell(TEXT("cell.home.origin")) ? Terrain->HeightAt(FVector2D(12700, -1500)) : -9999.0, LevelActors(World, TEXT("cell_home_origin")),
+			Terrain->HasCell(TEXT("cell.home.origin")) ? Terrain->HeightAt(FVector2D(51100, -1500)) : -9999.0, LevelActors(World, TEXT("cell_home_origin")),
 			*State(TEXT("placement.diner_lots.glitch_jukebox")), Building->PiecesOfCell(TEXT("cell.outer.diner_lots")).Num(), LevelActors(World, TEXT("cell_outer_diner_lots")),
 			GlitchActors, Creatures, Grid->GetLoadCount(), Grid->GetUnloadCount());
 		(void)Zenny;
@@ -563,15 +585,15 @@ namespace GLDemo
 			{
 			case 0: // at the boundary: build right at the edge and raise a mound across it
 			{
-				GridMove(World, FVector2D(12650, 600));
+				GridMove(World, FVector2D(51050, 600)); // 1.5 m inside the origin: the edge is x = 512 m (ADR-0027)
 				World->GetSubsystem<UGLKnowledgeSubsystem>()->Learn(TEXT("knowledge.style.modern_timber_frame"));
 				Zenny->GetInventory()->AddItem(TEXT("item.material.timber_plank"), 10);
-				const FVector At(12500, 600, Terrain->HeightAt(FVector2D(12500, 600)));
+				const FVector At(50900, 600, Terrain->HeightAt(FVector2D(50900, 600)));
 				const bool bFloor = Building->Place(Zenny, { 0, TEXT("buildpiece.modern.timber_foundation"), At, 0 }).IsAllowed();
 				const bool bWall = Building->Place(Zenny, { 0, TEXT("buildpiece.modern.timber_wall"), At + FVector(0, 100, 30), 0 }).IsAllowed();
 				FGLTerrainEdit Mound;
 				Mound.Op = EGLTerrainOp::Raise;
-				Mound.Centre = FVector2D(12800, -1500);
+				Mound.Centre = FVector2D(51200, -1500);
 				Mound.RadiusCm = 250.0;
 				Mound.AmountCm = 120.0;
 				const bool bMound = Terrain->ApplyEdit(Mound).bApplied;
@@ -581,7 +603,7 @@ namespace GLDemo
 			}
 			case 1: // in the lots: repair its jukebox (Pehlichi, real components, fast-forwarded)
 			{
-				GridMove(World, FVector2D(25600 + 1500, -800 - 300));
+				GridMove(World, FVector2D(102400 + 1500, -800 - 300)); // beside the jukebox (lots centre + local)
 				if (AGLGlitch* Jukebox = Glitches->FindByPlacement(TEXT("placement.diner_lots.glitch_jukebox")))
 				{
 					Pehlichi->SetActorLocation(Jukebox->GetActorLocation() + FVector(0, -100, 0));
@@ -595,12 +617,13 @@ namespace GLDemo
 						Pehlichi->GetRepair()->Advance(0.1f);
 					}
 				}
-				UE_LOG(LogGridlands, Log, TEXT("gl.Demo.GridWalk: in the lots, jukebox repaired"));
+				const AGLGlitch* Repaired = Glitches->FindByPlacement(TEXT("placement.diner_lots.glitch_jukebox"));
+				UE_LOG(LogGridlands, Log, TEXT("gl.Demo.GridWalk: in the lots, jukebox repair %s"), Repaired ? TEXT("run (state in the report below)") : TEXT("NOT POSSIBLE: no jukebox"));
 				GridReport(World);
 				break;
 			}
 			case 2: case 4: case 6: case 8:
-				GridMove(World, FVector2D(30000, 0)); // deep in the lots: the origin streams out
+				GridMove(World, FVector2D(120000, 0)); // deep in the lots: the origin streams out
 				GridReport(World);
 				break;
 			case 3: case 5: case 7:
@@ -629,10 +652,17 @@ namespace GLDemo
 		TEXT("DEV ONLY: defeats the storm drain gremlin (shows the de-rez)."),
 		FConsoleCommandWithWorldDelegate::CreateStatic([](UWorld* World)
 		{
-			if (AGLCreature* Gremlin = World->GetSubsystem<UGLPlacementSubsystem>()->FindCreature(TEXT("placement.origin.drain_gremlin_den")))
+			WhenGremlinPlaced(World, [World]()
 			{
+				AGLCreature* Gremlin = World->GetSubsystem<UGLPlacementSubsystem>()->FindCreature(TEXT("placement.origin.drain_gremlin_den"));
+				if (!Gremlin)
+				{
+					UE_LOG(LogGridlands, Warning, TEXT("gl.Demo.DefeatGremlin: no gremlin"));
+					return;
+				}
 				Gremlin->GetHealth()->ApplyDamage(1000.0, UGameplayStatics::GetPlayerPawn(World, 0));
-			}
+				UE_LOG(LogGridlands, Log, TEXT("gl.Demo.DefeatGremlin: the gremlin is defeated (health %.0f)"), Gremlin->GetHealth()->GetCurrent());
+			});
 		}));
 
 	FAutoConsoleCommandWithWorld RepairNearbyCommand(
