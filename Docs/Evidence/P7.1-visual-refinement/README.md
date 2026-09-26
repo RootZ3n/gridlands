@@ -211,3 +211,8 @@ These were rerun after the approval, on the final default, with the machine quie
 ## Architectural conflicts
 **None found.** The richer style needed no change to gameplay, streaming, persistence or
 structural contracts.
+
+## Fresh clone
+**PASS.** A fresh clone of `bcf3e72` (P7.1 with variant A as the default) built and passed
+**109/109** tests (40 requirements), from tracked inputs, including the LFS art, plus the pinned
+engine (`00-*`).
