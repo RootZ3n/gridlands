@@ -130,7 +130,7 @@ def bush():
     parts = []
     for i, (x, y, r) in enumerate([(0, 0, 0.55), (0.45, 0.2, 0.42), (-0.4, 0.15, 0.4), (0.1, -0.35, 0.38)]):
         b = A.blob(f"bush{i}", r, at=(x, y, r * 0.8), squash=(1.1, 1.0, 0.85), subdiv=2, lump=0.14, seed=40 + i)
-        parts.append(painted(b, P["leaf_hi"] if i % 2 else P["leaf"], top=1.3, bottom=0.55, up_boost=0.15, seed=i))
+        parts.append(painted(b, (0.40, 0.78, 0.20) if i % 2 else (0.20, 0.60, 0.16), top=1.3, bottom=0.55, up_boost=0.15, seed=i))
     obj = A.join("SM_Bush", parts)
     A.pivot_bottom_centre(obj)
     return obj

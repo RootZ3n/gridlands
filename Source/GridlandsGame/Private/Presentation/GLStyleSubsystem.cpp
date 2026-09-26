@@ -37,12 +37,13 @@ namespace
 	{
 		if (Name == TEXT("dusk"))
 		{
-			return { FRotator(-9.0, 250.0, 0.0), FLinearColor(1.0f, 0.46f, 0.32f), 4.5f, FLinearColor(0.72f, 0.46f, 1.0f), 1.3f, FLinearColor(0.85f, 0.32f, 0.55f), 0.8f, 1.2f };
+			// A pink key over a violet-cyan fill: greens go teal and rose, never brown.
+			return { FRotator(-16.0, 250.0, 0.0), FLinearColor(1.0f, 0.52f, 0.66f), 4.5f, FLinearColor(0.45f, 0.70f, 1.0f), 3.6f, FLinearColor(0.95f, 0.45f, 0.70f), 1.2f, 1.45f };
 		}
 		if (Name == TEXT("night"))
 		{
 			// A cool moon as the key light; the sky stays blue-violet; lit signs and colour carry the scene.
-			return { FRotator(-38.0, 120.0, 0.0), FLinearColor(0.42f, 0.55f, 1.0f), 0.9f, FLinearColor(0.34f, 0.36f, 0.95f), 1.1f, FLinearColor(0.18f, 0.12f, 0.45f), 2.2f, 1.25f };
+			return { FRotator(-10.0, 120.0, 0.0), FLinearColor(0.45f, 0.58f, 1.0f), 1.4f, FLinearColor(0.35f, 0.45f, 1.0f), 3.2f, FLinearColor(0.22f, 0.16f, 0.55f), 1.1f, 1.35f };
 		}
 		return { FRotator(-42.0, 60.0, 0.0), FLinearColor(1.0f, 0.93f, 0.80f), 9.0f, FLinearColor(0.92f, 0.98f, 1.1f), 1.2f, FLinearColor(0.52f, 0.72f, 1.0f), 0.3f, 1.18f };
 	}

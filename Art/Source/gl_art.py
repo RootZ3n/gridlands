@@ -190,7 +190,7 @@ def export_fbx(obj, path: Path):
         axis_up="Z",
         mesh_smooth_type="FACE",
         use_mesh_modifiers=True,
-        colors_type="SRGB",
+        colors_type="LINEAR",  # the FBX importer gamma-encodes once; sRGB here would double it (pastel colours)
         add_leaf_bones=False,
         bake_anim=False,
     )

@@ -110,7 +110,7 @@ UE::Geometry::FDynamicMesh3 AGLTerrainChunk::BuildMesh(const FGLChunkSnapshot& S
 		const uint32 Hash = static_cast<uint32>(X) * 73856093u ^ static_cast<uint32>(Y) * 19349663u;
 		const float Jitter = 0.94f + 0.12f * static_cast<float>(Hash % 1000) / 1000.f;
 		const float Flat = FMath::SmoothStep(0.72f, 0.95f, Up);
-		const float Exposed = FMath::Clamp(Edited / 25.f, 0.f, 1.f);
+		const float Exposed = FMath::Clamp(Edited / 8.f, 0.f, 1.f);
 		ColourOfVertex[Vid] = Colours->AppendElement(FVector4f(Flat, Exposed, (Jitter - 0.94f) / 0.12f, 1.f));
 	}
 	for (int32 T : Built.TriangleIndicesItr())

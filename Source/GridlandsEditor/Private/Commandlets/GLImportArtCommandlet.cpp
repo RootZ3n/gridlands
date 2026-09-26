@@ -147,7 +147,7 @@ namespace GLArt
 		UMaterialEditorOnlyData* E = M->GetEditorOnlyData();
 		UMaterialExpressionVertexColor* VC = Add<UMaterialExpressionVertexColor>(M);
 		E->BaseColor.Expression = Mul(M, VC, Const(M, 0.3f));
-		E->EmissiveColor.Expression = Mul(M, VC, Scalar(M, TEXT("Glow"), 8.0f));
+		E->EmissiveColor.Expression = Mul(M, VC, Scalar(M, TEXT("Glow"), 3.0f));
 		E->Roughness.Expression = Const(M, 0.5f);
 		return Save(Pkg, M);
 	}
