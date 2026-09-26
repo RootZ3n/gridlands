@@ -34,6 +34,39 @@ UStaticMesh* GLVisuals::LoadMesh(const FString& Name)
 	return LoadObject<UStaticMesh>(nullptr, *FString::Printf(TEXT("%s/%s.%s"), MeshesPath, *Name, *Name));
 }
 
+int32 GLVisuals::Preload()
+{
+	// Game-lifetime catalogue: a few dozen small meshes and five masters.
+	static TSet<UObject*> Resident;
+	const double Start = FPlatformTime::Seconds();
+	auto Keep = [](UObject* Object)
+	{
+		if (Object && !Resident.Contains(Object))
+		{
+			Object->AddToRoot();
+			Resident.Add(Object);
+		}
+	};
+	GLContent::Get().ForEachEntry([&Keep](const FGLContentEntry& Entry)
+	{
+		if (const FGLVisualDef* Def = Entry.Definition.GetPtr<FGLVisualDef>())
+		{
+			if (UStaticMesh* Mesh = LoadMesh(Def->Mesh))
+			{
+				Keep(Mesh);
+				for (const FStaticMaterial& M : Mesh->GetStaticMaterials())
+				{
+					Keep(M.MaterialInterface);
+				}
+			}
+		}
+	});
+	Keep(LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube")));
+	Keep(LoadObject<UMaterialInterface>(nullptr, CorruptionMaterialPath));
+	UE_LOG(LogGridlands, Log, TEXT("Visuals: %d art objects resident (%.1f ms)"), Resident.Num(), (FPlatformTime::Seconds() - Start) * 1000.0);
+	return Resident.Num();
+}
+
 void GLVisuals::SetOutlined(UPrimitiveComponent* Component, bool bOutlined)
 {
 	if (Component)

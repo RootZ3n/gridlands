@@ -20,6 +20,13 @@ namespace GLVisuals
 
 	GRIDLANDSGAME_API UStaticMesh* LoadMesh(const FString& Name);
 
+	/**
+	 * Loads every visual's mesh and material once, at world start, and keeps them resident, so a cell's
+	 * runtime layer never loads art synchronously inside a streaming frame (the P5 budget, P7-K).
+	 * Returns how many meshes are resident.
+	 */
+	GRIDLANDSGAME_API int32 Preload();
+
 	/** Attaches VisualId under Parent. Returns the main mesh component, or null if the visual is unknown. */
 	GRIDLANDSGAME_API UStaticMeshComponent* Attach(AActor* Owner, USceneComponent* Parent, FName VisualId, const FTransform& Local = FTransform::Identity);
 

@@ -738,6 +738,16 @@ bool UGLTerrainSubsystem::RestoreCellDelta(FName CellId, TConstArrayView<int32> 
 	{
 		return false;
 	}
+	// Already this ground (a cell streaming in re-applies what it captured a moment ago): nothing to
+	// rebuild, and no whole-field copy and compare inside the runtime-layer frame (P7-K, P5 budget).
+	{
+		TArray<int32> NowIndices, NowDeltaCm;
+		Ground->Field.EncodeDelta(NowIndices, NowDeltaCm);
+		if (NowIndices == Indices && NowDeltaCm == DeltaCm)
+		{
+			return true;
+		}
+	}
 	FGLHeightfield Fresh = Ground->Field;
 	Fresh.ResetToBase();
 	if (!Fresh.ApplyDelta(Indices, DeltaCm))

@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Presentation/GLVisuals.cpp
++++ b/Source/GridlandsGame/Private/Presentation/GLVisuals.cpp
+@@ -22,7 +22,7 @@
+ 		UStaticMeshComponent* Component = NewObject<UStaticMeshComponent>(Owner);
+ 		Component->SetStaticMesh(Mesh);
+ 		Component->SetupAttachment(Parent);
+-		Component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
++		Component->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+ 		Component->SetCanEverAffectNavigation(false);
+ 		Component->SetGenerateOverlapEvents(false);
+ 		return Component;

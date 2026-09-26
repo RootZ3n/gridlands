@@ -70,8 +70,17 @@ int32 UGLPlacementSubsystem::SpawnCell(FName CellId)
 	TArray<TWeakObjectPtr<AActor>>& Owned = CellActors.FindOrAdd(CellId);
 	const FString Prefix = FString::Printf(TEXT("placement.%s."), *CellShortName(CellId));
 	int32 Spawned = 0;
+	TMap<FName, double> KindMs; // where the runtime layer's spawn frame goes (P7 budget investigation)
 	Content.ForEachEntry([&](const FGLContentEntry& Entry)
 	{
+		const double KindStart = FPlatformTime::Seconds();
+		ON_SCOPE_EXIT
+		{
+			if (const FGLPlacementDef* P = Entry.Definition.GetPtr<FGLPlacementDef>())
+			{
+				KindMs.FindOrAdd(P->Kind) += (FPlatformTime::Seconds() - KindStart) * 1000.0;
+			}
+		};
 		const FGLPlacementDef* Placement = Entry.Definition.GetPtr<FGLPlacementDef>();
 		if (!Placement || Entry.Kind != TEXT("placement") || !Entry.Id.ToString().StartsWith(Prefix)
 			|| (Placement->Kind != TEXT("salvage_node") && Placement->Kind != TEXT("glitch") && Placement->Kind != TEXT("puzzle_site")
@@ -186,7 +195,15 @@ int32 UGLPlacementSubsystem::SpawnCell(FName CellId)
 		Owned.Add(Node);
 		++Spawned;
 	});
-	UE_LOG(LogGridlands, Log, TEXT("Placements: spawned %d for %s"), Spawned, *CellId.ToString());
+	FString Costs;
+	for (const TPair<FName, double>& K : KindMs)
+	{
+		if (K.Value > 0.05)
+		{
+			Costs += FString::Printf(TEXT(" %s %.2f ms"), *K.Key.ToString(), K.Value);
+		}
+	}
+	UE_LOG(LogGridlands, Log, TEXT("Placements: spawned %d for %s;%s"), Spawned, *CellId.ToString(), *Costs);
 	return Spawned;
 }
 

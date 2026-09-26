@@ -4,6 +4,17 @@
 // Not in shipping builds.
 
 #include "Camera/CameraActor.h"
+#include "Components/HierarchicalInstancedStaticMeshComponent.h"
+#include "Dom/JsonObject.h"
+#include "DynamicRHI.h"
+#include "EngineUtils.h"
+#include "Misc/App.h"
+#include "Misc/FileHelper.h"
+#include "Misc/Paths.h"
+#include "Presentation/GLScatterPatch.h"
+#include "RenderTimer.h"
+#include "Serialization/JsonSerializer.h"
+#include "Serialization/JsonWriter.h"
 #include "Camera/CameraComponent.h"
 #include "Character/GLCharacter.h"
 #include "Combat/GLCreature.h"
@@ -201,6 +212,124 @@ namespace GLStyleDemo
 			World->GetTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda(MoveTemp(Step.Run)), Step.At, false);
 		}
 	}
+
+	/**
+	 * gl.Perf.Style: where the rendering budget goes in the styled slice (P7-K). Holds the overview view
+	 * and measures frame / game / render / GPU time with each feature switched off in turn. Writes
+	 * Saved/Perf/style.json and quits.
+	 */
+	struct FStyleConfig { const TCHAR* Name; TFunction<void(UWorld*, bool)> Toggle; };
+	struct FStylePerf
+	{
+		TArray<FStyleConfig> Configs;
+		int32 Index = -1;
+		int32 Frames = 0;
+		TArray<double> Frame, Game, Render, Gpu;
+		TSharedPtr<FJsonObject> Out;
+		FTSTicker::FDelegateHandle Ticker;
+		TWeakObjectPtr<UWorld> World;
+	};
+	FStylePerf Perf;
+
+	double Median(TArray<double> V) { if (!V.Num()) return 0.0; V.Sort(); return V[V.Num() / 2]; }
+	double P95(TArray<double> V) { if (!V.Num()) return 0.0; V.Sort(); return V[FMath::Min(V.Num() - 1, FMath::FloorToInt(V.Num() * 0.95))]; }
+
+	void SetScatterVisible(UWorld* World, bool bVisible)
+	{
+		for (TActorIterator<AGLScatterPatch> It(World); It; ++It) { It->SetActorHiddenInGame(!bVisible); }
+	}
+
+	void SetCorruptionVisible(UWorld* World, bool bVisible)
+	{
+		UMaterialInterface* Corrupt = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Gridlands/Art/Materials/M_GLCorruption.M_GLCorruption"));
+		for (TObjectIterator<UStaticMeshComponent> It; It; ++It)
+		{
+			if (It->GetWorld() == World && It->GetMaterial(0) == Corrupt) { It->SetVisibility(bVisible); }
+		}
+	}
+
+	bool PerfTick(float)
+	{
+		UWorld* World = Perf.World.Get();
+		if (!World)
+		{
+			return false;
+		}
+		constexpr int32 Warmup = 90, Measure = 400;
+		++Perf.Frames;
+		if (Perf.Index >= 0 && Perf.Frames > Warmup)
+		{
+			Perf.Frame.Add(FApp::GetDeltaTime() * 1000.0);
+			Perf.Game.Add(FPlatformTime::ToMilliseconds(GGameThreadTime));
+			Perf.Render.Add(FPlatformTime::ToMilliseconds(GRenderThreadTime));
+			Perf.Gpu.Add(FPlatformTime::ToMilliseconds(RHIGetGPUFrameCycles()));
+		}
+		if (Perf.Index < 0 || Perf.Frames >= Warmup + Measure)
+		{
+			if (Perf.Index >= 0)
+			{
+				TSharedRef<FJsonObject> Row = MakeShared<FJsonObject>();
+				Row->SetNumberField(TEXT("frameMsMedian"), Median(Perf.Frame));
+				Row->SetNumberField(TEXT("frameMsP95"), P95(Perf.Frame));
+				Row->SetNumberField(TEXT("gpuMsMedian"), Median(Perf.Gpu));
+				Row->SetNumberField(TEXT("gameThreadMsMedian"), Median(Perf.Game));
+				Row->SetNumberField(TEXT("renderThreadMsMedian"), Median(Perf.Render));
+				Perf.Out->SetObjectField(Perf.Configs[Perf.Index].Name, Row);
+				UE_LOG(LogGridlands, Log, TEXT("gl.Perf.Style %s: frame %.2f ms, GPU %.2f ms, game %.2f, render %.2f"), Perf.Configs[Perf.Index].Name, Median(Perf.Frame), Median(Perf.Gpu), Median(Perf.Game), Median(Perf.Render));
+				Perf.Configs[Perf.Index].Toggle(World, false); // restore
+			}
+			++Perf.Index;
+			Perf.Frames = 0;
+			Perf.Frame.Reset(); Perf.Game.Reset(); Perf.Render.Reset(); Perf.Gpu.Reset();
+			if (Perf.Index >= Perf.Configs.Num())
+			{
+				FString Text;
+				FJsonSerializer::Serialize(Perf.Out.ToSharedRef(), TJsonWriterFactory<>::Create(&Text));
+				FFileHelper::SaveStringToFile(Text, *(FPaths::ProjectSavedDir() / TEXT("Perf") / TEXT("style.json")));
+				UE_LOG(LogGridlands, Log, TEXT("gl.Perf.StyleResult %s"), *Text);
+				GEngine->DeferredCommands.Add(TEXT("quit"));
+				return false;
+			}
+			Perf.Configs[Perf.Index].Toggle(World, true); // this configuration's change
+		}
+		return true;
+	}
+
+	void PerfStyle(UWorld* World)
+	{
+		Perf = FStylePerf();
+		Perf.World = World;
+		Perf.Out = MakeShared<FJsonObject>();
+		auto Style = [](UWorld* W) { return W->GetSubsystem<UGLStyleSubsystem>(); };
+		Perf.Configs = {
+			{ TEXT("full"), [](UWorld*, bool) {} },
+			{ TEXT("outlineOff"), [Style](UWorld* W, bool b) { Style(W)->SetParam(TEXT("OutlineOn"), b ? 0.f : 1.f); } },
+			{ TEXT("celOff"), [Style](UWorld* W, bool b) { Style(W)->SetParam(TEXT("CelOn"), b ? 0.f : 1.f); } },
+			{ TEXT("postOff"), [Style](UWorld* W, bool b) { Style(W)->SetPostEnabled(!b); } },
+			{ TEXT("vegetationOff"), [](UWorld* W, bool b) { SetScatterVisible(W, !b); } },
+			{ TEXT("corruptionOff"), [](UWorld* W, bool b) { SetCorruptionVisible(W, !b); } },
+			{ TEXT("shadowsOff"), [](UWorld*, bool b) { GEngine->Exec(nullptr, b ? TEXT("r.ShadowQuality 0") : TEXT("r.ShadowQuality 5")); } },
+		};
+		FTimerHandle Handle;
+		World->GetTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda([World]()
+		{
+			Stage(World);
+			World->GetSubsystem<UGLStyleSubsystem>()->ApplyPreset(TEXT("day"));
+			View(World, FVector2D(-1250, -2300), 520.0, FVector2D(0, -200), 160.0);
+			int32 Grass = 0, Patches = 0;
+			for (TActorIterator<AGLScatterPatch> It(World); It; ++It) { Grass += It->GetInstanceCount(); ++Patches; }
+			Perf.Out->SetNumberField(TEXT("scatterInstances"), Grass);
+			Perf.Out->SetNumberField(TEXT("scatterPatches"), Patches);
+			Perf.Out->SetStringField(TEXT("gpu"), GRHIAdapterName);
+			Perf.Out->SetNumberField(TEXT("resX"), GSystemResolution.ResX);
+			Perf.Out->SetNumberField(TEXT("resY"), GSystemResolution.ResY);
+			Perf.Ticker = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateStatic(&PerfTick));
+		}), 3.0f, false);
+	}
+
+	FAutoConsoleCommandWithWorld PerfStyleCommand(TEXT("gl.Perf.Style"),
+		TEXT("DEV ONLY (P7): measures the styled slice with each rendering feature switched off in turn; writes Saved/Perf/style.json."),
+		FConsoleCommandWithWorldDelegate::CreateStatic(&PerfStyle));
 
 	FAutoConsoleCommandWithWorld TourCommand(TEXT("gl.Style.Tour"),
 		TEXT("DEV ONLY (P7): the visual review tour: stages the diner-lots slice, frames views, edits terrain, collapses the awning, fells a pine; screenshots and quits."),

@@ -12,6 +12,7 @@
 #include "EngineUtils.h"
 #include "GridlandsGame.h"
 #include "HAL/IConsoleManager.h"
+#include "Presentation/GLVisuals.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/MaterialInterface.h"
 
@@ -87,6 +88,7 @@ bool UGLStyleSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 void UGLStyleSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
 	Super::OnWorldBeginPlay(InWorld);
+	GLVisuals::Preload();
 	if (!InWorld.GetFirstPlayerController() && InWorld.GetNetMode() != NM_Standalone)
 	{
 		return;

@@ -3,7 +3,8 @@
 # 1920x1080 offscreen, vsync off), Zenny walks across the canonical 1 km Grid (gl.Perf.Crossing).
 # Results: Saved/Perf/<nav>-crossing-<mode>.json, plus <nav>-terrain-1024m.json with -t.
 # Usage: Tools/perf-crossing.sh [-t] [-w] [mode...]
-#   modes: straight reversal sprint teleport resume (default: straight reversal sprint teleport resume)
+#   modes: straight reversal sprint teleport resume roundtrips (default: all of them)
+#   roundtrips: 8 jumps each way between the cells, memory sampled after each (gl.Perf.RoundTrips, P7)
 #   -w: whole-cell navigation (invokers off) instead of localized navigation (ADR-0029)
 #   -t: also run the 1 km terrain harness (gl.Perf.Terrain 1024)
 #   "resume" launches from the save that "teleport" leaves in the second cell (quit autosaves).
@@ -20,7 +21,7 @@ while getopts "wt" OPT; do
 	esac
 done
 shift $((OPTIND - 1))
-MODES=("$@"); [ ${#MODES[@]} -eq 0 ] && MODES=(straight reversal sprint teleport resume)
+MODES=("$@"); [ ${#MODES[@]} -eq 0 ] && MODES=(straight reversal sprint teleport resume roundtrips)
 PERF="$GRIDLANDS_ROOT/Saved/Perf"
 SAVE="$GRIDLANDS_ROOT/Saved/SaveGames/Gridlands/world.json"
 mkdir -p "$PERF"
@@ -41,7 +42,11 @@ run() { # command, result file, output name, new-world flag
 
 [ $TERRAIN -eq 1 ] && { run "gl.Perf.Terrain 1024" terrain-1024m.json "$NAV-terrain-1024m.json" -GLNewWorld; rm -f "$SAVE"; }
 for MODE in "${MODES[@]}"; do
-	if [ "$MODE" = resume ]; then
+	if [ "$MODE" = roundtrips ]; then
+		rm -f "$SAVE"
+		run "gl.Perf.RoundTrips 8" roundtrips.json "$NAV-roundtrips.json" -GLNewWorld
+		rm -f "$SAVE"
+	elif [ "$MODE" = resume ]; then
 		[ -f "$SAVE" ] || { echo "  resume: no save (run teleport first)"; continue; }
 		run "gl.Perf.Crossing resume" crossing-resume.json "$NAV-crossing-resume.json" ""
 		rm -f "$SAVE"

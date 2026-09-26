@@ -24,6 +24,7 @@
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonWriter.h"
 #include "Terrain/GLTerrainChunk.h"
+#include "UObject/GarbageCollection.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "World/GLGridSubsystem.h"
 #include "World/GLGridCells.h"
@@ -491,6 +492,67 @@ namespace GLPerf
 		}
 		return true;
 	}
+
+	/**
+	 * Memory across many round trips between the two cells in the real game (P7): the editor automation
+	 * world cannot measure this (it never runs the physics and render scenes' deferred cleanup).
+	 * Every 6 s Zenny jumps to the other cell, which streams in synchronously while the one left
+	 * streams out; garbage is collected, then memory is sampled. Writes Saved/Perf/roundtrips.json.
+	 */
+	FAutoConsoleCommandWithWorldAndArgs RoundTripsCommand(
+		TEXT("gl.Perf.RoundTrips"),
+		TEXT("DEV ONLY: gl.Perf.RoundTrips [N=8] - jumps Zenny between the cells N times each way, sampling memory after each."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic([](const TArray<FString>& Args, UWorld* World)
+		{
+			const int32 RoundTrips = FMath::Max(2, Args.Num() > 0 ? FCString::Atoi(*Args[0]) : 8);
+			TWeakObjectPtr<UWorld> Weak(World);
+			TSharedRef<TArray<double>> Samples = MakeShared<TArray<double>>();
+			FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Weak, Samples, RoundTrips](float)
+			{
+				UWorld* W = Weak.Get();
+				APawn* Zenny = W ? UGameplayStatics::GetPlayerPawn(W, 0) : nullptr;
+				if (!Zenny)
+				{
+					return !!W;
+				}
+				if (Samples->Num() >= 2 * RoundTrips)
+				{
+					// Growth after the first full round trip (both cells have been visited once).
+					double Peak = 0.0;
+					for (int32 I = 2; I < Samples->Num(); ++I)
+					{
+						Peak = FMath::Max(Peak, (*Samples)[I]);
+					}
+					TSharedRef<FJsonObject> O = MakeShared<FJsonObject>();
+					O->SetNumberField(TEXT("roundTrips"), RoundTrips);
+					TArray<TSharedPtr<FJsonValue>> Values;
+					for (const double Mb : *Samples)
+					{
+						Values.Add(MakeShared<FJsonValueNumber>(FMath::RoundToDouble(Mb)));
+					}
+					O->SetArrayField(TEXT("memMbAfterMove"), Values);
+					O->SetNumberField(TEXT("memGrowthMb"), Peak - (*Samples)[1]);
+					O->SetNumberField(TEXT("memPeakMb"), FMath::Max(Peak, FMath::Max((*Samples)[0], (*Samples)[1])));
+					FString Text;
+					FJsonSerializer::Serialize(O, TJsonWriterFactory<>::Create(&Text));
+					FFileHelper::SaveStringToFile(Text, *(FPaths::ProjectSavedDir() / TEXT("Perf") / TEXT("roundtrips.json")));
+					UE_LOG(LogGridlands, Log, TEXT("gl.Perf.RoundTripsResult %s"), *Text);
+					GEngine->DeferredCommands.Add(TEXT("quit"));
+					return false;
+				}
+				const FVector2D To = Samples->Num() % 2 == 0 ? FVector2D(120000.0, 0.0) : FVector2D(0.0, -1200.0);
+				UGLGridSubsystem* Grid = W->GetSubsystem<UGLGridSubsystem>();
+				UGLTerrainSubsystem* Terrain = W->GetSubsystem<UGLTerrainSubsystem>();
+				Zenny->SetActorLocation(FVector(To, 300.0), false, nullptr, ETeleportType::TeleportPhysics);
+				Grid->Advance(Zenny->GetActorLocation());
+				Grid->FlushAll();
+				Zenny->SetActorLocation(FVector(To, Terrain->HeightAt(To) + 110.0), false, nullptr, ETeleportType::TeleportPhysics);
+				CollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS);
+				Samples->Add(FPlatformMemory::GetStats().UsedPhysical / (1024.0 * 1024.0));
+				UE_LOG(LogGridlands, Log, TEXT("gl.Perf.RoundTrips move %d: %.0f MB"), Samples->Num(), Samples->Last());
+				return true;
+			}), 6.0f);
+		}));
 
 	FAutoConsoleCommandWithWorldAndArgs CrossingCommand(
 		TEXT("gl.Perf.Crossing"),

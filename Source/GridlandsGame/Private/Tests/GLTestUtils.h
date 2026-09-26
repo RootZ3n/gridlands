@@ -12,6 +12,7 @@
 #include "GameplayTagContainer.h"
 #include "GameplayTagsManager.h"
 #include "Misc/AutomationTest.h"
+#include "UObject/UObjectGlobals.h"
 
 namespace GLTestUtils
 {
@@ -32,6 +33,9 @@ namespace GLTestUtils
 		{
 			GEngine->DestroyWorldContext(World);
 			World->DestroyWorld(false);
+			// Free it now: a 1 km world (terrain, structures, scatter) is gigabytes, and the whole
+			// suite's worlds must not pile up until the editor exits (the gate hit the OOM killer).
+			CollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS);
 		}
 	};
 
