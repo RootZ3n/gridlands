@@ -358,4 +358,21 @@ The final review frames are compared with the approved ones (3e7efcd).
     ([SURVIVAL-AND-THREAT §4, §4a](../../SURVIVAL-AND-THREAT.md)).
 
 ## Fresh clone
-FRESH_CLONE_FINAL
+**PASS.** A fresh clone of `b199ff2`, the final P7 code, built and passed **109/109** tests (40
+requirements).
+- It used only tracked inputs, including the LFS art content, plus the pinned engine (`00-*`).
+- Blender is not needed: the imported assets are committed.
+- The earlier clone of `1fb9845` (before closure) also passed, with 105/105.
+
+## P7 closure
+- **Visual direction:** approved by the operator.
+- **Engineering:**
+  - the pipeline is repeatable;
+  - the systems work in the styled scene;
+  - multi-frame presentation holds the authoritative-state-first invariant against a 12× dense
+    fixture;
+  - the P5, P6 and P7 regression gates pass;
+  - memory is bounded;
+  - save, restart and cancellation are proven;
+  - the fresh clone passes.
+- **P7 GREEN.** The mid-fall save remains GAMEPLAY CONSISTENCY DEBT, as the operator directed.
