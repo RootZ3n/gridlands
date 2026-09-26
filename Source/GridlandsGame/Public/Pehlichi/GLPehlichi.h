@@ -23,6 +23,7 @@ class GRIDLANDSGAME_API AGLPehlichi : public AActor
 
 public:
 	AGLPehlichi();
+	virtual void BeginPlay() override;
 
 	UGLPehlichiCommandComponent* GetCommands() const { return Commands; }
 	UGLScanComponent* GetScan() const { return Scan; }

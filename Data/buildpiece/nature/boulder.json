@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.nature.boulder",
+  "displayName": "Boulder",
+  "era": "era.memory.modern_day",
+  "material": "material.masonry.roman_concrete",
+  "role": "foundation",
+  "grounded": true,
+  "buildable": false,
+  "size": [
+    2.6,
+    1.9,
+    1.0
+  ],
+  "shapes": [
+    {
+      "size": [
+        2.2,
+        1.6,
+        0.9
+      ],
+      "offset": [
+        0,
+        0,
+        0.45
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "visual": "visual.nature.boulder_a",
+  "notes": "P7 world-only natural piece."
+}

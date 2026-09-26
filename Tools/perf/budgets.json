@@ -14,6 +14,10 @@
     "teleport": {"worstFrameMs": {"max": 40.0}, "frameMsP99": {"max": 8.0}, "streamingGameThreadMsWorst": {"max": 12.0}, "memPeakMb": {"max": 5200}},
     "resume": {"worstFrameMs": {"max": 25.0}}
   },
+  "roundtrips": {
+    "memGrowthMb": {"max": 400, "why": "P7: 8 round trips between the cells in the real game level off (measured growth ~100 MB after the first round trip); a per-round-trip leak (~0.5 GB each in the editor automation world) cannot fit"},
+    "memPeakMb": {"max": 5200}
+  },
   "terrain": {
     "navInvokersOnly": {"equals": true},
     "navFullBuildSeconds": {"max": 1.5, "why": "localized initial navigation (P5: 0.53 s; whole-cell 7.64 s)"},

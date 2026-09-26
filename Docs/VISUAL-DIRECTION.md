@@ -53,7 +53,84 @@ Gridlands should look like **a highly colorful, playable animated series**:
   palette**, not from a muted world.
 - **The core rule stands:** normal things look physical; glitched things reveal the Grid.
 
-### Art-direction spike (planned; NOT STARTED; after the P6 gameplay foundation)
+### P7 visual review: the direction is APPROVED (LOCKED DESIGN INTENT, operator, 2026-09-26)
+The P7 screenshots ([evidence](Evidence/P7-visual-spike/README.md), [ADR-0032](ADR/0032-visual-pipeline-and-stylization.md),
+[ART-PIPELINE](ART-PIPELINE.md)) establish **the correct visual family** for Gridlands.
+
+**The environment and art language are locked around:**
+- saturated, deliberate colour;
+- strong, irregular dark outlines;
+- simplified and exaggerated 3D forms;
+- graphic, cel-like shading;
+- strong, readable silhouettes;
+- playful proportions;
+- a "playable animated cartoon" presentation;
+- modern rendering underneath the stylization, never photorealism.
+
+**Inspirations, not sources.** WildStar remains the primary game-art inspiration. Gorillaz remains
+secondary, for character attitude, expressive posing, graphic silhouette and illustrated-character
+personality. Gridlands keeps its own identity and never copies protected assets or designs.
+
+**Never move toward photorealism.**
+
+#### Colour: aggressive, but deliberate
+The strong colour direction is approved. It does **not** mean everything is always equally bright
+and saturated.
+
+**Places and moments may have their own palette, value range and mood,** while staying
+recognisably Gridlands: zones, historical periods, dungeons, weather, times of day, interiors and
+story moments.
+
+**Examples of the principle** (not palette specifications):
+- a home region that is extremely green and cheerful;
+- a carnival pushing saturated reds, yellows, purples and neon;
+- an Ice Age museum leaning into cyan, blue and cold artificial light;
+- a municipal-library dungeon in warmer amber and dark interior values;
+- a Roman area of sun-baked stone against strongly coloured vegetation and sky.
+
+**Neon and synthwave accents work with this language** (the dusk and night proof); preserve that
+capability. **Night stays colourful and readable,** never the daytime scene desaturated.
+
+#### Characters and creatures are NOT final
+The current Zenny, Pehlichi and creature assets are **style proxies**. Appearing in an approved
+scene is not character-art approval.
+
+**Production characters need substantially more:**
+- silhouette design;
+- personality;
+- facial expression where applicable;
+- animation quality;
+- semantic emote capability;
+- exaggerated posing;
+- readable reactions.
+
+They stay within the approved rendering language, and are never realistic. **The stylized
+environment and the characters must look like they belong to the same animated world.**
+
+#### Outlines: selective, presentation-only (architecture approved)
+- Outlines stay **presentation-only** and **opt-in per visual**. Nothing is outlined automatically.
+- **Each future system is evaluated on its own before it is outlined:**
+  - translucent effects;
+  - stealth sight cones;
+  - AoE telegraphs;
+  - NICE corruption (today: never outlined);
+  - particles;
+  - water;
+  - rainbow and projectile effects;
+  - UI and world markers;
+  - ghost and placement previews.
+- **Outlines exist for readability and identity, not visual noise.**
+
+#### Corruption stays sparse (approved)
+The contrast is the language:
+- **Normal Gridlands:** organic, imperfect, colourful, illustrated, exaggerated.
+- **NICE corruption:** unnaturally exact, geometric, digital and precise.
+
+Never "cover everything in blue cubes": sparse corruption is stronger. **An otherwise normal prop
+or creature with a few impossible geometric intrusions stays the default.** VIS-2 enforces the
+budget: at most 4 cubes of at most 0.35 m per visual.
+
+### Art-direction spike (the plan it followed)
 **No mass asset production until a real-time Unreal scene proves the pipeline** can produce the
 "playable colorful animated series" look. The spike contains roughly:
 - Zenny and Pehlichi proxies;

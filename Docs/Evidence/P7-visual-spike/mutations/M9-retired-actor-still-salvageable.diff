@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -443,7 +443,6 @@
+ 				// Gameplay leaves now (ADR-0033): unbound from the salvage pipeline (a later load of the
+ 				// same placement can never be reached through it), hidden, no collision. Destroyed later.
+ 				Actor->GetSalvageable()->OnSalvaged.RemoveAll(this);
+-				Actor->GetSalvageable()->RestoreSalvaged(); // refuses any further salvage; hidden, no collision
+ 				Actor->bRetired = true;
+ 				Retiring.Add(Actor);
+ 				Part.Actor = nullptr;

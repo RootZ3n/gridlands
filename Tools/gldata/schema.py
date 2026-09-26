@@ -303,6 +303,8 @@ SCHEMAS: dict[str, Obj] = {
             "buildable": Bool(),
             # P6: how it moves when unsupported (deterministic collapse).
             "collapse": COLLAPSE,
+            # P7: how it looks (visual.*); collision and support stay on shapes/sockets.
+            "visual": Ref("visual"),
         },
         required=("displayName", "era", "material", "role", "grounded", "size", "shapes", "sockets"),
     ),
@@ -377,14 +379,16 @@ SCHEMAS: dict[str, Obj] = {
     ),
     "placement": kind(
         {
-            "kind": Enum("glitch", "salvage_node", "spawn", "patrol", "discovery", "encounter", "puzzle_site", "structure"),
-            "definition": Ref("glitch", "salvage", "creature", "knowledge", "puzzle", "structure"),
+            "kind": Enum("glitch", "salvage_node", "spawn", "patrol", "discovery", "encounter", "puzzle_site", "structure", "scatter"),
+            "definition": Ref("glitch", "salvage", "creature", "knowledge", "puzzle", "structure", "visual"),
             "anchor": Ref("anchor"),
             "offset": VEC3,
             "transform": Obj({"location": VEC3, "yaw": Num(-360, 360)}, required=("location",)),
             "bindings": Map(Ref("placement")),  # glitch requirement name -> target placement (rules PLC-2)
-            # discovery: metres within which Zenny finds it (default 8).
+            # discovery: metres within which Zenny finds it (default 8). scatter: the patch radius.
             "radius": Num(0.5, 200),
+            # scatter (P7): how many instances of the visual within the radius.
+            "count": Int(1, 5000),
         },
         required=("kind", "definition"),
         one_of=(("anchor", "transform"),),
@@ -407,6 +411,8 @@ SCHEMAS: dict[str, Obj] = {
             "leashRadius": Num(1, 500),
             "drops": List(Obj({"item": Ref("item"), "count": COUNT, "yieldCategory": Ref("yield")},
                               required=("item", "count", "yieldCategory"))),
+            # P7: how it looks (visual.*).
+            "visual": Ref("visual"),
         },
         required=("displayName", "health", "walkSpeed", "chaseSpeed", "perception", "attack", "leashRadius"),
     ),
@@ -435,6 +441,24 @@ SCHEMAS: dict[str, Obj] = {
                               required=("name", "piece", "location", "salvage")), min_items=1),
         },
         required=("displayName", "parts"),
+    ),
+    # P7: how something looks (art pipeline runtime contract). Metres, degrees; presentation only.
+    "visual": kind(
+        {
+            "displayName": Str(),
+            "mesh": Str(max_len=64),
+            "tint": List(Num(0, 4), min_items=3),
+            "outline": Bool(),
+            "castShadow": Bool(),
+            "scale": Num(0.05, 20),
+            "offset": VEC3,
+            "yaw": Num(-360, 360),
+            # NICE's corruption: electric-blue precise cubes, SPARSE (VIS-2).
+            "corruption": List(Obj({"offset": VEC3, "size": Num(0.01, 2), "rotation": VEC3}, required=("offset", "size"))),
+            "light": Obj({"color": List(Num(0, 1), min_items=3), "intensity": Num(0, 100000), "radius": Num(0.1, 200), "offset": VEC3},
+                         required=("color", "intensity", "radius")),
+        },
+        required=("mesh",),
     ),
     # P6: provisional physical and noise tuning (data, never tuned by feel). Metres and seconds.
     "tuning": kind(
@@ -497,4 +521,4 @@ def key_paths(spec: Spec, prefix: str = "") -> list[str]:
 
 PLACEMENT_KIND_DEFINITION = {"glitch": "glitch", "salvage_node": "salvage", "spawn": "creature", "patrol": "creature",
                              "discovery": "knowledge", "encounter": "creature", "puzzle_site": "puzzle",
-                             "structure": "structure"}
+                             "structure": "structure", "scatter": "visual"}

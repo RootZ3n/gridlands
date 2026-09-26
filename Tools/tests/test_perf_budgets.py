@@ -31,6 +31,12 @@ class PerfBudgets(unittest.TestCase):
         result["worstFrameMs"] = 45.0
         self.assertTrue(any("worstFrameMs" in b for b in check_budgets.breaches("local-crossing-reversal.json", result, self.budgets)))
 
+    def test_a_round_trip_leak_breaches(self):
+        levelled = {"roundTrips": 8, "memGrowthMb": 102.0, "memPeakMb": 4383.0}
+        self.assertEqual(check_budgets.breaches("local-roundtrips.json", levelled, self.budgets), [])
+        leaking = dict(levelled, memGrowthMb=540.0 * 7)  # the editor automation world's per-round-trip growth
+        self.assertTrue(any("memGrowthMb" in b for b in check_budgets.breaches("local-roundtrips.json", leaking, self.budgets)))
+
 
 class WholeCellNavigationIsProhibited(unittest.TestCase):
     """ADR-0029 (operator decision 2026-09-25): localized navigation is canonical."""

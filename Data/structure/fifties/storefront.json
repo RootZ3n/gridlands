@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "id": "structure.fifties.storefront",
+  "displayName": "Roadside diner front",
+  "notes": "P7 style/authoring proof: a 1950s storefront from 16 modular kit parts in the shared structural language. The awning hangs on three posts and on the roof slabs.",
+  "parts": [
+    {
+      "name": "floor_w",
+      "piece": "buildpiece.fifties.foundation",
+      "location": [
+        -1,
+        0,
+        0
+      ],
+      "salvage": "salvage.structure.fifties_foundation"
+    },
+    {
+      "name": "floor_e",
+      "piece": "buildpiece.fifties.foundation",
+      "location": [
+        1,
+        0,
+        0
+      ],
+      "salvage": "salvage.structure.fifties_foundation"
+    },
+    {
+      "name": "front_w",
+      "piece": "buildpiece.fifties.wall_window",
+      "location": [
+        -1,
+        -1,
+        0.3
+      ],
+      "salvage": "salvage.structure.fifties_wall"
+    },
+    {
+      "name": "front_e",
+      "piece": "buildpiece.fifties.wall_door",
+      "location": [
+        1,
+        -1,
+        0.3
+      ],
+      "salvage": "salvage.structure.fifties_wall"
+    },
+    {
+      "name": "back_w",
+      "piece": "buildpiece.fifties.wall_plain",
+      "location": [
+        -1,
+        1,
+        0.3
+      ],
+      "salvage": "salvage.structure.fifties_wall"
+    },
+    {
+      "name": "back_e",
+      "piece": "buildpiece.fifties.wall_plain",
+      "location": [
+        1,
+        1,
+        0.3
+      ],
+      "salvage": "salvage.structure.fifties_wall"
+    },
+    {
+      "name": "side_w",
+      "piece": "buildpiece.fifties.wall_plain",
+      "location": [
+        -2,
+        0,
+        0.3
+      ],
+      "salvage": "salvage.structure.fifties_wall",
+      "yawQuarter": 1
+    },
+    {
+      "name": "side_e",
+      "piece": "buildpiece.fifties.wall_plain",
+      "location": [
+        2,
+        0,
+        0.3
+      ],
+      "salvage": "salvage.structure.fifties_wall",
+      "yawQuarter": 1
+    },
+    {
+      "name": "roof_w",
+      "piece": "buildpiece.fifties.roof_slab",
+      "location": [
+        -1,
+        0,
+        2.8
+      ],
+      "salvage": "salvage.structure.timber_deck"
+    },
+    {
+      "name": "roof_e",
+      "piece": "buildpiece.fifties.roof_slab",
+      "location": [
+        1,
+        0,
+        2.8
+      ],
+      "salvage": "salvage.structure.timber_deck"
+    },
+    {
+      "name": "awning_w",
+      "piece": "buildpiece.fifties.awning",
+      "location": [
+        -1,
+        -2,
+        2.8
+      ],
+      "salvage": "salvage.structure.timber_deck"
+    },
+    {
+      "name": "awning_e",
+      "piece": "buildpiece.fifties.awning",
+      "location": [
+        1,
+        -2,
+        2.8
+      ],
+      "salvage": "salvage.structure.timber_deck"
+    },
+    {
+      "name": "post_w",
+      "piece": "buildpiece.fifties.post_tall",
+      "location": [
+        -2,
+        -3,
+        0
+      ],
+      "salvage": "salvage.structure.timber_post"
+    },
+    {
+      "name": "post_m",
+      "piece": "buildpiece.fifties.post_tall",
+      "location": [
+        0,
+        -3,
+        0
+      ],
+      "salvage": "salvage.structure.timber_post"
+    },
+    {
+      "name": "post_e",
+      "piece": "buildpiece.fifties.post_tall",
+      "location": [
+        2,
+        -3,
+        0
+      ],
+      "salvage": "salvage.structure.timber_post"
+    },
+    {
+      "name": "sign",
+      "piece": "buildpiece.fifties.sign",
+      "location": [
+        1,
+        0,
+        3.0
+      ],
+      "salvage": "salvage.structure.fifties_sign"
+    }
+  ]
+}

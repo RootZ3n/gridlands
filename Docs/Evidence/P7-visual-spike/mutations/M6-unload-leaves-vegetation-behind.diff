@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
+@@ -218,7 +218,7 @@
+ 	CellActors.RemoveAndCopyValue(CellId, Owned);
+ 	for (const TWeakObjectPtr<AActor>& Actor : Owned)
+ 	{
+-		if (AActor* Live = Actor.Get())
++		if (AActor* Live = Actor.Get(); Live && !Live->IsA<AGLScatterPatch>())
+ 		{
+ 			Live->Destroy();
+ 			++Removed;

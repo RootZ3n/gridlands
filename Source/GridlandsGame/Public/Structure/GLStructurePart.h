@@ -23,6 +23,11 @@ public:
 
 	FName StructurePlacement;
 	FName PartName;
+	/**
+	 * Its cell unloaded (ADR-0033): no longer part of any structure, unbound from the salvage
+	 * pipeline, hidden and without collision, waiting to be destroyed over the next frames.
+	 */
+	bool bRetired = false;
 
 	/**
 	 * Presentation seam for later cosmetic physics (dust, chips, boards, small rubble). Fired when the

@@ -107,13 +107,31 @@ and only for parts that are no longer intact.
   3. export canonical `structure.*` data;
   4. the runtime consumes the same deterministic graph;
   5. saves persist facts against it.
-- **Structures on authored geometry (dungeons, interiors).** Support and landing currently use the
-  terrain heightfield as "ground". Interiors will need a ground source for authored level geometry.
-  Options: exported floor data, or a query against level collision, which is deterministic only
-  when that collision is loaded. That choice must be made before structures are authored inside
-  dungeons.
+- **Structures on authored geometry (dungeons, interiors): DECIDED by the operator (2026-09-25).**
+  **Exported/authored floor-support data is the authoritative structural ground source.** Runtime
+  level-collision queries are never structural truth.
+  - The intended workflow:
+    1. authored level geometry;
+    2. editor/export validation;
+    3. a deterministic floor/support representation;
+    4. canonical structural data and runtime;
+    5. persistence against that representation.
+  - Runtime collision may later serve validation, movement, presentation and suitable physical
+    queries. Structural support must never change because streamed collision is temporarily absent.
+  - Not built yet. Terrain remains the ground source for outdoor structures.
 - **Structure-on-structure impact** (falling debris breaking other parts) and **load** (weight)
   are not modelled. Cascades come from support alone.
+
+## Recorded debt (operator, 2026-09-25)
+- **GAMEPLAY CONSISTENCY DEBT: saving or unloading mid-fall.** The collapse outcome persists, but
+  impact damage that has not happened yet is never applied afterwards. That is a future save/reload
+  exploit: a player could avoid lethal collapse damage. **It must be resolved before structural
+  collapse is production-complete.** Not addressed until a milestone touches this path.
+- **Player-built physical collapse: deferred** (a future operator decision; see ADR-0024).
+- **Debris impact and load propagation between parts: deferred** until there is a measured design
+  need.
+- **`SpawnProofCreature`: accepted** as non-shipping, proof/dev-only, non-persistent and
+  cell-scoped. No permanent shipping creatures are added to support acceptance harnesses.
 
 ## Consequences
 - **One structural language** for world and player, so tools, validation and tests serve both.

@@ -3,24 +3,31 @@
 # 1920x1080 offscreen, vsync off), Zenny walks across the canonical 1 km Grid (gl.Perf.Crossing).
 # Results: Saved/Perf/<nav>-crossing-<mode>.json, plus <nav>-terrain-1024m.json with -t.
 # Usage: Tools/perf-crossing.sh [-t] [-w] [mode...]
-#   modes: straight reversal sprint teleport resume (default: straight reversal sprint teleport resume)
+#   modes: straight reversal sprint teleport resume roundtrips (default: all of them)
+#   roundtrips: 8 jumps each way between the cells, memory sampled after each (gl.Perf.RoundTrips, P7)
 #   -w: whole-cell navigation (invokers off) instead of localized navigation (ADR-0029)
 #   -t: also run the 1 km terrain harness (gl.Perf.Terrain 1024)
+#   -d: the P7 dense authored stress fixture in the lots (-GLDenseProof, dev only); results are named dense-*
 #   "resume" launches from the save that "teleport" leaves in the second cell (quit autosaves).
 set -uo pipefail
 . "$(dirname "$0")/lib/common.sh"
 resolve_engine_root
 UE_EDITOR="$ENGINE_ROOT/Engine/Binaries/Linux/UnrealEditor"
-NAV=local; EXTRA=(); TERRAIN=0
-while getopts "wt" OPT; do
+NAV=local; EXTRA=(); TERRAIN=0; DENSE=0
+while getopts "wtd" OPT; do
 	case $OPT in
 		w) NAV=whole; EXTRA=(-ini:Engine:[/Script/NavigationSystem.NavigationSystemV1]:bGenerateNavigationOnlyAroundNavigationInvokers=False) ;;
 		t) TERRAIN=1 ;;
+		d) DENSE=1 ;;
 		*) exit 2 ;;
 	esac
 done
 shift $((OPTIND - 1))
-MODES=("$@"); [ ${#MODES[@]} -eq 0 ] && MODES=(straight reversal sprint teleport resume)
+if [ $DENSE -eq 1 ]; then
+	[ "$NAV" = local ] || result FAIL "-d measures the canonical (localized) navigation only"
+	NAV=dense; EXTRA+=(-GLDenseProof)
+fi
+MODES=("$@"); [ ${#MODES[@]} -eq 0 ] && MODES=(straight reversal sprint teleport resume roundtrips)
 PERF="$GRIDLANDS_ROOT/Saved/Perf"
 SAVE="$GRIDLANDS_ROOT/Saved/SaveGames/Gridlands/world.json"
 mkdir -p "$PERF"
@@ -32,7 +39,8 @@ run() { # command, result file, output name, new-world flag
 		-ExecCmds="r.SetRes 1920x1080, r.VSync 0, t.MaxFPS 0, $1" >/dev/null 2>&1
 	if [ -s "$PERF/$2" ]; then
 		mv "$PERF/$2" "$PERF/$3"
-		grep -E "LogGridlands: (Grid|Load|Save|gl.Demo.GridReport)" "$GRIDLANDS_ROOT/Saved/Logs/Gridlands.log" | cut -c31- > "$PERF/$3.log.txt"
+		grep -E "LogGridlands: (Grid|Load|Save|Placements|gl.Demo.GridReport)" "$GRIDLANDS_ROOT/Saved/Logs/Gridlands.log" | cut -c31- > "$PERF/$3.log.txt"
+		echo "machine: $(uptime | sed 's/.*load/load/')" >> "$PERF/$3.log.txt" # other work on the machine skews frame times
 		echo "  $3: done"
 	else
 		echo "  $3: NO RESULT (timeout or crash)"
@@ -41,7 +49,11 @@ run() { # command, result file, output name, new-world flag
 
 [ $TERRAIN -eq 1 ] && { run "gl.Perf.Terrain 1024" terrain-1024m.json "$NAV-terrain-1024m.json" -GLNewWorld; rm -f "$SAVE"; }
 for MODE in "${MODES[@]}"; do
-	if [ "$MODE" = resume ]; then
+	if [ "$MODE" = roundtrips ]; then
+		rm -f "$SAVE"
+		run "gl.Perf.RoundTrips 8" roundtrips.json "$NAV-roundtrips.json" -GLNewWorld
+		rm -f "$SAVE"
+	elif [ "$MODE" = resume ]; then
 		[ -f "$SAVE" ] || { echo "  resume: no save (run teleport first)"; continue; }
 		run "gl.Perf.Crossing resume" crossing-resume.json "$NAV-crossing-resume.json" ""
 		rm -f "$SAVE"
@@ -53,7 +65,7 @@ for MODE in "${MODES[@]}"; do
 done
 rm -f "$SAVE"
 # Regression budgets (Tools/perf/budgets.json): localized runs must stay within them.
-if [ "$NAV" = local ]; then
-	python3 "$GRIDLANDS_ROOT/Tools/perf/check_budgets.py" "$PERF"/local-*.json || result FAIL "P5 regression budget breached (Tools/perf/budgets.json)"
+if [ "$NAV" = local ] || [ "$NAV" = dense ]; then
+	python3 "$GRIDLANDS_ROOT/Tools/perf/check_budgets.py" "$PERF"/$NAV-*.json || result FAIL "P5 regression budget breached (Tools/perf/budgets.json)"
 fi
 result PASS "crossing runs finished (Saved/Perf/$NAV-*)"

@@ -35,6 +35,12 @@ Rules:
     analysis.
   - Rumours live in Chukka, not in a quest log.
 
+**Knowledge is not skill** (operator, 2026-09-26; [SURVIVAL-AND-THREAT §4](SURVIVAL-AND-THREAT.md)).
+- Use-based mastery is how capable Zenny is.
+- The three books are what Zenny knows.
+- A high skill never unlocks undiscovered knowledge.
+- Failure, including death, may add knowledge (§4a there), with diminishing returns for repeats.
+
 **Architecture today (enforced).** Every `knowledge.*` entry's category belongs to exactly one book
 (`Data/_registry/knowledge-domains.json`; validator KN-2):
 - `Knowledge.BuildingStyle` and `Knowledge.MaterialUse` belong to Ofi.

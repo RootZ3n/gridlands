@@ -18,7 +18,7 @@ AGLTerrainChunk::AGLTerrainChunk()
 	Mesh->SetCanEverAffectNavigation(true);
 	// Temporary ground material (P4): colours come from the vertices (see Rebuild). Falls back to
 	// the engine grid if the generated material is missing.
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface> Ground(TEXT("/Game/Gridlands/Materials/M_TerrainVertexColor.M_TerrainVertexColor"));
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> Ground(TEXT("/Game/Gridlands/Art/Materials/M_GLTerrain.M_GLTerrain"));
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface> Grid(TEXT("/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"));
 	if (Ground.Succeeded())
 	{
@@ -91,8 +91,8 @@ UE::Geometry::FDynamicMesh3 AGLTerrainChunk::BuildMesh(const FGLChunkSnapshot& S
 	Built.EnableAttributes();
 	FMeshNormals::QuickComputeVertexNormals(Built);
 	FMeshNormals::InitializeOverlayToPerVertexNormals(Built.Attributes()->PrimaryNormals(), true);
-	// Vertex colours for the temporary material: lawn on the flat, rock where it is steep, dirt
-	// where the ground was dug or raised (so edits read at a glance), with a little variation.
+	// Vertex colours are MASKS for the stylized ground material (P7, M_GLTerrain): R flatness,
+	// G exposed earth where Zenny dug or raised, B per-vertex variation. The palette is the material's.
 	Built.Attributes()->EnablePrimaryColors();
 	FDynamicMeshColorOverlay* Colours = Built.Attributes()->PrimaryColors();
 	TArray<int32> ColourOfVertex;
@@ -109,10 +109,9 @@ UE::Geometry::FDynamicMesh3 AGLTerrainChunk::BuildMesh(const FGLChunkSnapshot& S
 		const float Up = static_cast<float>(1.0 / FMath::Sqrt(1.0 + GX * GX + GY * GY));
 		const uint32 Hash = static_cast<uint32>(X) * 73856093u ^ static_cast<uint32>(Y) * 19349663u;
 		const float Jitter = 0.94f + 0.12f * static_cast<float>(Hash % 1000) / 1000.f;
-		const FLinearColor Lawn(0.20f, 0.30f, 0.12f), Rock(0.36f, 0.34f, 0.31f), Dirt(0.34f, 0.24f, 0.15f);
-		FLinearColor C = FMath::Lerp(Rock, Lawn, FMath::SmoothStep(0.72f, 0.9f, Up));
-		C = FMath::Lerp(C, Dirt, FMath::Clamp(Edited / 25.f, 0.f, 1.f));
-		ColourOfVertex[Vid] = Colours->AppendElement(FVector4f(C.R * Jitter, C.G * Jitter, C.B * Jitter, 1.f));
+		const float Flat = FMath::SmoothStep(0.72f, 0.95f, Up);
+		const float Exposed = FMath::Clamp(Edited / 8.f, 0.f, 1.f);
+		ColourOfVertex[Vid] = Colours->AppendElement(FVector4f(Flat, Exposed, (Jitter - 0.94f) / 0.12f, 1.f));
 	}
 	for (int32 T : Built.TriangleIndicesItr())
 	{

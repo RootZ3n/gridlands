@@ -1,0 +1,17 @@
+LogGridlands: Placements: DEV dense proof fixture registered (92 placements in cell.outer.diner_lots)
+LogGridlands: Grid: entered cell.home.origin (from None)
+LogGridlands: Grid: loading cell.home.origin (epoch 1)
+LogGridlands: Grid: slow streaming frame 25.61 ms: load/unload 0.30, ground 25.26 [finish 0.00, apply 0.00 (0, worst 0.00 = mesh 0.00 + collision 0.00 + nav 0.00), launch 0.19, retire 0.00 (0)], authoritative 0.00, presentation 0.02 (0 units)
+LogGridlands: Grid: cell.home.origin runtime layer in (epoch 1, kept state: no)
+LogGridlands: Grid: slow streaming frame 13.56 ms: load/unload 0.01, ground 5.25 [finish 0.00, apply 5.22 (1, worst 5.01 = mesh 4.88 + collision 0.13 + nav 0.01), launch 0.03, retire 0.00 (0)], authoritative 8.30, presentation 0.00 (0 units)
+LogGridlands: Grid: slow streaming frame 8.97 ms: load/unload 0.02, ground 8.95 [finish 0.00, apply 8.90 (1, worst 7.88 = mesh 7.70 + collision 0.15 + nav 0.02), launch 0.03, retire 0.00 (0)], authoritative 0.00, presentation 0.00 (0 units)
+LogGridlands: Grid: entered cell.outer.diner_lots (from cell.home.origin)
+LogGridlands: Grid: loading cell.outer.diner_lots (epoch 2)
+LogGridlands: Grid: slow streaming frame 113.13 ms: load/unload 0.10, ground 113.03 [finish 0.00, apply 4.90 (1, worst 4.78 = mesh 4.64 + collision 0.13 + nav 0.01), launch 0.04, retire 0.00 (0)], authoritative 0.00, presentation 0.00 (0 units)
+LogGridlands: Grid: cell.outer.diner_lots runtime layer in (epoch 2, kept state: no)
+LogGridlands: Grid: cell.home.origin (epoch 1) ready: ground 26 ms, authoritative runtime 478 ms, presented 555 ms, every chunk 6377 ms
+LogGridlands: Grid: cell.outer.diner_lots (epoch 2) ready: ground 113 ms, authoritative runtime 5189 ms, presented 5241 ms, every chunk 5241 ms
+LogGridlands: gl.Demo.Dense: salvaged; 5 collapse(s) running
+LogGridlands: gl.Demo.Dense: before quit: 84 dense structures, 12 facts, digest 83671a12; 300 present parts, 300 actors, 0 duplicates, 0 resurrected | PASS
+LogGridlands: gl.Demo.Dense: before quit: placement.diner_lots.proof_dense_010: post_south=removed post_north=removed deck_west=debris-salvaged deck_east=debris@V(X=64600.00, Y=4000.00, Z=-187.00)(actor at rest)
+LogGridlands: Save: wrote ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json

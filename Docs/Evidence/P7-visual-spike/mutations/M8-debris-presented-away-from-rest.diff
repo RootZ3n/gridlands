@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -167,7 +167,7 @@
+ 	const FGLActiveCollapse* Falling = Active.FindByPredicate([Placement, Name](const FGLActiveCollapse& C) { return C.Placement == Placement && C.Part == Name; });
+ 	if (Part.State == EGLStructurePartState::Debris && !Falling)
+ 	{
+-		MakeDebris(Structure, Part); // at its authoritative rest, solid, salvageable as debris
++		SpawnPart(Structure, Part); // MUTANT: made where it stood
+ 		return Part.Actor.Get();
+ 	}
+ 	AGLStructurePart* Actor = SpawnPart(Structure, Part);

@@ -239,6 +239,54 @@ struct GRIDLANDSCORE_API FGLBuildSocketDef
 	UPROPERTY() TArray<double> Offset;
 };
 
+/** One cube of NICE's corruption on a visual (P7): unnaturally precise, and sparse (VIS-2). Metres, degrees. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLCorruptionDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() TArray<double> Offset;
+	UPROPERTY() double Size = 0.1;
+	UPROPERTY() TArray<double> Rotation;
+};
+
+/** A light a visual carries (P7): signs, lamps. Metres; intensity in candela. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLVisualLightDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() TArray<double> Color;
+	UPROPERTY() double Intensity = 0.0;
+	UPROPERTY() double Radius = 0.0;
+	UPROPERTY() TArray<double> Offset;
+};
+
+/**
+ * How something looks (P7, the art pipeline's runtime contract): an imported mesh (Art/Source recipe
+ * -> Tools/art.sh), a tint, whether it is outlined, sparse corruption cubes and an optional light.
+ * Presentation only: collision, support and gameplay stay on the authoritative data (shapes, parts).
+ */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLVisualDef : public FGLDefinitionBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString DisplayName;
+	/** An imported mesh name under /Game/Gridlands/Art/Meshes (VIS-1). */
+	UPROPERTY() FString Mesh;
+	UPROPERTY() TArray<double> Tint;
+	/** Dark graphic outline (the stylize post-process reads custom depth). Default true. */
+	UPROPERTY() bool Outline = true;
+	UPROPERTY() bool CastShadow = true;
+	UPROPERTY() double Scale = 1.0;
+	/** Mesh placement relative to its owner's origin (metres, degrees). */
+	UPROPERTY() TArray<double> Offset;
+	UPROPERTY() double Yaw = 0.0;
+	UPROPERTY() TArray<FGLCorruptionDef> Corruption;
+	UPROPERTY() FGLVisualLightDef Light;
+};
+
 /**
  * How a piece moves when it loses support (P6, deterministic collapse). Data, so new motions and
  * direction policies can be added without touching the structures that use them.
@@ -278,6 +326,8 @@ struct GRIDLANDSCORE_API FGLBuildPieceDef : public FGLDefinitionBase
 	UPROPERTY() bool Buildable = true;
 	/** Optional (P6): how it falls when unsupported (default: drop). */
 	UPROPERTY() FGLCollapseDef Collapse;
+	/** Optional (P7): how it looks (visual.*). Collision and support stay on the data shapes. */
+	UPROPERTY() FName Visual;
 };
 
 /** One part of an authored structure (P6): a piece in the shared structural language, placed in structure space. */
@@ -573,6 +623,8 @@ struct GRIDLANDSCORE_API FGLPlacementDef : public FGLDefinitionBase
 	UPROPERTY() TMap<FString, FName> Bindings;
 	/** Discovery: metres within which Zenny finds it (0 = default). */
 	UPROPERTY() double Radius = 0.0;
+	/** scatter (P7): how many instances within Radius. */
+	UPROPERTY() int32 Count = 0;
 
 	bool IsAnchored() const { return !Anchor.IsNone(); }
 };
@@ -642,6 +694,8 @@ struct GRIDLANDSCORE_API FGLCreatureDef : public FGLDefinitionBase
 	UPROPERTY() FGLCreatureAttackDef Attack;
 	UPROPERTY() double LeashRadius = 0.0;
 	UPROPERTY() TArray<FGLSalvageYieldDef> Drops;
+	/** Optional (P7): how it looks (visual.*). */
+	UPROPERTY() FName Visual;
 };
 
 USTRUCT()

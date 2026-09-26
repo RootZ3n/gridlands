@@ -1,0 +1,704 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0DEBA87A8782C984AE4A58F2ABF8F",
+			"instanceName": "Pehverse-3609911",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.26-17.20.18",
+	"succeeded": 1,
+	"succeededWithWarnings": 2,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 42.615875244140625,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "ACollapseDecidedBeforePresentationShowsTheDecision",
+			"fullTestPath": "Gridlands.Game.Streaming.ACollapseDecidedBeforePresentationShowsTheDecision",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DEBA87A8782C984AE4A58F2ABF8F"
+			],
+			"duration": 6.1984391212463379,
+			"dateTime": "2026.09.26-17.19.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DenseFixtureStandsAndPresentsCompletely",
+			"fullTestPath": "Gridlands.Game.Streaming.DenseFixtureStandsAndPresentsCompletely",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DEBA87A8782C984AE4A58F2ABF8F"
+			],
+			"duration": 5.988072395324707,
+			"dateTime": "2026.09.26-17.19.41",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.26-17.19.44"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "dense fixture: 84 structures, 308 parts, 12 vegetation patches in the lots",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.26-17.19.47"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PresentationNeverRunsAheadOfSavedState",
+			"fullTestPath": "Gridlands.Game.Streaming.PresentationNeverRunsAheadOfSavedState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DEBA87A8782C984AE4A58F2ABF8F"
+			],
+			"duration": 16.550132751464844,
+			"dateTime": "2026.09.26-17.19.47",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.26-17.19.50"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "presented over 362 frames at 0.05 ms per frame",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.26-17.19.58"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UnloadDuringPresentationCancelsCleanly",
+			"fullTestPath": "Gridlands.Game.Streaming.UnloadDuringPresentationCancelsCleanly",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0DEBA87A8782C984AE4A58F2ABF8F"
+			],
+			"duration": 13.879228591918945,
+			"dateTime": "2026.09.26-17.20.04",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.26-17.20.07"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  a retired actor is marked out of the salvage pipeline' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Misc/Optional.h",
+					"lineNumber": 372,
+					"timestamp": "2026.09.26-17.20.13"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  and refuses salvage' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Misc/Optional.h",
+					"lineNumber": 133,
+					"timestamp": "2026.09.26-17.20.13"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "cycle 0: 2 actors made before the unload, 2 retired in the unload frame",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.26-17.20.13"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_022 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.13"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_022 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.13"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  no live fixture actor survives the unload (retired ones are inert)' to be 0, but it was 2.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLDenseSpawnTests.cpp",
+					"lineNumber": 395,
+					"timestamp": "2026.09.26-17.20.13"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "cycle 0: retired actors destroyed over 60 frames at 0.05 ms",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  a retired actor is marked out of the salvage pipeline' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Misc/Optional.h",
+					"lineNumber": 372,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  and refuses salvage' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Misc/Optional.h",
+					"lineNumber": 133,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "cycle 1: 16 actors made before the unload, 16 retired in the unload frame",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_022 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_022 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_023 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_023 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_021 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_021 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_024 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_024 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_020 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_025 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_025 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_019 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_019 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_019 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_019 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_009 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  no live fixture actor survives the unload (retired ones are inert)' to be 0, but it was 16.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLDenseSpawnTests.cpp",
+					"lineNumber": 395,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "cycle 1: retired actors destroyed over 60 frames at 0.05 ms",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.26-17.20.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  a retired actor is marked out of the salvage pipeline' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Misc/Optional.h",
+					"lineNumber": 372,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  and refuses salvage' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Misc/Optional.h",
+					"lineNumber": 133,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "cycle 2: 13 actors made before the unload, 13 retired in the unload frame",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_022 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_022 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_023 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_023 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_021 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_021 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_024 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_024 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_020 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_025 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_025 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_019 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "unloaded: a retired actor of placement.diner_lots.proof_dense_019 is still visible or solid",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  no live fixture actor survives the unload (retired ones are inert)' to be 0, but it was 13.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLDenseSpawnTests.cpp",
+					"lineNumber": 395,
+					"timestamp": "2026.09.26-17.20.15"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "cycle 2: retired actors destroyed over 60 frames at 0.05 ms",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.26-17.20.15"
+				}
+			],
+			"warnings": 1,
+			"errors": 40,
+			"artifacts": []
+		}
+	]
+}

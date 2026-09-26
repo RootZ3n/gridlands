@@ -73,7 +73,7 @@ double UGLStructureSubsystem::GroundAt(const FVector2D& At) const
 	return Terrain ? Terrain->HeightAt(At) : 0.0;
 }
 
-bool UGLStructureSubsystem::SpawnStructure(FName Placement, FName DefId, FName Cell, const FVector& Origin, int32 YawQuarter)
+bool UGLStructureSubsystem::SpawnStructure(FName Placement, FName DefId, FName Cell, const FVector& Origin, int32 YawQuarter, bool bDeferPresentation)
 {
 	const FGLContentRegistry& Content = GLContent::Get();
 	const FGLStructureDef* Def = Content.Find<FGLStructureDef>(DefId);
@@ -112,9 +112,120 @@ bool UGLStructureSubsystem::SpawnStructure(FName Placement, FName DefId, FName C
 	}
 	for (FGLStructurePartRuntime& Part : Structure.Parts)
 	{
-		SpawnPart(Structure, Part);
+		if (bDeferPresentation)
+		{
+			Pending.Add({ Placement, Part.Name });
+		}
+		else
+		{
+			SpawnPart(Structure, Part);
+		}
 	}
 	return true;
+}
+
+bool UGLStructureSubsystem::IsPending(FName Placement, FName Part) const
+{
+	return Pending.Contains(TPair<FName, FName>(Placement, Part));
+}
+
+bool UGLStructureSubsystem::PresentPart(FName Placement, FName PartName)
+{
+	if (Pending.Remove(TPair<FName, FName>(Placement, PartName)) == 0)
+	{
+		return false;
+	}
+	FGLStructureRuntime* Structure = Structures.Find(Placement);
+	FGLStructurePartRuntime* Part = Structure ? Structure->Find(PartName) : nullptr;
+	if (Part && !Part->Actor.IsValid())
+	{
+		Present(*Structure, *Part);
+	}
+	return true;
+}
+
+bool UGLStructureSubsystem::IsCellPresented(FName Cell) const
+{
+	for (const TPair<FName, FName>& Entry : Pending)
+	{
+		const FGLStructureRuntime* Structure = Structures.Find(Entry.Key);
+		if (Structure && Structure->Cell == Cell)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+AGLStructurePart* UGLStructureSubsystem::Present(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part)
+{
+	if (Part.Actor.IsValid() || !IsPresent(Part.State))
+	{
+		return Part.Actor.Get(); // already made (a landing made it), or gone for good: never made
+	}
+	const FName Placement = Structure.Placement, Name = Part.Name;
+	const FGLActiveCollapse* Falling = Active.FindByPredicate([Placement, Name](const FGLActiveCollapse& C) { return C.Placement == Placement && C.Part == Name; });
+	if (Part.State == EGLStructurePartState::Debris && !Falling)
+	{
+		MakeDebris(Structure, Part); // at its authoritative rest, solid, salvageable as debris
+		return Part.Actor.Get();
+	}
+	AGLStructurePart* Actor = SpawnPart(Structure, Part);
+	if (Actor && Falling)
+	{
+		// Mid-fall (decided while it was waiting): the plan's pose, not solid, until it lands.
+		Actor->SetSolid(false);
+		Actor->SetActorTransform(GLCollapseRules::Motion(Falling->Outcome, Clock - Falling->DecidedAt));
+	}
+	return Actor;
+}
+
+int32 UGLStructureSubsystem::PumpPresentation(const FVector& Where, double BudgetSeconds, double NearCm)
+{
+	const double Start = FPlatformTime::Seconds();
+	int32 Made = 0;
+	// Retired actors of unloaded cells go first, within the same budget (never in a near-only frame).
+	while (Retiring.Num() > 0 && BudgetSeconds >= 0.0 && (BudgetSeconds == 0.0 || FPlatformTime::Seconds() - Start < BudgetSeconds))
+	{
+		if (AGLStructurePart* Actor = Retiring.Pop(EAllowShrinking::No).Get())
+		{
+			Actor->Destroy();
+		}
+	}
+	auto DistanceSq = [this, &Where](const TPair<FName, FName>& Entry)
+	{
+		const FGLStructureRuntime* Structure = Structures.Find(Entry.Key);
+		const FGLStructurePartRuntime* Part = Structure ? Structure->Parts.FindByPredicate([&Entry](const FGLStructurePartRuntime& P) { return P.Name == Entry.Value; }) : nullptr;
+		return Part ? FVector::DistSquared2D(Part->Piece.Location, Where) : 0.0; // stale entries go first (and are dropped)
+	};
+	while (Pending.Num() > 0)
+	{
+		int32 Nearest = 0;
+		double Best = DistanceSq(Pending[0]);
+		for (int32 I = 1; I < Pending.Num(); ++I)
+		{
+			const double D = DistanceSq(Pending[I]);
+			if (D < Best)
+			{
+				Best = D;
+				Nearest = I;
+			}
+		}
+		const bool bNear = Best <= NearCm * NearCm;
+		if (!bNear && (BudgetSeconds < 0.0 || (BudgetSeconds > 0.0 && FPlatformTime::Seconds() - Start >= BudgetSeconds)))
+		{
+			break;
+		}
+		const TPair<FName, FName> Entry = Pending[Nearest];
+		Pending.RemoveAtSwap(Nearest);
+		FGLStructureRuntime* Structure = Structures.Find(Entry.Key);
+		FGLStructurePartRuntime* Part = Structure ? Structure->Find(Entry.Value) : nullptr;
+		if (Part && !Part->Actor.IsValid() && Present(*Structure, *Part))
+		{
+			++Made;
+		}
+	}
+	return Made;
 }
 
 AGLStructurePart* UGLStructureSubsystem::SpawnPart(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part)
@@ -329,11 +440,18 @@ int32 UGLStructureSubsystem::RemoveCell(FName Cell)
 		{
 			if (AGLStructurePart* Actor = Part.Actor.Get())
 			{
-				Actor->Destroy();
+				// Gameplay leaves now (ADR-0033): unbound from the salvage pipeline (a later load of the
+				// same placement can never be reached through it), hidden, no collision. Destroyed later.
+				Actor->GetSalvageable()->OnSalvaged.RemoveAll(this);
+				Actor->GetSalvageable()->RestoreSalvaged(); // refuses any further salvage; hidden, no collision
+				Actor->bRetired = true;
+				Retiring.Add(Actor);
+				Part.Actor = nullptr;
 			}
 		}
 		const FName Placement = It.Key();
 		Active.RemoveAll([Placement](const FGLActiveCollapse& Collapse) { return Collapse.Placement == Placement; });
+		Pending.RemoveAll([Placement](const TPair<FName, FName>& Entry) { return Entry.Key == Placement; }); // cancelled presentation
 		It.RemoveCurrent();
 		++Removed;
 	}
@@ -398,7 +516,11 @@ void UGLStructureSubsystem::RestoreCell(FName Cell, const TArray<FGLSavedStructu
 		if (Entry.State == EGLStructurePartState::Debris)
 		{
 			Part->Rest = FTransform(Entry.Rotation, Entry.Location);
-			MakeDebris(*Structure, *Part);
+			if (!IsPending(Entry.Placement, Part->Name))
+			{
+				MakeDebris(*Structure, *Part);
+			}
+			// A part still waiting for presentation is made later, directly as this debris.
 		}
 		else if (AGLStructurePart* Actor = Part->Actor.Get())
 		{
@@ -427,7 +549,7 @@ void UGLStructureSubsystem::RestoreCell(FName Cell, const TArray<FGLSavedStructu
 			Collapse(Structure, nullptr, FVector::ZeroVector, true);
 			for (int32 I = Active.Num() - 1; I >= Before; --I)
 			{
-				if (FGLStructurePartRuntime* Part = Structure.Find(Active[I].Part))
+				if (FGLStructurePartRuntime* Part = Structure.Find(Active[I].Part); Part && !IsPending(Placement, Part->Name))
 				{
 					MakeDebris(Structure, *Part);
 				}
@@ -444,7 +566,7 @@ AGLStructurePart* UGLStructureSubsystem::FindPart(FName Placement, FName Part) c
 	return Found ? Found->Actor.Get() : nullptr;
 }
 
-bool UGLStructureSubsystem::IsUnderStructure(const FVector2D& World, double MarginCm) const
+void UGLStructureSubsystem::CollectFootprints(const FBox2D& Area, double MarginCm, TArray<FBox2D>& Out) const
 {
 	for (const TPair<FName, FGLStructureRuntime>& Entry : Structures)
 	{
@@ -457,13 +579,20 @@ bool UGLStructureSubsystem::IsUnderStructure(const FVector2D& World, double Marg
 				continue;
 			}
 			const FBox Box = PartBox(Part).ExpandBy(FVector(MarginCm, MarginCm, 0.0));
-			if (World.X >= Box.Min.X && World.X <= Box.Max.X && World.Y >= Box.Min.Y && World.Y <= Box.Max.Y)
+			const FBox2D Footprint(FVector2D(Box.Min), FVector2D(Box.Max));
+			if (Footprint.Intersect(Area))
 			{
-				return true;
+				Out.Add(Footprint);
 			}
 		}
 	}
-	return false;
+}
+
+bool UGLStructureSubsystem::IsUnderStructure(const FVector2D& World, double MarginCm) const
+{
+	TArray<FBox2D> Footprints;
+	CollectFootprints(FBox2D(World, World), MarginCm, Footprints);
+	return Footprints.Num() > 0;
 }
 
 bool UGLStructureSubsystem::Overlaps(const FBox& Box) const

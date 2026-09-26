@@ -35,7 +35,8 @@
    "sockets[].name",
    "sockets[].offset",
    "sockets[].role",
-   "unlockedBy"
+   "unlockedBy",
+   "visual"
   ],
   "capability": [
    "category",
@@ -98,6 +99,7 @@
    "perception.memorySeconds",
    "perception.sightRadius",
    "schemaVersion",
+   "visual",
    "walkSpeed"
   ],
   "era": [
@@ -202,6 +204,7 @@
    "anchor",
    "bindings",
    "bindings{}",
+   "count",
    "definition",
    "id",
    "kind",
@@ -333,6 +336,28 @@
    "noise.radius{}",
    "notes",
    "schemaVersion"
+  ],
+  "visual": [
+   "castShadow",
+   "corruption",
+   "corruption[].offset",
+   "corruption[].rotation",
+   "corruption[].size",
+   "displayName",
+   "id",
+   "light",
+   "light.color",
+   "light.intensity",
+   "light.offset",
+   "light.radius",
+   "mesh",
+   "notes",
+   "offset",
+   "outline",
+   "scale",
+   "schemaVersion",
+   "tint",
+   "yaw"
   ],
   "yield": [
    "displayName",

@@ -1,5 +1,7 @@
 #include "Building/GLBuildPiece.h"
 
+#include "Presentation/GLVisuals.h"
+
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Content/GLContent.h"
@@ -49,6 +51,11 @@ bool AGLBuildPiece::Setup(const FGLPlacedPiece& InPiece, bool bGhost)
 	}
 	Boxes.Reset();
 	SetActorLocationAndRotation(Piece.Location, FRotator(0.0, 90.0 * Piece.YawQuarter, 0.0));
+	// P7: an authored look replaces the blockout boxes; the boxes keep the authoritative collision.
+	// Decided first, so hidden boxes are registered hidden and unpainted (no render state built and
+	// thrown away inside a streaming frame).
+	const FGLVisualDef* Look = bGhost || Def->Visual.IsNone() ? nullptr : GLContent::Get().Find<FGLVisualDef>(Def->Visual);
+	const bool bLooked = Look && GLVisuals::LoadMesh(Look->Mesh);
 	for (const FGLBuildShapeDef& Shape : Def->Shapes)
 	{
 		UStaticMeshComponent* Box = NewObject<UStaticMeshComponent>(this);
@@ -69,8 +76,13 @@ bool AGLBuildPiece::Setup(const FGLPlacedPiece& InPiece, bool bGhost)
 			Box->SetCollisionProfileName(TEXT("BlockAll"));
 			Box->SetCanEverAffectNavigation(true);
 		}
+		if (bLooked)
+		{
+			Box->SetVisibility(false);
+			Box->SetCastShadow(false);
+		}
 		Box->RegisterComponent();
-		if (ShapeMaterial)
+		if (ShapeMaterial && !bLooked)
 		{
 			if (UMaterialInstanceDynamic* Paint = Box->CreateDynamicMaterialInstance(0, ShapeMaterial))
 			{
@@ -78,6 +90,10 @@ bool AGLBuildPiece::Setup(const FGLPlacedPiece& InPiece, bool bGhost)
 			}
 		}
 		Boxes.Add(Box);
+	}
+	if (bLooked)
+	{
+		GLVisuals::Attach(this, GetRootComponent(), Def->Visual);
 	}
 	return true;
 }

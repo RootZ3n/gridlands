@@ -17,11 +17,13 @@ struct FGLLoadedCell
 	UPROPERTY() TObjectPtr<AGLGridBoundary> Boundary;
 	/** Which load of this cell (a reload after an unload is a new epoch). */
 	int32 Epoch = 0;
-	/** Its placements are spawned and its kept state applied. */
+	/** Its authoritative runtime layer is in: placements made and its kept state applied (P7: before any presentation). */
 	bool bRuntime = false;
 	double StartedAt = 0.0;
 	double GroundAt = -1.0;
 	double RuntimeAt = -1.0;
+	/** Every deferred presentation unit (structure part actors, vegetation) has been made. */
+	double PresentedAt = -1.0;
 	double CompleteAt = -1.0;
 };
 
@@ -31,7 +33,11 @@ struct FGLCellLoadRecord
 	FName Cell;
 	int32 Epoch = 0;
 	double GroundSeconds = -1.0;
+	/** Authoritative gameplay state ready (saved state resolved). */
 	double RuntimeSeconds = -1.0;
+	/** Presentation complete (all deferred actors made). */
+	double PresentedSeconds = -1.0;
+	/** Ground complete and presentation complete. */
 	double CompleteSeconds = -1.0;
 	bool bCancelled = false;
 };
@@ -76,10 +82,23 @@ public:
 	const TArray<FGLCellLoadRecord>& GetLoadRecords() const { return Records; }
 	/** Game-thread time the last Advance took (streaming cost per frame, evidence). */
 	double GetLastAdvanceSeconds() const { return LastAdvanceSeconds; }
+	/** Of that, the deferred presentation work (P7), and how many units it made. */
+	double GetLastPresentationSeconds() const { return LastPresentationSeconds; }
+	int32 GetLastPresentationUnits() const { return LastPresentationUnits; }
+	/** Of that, the authoritative runtime layers that came in (0 in most frames). */
+	double GetLastAuthoritativeSeconds() const { return LastAuthoritativeSeconds; }
 
 	/** Start loading a neighbour this far (m) from its edge; unload beyond UnloadMarginM (hysteresis). */
 	UPROPERTY(EditAnywhere, Category = "Grid") float LoadMarginM = 256.f;
 	UPROPERTY(EditAnywhere, Category = "Grid") float UnloadMarginM = 384.f;
+	/**
+	 * P7 multi-frame presentation: the per-frame budget for instantiating deferred structure parts and
+	 * vegetation (ADR-0033), and the radius around Zenny made at once regardless (what can be touched).
+	 */
+	UPROPERTY(EditAnywhere, Category = "Grid") float PresentationBudgetMs = 1.5f; // < 0: paused (tests)
+	UPROPERTY(EditAnywhere, Category = "Grid") float PresentationNearM = 20.f;
+	/** Presentation only uses what is left of this much streaming time in the frame (ground work comes first). */
+	UPROPERTY(EditAnywhere, Category = "Grid") float PresentationCeilingMs = 6.f;
 	/** Spawn the temporary boundary markers (development). */
 	bool bShowBoundaries = true;
 	/** Test control: pretend authored levels have not finished loading yet. */
@@ -97,6 +116,9 @@ private:
 	int32 Unloads = 0;
 	int32 EpochCounter = 0;
 	double LastAdvanceSeconds = 0.0;
+	double LastPresentationSeconds = 0.0;
+	double LastAuthoritativeSeconds = 0.0;
+	int32 LastPresentationUnits = 0;
 	TArray<FGLCellLoadRecord> Records;
 	UPROPERTY() TMap<FName, FGLLoadedCell> Loaded;
 	UPROPERTY() TMap<FName, TObjectPtr<ULevelStreamingDynamic>> CellLevels;

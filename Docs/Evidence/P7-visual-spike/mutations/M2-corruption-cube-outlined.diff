@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Presentation/GLVisuals.cpp
++++ b/Source/GridlandsGame/Private/Presentation/GLVisuals.cpp
+@@ -119,7 +119,7 @@
+ 			Box->SetRelativeTransform(FTransform(FRotator(Rot.X, Rot.Y, Rot.Z), Vec(C.Offset) * 100.0 / FMath::Max(0.01, Def->Scale), FVector(C.Size / FMath::Max(0.01, Def->Scale))));
+ 			Box->SetMaterial(0, Corrupt);
+ 			Box->SetCastShadow(false);
+-			SetOutlined(Box, false); // precise, not illustrated: no graphic outline
++			SetOutlined(Box, true); // precise, not illustrated: no graphic outline
+ 			Box->RegisterComponent();
+ 		}
+ 	}

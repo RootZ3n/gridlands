@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+@@ -743,7 +743,7 @@
+ 	{
+ 		TArray<int32> NowIndices, NowDeltaCm;
+ 		Ground->Field.EncodeDelta(NowIndices, NowDeltaCm);
+-		if (NowIndices == Indices && NowDeltaCm == DeltaCm)
++		if (NowIndices.Num() == 0 || (NowIndices == Indices && NowDeltaCm == DeltaCm))
+ 		{
+ 			return true;
+ 		}

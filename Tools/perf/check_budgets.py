@@ -1,7 +1,7 @@
 """P5 regression budgets: checks gl.Perf result files against Tools/perf/budgets.json.
 
 Usage: python3 Tools/perf/check_budgets.py <result.json>...   (exit 1 on any breach)
-A file's kind comes from its name: *terrain-1024m.json, or *crossing-<mode>.json.
+A file's kind comes from its name: *terrain-1024m.json, *roundtrips.json, or *crossing-<mode>.json.
 """
 
 import json
@@ -16,6 +16,8 @@ def rules_for(name, budgets):
     """The (key, rule) pairs that apply to a result file, by its name."""
     if name.endswith("terrain-1024m.json"):
         return list(budgets["terrain"].items())
+    if name.endswith("roundtrips.json"):
+        return list(budgets["roundtrips"].items())
     match = re.search(r"crossing-([a-z]+)\.json$", name)
     if not match:
         return []

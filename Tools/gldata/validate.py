@@ -202,6 +202,7 @@ def cross_check(ds: Dataset) -> None:
     check_building(ds)
     check_terraform(ds)
     check_structures(ds)
+    check_visuals(ds)
     check_creatures(ds)
     check_grid(ds)
     check_knowledge_domains(ds)
@@ -377,6 +378,27 @@ def check_building(ds: Dataset) -> None:
 
 
 TUNING_ID = "tuning.world.physical"
+ART_MESHES = "Content/Gridlands/Art/Meshes"
+MAX_CORRUPTION_CUBES = 4
+MAX_CORRUPTION_SIZE = 0.35
+
+
+def check_visuals(ds: Dataset) -> None:
+    """VIS-1 a visual's mesh was imported by the art pipeline (Content/Gridlands/Art/Meshes/<mesh>.uasset);
+    VIS-2 NICE's corruption stays sparse: at most 4 cubes per visual, each at most 0.35 m (VISUAL-DIRECTION)."""
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        if entity.kind != "visual":
+            continue
+        data, rel = entity.data, entity.file
+        mesh = data.get("mesh", "")
+        if isinstance(mesh, str) and not (ds.root / ART_MESHES / f"{mesh}.uasset").exists():
+            ds.problem("VIS-1", rel, ".mesh", f"{mesh} is not an imported art mesh (run Tools/art.sh)")
+        cubes = [c for c in data.get("corruption", []) if isinstance(c, dict)]
+        if len(cubes) > MAX_CORRUPTION_CUBES:
+            ds.problem("VIS-2", rel, ".corruption", f"{len(cubes)} corruption cubes; NICE's corruption is sparse (at most {MAX_CORRUPTION_CUBES})")
+        for i, cube in enumerate(cubes):
+            if isinstance(cube.get("size"), (int, float)) and cube["size"] > MAX_CORRUPTION_SIZE:
+                ds.problem("VIS-2", rel, f".corruption[{i}].size", f"a corruption cube is small (at most {MAX_CORRUPTION_SIZE} m)")
 
 
 def check_structures(ds: Dataset) -> None:

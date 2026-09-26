@@ -14,6 +14,7 @@
 #include "HAL/FileManager.h"
 #include "HAL/PlatformMemory.h"
 #include "UObject/GarbageCollection.h"
+#include "UObject/UObjectIterator.h"
 #include "Inventory/GLInventoryComponent.h"
 #include "Knowledge/GLKnowledgeSubsystem.h"
 #include "Pehlichi/GLCompanionPositioningComponent.h"
@@ -196,9 +197,25 @@ bool FGLGridTorture::RunTest(const FString& Parameters)
 
 	const int32 EventsBefore = S.Events.Num(), LinesBefore = S.Lines;
 
-	// --- Cross back and forth, many times. Memory must not grow with every round trip (it once did,
-	// until the kernel killed the process: destroyed chunk actors held their meshes until GC).
-	double MemoryAfterFirstRound = 0.0;
+	// --- Cross back and forth, many times. Nothing may pile up with every round trip (memory once
+	// did, until the kernel killed the process: destroyed chunk actors held their meshes until GC).
+	// What is counted is what the world owns: live objects, by class. Process memory is NOT a valid
+	// measure here: an editor automation world never runs the physics and render scenes' deferred
+	// cleanup, so it grows ~0.5 GB per round trip even on P6 (measured) while the real game levels
+	// off. The real game's memory is budgeted by Tools/perf-crossing.sh roundtrips (gl.Perf.RoundTrips).
+	auto LiveByClass = []()
+	{
+		TMap<FName, int32> Count;
+		for (TObjectIterator<UObject> It; It; ++It)
+		{
+			if (IsValid(*It))
+			{
+				++Count.FindOrAdd(It->GetClass()->GetFName());
+			}
+		}
+		return Count;
+	};
+	TMap<FName, int32> AfterFirstRound;
 	for (int32 Round = 0; Round < 5; ++Round)
 	{
 		// The game collects garbage periodically (every 60 s by default); a bare test world never
@@ -206,7 +223,7 @@ bool FGLGridTorture::RunTest(const FString& Parameters)
 		CollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS);
 		if (Round == 1)
 		{
-			MemoryAfterFirstRound = FPlatformMemory::GetStats().UsedPhysical / (1024.0 * 1024.0);
+			AfterFirstRound = LiveByClass();
 		}
 		S.GoTo(GDeepInLots);
 		TestFalse(FString::Printf(TEXT("round %d: the origin streamed out"), Round), S.Grid->IsLoaded(GOrigin));
@@ -219,9 +236,17 @@ bool FGLGridTorture::RunTest(const FString& Parameters)
 		TestTrue(TEXT("  the origin is back"), S.Grid->IsLoaded(GOrigin));
 	}
 	CollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS);
-	const double MemoryAfterAll = FPlatformMemory::GetStats().UsedPhysical / (1024.0 * 1024.0);
-	TestTrue(FString::Printf(TEXT("memory is bounded across round trips (%.0f MB after round 1, %.0f MB after round 5)"), MemoryAfterFirstRound, MemoryAfterAll),
-		MemoryAfterAll - MemoryAfterFirstRound < 1500.0);
+	const TMap<FName, int32> AfterAll = LiveByClass();
+	FString Grew;
+	for (const TPair<FName, int32>& Class : AfterAll)
+	{
+		if (Class.Value > AfterFirstRound.FindRef(Class.Key))
+		{
+			Grew += FString::Printf(TEXT(" %s %d->%d"), *Class.Key.ToString(), AfterFirstRound.FindRef(Class.Key), Class.Value);
+		}
+	}
+	AddInfo(FString::Printf(TEXT("live objects: %d classes after round 1, %d after round 5"), AfterFirstRound.Num(), AfterAll.Num()));
+	TestTrue(FString::Printf(TEXT("nothing piles up across round trips (grew:%s)"), Grew.IsEmpty() ? TEXT(" nothing") : *Grew), Grew.IsEmpty());
 	// --- Back in A: everything as it was, exactly once.
 	TestEqual(TEXT("A: lamp still repaired"), S.StateOf(GLamp), EGLGlitchState::Repaired);
 	TestTrue(TEXT("A: blocker still salvaged"), S.Test.World->GetSubsystem<UGLPlacementSubsystem>()->FindSalvageNode(GBlocker)->GetSalvageable()->IsSalvaged());

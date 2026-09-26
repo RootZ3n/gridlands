@@ -1,0 +1,44 @@
+# Visual presentation after ADR-0033 against the operator-approved frames (1280x720; mean absolute grey difference 0-255; share of pixels differing by > 24).
+# The approved frames are Docs/Evidence/P7-visual-spike/screenshots at commit 3e7efcd (git show 3e7efcd:<path>).
+
+## Same build, two tour runs (the noise floor)
+01-day-overview.jpg: mean abs diff 2.51, pixels differing > 24: 1.92%
+01b-day-without-stylize-post.jpg: mean abs diff 0.62, pixels differing > 24: 0.01%
+02a-dusk-overview.jpg: mean abs diff 2.09, pixels differing > 24: 1.22%
+02b-night-overview.jpg: mean abs diff 2.85, pixels differing > 24: 1.69%
+02c-night-without-stylize-post.jpg: mean abs diff 0.79, pixels differing > 24: 0.01%
+03-prop-ordinary-vs-corrupted.jpg: mean abs diff 2.47, pixels differing > 24: 2.15%
+04-creature-ordinary-vs-corrupted.jpg: mean abs diff 2.16, pixels differing > 24: 1.75%
+05-zenny-pehlichi-readability.jpg: mean abs diff 1.81, pixels differing > 24: 0.86%
+05b-zenny-pehlichi-front.jpg: mean abs diff 1.66, pixels differing > 24: 0.76%
+06-terrain-after-manipulation.jpg: mean abs diff 2.46, pixels differing > 24: 1.72%
+07a-collapse-in-progress.jpg: mean abs diff 2.04, pixels differing > 24: 1.27%
+07b-collapse-debris-and-felled-pine.jpg: mean abs diff 1.99, pixels differing > 24: 1.31%
+
+## Approved (3e7efcd) vs final, vegetation hidden in both (ShowFlag.InstancedStaticMeshes 0)
+01-day-overview.jpg: mean abs diff 1.89, pixels differing > 24: 1.55%
+01b-day-without-stylize-post.jpg: mean abs diff 0.39, pixels differing > 24: 0.00%
+02a-dusk-overview.jpg: mean abs diff 0.15, pixels differing > 24: 0.00%
+02b-night-overview.jpg: mean abs diff 1.92, pixels differing > 24: 1.25%
+02c-night-without-stylize-post.jpg: mean abs diff 0.26, pixels differing > 24: 0.00%
+03-prop-ordinary-vs-corrupted.jpg: mean abs diff 2.03, pixels differing > 24: 1.85%
+04-creature-ordinary-vs-corrupted.jpg: mean abs diff 1.76, pixels differing > 24: 1.50%
+05-zenny-pehlichi-readability.jpg: mean abs diff 2.76, pixels differing > 24: 2.59%
+05b-zenny-pehlichi-front.jpg: mean abs diff 1.42, pixels differing > 24: 0.81%
+06-terrain-after-manipulation.jpg: mean abs diff 0.26, pixels differing > 24: 0.00%
+07a-collapse-in-progress.jpg: mean abs diff 1.14, pixels differing > 24: 0.56%
+07b-collapse-debris-and-felled-pine.jpg: mean abs diff 1.93, pixels differing > 24: 1.56%
+
+## Approved vs final, as rendered (the vegetation layout differs: its seed was an FName index, now the id text)
+01-day-overview.jpg: mean abs diff 7.67, pixels differing > 24: 10.00%
+01b-day-without-stylize-post.jpg: mean abs diff 6.29, pixels differing > 24: 7.92%
+02a-dusk-overview.jpg: mean abs diff 8.79, pixels differing > 24: 11.70%
+02b-night-overview.jpg: mean abs diff 17.38, pixels differing > 24: 21.57%
+02c-night-without-stylize-post.jpg: mean abs diff 9.76, pixels differing > 24: 14.92%
+03-prop-ordinary-vs-corrupted.jpg: mean abs diff 17.39, pixels differing > 24: 20.39%
+04-creature-ordinary-vs-corrupted.jpg: mean abs diff 22.65, pixels differing > 24: 27.81%
+05-zenny-pehlichi-readability.jpg: mean abs diff 17.09, pixels differing > 24: 20.23%
+05b-zenny-pehlichi-front.jpg: mean abs diff 18.18, pixels differing > 24: 17.08%
+06-terrain-after-manipulation.jpg: mean abs diff 8.93, pixels differing > 24: 12.45%
+07a-collapse-in-progress.jpg: mean abs diff 9.58, pixels differing > 24: 12.29%
+07b-collapse-debris-and-felled-pine.jpg: mean abs diff 9.05, pixels differing > 24: 11.65%
