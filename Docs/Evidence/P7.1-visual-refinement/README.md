@@ -1,8 +1,11 @@
 # P7.1 evidence: visual-direction refinement spike
 
-**Status: P7.1_VISUAL_AWAITING_OPERATOR.** Nothing here is approved.
-- P7 remains CLOSED and GREEN (`p7-visual-green`), and `playtest-baseline-2` is untouched.
-- Branch: `p7.1-visual-refinement`, not merged.
+**Status: APPROVED (operator, 2026-09-26). Variant A is the canonical look** and the game's
+default: dimensional, highly colourful, WildStar-leaning, no environment outlines.
+- B and C were rejected and are kept only as the review record. Characters remain unapproved
+  proxies.
+- P7 remains GREEN at its historical checkpoint (`p7-visual-green`), and `playtest-baseline-2` is
+  untouched.
 
 **Purpose** (operator, 2026-09-26): keep P7's engineering and its colour, but move from "a
 2D/cartoon illustration rendered in 3D" toward **"a richly stylized 3D game world"**.
@@ -150,6 +153,29 @@ brackets):
 - The authoritative-layer frame rose by ~0.9 ms (4.2 → 5.1 ms, dense sprint). The heavier creature
   and prop visuals are made in that frame.
 - **No pathological cost, and no conflict with a budget.**
+
+## Closure gates (variant A as the default; `perf-final/`)
+These were rerun after the approval, on the final default, with the machine quiet:
+- **109/109 tests pass** (40 requirements).
+- **12 of 13 P5 results pass on the first run.** The exception is dense sprint: 15.25 ms streaming
+  worst against 12.
+  - Its slow-frame log names a single fresh terrain chunk's first `SetMesh` (14.4 ms).
+    Presentation in that frame was 0.01 ms.
+  - This is the known P5 terrain spike, and the warm-pool task that follows targets it.
+  - Rerun twice on a quiet machine: 6.84 and 6.64 ms (`dense-sprint-rerun*.json`).
+
+| Run | Worst frame | p99 | Streaming worst | Peak MB |
+|---|---|---|---|---|
+| local straight | 23.4 | 4.9 | 6.72 | 4482 |
+| local sprint | 18.0 | 8.7 | 6.41 | 4507 |
+| local reversal | 35.1 | 8.4 | 7.01 | 4572 |
+| local teleport | 24.1 | 5.7 | 6.76 | 4355 |
+| local resume | 15.3 | 13.4 | 7.22 | 3332 |
+| dense straight | 23.2 | 5.5 | 6.88 | 4482 |
+| dense sprint | 23.4 | 8.9 | 6.64 | 4528 |
+| dense reversal | 38.4 | 8.8 | 7.47 | 4548 |
+| dense teleport | 25.4 | 6.4 | 10.43 | 4371 |
+| dense resume | 13.3 | 12.6 | 6.82 | 3333 |
 
 ## Tests
 - **109/109 automation tests pass** (40 requirements; `30-full-gate.index.json`), on the P7.1

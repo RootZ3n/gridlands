@@ -4,7 +4,8 @@
   ([VISUAL-DIRECTION](../VISUAL-DIRECTION.md), "P7 visual review"). Zenny, Pehlichi and the creature
   remain **style proxies**; production characters are a later decision. Multi-frame cell
   presentation, required before content density grows, is
-  [ADR-0033](0033-multi-frame-cell-presentation.md).
+  [ADR-0033](0033-multi-frame-cell-presentation.md). **Refined by P7.1** (operator, 2026-09-26):
+  variant A is the canonical look; see the addendum below.
 - Date: 2026-09-26
 - Evidence: [Docs/Evidence/P7-visual-spike](../Evidence/P7-visual-spike/README.md). Pipeline guide:
   [ART-PIPELINE.md](../ART-PIPELINE.md). Authoring requirements:
@@ -41,6 +42,22 @@
    - sparse by validation (VIS-2: at most 4 cubes of at most 0.35 m per visual).
 7. **Lighting presets (day, dusk, night) keep colour in the dark:** coloured key and fill, and a
    coloured fog tint. Fog density stays the stability system's.
+
+## Addendum: P7.1 (operator, 2026-09-26)
+**The canonical look is P7.1 variant A** ([VISUAL-DIRECTION](../VISUAL-DIRECTION.md), canonical
+section).
+- **Environment outlines are OFF by default:** `EnvOutline` 0, `EnvCreases` 0, light banding off.
+  Characters and creatures keep a light outline (`CharOutline` 0.85) until production characters
+  are judged.
+- **Decision 5 still holds as architecture** (opt-in, presentation-only outlines), now with
+  categories: custom stencil 1 is the environment, 2 is characters and creatures.
+- **The pipeline gained:** material classes (instances of the painted master), baked vertex AO,
+  procedural surface detail, split normals, per-instance vegetation variation, clean reimports
+  ([ART-PIPELINE](../ART-PIPELINE.md) section 4a).
+- **The P7 treatment (decisions 3 and 5 as first built: flat paint, outlines everywhere, banding)
+  is superseded as the production target.** It stays reachable as `gl.Style.Variant P7` for the
+  record.
+- **LODs are required** before production density.
 
 ## Outline techniques evaluated
 

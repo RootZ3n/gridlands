@@ -13,11 +13,13 @@ class UMaterialInstanceDynamic;
  * be measured and the operator can compare. Presentation only; nothing here changes gameplay.
  *   gl.Style.Preset day|dusk|night    gl.Style.Post 0|1    gl.Style.Outline 0|1    gl.Style.Cel 0|1
  *   gl.Style.Param <name> <value>     (any PP_GLStylize scalar parameter)
- *   gl.Style.Variant P7|A|B|C          (P7.1 visual-direction experiments, layered on every preset)
- * P7.1 variants (operator review; none approved): P7 = the P7 treatment (outlines everywhere, light
- * banding); A = dimensional, environment outlines off, characters lightly outlined; B = dimensional,
- * environment silhouettes only, lighter and fading with distance; C = a more grounded dimensional
- * treatment (softer contrast, deeper atmosphere) that keeps the strong palette.
+ *   gl.Style.Variant A|P7|B|C          (P7.1 visual-direction variants, layered on every preset)
+ * CANONICAL (operator, P7.1 review 2026-09-26): A, the dimensional, highly colourful WildStar-leaning
+ * treatment with no environment outlines (characters and creatures lightly outlined, to be re-judged
+ * with production characters). The others are kept only as the review record and are not shipping looks:
+ * P7 = the superseded illustrated treatment (outlines everywhere, light banding); B = environment
+ * silhouettes (rejected); C = grounded (rejected). Environment outlines are not reintroduced without
+ * operator visual review.
  */
 UCLASS()
 class GRIDLANDSGAME_API UGLStyleSubsystem : public UWorldSubsystem
@@ -41,6 +43,6 @@ private:
 	UPROPERTY() TObjectPtr<APostProcessVolume> Volume;
 	UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> Stylize;
 	FName Preset = TEXT("day");
-	FName Variant = TEXT("B");
+	FName Variant = TEXT("A"); // P7.1 canonical
 	bool bPost = true;
 };

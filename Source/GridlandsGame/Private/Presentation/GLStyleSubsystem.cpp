@@ -56,10 +56,10 @@ namespace
 		{
 			if (UGLStyleSubsystem* Style = StyleOf(World)) { Style->ApplyPreset(Args.Num() ? FName(*Args[0]) : FName(TEXT("day"))); }
 		}));
-	FAutoConsoleCommandWithWorldAndArgs VariantCommand(TEXT("gl.Style.Variant"), TEXT("P7.1 visual-direction experiment: P7 | A | B | C"),
+	FAutoConsoleCommandWithWorldAndArgs VariantCommand(TEXT("gl.Style.Variant"), TEXT("P7.1 visual variant: A (canonical) | P7 | B | C (review record only)"),
 		FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
 		{
-			if (UGLStyleSubsystem* Style = StyleOf(World)) { Style->SetVariant(Args.Num() ? FName(*Args[0]) : FName(TEXT("B"))); }
+			if (UGLStyleSubsystem* Style = StyleOf(World)) { Style->SetVariant(Args.Num() ? FName(*Args[0]) : FName(TEXT("A"))); }
 		}));
 	FAutoConsoleCommandWithWorldAndArgs PostCommand(TEXT("gl.Style.Post"), TEXT("P7 stylize post-process on (1) / off (0)"),
 		FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)

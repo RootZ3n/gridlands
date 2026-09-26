@@ -1,7 +1,9 @@
 # Art pipeline (P7 visual spike)
 
 Status: **proven for the P7 style slice**; **not yet a production pipeline.**
-- The P7 direction was approved; the P7.1 refinement (section 4a) is **AWAITING OPERATOR REVIEW**.
+- **The canonical look is P7.1 variant A** (operator, 2026-09-26; section 4a). The P7 direction is
+  superseded.
+- **LODs are required before production density.**
 - Decision record: [ADR-0032](ADR/0032-visual-pipeline-and-stylization.md).
 
 ## Goal
@@ -102,7 +104,7 @@ at world start. A cell's runtime layer must never load art synchronously: that b
 streaming budget, see ADR-0032. A future large catalogue needs per-cell async loading ahead of the
 runtime layer instead.
 
-## 4a. P7.1 refinement spike: what the pipeline gained (visual direction AWAITING OPERATOR)
+## 4a. P7.1: what the pipeline gained (variant A approved as canonical, 2026-09-26)
 The flow is unchanged (recipe → FBX + manifest → import + validation → `visual.*`). These additions
 make the style dimensional under the same colour:
 - **Material classes:**
