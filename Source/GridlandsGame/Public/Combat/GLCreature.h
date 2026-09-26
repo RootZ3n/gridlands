@@ -22,7 +22,8 @@ class GRIDLANDSGAME_API AGLCreature : public ACharacter
 
 public:
 	AGLCreature();
-	bool Setup(FName InDefId, FName InPlacementId);
+	/** VisualOverride (dev/proof only): another look than the definition's. */
+	bool Setup(FName InDefId, FName InPlacementId, FName VisualOverride = NAME_None);
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;

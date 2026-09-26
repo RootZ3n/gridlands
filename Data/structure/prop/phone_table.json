@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "structure.prop.phone_table",
+  "displayName": "Telephone table",
+  "parts": [
+    {
+      "name": "table",
+      "piece": "buildpiece.prop.side_table",
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "salvage": "salvage.prop.side_table"
+    },
+    {
+      "name": "phone",
+      "piece": "buildpiece.prop.rotary_phone",
+      "location": [
+        0,
+        0,
+        0.75
+      ],
+      "salvage": "salvage.prop.rotary_phone"
+    }
+  ]
+}

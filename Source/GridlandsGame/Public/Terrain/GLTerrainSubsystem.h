@@ -118,6 +118,8 @@ public:
 	bool GroundCellAt(const FVector2D& World, FName& OutCell) const;
 	TArray<FName> GetGroundCells() const;
 	double HeightAt(const FVector2D& World) const;
+	/** How far the ground here has been dug or raised from its authored base (cm; 0 if untouched or unloaded). */
+	double EditedAt(const FVector2D& World) const;
 	/** The explicit (None) ground, else the first loaded one (tools and single-ground tests). */
 	const FGLHeightfield& GetField() const;
 	const FGLHeightfield* FieldOf(FName CellId) const { const FGLCellGround* G = Grounds.Find(CellId); return G ? &G->Field : nullptr; }

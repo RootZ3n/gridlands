@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Presentation/GLScatterPatch.cpp
++++ b/Source/GridlandsGame/Private/Presentation/GLScatterPatch.cpp
+@@ -99,7 +99,7 @@
+ 		const double Yaw = Random.FRandRange(0.0, 360.0);
+ 		const double Scale = Def->Scale * Random.FRandRange(0.75, 1.3);
+ 		const FVector2D At = Centre + FVector2D(FMath::Cos(Angle), FMath::Sin(Angle)) * Distance;
+-		if (Terrain->EditedAt(At) > ExposedCm || (Structures && Structures->IsUnderStructure(At, 10.0)) || (Building && Building->IsUnderStructure(At)))
++		if ((Structures && Structures->IsUnderStructure(At, 10.0)) || (Building && Building->IsUnderStructure(At)))
+ 		{
+ 			continue;
+ 		}

@@ -43,6 +43,7 @@ namespace GLContentRegistry
 		{ TEXT("storm"), &FGLStormDef::StaticStruct },
 		{ TEXT("structure"), &FGLStructureDef::StaticStruct },
 		{ TEXT("tuning"), &FGLTuningDef::StaticStruct },
+		{ TEXT("visual"), &FGLVisualDef::StaticStruct },
 	};
 
 	/** Top-level entries under Data/ that are not entity kinds. */

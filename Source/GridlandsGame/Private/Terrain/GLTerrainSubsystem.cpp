@@ -507,6 +507,12 @@ double UGLTerrainSubsystem::HeightAt(const FVector2D& World) const
 	return Ground ? Ground->Field.HeightAt(World) : (Grounds.Num() == 1 ? Grounds.CreateConstIterator()->Value.Field.HeightAt(World) : 0.0);
 }
 
+double UGLTerrainSubsystem::EditedAt(const FVector2D& World) const
+{
+	const FGLCellGround* Ground = GroundAt(World);
+	return Ground ? Ground->Field.EditedAt(World) : 0.0;
+}
+
 const FGLHeightfield& UGLTerrainSubsystem::GetField() const
 {
 	static const FGLHeightfield Empty;
@@ -731,6 +737,16 @@ bool UGLTerrainSubsystem::RestoreCellDelta(FName CellId, TConstArrayView<int32> 
 	if (!Ground)
 	{
 		return false;
+	}
+	// Already this ground (a cell streaming in re-applies what it captured a moment ago): nothing to
+	// rebuild, and no whole-field copy and compare inside the runtime-layer frame (P7-K, P5 budget).
+	{
+		TArray<int32> NowIndices, NowDeltaCm;
+		Ground->Field.EncodeDelta(NowIndices, NowDeltaCm);
+		if (NowIndices == Indices && NowDeltaCm == DeltaCm)
+		{
+			return true;
+		}
 	}
 	FGLHeightfield Fresh = Ground->Field;
 	Fresh.ResetToBase();

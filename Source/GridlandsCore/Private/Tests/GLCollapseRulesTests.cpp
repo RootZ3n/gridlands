@@ -124,6 +124,12 @@ bool FGLCollapseDrop::RunTest(const FString& Parameters)
 	const TArray<FGLPlacedPiece> Low = { { 7, GLCollapseTests::CPost, FVector(200, 0, 0) } };
 	const FGLCollapsePlan Caught = GLCollapseRules::Plan(Content, GLCollapseTests::Requests(All, { 4 }), Low, GLCollapseTests::CFlat, FVector::ZeroVector, GLCollapseTests::Tuning());
 	TestEqual(TEXT("it lands on the standing post (2.5 m): no fall, no damage"), Caught.Outcomes[0].Damage, 0.0);
+	// A slab whose edge only overlaps a standing wall's top (an awning against a shop front) is not
+	// held by that sliver: its centre of mass is not over the wall, so it falls to the ground (P7 defect).
+	const TArray<FGLPlacedPiece> Wall = { { 8, FName(TEXT("buildpiece.modern.timber_wall")), FVector(0, 100, 0) } };
+	const TArray<FGLPlacedPiece> Awning = { { 9, GLCollapseTests::CDeck, FVector(0, 0, 250) } }; // spans y -100..100; the wall is y 90..110
+	const FGLCollapsePlan Slid = GLCollapseRules::Plan(Content, GLCollapseTests::Requests(Awning, { 9 }), Wall, GLCollapseTests::CFlat, FVector::ZeroVector, GLCollapseTests::Tuning());
+	TestEqual(TEXT("an edge over a wall top does not catch it: it reaches the ground"), Slid.Outcomes[0].Rest.GetLocation().Z, 0.0, 0.01);
 	return true;
 }
 

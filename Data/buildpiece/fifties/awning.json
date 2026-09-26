@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.fifties.awning",
+  "displayName": "Awning",
+  "era": "era.memory.fifties",
+  "material": "material.timber.pine",
+  "role": "floor",
+  "grounded": false,
+  "buildable": false,
+  "size": [
+    2,
+    2,
+    0.2
+  ],
+  "shapes": [
+    {
+      "size": [
+        2,
+        2,
+        0.2
+      ],
+      "offset": [
+        0,
+        0,
+        0.1
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "corner_nw",
+      "role": "bottom",
+      "offset": [
+        -1,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "corner_ne",
+      "role": "bottom",
+      "offset": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "corner_sw",
+      "role": "bottom",
+      "offset": [
+        -1,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "corner_se",
+      "role": "bottom",
+      "offset": [
+        1,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "east",
+      "role": "side",
+      "offset": [
+        1,
+        0,
+        0.1
+      ]
+    },
+    {
+      "name": "west",
+      "role": "side",
+      "offset": [
+        -1,
+        0,
+        0.1
+      ]
+    },
+    {
+      "name": "north",
+      "role": "side",
+      "offset": [
+        0,
+        1,
+        0.1
+      ]
+    },
+    {
+      "name": "south",
+      "role": "side",
+      "offset": [
+        0,
+        -1,
+        0.1
+      ]
+    },
+    {
+      "name": "top",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        0.2
+      ]
+    }
+  ],
+  "visual": "visual.kit50.awning",
+  "collapse": {
+    "motion": "drop"
+  },
+  "notes": "P7 world-only 1950s kit piece (authored structures; same structural language as player building)."
+}

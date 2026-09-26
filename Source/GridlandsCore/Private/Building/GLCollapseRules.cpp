@@ -165,11 +165,14 @@ FGLCollapsePlan GLCollapseRules::Plan(const FGLContentRegistry& Content, TConstA
 		Out.Start = StartOf(Request.Piece);
 		Out.StartSeconds = Delay;
 
-		// The surface under it: the ground, or anything standing (or already fallen) beneath.
+		// The surface under it: the ground, or anything standing (or already fallen) beneath its centre of
+		// mass. A sliver of overlap (an awning's edge over a wall top) does not hold a falling piece.
 		double Landing = GroundUnder(Box, Ground);
+		const FVector2D Centre(Box.GetCenter());
 		for (const FBox& Surface : Surfaces)
 		{
-			if (OverlapsXY(Box, Surface) && Surface.Max.Z <= Box.Min.Z + SurfaceShrinkCm)
+			const bool bUnderCentre = Centre.X >= Surface.Min.X && Centre.X <= Surface.Max.X && Centre.Y >= Surface.Min.Y && Centre.Y <= Surface.Max.Y;
+			if (bUnderCentre && OverlapsXY(Box, Surface) && Surface.Max.Z <= Box.Min.Z + SurfaceShrinkCm)
 			{
 				Landing = FMath::Max(Landing, Surface.Max.Z);
 			}

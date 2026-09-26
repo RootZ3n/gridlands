@@ -53,7 +53,24 @@ Gridlands should look like **a highly colorful, playable animated series**:
   palette**, not from a muted world.
 - **The core rule stands:** normal things look physical; glitched things reveal the Grid.
 
-### Art-direction spike (planned; NOT STARTED; after the P6 gameplay foundation)
+### Art-direction spike: P7 DONE for engineering; VISUAL STATUS: AWAITING OPERATOR REVIEW
+**What was built** ([evidence](Evidence/P7-visual-spike/README.md), [ADR-0032](ADR/0032-visual-pipeline-and-stylization.md),
+[ART-PIPELINE](ART-PIPELINE.md)): a real-time slice in the diner lots with:
+- stylized terrain and vegetation, rocks and pines;
+- a modular 1950s storefront;
+- a rotary telephone beside its one-cube glitched twin;
+- an ordinary and a sparsely corrupted creature;
+- Zenny and Pehlichi proxies;
+- day, dusk and night presets;
+- graphic outlines, gated by custom depth.
+
+**Engineering compatibility** is proven with terrain edits, collapse and tree felling inside the
+scene.
+
+**Whether the look is right is the operator's call.** The spike exists so the answer is learned
+before hundreds of assets.
+
+### Art-direction spike (the plan it followed)
 **No mass asset production until a real-time Unreal scene proves the pipeline** can produce the
 "playable colorful animated series" look. The spike contains roughly:
 - Zenny and Pehlichi proxies;

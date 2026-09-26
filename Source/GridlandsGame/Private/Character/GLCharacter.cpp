@@ -1,5 +1,7 @@
 #include "Character/GLCharacter.h"
 
+#include "Presentation/GLVisuals.h"
+
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -93,6 +95,17 @@ AGLCharacter::AGLCharacter()
 	// kept until 96 m so walking back and forth does not rebuild the same tiles.
 	NavInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>(TEXT("NavInvoker"));
 	NavInvoker->SetGenerationRadii(6400.f, 9600.f);
+}
+
+void AGLCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	// P7 style proxy (visual.character.zenny) replaces the blockout body when it is imported.
+	const float Half = GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight();
+	if (GLVisuals::Attach(this, GetCapsuleComponent(), TEXT("visual.character.zenny"), FTransform(FVector(0, 0, -Half))))
+	{
+		Body->SetVisibility(false);
+	}
 }
 
 void AGLCharacter::BuildInput()

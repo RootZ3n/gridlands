@@ -1,0 +1,127 @@
+{
+	"mode": "reversal",
+	"speedMetresPerSecond": 12,
+	"frames": 36540,
+	"worstFrameMs": 36.130086984485388,
+	"frameMsMean": 3.8764905669411913,
+	"frameMsP99": 8.3867849316447973,
+	"streamingGameThreadMsWorst": 10.587234050035477,
+	"streamingGameThreadMsMean": 0.1301324879068812,
+	"gameThreadMsMean": 1.7876050081420087,
+	"gpuMsMean": 3.3807350303478167,
+	"memStartMb": 3299.7734375,
+	"memPeakMb": 4543.1328125,
+	"navActiveTilesPeak": 301,
+	"navPendingTasksPeak": 201,
+	"navInvokersOnly": true,
+	"endNavActiveTiles": 222,
+	"endNavTileMb": 0.11785125732421875,
+	"endNavPendingTasks": 0,
+	"emergencyChunks": 0,
+	"staleResultsDropped": 0,
+	"chunksReused": 512,
+	"arrival": "crossed at frame 28042; lots ground ready, lots complete yes, emergency chunks so far 0",
+	"cellLoads": [
+		{
+			"cell": "cell.home.origin",
+			"epoch": 1,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.026658180053345859,
+			"runtimeReadySeconds": 0.50788123602978885,
+			"cellCompleteSeconds": 2.8431936510605738
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 2,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.095254573971033096,
+			"runtimeReadySeconds": 0.1047135159606114,
+			"cellCompleteSeconds": 2.3829785969574004
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 3,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.096445592003874481,
+			"runtimeReadySeconds": 0.10527406795881689,
+			"cellCompleteSeconds": 2.2653049570508301
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 4,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.095356318051926792,
+			"runtimeReadySeconds": 0.10537408199161291,
+			"cellCompleteSeconds": 2.2419253510888666
+		}
+	],
+	"hitches": [
+		{
+			"frame": 5858,
+			"engineFrame": 6108,
+			"ms": 22.703989990986884,
+			"xMetres": 257.35543046705425,
+			"streamingMs": 5.4116490064188838,
+			"gameThreadMs": 12.00100040435791,
+			"renderThreadMs": 3.6040000915527344,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 8667,
+			"engineFrame": 8917,
+			"ms": 36.130086984485388,
+			"xMetres": 127.86185348033905,
+			"streamingMs": 1.2770360335707664,
+			"gameThreadMs": 4.0320000648498535,
+			"renderThreadMs": 3.1519999504089355,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 13782,
+			"engineFrame": 14032,
+			"ms": 17.390988999977708,
+			"xMetres": 257.3635207908228,
+			"streamingMs": 5.4108339827507734,
+			"gameThreadMs": 8.8640003204345703,
+			"renderThreadMs": 3.4820001125335693,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 16625,
+			"engineFrame": 16875,
+			"ms": 28.862962033599615,
+			"xMetres": 127.83850524481386,
+			"streamingMs": 0.88942598085850477,
+			"gameThreadMs": 3.1549999713897705,
+			"renderThreadMs": 3.5169999599456787,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 23065,
+			"engineFrame": 23315,
+			"ms": 17.732645967043936,
+			"xMetres": 257.3512358488515,
+			"streamingMs": 5.3079479839652777,
+			"gameThreadMs": 8.2700004577636719,
+			"renderThreadMs": 3.2360000610351562,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 32322,
+			"engineFrame": 32572,
+			"ms": 23.111523012630641,
+			"xMetres": 705.36937677301466,
+			"streamingMs": 0.010513002052903175,
+			"gameThreadMs": 2.5190000534057617,
+			"renderThreadMs": 2.562000036239624,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		}
+	],
+	"garbageCollections": 4
+}

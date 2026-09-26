@@ -1,0 +1,11 @@
+LogGridlands: Grid: entered cell.home.origin (from None)
+LogGridlands: Grid: loading cell.home.origin (epoch 1)
+LogGridlands: gl.Demo.FellTree: before: placement.origin.structure_pine_01: stump=intact trunk=intact
+LogGridlands: Structures: placement.origin.structure_pine_01 lost support: 1 part(s) collapse (decided in 0.163 ms)
+LogGridlands: gl.Demo.FellTree: chopped (3 chop noises): placement.origin.structure_pine_01: stump=removed trunk=debris@V(X=-1475.00, Y=-4500.00, Z=25.00)(actor NOT at rest)
+LogGridlands: gl.Demo.Structure: screenshot tree-falling
+LogGridlands: Structures: placement.origin.structure_pine_01/trunk hit (90 damage, 0 hit; impact resolved in 0.048 ms)
+LogGridlands: gl.Demo.FellTree: fell: placement.origin.structure_pine_01: stump=removed trunk=debris@V(X=-1475.00, Y=-4500.00, Z=25.00)(actor at rest); lies pointing V(X=1.00, Z=-0.00)
+LogGridlands: gl.Demo.Structure: screenshot tree-fallen
+LogGridlands: gl.Demo.FellTree: S gathered the log: planks 1 -> 7; placement.origin.structure_pine_01: stump=removed trunk=debris-salvaged; PASS
+LogGridlands: Save: wrote ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json

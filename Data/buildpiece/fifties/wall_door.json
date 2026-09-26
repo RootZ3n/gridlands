@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.fifties.wall_door",
+  "displayName": "Wall Door",
+  "era": "era.memory.fifties",
+  "material": "material.timber.pine",
+  "role": "wall",
+  "grounded": false,
+  "buildable": false,
+  "size": [
+    2,
+    0.2,
+    2.5
+  ],
+  "shapes": [
+    {
+      "size": [
+        2,
+        0.2,
+        2.5
+      ],
+      "offset": [
+        0,
+        0,
+        1.25
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "top",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        2.5
+      ]
+    },
+    {
+      "name": "left",
+      "role": "side",
+      "offset": [
+        -1,
+        0,
+        1.25
+      ]
+    },
+    {
+      "name": "right",
+      "role": "side",
+      "offset": [
+        1,
+        0,
+        1.25
+      ]
+    }
+  ],
+  "visual": "visual.kit50.wall_door",
+  "collapse": {
+    "motion": "topple",
+    "direction": "awayFromInstigator"
+  },
+  "notes": "P7 world-only 1950s kit piece (authored structures; same structural language as player building)."
+}

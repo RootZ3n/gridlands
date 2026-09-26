@@ -25,6 +25,18 @@ double FGLHeightfield::Falloff(double DistanceCm, double RadiusCm)
 	return T * T * (3.0 - 2.0 * T);
 }
 
+double FGLHeightfield::EditedAt(const FVector2D& World) const
+{
+	if (Heights.Num() == 0)
+	{
+		return 0.0;
+	}
+	const int32 X = FMath::Clamp(FMath::RoundToInt((World.X - Origin.X) / Spacing), 0, VertsX - 1);
+	const int32 Y = FMath::Clamp(FMath::RoundToInt((World.Y - Origin.Y) / Spacing), 0, VertsY - 1);
+	const int32 I = Y * VertsX + X;
+	return FMath::Abs(Heights[I] - VertexBase(I));
+}
+
 double FGLHeightfield::HeightAt(const FVector2D& World) const
 {
 	const FVector2D Local = World - Origin;
