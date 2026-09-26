@@ -120,3 +120,7 @@ the noise test read the last noise of an empty list. The test now fails cleanly,
   economy is untuned.
 - **Blockout presentation.** A creak/warning telegraph uses `startDelaySeconds`, but nothing is
   drawn yet; cosmetic physics hangs on `OnPresentationImpact`.
+
+## Fresh clone
+**PASS:** a fresh clone of `1dab7aa` built and passed **102/102** tests (39 requirements) and the data
+validation (162 entities), from tracked inputs plus the pinned engine (`00-*`).
