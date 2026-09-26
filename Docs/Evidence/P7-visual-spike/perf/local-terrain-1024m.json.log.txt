@@ -1,5 +1,10 @@
 LogGridlands: Grid: entered cell.home.origin (from None)
 LogGridlands: Grid: loading cell.home.origin (epoch 1)
+LogGridlands: Grid: slow streaming frame 27.02 ms: load/unload 0.29, ground 26.66 [finish 0.00, apply 0.00 (0, worst 0.00 = mesh 0.00 + collision 0.00 + nav 0.00), launch 0.17, retire 0.00 (0)], authoritative 0.00, presentation 0.02 (0 units)
+LogGridlands: Placements: spawned 23 for cell.home.origin (presentation deferred); discovery 0.22 ms glitch 0.37 ms spawn 3.90 ms salvage_node 1.38 ms puzzle_site 0.11 ms structure 0.07 ms
 LogGridlands: Grid: cell.home.origin runtime layer in (epoch 1, kept state: no)
-LogGridlands: Grid: cell.home.origin (epoch 1) ready: ground 25 ms, runtime 3792 ms, every chunk 6168 ms
+LogGridlands: Grid: slow streaming frame 14.05 ms: load/unload 0.01, ground 5.46 [finish 0.00, apply 5.43 (1, worst 5.22 = mesh 5.07 + collision 0.13 + nav 0.01), launch 0.03, retire 0.00 (0)], authoritative 8.57, presentation 0.00 (0 units)
+LogGridlands: Grid: slow streaming frame 17.01 ms: load/unload 0.01, ground 17.00 [finish 0.00, apply 5.33 (1, worst 5.12 = mesh 4.96 + collision 0.14 + nav 0.02), launch 0.03, retire 0.00 (0)], authoritative 0.00, presentation 0.00 (0 units)
+LogGridlands: Grid: cell.home.origin (epoch 1) ready: ground 27 ms, authoritative runtime 3852 ms, presented 3991 ms, every chunk 6198 ms
 LogGridlands: Save: wrote ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json
+machine: load average: 3.27, 3.57, 4.05

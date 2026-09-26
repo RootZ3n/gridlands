@@ -6,6 +6,7 @@
 #include "Combat/GLCreature.h"
 #include "Combat/GLHealthComponent.h"
 #include "Engine/Engine.h"
+#include "Misc/Crc.h"
 #include "EngineUtils.h"
 #include "GameplayTagsManager.h"
 #include "Engine/World.h"
@@ -57,8 +58,10 @@ namespace GLStructureDemo
 	/** Streaming is asynchronous (ADR-0028): commands given at startup wait for the origin's structures. */
 	void WhenReady(UWorld* World, TFunction<void()> Then, int32 Tries)
 	{
+		// Authoritative AND presented (ADR-0033): the proofs act on part actors.
 		const UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>();
-		if ((Structures && Structures->Find(DCarport)) || Tries >= 120)
+		const UGLPlacementSubsystem* Placements = World->GetSubsystem<UGLPlacementSubsystem>();
+		if ((Structures && Structures->Find(DCarport) && Placements && Placements->IsCellPresented(DOrigin)) || Tries >= 120)
 		{
 			Then();
 			return;
@@ -423,6 +426,117 @@ namespace GLStructureDemo
 			} },
 		});
 	}
+
+	// --- P7 dense-spawn proof (ADR-0033), with -GLDenseProof: damage the dense fixture through the real
+	// salvage pipeline, quit (autosave), relaunch and report. The digest of the lots' structure facts
+	// must match across the restart; every present part has exactly one actor, and no gone part has one.
+	FName DenseId(int32 Index) { return FName(*FString::Printf(TEXT("placement.diner_lots.proof_dense_%03d"), Index)); }
+	const FName DLots(TEXT("cell.outer.diner_lots"));
+
+	void GoToLots(UWorld* World, const FVector2D& At)
+	{
+		Stand(World, At);
+		UGLGridSubsystem* Grid = World->GetSubsystem<UGLGridSubsystem>();
+		Grid->Advance(FVector(At, 0.0));
+		Grid->FlushAll(); // a teleport for evidence: finish streaming at once
+		Stand(World, At);
+	}
+
+	void StandBy(UWorld* World, FName Placement, FName Part)
+	{
+		const FGLStructureRuntime* S = World->GetSubsystem<UGLStructureSubsystem>()->Find(Placement);
+		const FGLStructurePartRuntime* P = S ? S->Parts.FindByPredicate([Part](const FGLStructurePartRuntime& X) { return X.Name == Part; }) : nullptr;
+		if (P)
+		{
+			Stand(World, FVector2D(P->Piece.Location) + FVector2D(-150.0, -150.0));
+		}
+	}
+
+	void DenseReport(UWorld* World, const TCHAR* Phase)
+	{
+		const UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>();
+		TArray<FGLSavedStructurePart> Facts;
+		Structures->CaptureCell(DLots, Facts);
+		FString Text;
+		for (const FGLSavedStructurePart& F : Facts)
+		{
+			Text += FString::Printf(TEXT("%s/%s=%d@%.0f,%.0f,%.0f;"), *F.Placement.ToString(), *F.Part.ToString(), static_cast<int32>(F.State), F.Location.X, F.Location.Y, F.Location.Z);
+		}
+		int32 Present = 0, Structs = 0;
+		for (int32 I = 0; I < 84; ++I)
+		{
+			if (const FGLStructureRuntime* S = Structures->Find(DenseId(I)))
+			{
+				++Structs;
+				for (const FGLStructurePartRuntime& P : S->Parts)
+				{
+					Present += P.State == EGLStructurePartState::Intact || P.State == EGLStructurePartState::Debris ? 1 : 0;
+				}
+			}
+		}
+		int32 Actors = 0, Duplicates = 0, Zombies = 0;
+		TSet<FString> Seen;
+		for (TActorIterator<AGLStructurePart> It(World); It; ++It)
+		{
+			if (!IsValid(*It) || It->IsActorBeingDestroyed() || !It->StructurePlacement.ToString().Contains(TEXT("proof_dense")))
+			{
+				continue;
+			}
+			++Actors;
+			const FString Key = It->StructurePlacement.ToString() + It->PartName.ToString();
+			Duplicates += Seen.Contains(Key) ? 1 : 0;
+			Seen.Add(Key);
+			const FGLStructureRuntime* S = Structures->Find(It->StructurePlacement);
+			const FGLStructurePartRuntime* P = S ? S->Parts.FindByPredicate([&It](const FGLStructurePartRuntime& X) { return X.Name == It->PartName; }) : nullptr;
+			Zombies += !P || (P->State != EGLStructurePartState::Intact && P->State != EGLStructurePartState::Debris) ? 1 : 0;
+		}
+		const bool bOk = Structs == 84 && Actors == Present && Duplicates == 0 && Zombies == 0 && Facts.Num() > 0;
+		UE_LOG(LogGridlands, Log, TEXT("gl.Demo.Dense: %s: %d dense structures, %d facts, digest %08x; %d present parts, %d actors, %d duplicates, %d resurrected | %s"),
+			Phase, Structs, Facts.Num(), FCrc::StrCrc32(*Text), Present, Actors, Duplicates, Zombies, bOk ? TEXT("PASS") : TEXT("FAIL"));
+		UE_LOG(LogGridlands, Log, TEXT("gl.Demo.Dense: %s: %s"), Phase, *Describe(World, DenseId(10)));
+	}
+
+	void Dense(const TArray<FString>& Args, UWorld* World)
+	{
+		const bool bReport = Args.Num() > 0 && Args[0] == TEXT("report");
+		const FVector2D Near(64400.0, 3000.0); // by carport proof_dense_010 (lots-local -380 m, +40 m)
+		RunSteps(World, {
+			{ 0.5, [World, Near]() { GoToLots(World, Near); } },
+			{ 2.0, [World, bReport]()
+			{
+				if (bReport)
+				{
+					DenseReport(World, TEXT("after restart"));
+					return;
+				}
+				StandBy(World, DenseId(10), TEXT("post_south"));
+				Salvage(World, DenseId(10), TEXT("post_south"));
+				Salvage(World, DenseId(10), TEXT("post_north"));
+				StandBy(World, DenseId(20), TEXT("stump"));
+				Salvage(World, DenseId(20), TEXT("stump"));
+				StandBy(World, DenseId(64), TEXT("rock"));
+				Salvage(World, DenseId(64), TEXT("rock"));
+				StandBy(World, DenseId(0), TEXT("post_m"));
+				Salvage(World, DenseId(0), TEXT("post_w"));
+				Salvage(World, DenseId(0), TEXT("post_m"));
+				Salvage(World, DenseId(0), TEXT("post_e"));
+				UE_LOG(LogGridlands, Log, TEXT("gl.Demo.Dense: salvaged; %d collapse(s) running"), World->GetSubsystem<UGLStructureSubsystem>()->ActiveCollapses());
+			} },
+			{ 7.0, [World, bReport]()
+			{
+				if (!bReport)
+				{
+					StandBy(World, DenseId(10), TEXT("deck_west"));
+					Salvage(World, DenseId(10), TEXT("deck_west"));
+				}
+			} },
+			{ 8.0, [World, bReport]() { if (!bReport) { DenseReport(World, TEXT("before quit")); } } },
+		});
+	}
+
+	FAutoConsoleCommandWithWorldAndArgs DenseCommand(TEXT("gl.Demo.Dense"),
+		TEXT("DEV ONLY (P7, needs -GLDenseProof): 'act' damages the dense fixture and reports its facts; 'report' (after a restart) reports them again."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic(&Dense));
 
 	FAutoConsoleCommandWithWorldAndArgs CollapseCommand(TEXT("gl.Demo.Collapse"),
 		TEXT("DEV ONLY (P6): Zenny takes the carport's posts; the decks collapse on him. 'kill' starts him at 50 health."),

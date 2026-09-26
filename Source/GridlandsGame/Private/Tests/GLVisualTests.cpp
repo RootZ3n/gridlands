@@ -9,6 +9,7 @@
 #include "GameFramework/Character.h"
 #include "Inventory/GLInventoryComponent.h"
 #include "Materials/MaterialInterface.h"
+#include "Misc/Crc.h"
 #include "Presentation/GLScatterPatch.h"
 #include "Presentation/GLVisuals.h"
 #include "Salvage/GLSalvageableComponent.h"
@@ -121,6 +122,8 @@ bool FGLVegetationFollowsGround::RunTest(const FString& Parameters)
 	TestEqual(TEXT("every tuft grows on untouched lawn"), Before, 400);
 	Patch->Rebuild();
 	TestEqual(TEXT("deterministic"), Patch->GetInstanceCount(), Before);
+	TestEqual(TEXT("and across processes and builds: the seed is the id's text, not an FName index"),
+		AGLScatterPatch::SeedFor(TEXT("placement.test.grass")), static_cast<int32>(FCrc::StrCrc32(TEXT("placement.test.grass"))));
 	// Dig a pit in the middle through the real terraform path (its event re-plants the patch).
 	S.Inventory->AddItem(TEXT("item.tool.shovel"), 1);
 	S.Zenny->SetActorLocation(FVector(Centre + FVector2D(250, 0), S.Terrain->HeightAt(Centre) + 100.0)); // within reach, as a player digs

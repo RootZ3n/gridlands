@@ -31,11 +31,16 @@ void UGLGridSubsystem::Tick(float DeltaTime)
 
 void UGLGridSubsystem::Advance(const FVector& Where, double BudgetSeconds)
 {
+	const double T0 = FPlatformTime::Seconds();
 	Update(Where);
+	const double T1 = FPlatformTime::Seconds();
 	UGLTerrainSubsystem* Terrain = GetWorld()->GetSubsystem<UGLTerrainSubsystem>();
 	// Safety first: the ground under Zenny exists, with collision, whatever else is in flight.
 	Terrain->EnsureReadyAt(FVector2D(Where));
 	Terrain->Pump(FVector2D(Where), BudgetSeconds);
+	const double T2 = FPlatformTime::Seconds();
+	UGLPlacementSubsystem* Placements = GetWorld()->GetSubsystem<UGLPlacementSubsystem>();
+	LastAuthoritativeSeconds = 0.0;
 	for (TPair<FName, FGLLoadedCell>& Entry : Loaded)
 	{
 		FGLLoadedCell& Cell = Entry.Value;
@@ -45,9 +50,18 @@ void UGLGridSubsystem::Advance(const FVector& Where, double BudgetSeconds)
 		}
 		if (!Cell.bRuntime)
 		{
+			const double AuthoritativeStart = FPlatformTime::Seconds();
 			TryFinishRuntime(Entry.Key, Cell);
+			if (Cell.bRuntime)
+			{
+				LastAuthoritativeSeconds += FPlatformTime::Seconds() - AuthoritativeStart;
+			}
 		}
-		if (Cell.bRuntime && Cell.CompleteAt < 0.0 && Terrain->IsCellComplete(Entry.Key))
+		if (Cell.bRuntime && Cell.PresentedAt < 0.0 && Placements->IsCellPresented(Entry.Key))
+		{
+			Cell.PresentedAt = Now();
+		}
+		if (Cell.bRuntime && Cell.PresentedAt >= 0.0 && Cell.CompleteAt < 0.0 && Terrain->IsCellComplete(Entry.Key))
 		{
 			Cell.CompleteAt = Now();
 			FGLCellLoadRecord& R = Records.AddDefaulted_GetRef();
@@ -55,10 +69,31 @@ void UGLGridSubsystem::Advance(const FVector& Where, double BudgetSeconds)
 			R.Epoch = Cell.Epoch;
 			R.GroundSeconds = Cell.GroundAt - Cell.StartedAt;
 			R.RuntimeSeconds = Cell.RuntimeAt - Cell.StartedAt;
+			R.PresentedSeconds = Cell.PresentedAt - Cell.StartedAt;
 			R.CompleteSeconds = Cell.CompleteAt - Cell.StartedAt;
-			UE_LOG(LogGridlands, Log, TEXT("Grid: %s (epoch %d) ready: ground %.0f ms, runtime %.0f ms, every chunk %.0f ms"),
-				*Entry.Key.ToString(), Cell.Epoch, R.GroundSeconds * 1000.0, R.RuntimeSeconds * 1000.0, R.CompleteSeconds * 1000.0);
+			UE_LOG(LogGridlands, Log, TEXT("Grid: %s (epoch %d) ready: ground %.0f ms, authoritative runtime %.0f ms, presented %.0f ms, every chunk %.0f ms"),
+				*Entry.Key.ToString(), Cell.Epoch, R.GroundSeconds * 1000.0, R.RuntimeSeconds * 1000.0, R.PresentedSeconds * 1000.0, R.CompleteSeconds * 1000.0);
 		}
+	}
+	// Deferred presentation (P7, ADR-0033): after the authoritative layer, never before it. Every
+	// unit is made in its already-resolved state; nearest first; what Zenny can touch at once.
+	const double PresentStart = FPlatformTime::Seconds();
+	// Presentation takes only what this streaming frame has left under PresentationCeilingMs; the frame an
+	// authoritative layer lands in, or one the ground already made heavy, carries only what Zenny can touch.
+	const double Left = PresentationCeilingMs / 1000.0 - (FPlatformTime::Seconds() - T0);
+	const double Budget = LastAuthoritativeSeconds > 0.0 ? 0.0 : FMath::Min(PresentationBudgetMs / 1000.0, Left);
+	LastPresentationUnits = PresentationBudgetMs < 0.f ? 0 // paused (tests hold presentation back)
+		: Budget > 0.00005 ? Placements->PumpPresentation(Where, Budget, PresentationNearM * 100.0)
+		: Placements->PumpPresentation(Where, -1.0, PresentationNearM * 100.0);
+	LastPresentationSeconds = FPlatformTime::Seconds() - PresentStart;
+	const double Total = FPlatformTime::Seconds() - T0;
+	if (Total > 0.008)
+	{
+		// Evidence: what a slow streaming frame was made of (P5 budget 12 ms).
+		const FGLTerrainPumpBreakdown& P = Terrain->GetLastPump();
+		UE_LOG(LogGridlands, Log, TEXT("Grid: slow streaming frame %.2f ms: load/unload %.2f, ground %.2f [finish %.2f, apply %.2f (%d, worst %.2f = mesh %.2f + collision %.2f + nav %.2f), launch %.2f, retire %.2f (%d)], authoritative %.2f, presentation %.2f (%d units)"),
+			Total * 1000.0, (T1 - T0) * 1000.0, (T2 - T1) * 1000.0, P.FinishMs, P.ApplyMs, P.Applied, P.WorstApplyMs, P.WorstMeshMs, P.WorstCollisionMs, P.WorstNavigationMs, P.LaunchMs, P.RetireMs, P.Retired,
+			LastAuthoritativeSeconds * 1000.0, LastPresentationSeconds * 1000.0, LastPresentationUnits);
 	}
 }
 
@@ -164,7 +199,9 @@ void UGLGridSubsystem::TryFinishRuntime(FName Cell, FGLLoadedCell& Entry)
 			Record.BuildPieces.Add({ Piece.Id, Piece.Def, Piece.Location, Piece.YawQuarter });
 		}
 	}
-	World->GetSubsystem<UGLPlacementSubsystem>()->SpawnCell(Cell);
+	// Authoritative first (ADR-0033): the placements' gameplay model, then the kept state on it, in
+	// this one frame. Deferred presentation is made later from the resolved model, never before.
+	World->GetSubsystem<UGLPlacementSubsystem>()->SpawnCell(Cell, true);
 	Saves->ApplyCell(Record);
 	if (bShowBoundaries)
 	{
@@ -235,4 +272,5 @@ void UGLGridSubsystem::FlushAll()
 			TryFinishRuntime(Entry.Key, Entry.Value);
 		}
 	}
+	World->GetSubsystem<UGLPlacementSubsystem>()->PumpPresentation(FVector::ZeroVector, 0.0);
 }

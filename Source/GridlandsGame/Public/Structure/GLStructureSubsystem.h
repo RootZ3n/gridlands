@@ -74,8 +74,26 @@ public:
 	/** Advances the structure clock (Tick calls it; tests call it directly): impacts land, poses follow. */
 	void Advance(double Seconds);
 
-	/** Spawns a structure placement: every part intact. Its origin sits on the ground at Origin's XY. */
-	bool SpawnStructure(FName Placement, FName Def, FName Cell, const FVector& Origin, int32 YawQuarter);
+	/**
+	 * Spawns a structure placement: every part intact. Its origin sits on the ground at Origin's XY.
+	 * bDeferPresentation (P7): only the authoritative model is made; part actors are instantiated by
+	 * PumpPresentation later, each in the state the model holds THEN (saved state is resolved first).
+	 */
+	bool SpawnStructure(FName Placement, FName Def, FName Cell, const FVector& Origin, int32 YawQuarter, bool bDeferPresentation = false);
+	/**
+	 * Instantiates deferred part actors, nearest to Where first: every part within NearCm at once
+	 * (what Zenny can touch), then more until BudgetSeconds is spent (0: all; < 0: only the near ones). A part is made in its
+	 * current authoritative state: intact, falling, or debris at rest; removed and salvaged parts are
+	 * never made. Returns how many actors were made.
+	 */
+	int32 PumpPresentation(const FVector& Where, double BudgetSeconds, double NearCm = 0.0);
+	bool IsCellPresented(FName Cell) const;
+	/** Presents one waiting part now, by the pump's own path (tests choose the order). False if it was not waiting. */
+	bool PresentPart(FName Placement, FName Part);
+	bool IsPartPending(FName Placement, FName Part) const { return IsPending(Placement, Part); }
+	int32 PendingPresentation() const { return Pending.Num(); }
+	/** Part actors of unloaded cells still waiting to be destroyed (retired: inert, hidden, no collision). */
+	int32 RetiringActors() const { return Retiring.Num(); }
 	/** Streaming: removes a cell's structures and drops their unfinished collapses (the outcome is already final). */
 	int32 RemoveCell(FName Cell);
 
@@ -86,6 +104,12 @@ public:
 
 	/** Terrain must not move under an intact grounded part or under debris (a digging refusal, like player pieces). */
 	bool IsUnderStructure(const FVector2D& World, double MarginCm = 50.0) const;
+	/**
+	 * The ground footprints IsUnderStructure tests (intact grounded parts and debris, grown by MarginCm)
+	 * that touch Area: a caller testing many points in one place collects them once (P7: vegetation
+	 * checked every part in the world per tuft, which a dense cell made the most expensive thing in it).
+	 */
+	void CollectFootprints(const FBox2D& Area, double MarginCm, TArray<FBox2D>& Out) const;
 	/** Player pieces must not overlap structure parts or debris. */
 	bool Overlaps(const FBox& Box) const;
 
@@ -104,9 +128,16 @@ private:
 	void Land(FGLActiveCollapse& Collapse);
 	AGLStructurePart* SpawnPart(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part);
 	void MakeDebris(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part);
+	/** Makes a deferred part's actor in its current authoritative state (or nothing, if it is gone). */
+	AGLStructurePart* Present(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part);
+	bool IsPending(FName Placement, FName Part) const;
 	double GroundAt(const FVector2D& At) const;
 
 	TMap<FName, FGLStructureRuntime> Structures;
+	/** Parts whose actors are still to be presented (placement, part). */
+	TArray<TPair<FName, FName>> Pending;
+	/** Retired part actors of unloaded cells, destroyed within the presentation budget. */
+	TArray<TWeakObjectPtr<AGLStructurePart>> Retiring;
 	TArray<FGLActiveCollapse> Active;
 	TArray<FGLImpactRecord> Impacts;
 	TArray<TWeakObjectPtr<AActor>> ToDestroy;

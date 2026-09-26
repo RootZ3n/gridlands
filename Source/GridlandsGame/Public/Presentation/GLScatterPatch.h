@@ -26,6 +26,8 @@ public:
 	/** Re-plants every instance against the current ground and structures. */
 	void Rebuild();
 	int32 GetInstanceCount() const;
+	/** The layout seed: stable across processes and builds (the id's text, not its FName index). */
+	static int32 SeedFor(FName PlacementId);
 
 private:
 	void HandleChange(const FGLGameplayEvent& Event);

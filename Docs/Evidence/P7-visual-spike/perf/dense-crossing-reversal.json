@@ -1,0 +1,139 @@
+{
+	"mode": "reversal",
+	"speedMetresPerSecond": 12,
+	"frames": 36019,
+	"worstFrameMs": 36.205267999321222,
+	"frameMsMean": 3.9326151669693656,
+	"frameMsP99": 8.7558079976588488,
+	"streamingGameThreadMsWorst": 8.1591319758445024,
+	"streamingGameThreadMsMean": 0.14151653055295144,
+	"gameThreadMsMean": 1.8075494603964566,
+	"denseProof": true,
+	"presentationBudgetMs": 1.5,
+	"presentationFrames": 476,
+	"presentationUnits": 1038,
+	"presentationMsWorst": 1.692991005256772,
+	"presentationMsMean": 0.56091600103585537,
+	"presentationPendingPeak": 346,
+	"authoritativeLayerMsWorst": 4.2636590078473091,
+	"gpuMsMean": 3.4209636863946895,
+	"memStartMb": 3281.8203125,
+	"memPeakMb": 4552.19921875,
+	"navActiveTilesPeak": 301,
+	"navPendingTasksPeak": 201,
+	"navInvokersOnly": true,
+	"endNavActiveTiles": 227,
+	"endNavTileMb": 0.12047576904296875,
+	"endNavPendingTasks": 0,
+	"emergencyChunks": 0,
+	"staleResultsDropped": 0,
+	"chunksReused": 512,
+	"arrival": "crossed at frame 27749; lots ground ready, lots complete yes, emergency chunks so far 0",
+	"cellLoads": [
+		{
+			"cell": "cell.home.origin",
+			"epoch": 1,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.025561660993844271,
+			"runtimeReadySeconds": 0.4913752640131861,
+			"presentedSeconds": 0.5985998910618946,
+			"cellCompleteSeconds": 2.7391303590266034
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 2,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.096406028023920953,
+			"runtimeReadySeconds": 0.10035050299484283,
+			"presentedSeconds": 2.5115615749964491,
+			"cellCompleteSeconds": 2.5115617719711736
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 3,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.09492121497169137,
+			"runtimeReadySeconds": 0.099174086004495621,
+			"presentedSeconds": 1.3856632580282167,
+			"cellCompleteSeconds": 2.3195012479554862
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 4,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.096182515961118042,
+			"runtimeReadySeconds": 0.10026990296319127,
+			"presentedSeconds": 1.319872525986284,
+			"cellCompleteSeconds": 2.3453444959595799
+		}
+	],
+	"hitches": [
+		{
+			"frame": 5857,
+			"engineFrame": 6107,
+			"ms": 18.444010987877846,
+			"xMetres": 257.28298173565418,
+			"streamingMs": 6.1527419602498412,
+			"gameThreadMs": 10.694000244140625,
+			"renderThreadMs": 4.2709999084472656,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 8645,
+			"engineFrame": 8895,
+			"ms": 36.205267999321222,
+			"xMetres": 127.79497889056802,
+			"streamingMs": 2.2836390417069197,
+			"gameThreadMs": 6.6579999923706055,
+			"renderThreadMs": 3.4030001163482666,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 13753,
+			"engineFrame": 14003,
+			"ms": 17.470004037022591,
+			"xMetres": 257.26034777285531,
+			"streamingMs": 6.1248920392245054,
+			"gameThreadMs": 9.3570003509521484,
+			"renderThreadMs": 3.5829999446868896,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 16575,
+			"engineFrame": 16825,
+			"ms": 36.038217018358409,
+			"xMetres": 127.79064084496349,
+			"streamingMs": 2.3021410452201962,
+			"gameThreadMs": 5.6789999008178711,
+			"renderThreadMs": 3.3050000667572021,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 23007,
+			"engineFrame": 23257,
+			"ms": 17.176480032503605,
+			"xMetres": 257.28273592982441,
+			"streamingMs": 6.1166430823504925,
+			"gameThreadMs": 8.8260002136230469,
+			"renderThreadMs": 2.9760000705718994,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 31890,
+			"engineFrame": 32140,
+			"ms": 23.439866025000811,
+			"xMetres": 705.40290116705,
+			"streamingMs": 0.012472039088606834,
+			"gameThreadMs": 3.9409999847412109,
+			"renderThreadMs": 2.9930000305175781,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		}
+	],
+	"garbageCollections": 4
+}

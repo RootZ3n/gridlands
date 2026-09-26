@@ -27,6 +27,7 @@
 #include "UObject/GarbageCollection.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "World/GLGridSubsystem.h"
+#include "World/GLPlacementSubsystem.h"
 #include "World/GLGridCells.h"
 
 #if !UE_BUILD_SHIPPING
@@ -332,6 +333,11 @@ namespace GLPerf
 		TArray<TSharedPtr<FJsonValue>> Hitches;
 		int32 GcCount = 0;
 		int32 GcSeen = 0;
+		/** P7 multi-frame presentation: per-frame presentation work, the authoritative layer's frames, and the queue. */
+		TArray<double> PresentMs;
+		TArray<double> AuthoritativeMs;
+		int32 PresentUnits = 0;
+		int32 PendingPeak = 0;
 		FString Arrival;
 		TWeakObjectPtr<UWorld> World;
 		FTSTicker::FDelegateHandle Ticker;
@@ -383,6 +389,19 @@ namespace GLPerf
 			Crossing.AdvanceMs.Add(Grid->GetLastAdvanceSeconds() * 1000.0);
 			Crossing.GameMs.Add(FPlatformTime::ToMilliseconds(GGameThreadTime));
 			Crossing.GpuMs.Add(FPlatformTime::ToMilliseconds(RHIGetGPUFrameCycles()));
+			if (Grid->GetLastPresentationUnits() > 0)
+			{
+				Crossing.PresentMs.Add(Grid->GetLastPresentationSeconds() * 1000.0);
+				Crossing.PresentUnits += Grid->GetLastPresentationUnits();
+			}
+			if (Grid->GetLastAuthoritativeSeconds() > 0.0)
+			{
+				Crossing.AuthoritativeMs.Add(Grid->GetLastAuthoritativeSeconds() * 1000.0);
+			}
+		}
+		if (const UGLPlacementSubsystem* Placements = World->GetSubsystem<UGLPlacementSubsystem>())
+		{
+			Crossing.PendingPeak = FMath::Max(Crossing.PendingPeak, Placements->PendingPresentation());
 		}
 		Crossing.PeakMb = FMath::Max(Crossing.PeakMb, FPlatformMemory::GetStats().UsedPhysical / (1024.0 * 1024.0));
 		if (Crossing.Frames % 30 == 0)
@@ -435,6 +454,14 @@ namespace GLPerf
 				O->SetNumberField(TEXT("streamingGameThreadMsWorst"), Crossing.AdvanceMs.Num() ? FMath::Max(Crossing.AdvanceMs) : 0.0);
 				O->SetNumberField(TEXT("streamingGameThreadMsMean"), FFrameStats::Mean(Crossing.AdvanceMs));
 				O->SetNumberField(TEXT("gameThreadMsMean"), FFrameStats::Mean(Crossing.GameMs));
+				O->SetBoolField(TEXT("denseProof"), FParse::Param(FCommandLine::Get(), TEXT("GLDenseProof")));
+				O->SetNumberField(TEXT("presentationBudgetMs"), Grid->PresentationBudgetMs);
+				O->SetNumberField(TEXT("presentationFrames"), Crossing.PresentMs.Num());
+				O->SetNumberField(TEXT("presentationUnits"), Crossing.PresentUnits);
+				O->SetNumberField(TEXT("presentationMsWorst"), Crossing.PresentMs.Num() ? FMath::Max(Crossing.PresentMs) : 0.0);
+				O->SetNumberField(TEXT("presentationMsMean"), FFrameStats::Mean(Crossing.PresentMs));
+				O->SetNumberField(TEXT("presentationPendingPeak"), Crossing.PendingPeak);
+				O->SetNumberField(TEXT("authoritativeLayerMsWorst"), Crossing.AuthoritativeMs.Num() ? FMath::Max(Crossing.AuthoritativeMs) : 0.0);
 				O->SetNumberField(TEXT("gpuMsMean"), FFrameStats::Mean(Crossing.GpuMs));
 				O->SetNumberField(TEXT("memStartMb"), Crossing.StartMb);
 				O->SetNumberField(TEXT("memPeakMb"), Crossing.PeakMb);
@@ -453,7 +480,8 @@ namespace GLPerf
 					L->SetNumberField(TEXT("epoch"), R.Epoch);
 					L->SetBoolField(TEXT("cancelledMidLoad"), R.bCancelled);
 					L->SetNumberField(TEXT("groundReadySeconds"), R.GroundSeconds);
-					L->SetNumberField(TEXT("runtimeReadySeconds"), R.RuntimeSeconds);
+					L->SetNumberField(TEXT("runtimeReadySeconds"), R.RuntimeSeconds); // authoritative gameplay state ready
+					L->SetNumberField(TEXT("presentedSeconds"), R.PresentedSeconds);
 					L->SetNumberField(TEXT("cellCompleteSeconds"), R.CompleteSeconds);
 					Loads.Add(MakeShared<FJsonValueObject>(L));
 				}

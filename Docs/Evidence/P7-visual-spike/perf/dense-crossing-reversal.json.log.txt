@@ -1,0 +1,33 @@
+LogGridlands: Placements: DEV dense proof fixture registered (92 placements in cell.outer.diner_lots)
+LogGridlands: Grid: entered cell.home.origin (from None)
+LogGridlands: Grid: loading cell.home.origin (epoch 1)
+LogGridlands: Grid: slow streaming frame 25.63 ms: load/unload 0.29, ground 25.28 [finish 0.00, apply 0.00 (0, worst 0.00 = mesh 0.00 + collision 0.00 + nav 0.00), launch 0.19, retire 0.00 (0)], authoritative 0.00, presentation 0.02 (0 units)
+LogGridlands: Grid: slow streaming frame 28.18 ms: load/unload 0.01, ground 28.17 [finish 0.00, apply 5.16 (1, worst 4.98 = mesh 4.81 + collision 0.15 + nav 0.01), launch 0.05, retire 0.00 (0)], authoritative 0.00, presentation 0.00 (0 units)
+LogGridlands: Placements: spawned 23 for cell.home.origin (presentation deferred); discovery 0.05 ms glitch 0.26 ms spawn 3.96 ms salvage_node 1.04 ms puzzle_site 0.11 ms structure 0.06 ms
+LogGridlands: Grid: cell.home.origin runtime layer in (epoch 1, kept state: no)
+LogGridlands: Grid: slow streaming frame 13.61 ms: load/unload 0.01, ground 5.14 [finish 0.00, apply 5.11 (1, worst 4.89 = mesh 4.76 + collision 0.12 + nav 0.01), launch 0.03, retire 0.00 (0)], authoritative 8.44, presentation 0.00 (0 units)
+LogGridlands: Grid: slow streaming frame 10.91 ms: load/unload 0.01, ground 10.89 [finish 0.00, apply 10.79 (1, worst 10.47 = mesh 9.86 + collision 0.51 + nav 0.10), launch 0.09, retire 0.00 (0)], authoritative 0.00, presentation 0.01 (0 units)
+LogGridlands: Grid: cell.home.origin (epoch 1) ready: ground 26 ms, authoritative runtime 491 ms, presented 599 ms, every chunk 2739 ms
+LogGridlands: Grid: loading cell.outer.diner_lots (epoch 2)
+LogGridlands: Placements: spawned 105 for cell.outer.diner_lots (presentation deferred); glitch 0.21 ms salvage_node 0.30 ms structure 0.09 ms
+LogGridlands: Grid: cell.outer.diner_lots runtime layer in (epoch 2, kept state: no)
+LogGridlands: Grid: cell.outer.diner_lots (epoch 2) ready: ground 96 ms, authoritative runtime 100 ms, presented 2512 ms, every chunk 2512 ms
+LogGridlands: Placements: despawned 105 for cell.outer.diner_lots (2.97 ms)
+LogGridlands: Grid: unloaded cell.outer.diner_lots at frame 8893 (epoch 2, was ready)
+LogGridlands: Grid: loading cell.outer.diner_lots (epoch 3)
+LogGridlands: Placements: spawned 105 for cell.outer.diner_lots (presentation deferred); glitch 0.17 ms salvage_node 0.22 ms structure 0.11 ms
+LogGridlands: Grid: cell.outer.diner_lots runtime layer in (epoch 3, kept state: yes)
+LogGridlands: Grid: cell.outer.diner_lots (epoch 3) ready: ground 95 ms, authoritative runtime 99 ms, presented 1386 ms, every chunk 2320 ms
+LogGridlands: Placements: despawned 105 for cell.outer.diner_lots (3.82 ms)
+LogGridlands: Grid: unloaded cell.outer.diner_lots at frame 16823 (epoch 3, was ready)
+LogGridlands: Grid: slow streaming frame 8.14 ms: load/unload 7.21, ground 0.93 [finish 0.00, apply 0.00 (0, worst 0.00 = mesh 0.00 + collision 0.00 + nav 0.00), launch 0.00, retire 0.93 (16)], authoritative 0.00, presentation 0.00 (0 units)
+LogGridlands: Grid: loading cell.outer.diner_lots (epoch 4)
+LogGridlands: Placements: spawned 105 for cell.outer.diner_lots (presentation deferred); glitch 0.26 ms salvage_node 0.29 ms structure 0.08 ms
+LogGridlands: Grid: cell.outer.diner_lots runtime layer in (epoch 4, kept state: yes)
+LogGridlands: Grid: cell.outer.diner_lots (epoch 4) ready: ground 96 ms, authoritative runtime 100 ms, presented 1320 ms, every chunk 2345 ms
+LogGridlands: Grid: entered cell.outer.diner_lots (from cell.home.origin)
+LogGridlands: Placements: despawned 20 for cell.home.origin (0.75 ms)
+LogGridlands: Grid: unloaded cell.home.origin at frame 36192 (epoch 1, was ready)
+LogGridlands: gl.Demo.GridReport: in cell.outer.diner_lots | loaded [cell.outer.diner_lots] | origin: lamp (not loaded), pieces 0, mound -9999 cm, level actors 0 | lots: jukebox Latent, pieces 0, level actors 10 | glitch actors 1, creatures 0 | loads 4 unloads 3
+LogGridlands: Save: wrote ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json
+machine: load average: 4.91, 4.17, 4.00

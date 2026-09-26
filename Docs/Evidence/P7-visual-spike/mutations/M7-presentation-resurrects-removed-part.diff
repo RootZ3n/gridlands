@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -159,7 +159,7 @@
+ 
+ AGLStructurePart* UGLStructureSubsystem::Present(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part)
+ {
+-	if (Part.Actor.IsValid() || !IsPresent(Part.State))
++	if (Part.Actor.IsValid())
+ 	{
+ 		return Part.Actor.Get(); // already made (a landing made it), or gone for good: never made
+ 	}

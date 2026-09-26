@@ -78,6 +78,21 @@ struct FGLTerrainStreamStats
  * Zenny is guaranteed on demand. Edits bump chunk versions so stale results are dropped. An edit
  * across a cell edge changes both cells atomically, and is refused if the neighbour is not loaded.
  */
+/** What the last Pump spent its time on (evidence for slow streaming frames). */
+struct FGLTerrainPumpBreakdown
+{
+	double FinishMs = 0.0;
+	double ApplyMs = 0.0;
+	double WorstApplyMs = 0.0;
+	double WorstMeshMs = 0.0;
+	double WorstCollisionMs = 0.0;
+	double WorstNavigationMs = 0.0;
+	int32 Applied = 0;
+	double LaunchMs = 0.0;
+	double RetireMs = 0.0;
+	int32 Retired = 0;
+};
+
 UCLASS()
 class GRIDLANDSGAME_API UGLTerrainSubsystem : public UWorldSubsystem
 {
@@ -101,6 +116,7 @@ public:
 	void FlushAll();
 	bool IsCellComplete(FName CellId) const;
 	const FGLTerrainStreamStats& GetStats() const { return Stats; }
+	const FGLTerrainPumpBreakdown& GetLastPump() const { return LastPump; }
 	int32 NumRetiring() const { return Retiring.Num(); }
 	int32 NumPooled() const { return Pool.Num(); }
 	int32 NumJobs() const { return Jobs.Num(); }
@@ -162,6 +178,7 @@ private:
 	void Emit(const TCHAR* Tag, FName Subject, AActor* Instigator, const FString& Reason);
 
 	UPROPERTY() TMap<FName, FGLCellGround> Grounds;
+	FGLTerrainPumpBreakdown LastPump;
 	TMap<FName, TSharedPtr<FGLPendingGround>> Pending;
 	TArray<TSharedPtr<FGLMeshJob>> Jobs;
 	UPROPERTY() TArray<TWeakObjectPtr<AGLTerrainChunk>> Retiring;

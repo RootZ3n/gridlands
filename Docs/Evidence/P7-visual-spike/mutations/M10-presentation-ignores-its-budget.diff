@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/World/GLGridSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLGridSubsystem.cpp
+@@ -83,7 +83,7 @@
+ 	const double Left = PresentationCeilingMs / 1000.0 - (FPlatformTime::Seconds() - T0);
+ 	const double Budget = LastAuthoritativeSeconds > 0.0 ? 0.0 : FMath::Min(PresentationBudgetMs / 1000.0, Left);
+ 	LastPresentationUnits = PresentationBudgetMs < 0.f ? 0 // paused (tests hold presentation back)
+-		: Budget > 0.00005 ? Placements->PumpPresentation(Where, Budget, PresentationNearM * 100.0)
++		: Budget > 0.00005 ? Placements->PumpPresentation(Where, 0.0, PresentationNearM * 100.0)
+ 		: Placements->PumpPresentation(Where, -1.0, PresentationNearM * 100.0);
+ 	LastPresentationSeconds = FPlatformTime::Seconds() - PresentStart;
+ 	const double Total = FPlatformTime::Seconds() - T0;

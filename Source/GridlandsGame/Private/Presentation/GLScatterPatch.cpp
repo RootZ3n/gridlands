@@ -7,6 +7,7 @@
 #include "Engine/World.h"
 #include "Events/GLEventSubsystem.h"
 #include "GameplayTagsManager.h"
+#include "Misc/Crc.h"
 #include "Presentation/GLVisuals.h"
 #include "Structure/GLStructureSubsystem.h"
 #include "Terrain/GLTerrainSubsystem.h"
@@ -87,7 +88,14 @@ void AGLScatterPatch::Rebuild()
 	const UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>();
 	const UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>();
 	Instances->ClearInstances();
-	FRandomStream Random(static_cast<int32>(GetTypeHash(PlacementId)));
+	// Structure footprints near the patch, once (not every part in the world per tuft).
+	TArray<FBox2D> Footprints;
+	if (Structures)
+	{
+		const FVector2D C(GetActorLocation());
+		Structures->CollectFootprints(FBox2D(C - FVector2D(RadiusCm), C + FVector2D(RadiusCm)), 10.0, Footprints);
+	}
+	FRandomStream Random(SeedFor(PlacementId));
 	const FVector2D Centre(GetActorLocation());
 	TArray<FTransform> Planted;
 	Planted.Reserve(Count);
@@ -99,7 +107,7 @@ void AGLScatterPatch::Rebuild()
 		const double Yaw = Random.FRandRange(0.0, 360.0);
 		const double Scale = Def->Scale * Random.FRandRange(0.75, 1.3);
 		const FVector2D At = Centre + FVector2D(FMath::Cos(Angle), FMath::Sin(Angle)) * Distance;
-		if (Terrain->EditedAt(At) > ExposedCm || (Structures && Structures->IsUnderStructure(At, 10.0)) || (Building && Building->IsUnderStructure(At)))
+		if (Terrain->EditedAt(At) > ExposedCm || Footprints.ContainsByPredicate([&At](const FBox2D& F) { return F.IsInsideOrOn(At); }) || (Building && Building->IsUnderStructure(At)))
 		{
 			continue;
 		}
@@ -107,6 +115,14 @@ void AGLScatterPatch::Rebuild()
 		Planted.Add(FTransform(FRotator(0.0, Yaw, 0.0), World3 - GetActorLocation(), FVector(Scale)));
 	}
 	Instances->AddInstances(Planted, false);
+}
+
+int32 AGLScatterPatch::SeedFor(FName PlacementId)
+{
+	// The placement id's text, never GetTypeHash(FName): an FName's hash is its index in this process's
+	// name table, which depends on registration order, so the same patch grew differently in another
+	// build (found comparing P7 review frames across builds).
+	return static_cast<int32>(FCrc::StrCrc32(*PlacementId.ToString()));
 }
 
 int32 AGLScatterPatch::GetInstanceCount() const

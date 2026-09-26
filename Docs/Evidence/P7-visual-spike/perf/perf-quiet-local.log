@@ -1,0 +1,24 @@
+  local-terrain-1024m.json: done
+  local-crossing-straight.json: done
+  2 result(s) checked against budgets.json: within budget
+RESULT: PASS crossing runs finished (Saved/Perf/local-*)
+group=[straight] attempt=1 load start=2.88 end=4.61 gpu-before=0
+  local-crossing-reversal.json: done
+  3 result(s) checked against budgets.json: within budget
+RESULT: PASS crossing runs finished (Saved/Perf/local-*)
+group=[reversal] attempt=1 load start=2.72 end=3.71 gpu-before=0
+  local-crossing-sprint.json: done
+  4 result(s) checked against budgets.json: within budget
+RESULT: PASS crossing runs finished (Saved/Perf/local-*)
+group=[sprint] attempt=1 load start=2.59 end=3.94 gpu-before=0
+  local-crossing-teleport.json: done
+  local-crossing-resume.json: done
+  6 result(s) checked against budgets.json: within budget
+RESULT: PASS crossing runs finished (Saved/Perf/local-*)
+group=[teleport resume] attempt=1 load start=2.79 end=4.81 gpu-before=0
+  local-roundtrips.json: done
+  7 result(s) checked against budgets.json: within budget
+RESULT: PASS crossing runs finished (Saved/Perf/local-*)
+group=[roundtrips] attempt=1 load start=2.74 end=4.51 gpu-before=0
+  7 result(s) checked against budgets.json: within budget
+QUIETDONE PASS

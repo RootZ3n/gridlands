@@ -65,12 +65,90 @@ Bosses are optional. Their rewards are valuable and unique, and never required.
 - **Drops are bonuses or alternate sources**, never mandatory critical-path
   resources.
 
-## 4. Zenny's progression: use-based skills
+## 4. Zenny's progression: use-based mastery (LOCKED DESIGN INTENT, operator, 2026-09-26; NOT IMPLEMENTED)
 
-Zenny improves physically by **doing**: running, jumping, weapon families and
-other practiced actions each gain proficiency with use (Valheim-like). The
-skill list and curves are not fixed. Skills are separate from Pehlichi's
-capabilities.
+**North star: do the activity, become better at that activity.** The broad principle is the kind of
+progression the operator enjoys in RuneScape / RuneScape: Dragonwilds. That is inspiration, not an
+implementation to copy.
+
+| Doing | Improves |
+|---|---|
+| cooking | Cooking mastery |
+| building | Building mastery |
+| salvaging | Salvage mastery |
+| using ranged weapons | the relevant combat mastery |
+| sneaking | Stealth mastery |
+| traversal | the relevant movement mastery |
+
+**Gridlands must not become a repetitive grind game.**
+- Never assume "perform a trivial action thousands of times -> maximum mastery".
+- Progression favours **meaningful use, challenge, discovery and increasing capability**.
+- Trivially repeated actions may give diminishing progression.
+
+**What mastery gives** is mainly capability, efficiency, reliability, technique, new interactions
+and new ways of solving problems. It gives numbers only secondarily.
+
+**Four separate axes; never merge them:**
+
+| | Answers |
+|---|---|
+| **Skills** | how capable Zenny is at doing something |
+| **Chukka** | what Zenny and Pehlichi know, and how knowledge connects |
+| **Ofi** | fabrication and blueprint knowledge: what can be made |
+| **Hoponi** | culinary and recipe knowledge: what can be cooked |
+
+**A high Building skill never teaches an undiscovered architectural technique.** Knowledge and
+discovery, and practical mastery, are complementary axes
+([KNOWLEDGE-AND-DISCOVERY](KNOWLEDGE-AND-DISCOVERY.md)).
+
+**Failure teaches too:** success, exploration, building, cooking and failure can all teach Zenny
+(section 4a). This integrates with the skill and knowledge architecture, never as an isolated
+"death XP" grind.
+
+The skill list and curves are not fixed. Skills stay separate from Pehlichi's capabilities.
+
+## 4a. Death and failure-forward (LOCKED DESIGN INTENT, operator, 2026-09-26; NOT IMPLEMENTED beyond respawn)
+
+**Gridlands does not use corpse runs.** Death never:
+- drops Zenny's equipped gear;
+- drops his inventory for retrieval;
+- requires travel back to the death location to recover possessions;
+- removes XP;
+- creates a punitive recovery chore.
+
+**Zenny keeps his possessions,** and death returns the player to meaningful play quickly.
+
+**No invented replacement punishments.** Durability loss, XP debt, inventory loss, long debuffs and
+similar penalties are **not** implicitly required. Their absence is acceptable.
+
+> **"Death creates a story and an opportunity to learn, not a chore."**
+
+**Novel deaths may teach.** Zenny and Pehlichi can learn from *how* Zenny died, preferably as
+**information, understanding or new capability** rather than generic stat inflation. Directions,
+not specifications:
+
+| Death | May teach |
+|---|---|
+| structural collapse | structural hazard knowledge |
+| creature attack | creature or attack knowledge |
+| poison | toxin or ingredient knowledge |
+| environmental exposure | survival knowledge |
+| a fall | traversal knowledge |
+| a dungeon mechanic | encounter knowledge |
+
+Possible shapes, not to be implemented yet:
+- Pehlichi recognising an attack earlier;
+- Chukka recording a newly understood hazard;
+- structural instability becoming easier to identify;
+- unknown creature behaviour becoming documented.
+
+**Repeated identical deaths give sharply diminishing or zero further progression,** so deliberate
+death farming is never optimal.
+
+**The wider principle: Gridlands lets failure teach the player character.**
+
+**Today's build agrees with this.** Death respawns Zenny after a delay, with inventory and gear
+untouched (`UGLCombatComponent`). There is no learning-from-death yet.
 
 ## 5. Pehlichi's progression
 

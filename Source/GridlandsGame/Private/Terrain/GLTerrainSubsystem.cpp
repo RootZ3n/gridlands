@@ -252,6 +252,7 @@ void UGLTerrainSubsystem::BuildSlotNow(FGLCellGround& Ground, FGLChunkSlot& Slot
 void UGLTerrainSubsystem::Pump(const FVector2D& Near, double BudgetSeconds, int32 MaxInFlight)
 {
 	const double Start = FPlatformTime::Seconds();
+	LastPump = FGLTerrainPumpBreakdown();
 	// 1. Fields that finished on workers become grounds (cheap: nav bounds and empty slots).
 	for (auto It = Pending.CreateIterator(); It; ++It)
 	{
@@ -265,6 +266,8 @@ void UGLTerrainSubsystem::Pump(const FVector2D& Near, double BudgetSeconds, int3
 			break; // one per frame
 		}
 	}
+	LastPump.FinishMs = (FPlatformTime::Seconds() - Start) * 1000.0;
+	const double ApplyStart = FPlatformTime::Seconds();
 	// 2. Finished meshes, nearest first, while the budget lasts. Stale results are dropped.
 	Jobs.Sort([](const TSharedPtr<FGLMeshJob>& A, const TSharedPtr<FGLMeshJob>& B) { return A->DistanceSq < B->DistanceSq; });
 	for (int32 I = 0; I < Jobs.Num(); )
@@ -293,12 +296,25 @@ void UGLTerrainSubsystem::Pump(const FVector2D& Near, double BudgetSeconds, int3
 		{
 			Slot.Actor = AcquireChunk(*Ground, Slot);
 		}
+		const double One = FPlatformTime::Seconds();
+		const double M0 = AGLTerrainChunk::MeshSeconds, C0 = AGLTerrainChunk::CollisionSeconds, N0 = AGLTerrainChunk::NavigationSeconds;
 		Slot.Actor->ApplyMesh(MoveTemp(*Job->Task.GetResult()), true, true);
+		const double ApplyMs = (FPlatformTime::Seconds() - One) * 1000.0;
+		if (ApplyMs > LastPump.WorstApplyMs)
+		{
+			LastPump.WorstApplyMs = ApplyMs;
+			LastPump.WorstMeshMs = (AGLTerrainChunk::MeshSeconds - M0) * 1000.0;
+			LastPump.WorstCollisionMs = (AGLTerrainChunk::CollisionSeconds - C0) * 1000.0;
+			LastPump.WorstNavigationMs = (AGLTerrainChunk::NavigationSeconds - N0) * 1000.0;
+		}
+		++LastPump.Applied;
 		Slot.BuiltVersion = Job->Version;
 		Slot.InFlightVersion = -1;
 		++Stats.ChunksApplied;
 		Jobs.RemoveAt(I);
 	}
+	LastPump.ApplyMs = (FPlatformTime::Seconds() - ApplyStart) * 1000.0;
+	const double LaunchStart = FPlatformTime::Seconds();
 	// 3. Start new mesh builds on workers for the nearest chunks that need one.
 	struct FWant { FName Cell; int32 Slot; double DistanceSq; };
 	TArray<FWant> Wanted;
@@ -339,11 +355,15 @@ void UGLTerrainSubsystem::Pump(const FVector2D& Near, double BudgetSeconds, int3
 		Slot.InFlightVersion = Slot.Version;
 		Jobs.Add(Job);
 	}
+	LastPump.LaunchMs = (FPlatformTime::Seconds() - LaunchStart) * 1000.0;
+	const double RetireStart = FPlatformTime::Seconds();
 	// 4. Retire an unloaded ground's chunk actors a few at a time: clear (frees mesh and collision now), pool.
 	for (int32 N = 0; N < RetirePerFrame && Retiring.Num() > 0; ++N)
 	{
 		RetireOne();
+		++LastPump.Retired;
 	}
+	LastPump.RetireMs = (FPlatformTime::Seconds() - RetireStart) * 1000.0;
 }
 
 bool UGLTerrainSubsystem::EnsureReadyAt(const FVector2D& World, double RadiusCm)

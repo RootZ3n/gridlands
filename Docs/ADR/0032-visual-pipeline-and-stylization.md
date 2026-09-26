@@ -1,13 +1,16 @@
 # ADR-0032: Visual pipeline and stylization architecture (P7 spike)
 
-- Status: **Proposed by the P7 spike. Engineering proven; visual direction AWAITING OPERATOR REVIEW.**
-  The operator decides whether the style is correct. Nothing here approves the look.
+- Status: **Accepted** (operator, 2026-09-26): the P7 visual review approved the visual direction
+  ([VISUAL-DIRECTION](../VISUAL-DIRECTION.md), "P7 visual review"). Zenny, Pehlichi and the creature
+  remain **style proxies**; production characters are a later decision. Multi-frame cell
+  presentation, required before content density grows, is
+  [ADR-0033](0033-multi-frame-cell-presentation.md).
 - Date: 2026-09-26
 - Evidence: [Docs/Evidence/P7-visual-spike](../Evidence/P7-visual-spike/README.md). Pipeline guide:
   [ART-PIPELINE.md](../ART-PIPELINE.md). Authoring requirements:
   [STRUCTURE-AUTHORING.md](../STRUCTURE-AUTHORING.md).
 
-## Decision (what the spike built and proposes to keep)
+## Decision (what the spike built, now kept)
 1. **Source to runtime is one repeatable command** (`Tools/art.sh`):
    - Blender recipes (the source of truth);
    - FBX plus manifest;
@@ -25,7 +28,9 @@
    - Terrain chunks write masks: flatness, exposed earth, variation.
    - `M_GLTerrain` owns the palette.
    - Dug or raised ground shows exposed earth, and vegetation will not grow there.
-5. **Outlines are a post-process, opted into per visual.**
+5. **Outlines are a post-process, opted into per visual** (architecture approved). Nothing is
+   outlined automatically. Each future system (translucency, sight cones, telegraphs, particles,
+   water, projectiles, markers, placement ghosts) is evaluated before it is outlined.
    - `PP_GLStylize` finds depth and normal edges only where an outlined object is.
    - "Outlined" means the object writes custom depth: `r.CustomDepth=3`, `visual.outline`.
    - Lines fade with distance.
@@ -84,6 +89,9 @@ Found and fixed without removing anything visual:
 - More authored buildings per cell will need the runtime layer spread over frames. That changes
   when saved state is applied relative to spawning, so it is a persistence decision and not made
   here.
+- **Resolved at P7 closure** (operator approved): [ADR-0033](0033-multi-frame-cell-presentation.md)
+  resolves authoritative state first and presents over frames. The normal game's streaming worst
+  is now ~8 ms, and a 12× denser fixture stays within the same budgets.
 
 ## Memory across round trips (found while gating P7)
 **The full test gate was killed by the kernel OOM killer** (the editor reached 21.8 GB). Test worlds
