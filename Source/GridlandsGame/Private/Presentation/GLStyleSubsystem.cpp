@@ -56,6 +56,11 @@ namespace
 		{
 			if (UGLStyleSubsystem* Style = StyleOf(World)) { Style->ApplyPreset(Args.Num() ? FName(*Args[0]) : FName(TEXT("day"))); }
 		}));
+	FAutoConsoleCommandWithWorldAndArgs VariantCommand(TEXT("gl.Style.Variant"), TEXT("P7.1 visual variant: A (canonical) | P7 | B | C (review record only)"),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
+		{
+			if (UGLStyleSubsystem* Style = StyleOf(World)) { Style->SetVariant(Args.Num() ? FName(*Args[0]) : FName(TEXT("A"))); }
+		}));
 	FAutoConsoleCommandWithWorldAndArgs PostCommand(TEXT("gl.Style.Post"), TEXT("P7 stylize post-process on (1) / off (0)"),
 		FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
 		{
@@ -134,14 +139,70 @@ void UGLStyleSubsystem::ApplyPreset(FName Name)
 	{
 		It->GetComponent()->SetFogInscatteringColor(P.FogColour); // density stays the stability system's
 	}
+	// P7.1 variants layer on the preset: the outline treatment, and (A/B/C) richer, more dimensional light.
+	const bool bP7 = Variant == TEXT("P7");
+	const bool bC = Variant == TEXT("C");
+	const bool bNight = Name == TEXT("night");
+	float Saturation = P.Saturation;
+	float Bias = P.ExposureBias;
+	if (!bP7)
+	{
+		for (TActorIterator<ADirectionalLight> It(World); It; ++It)
+		{
+			// A stronger, warmer key against a cooler sky fill: form reads from light, not from lines.
+			It->GetComponent()->SetIntensity(P.SunLux * (bNight ? 1.15f : 1.1f));
+			It->GetComponent()->SetLightColor(P.SunColour * (bC ? FLinearColor(1.06f, 0.95f, 0.82f) : FLinearColor(1.04f, 1.0f, 0.94f)));
+		}
+		for (TActorIterator<ASkyLight> It(World); It; ++It)
+		{
+			It->GetLightComponent()->SetLightColor(P.SkyTint * FLinearColor(0.92f, 0.98f, 1.1f));
+			It->GetLightComponent()->SetIntensity(P.SkyIntensity * (bC ? 0.95f : 0.85f));
+			It->GetLightComponent()->RecaptureSky();
+		}
+		for (TActorIterator<AExponentialHeightFog> It(World); It; ++It)
+		{
+			// Atmospheric depth: a sun-coloured glow toward the key (layering), fog density untouched.
+			It->GetComponent()->SetDirectionalInscatteringColor(P.SunColour * (bC ? 0.45f : 0.22f));
+			It->GetComponent()->SetDirectionalInscatteringExponent(6.0f);
+		}
+		// Colourful does not mean flat, and dimensional does not mean muted: depth comes from AO and light,
+		// while saturation holds (A/B lift it slightly; C keeps P7's).
+		Saturation = bC ? P.Saturation : P.Saturation + 0.1f;
+		Bias = P.ExposureBias - (bC ? 0.25f : 0.08f);
+	}
 	if (Volume)
 	{
 		Volume->Settings.bOverride_AutoExposureBias = true;
-		Volume->Settings.AutoExposureBias = P.ExposureBias;
+		Volume->Settings.AutoExposureBias = Bias;
 		Volume->Settings.bOverride_ColorSaturation = true;
-		Volume->Settings.ColorSaturation = FVector4(P.Saturation, P.Saturation, P.Saturation, 1.0);
+		Volume->Settings.ColorSaturation = FVector4(Saturation, Saturation, Saturation, 1.0);
+		Volume->Settings.bOverride_AmbientOcclusionIntensity = true;
+		Volume->Settings.AmbientOcclusionIntensity = bP7 ? 0.5f : (bC ? 0.85f : 0.7f);
+		Volume->Settings.bOverride_AmbientOcclusionRadius = true;
+		Volume->Settings.AmbientOcclusionRadius = bP7 ? 200.f : 120.f;
+		Volume->Settings.bOverride_BloomIntensity = true;
+		Volume->Settings.BloomIntensity = bP7 ? 0.675f : (bNight ? 1.0f : 0.6f);
 	}
-	UE_LOG(LogGridlands, Log, TEXT("Style: preset %s"), *Name.ToString());
+	struct FOutline { float Env, Char, Creases, Cel, Width, Darkness, FadeStart, FadeEnd; };
+	const FOutline O = bP7 ? FOutline{ 1.f, 1.f, 1.f, 1.f, 1.5f, 0.08f, 3500.f, 9000.f }
+		: Variant == TEXT("A") ? FOutline{ 0.f, 0.85f, 0.f, 0.f, 1.2f, 0.12f, 3500.f, 9000.f }
+		: bC ? FOutline{ 0.f, 0.55f, 0.f, 0.f, 1.0f, 0.2f, 3000.f, 7000.f }
+		: FOutline{ 0.8f, 0.9f, 0.f, 0.f, 1.3f, 0.12f, 1500.f, 4500.f }; // B
+	SetParam(TEXT("EnvOutline"), O.Env);
+	SetParam(TEXT("CharOutline"), O.Char);
+	SetParam(TEXT("EnvCreases"), O.Creases);
+	SetParam(TEXT("CelOn"), O.Cel);
+	SetParam(TEXT("OutlineWidth"), O.Width);
+	SetParam(TEXT("OutlineDarkness"), O.Darkness);
+	SetParam(TEXT("FadeStart"), O.FadeStart);
+	SetParam(TEXT("FadeEnd"), O.FadeEnd);
+	UE_LOG(LogGridlands, Log, TEXT("Style: preset %s, variant %s"), *Name.ToString(), *Variant.ToString());
+}
+
+void UGLStyleSubsystem::SetVariant(FName InVariant)
+{
+	Variant = InVariant;
+	ApplyPreset(Preset);
 }
 
 void UGLStyleSubsystem::SetPostEnabled(bool bEnabled)

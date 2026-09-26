@@ -6,6 +6,7 @@
 #include "Content/GLContentDefinitions.h"
 #include "Engine/StaticMesh.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/Pawn.h"
 #include "GridlandsGame.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/MaterialInterface.h"
@@ -67,12 +68,12 @@ int32 GLVisuals::Preload()
 	return Resident.Num();
 }
 
-void GLVisuals::SetOutlined(UPrimitiveComponent* Component, bool bOutlined)
+void GLVisuals::SetOutlined(UPrimitiveComponent* Component, bool bOutlined, int32 Category)
 {
 	if (Component)
 	{
 		Component->SetRenderCustomDepth(bOutlined);
-		Component->SetCustomDepthStencilValue(bOutlined ? 1 : 0);
+		Component->SetCustomDepthStencilValue(bOutlined ? Category : 0);
 	}
 }
 
@@ -103,7 +104,7 @@ UStaticMeshComponent* GLVisuals::Attach(AActor* Owner, USceneComponent* Parent, 
 			}
 		}
 	}
-	SetOutlined(Main, Def->Outline);
+	SetOutlined(Main, Def->Outline, Owner->IsA<APawn>() ? OutlineCharacter : OutlineEnvironment); // pawns: Zenny, Pehlichi, creatures
 	Main->RegisterComponent();
 
 	// NICE's corruption: engine cubes (mathematically precise) in the protected material, sparse by rule.

@@ -1,0 +1,139 @@
+{
+	"mode": "reversal",
+	"speedMetresPerSecond": 12,
+	"frames": 36043,
+	"worstFrameMs": 35.125666996464133,
+	"frameMsMean": 3.9298697568748957,
+	"frameMsP99": 8.3916999865323305,
+	"streamingGameThreadMsWorst": 7.0110219530761242,
+	"streamingGameThreadMsMean": 0.13349877946344196,
+	"gameThreadMsMean": 1.7747970198538494,
+	"denseProof": false,
+	"presentationBudgetMs": 1.5,
+	"presentationFrames": 36,
+	"presentationUnits": 90,
+	"presentationMsWorst": 0.92508795205503702,
+	"presentationMsMean": 0.58793456022006774,
+	"presentationPendingPeak": 30,
+	"authoritativeLayerMsWorst": 4.5730679994449019,
+	"gpuMsMean": 3.4320366780878229,
+	"memStartMb": 3316.3671875,
+	"memPeakMb": 4572.03515625,
+	"navActiveTilesPeak": 301,
+	"navPendingTasksPeak": 175,
+	"navInvokersOnly": true,
+	"endNavActiveTiles": 219,
+	"endNavTileMb": -1,
+	"endNavPendingTasks": 3,
+	"emergencyChunks": 0,
+	"staleResultsDropped": 0,
+	"chunksReused": 512,
+	"arrival": "crossed at frame 27662; lots ground ready, lots complete yes, emergency chunks so far 0",
+	"cellLoads": [
+		{
+			"cell": "cell.home.origin",
+			"epoch": 1,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.025564535986632109,
+			"runtimeReadySeconds": 0.48422383796423674,
+			"presentedSeconds": 0.59010206803213805,
+			"cellCompleteSeconds": 2.7585604690248147
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 2,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.096918500028550625,
+			"runtimeReadySeconds": 0.10135522100608796,
+			"presentedSeconds": 0.29183631192427129,
+			"cellCompleteSeconds": 2.3961841529235244
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 3,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.096733031910844147,
+			"runtimeReadySeconds": 0.10129935294389725,
+			"presentedSeconds": 0.24898463394492865,
+			"cellCompleteSeconds": 2.2347372989170253
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 4,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.096749205957166851,
+			"runtimeReadySeconds": 0.10099856602028012,
+			"presentedSeconds": 0.23754940496291965,
+			"cellCompleteSeconds": 2.2616416270611808
+		}
+	],
+	"hitches": [
+		{
+			"frame": 5792,
+			"engineFrame": 6042,
+			"ms": 18.634737003594637,
+			"xMetres": 257.29058483429253,
+			"streamingMs": 6.2047690153121948,
+			"gameThreadMs": 10.836000442504883,
+			"renderThreadMs": 4.0450000762939453,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 8570,
+			"engineFrame": 8820,
+			"ms": 35.125666996464133,
+			"xMetres": 127.85073137097061,
+			"streamingMs": 0.98753906786441803,
+			"gameThreadMs": 3.6770000457763672,
+			"renderThreadMs": 3.2349998950958252,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 13615,
+			"engineFrame": 13865,
+			"ms": 16.957615967839956,
+			"xMetres": 257.2983062453568,
+			"streamingMs": 6.0956199886277318,
+			"gameThreadMs": 9.1510000228881836,
+			"renderThreadMs": 3.3859999179840088,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 16432,
+			"engineFrame": 16682,
+			"ms": 32.956922077573836,
+			"xMetres": 127.86606192775071,
+			"streamingMs": 1.061917981132865,
+			"gameThreadMs": 3.3859999179840088,
+			"renderThreadMs": 3.2690000534057617,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 22787,
+			"engineFrame": 23037,
+			"ms": 16.984143992885947,
+			"xMetres": 257.29466192424297,
+			"streamingMs": 6.0128569602966309,
+			"gameThreadMs": 9.3610000610351562,
+			"renderThreadMs": 3.2539999485015869,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 31885,
+			"engineFrame": 32135,
+			"ms": 23.116618976928294,
+			"xMetres": 705.37201615795493,
+			"streamingMs": 0.011850963346660137,
+			"gameThreadMs": 2.875,
+			"renderThreadMs": 3.0850000381469727,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		}
+	],
+	"garbageCollections": 4
+}

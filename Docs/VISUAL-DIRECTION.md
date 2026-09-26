@@ -5,6 +5,90 @@
 > - **UNPROVEN / NOT IMPLEMENTED**: nothing in the build does this yet.
 > - A brainstormed mechanic is never described as existing.
 
+## CANONICAL VISUAL DIRECTION: P7.1 (LOCKED DESIGN INTENT, operator, 2026-09-26)
+**The operator approved P7.1 variant A** as the visual baseline: the dimensional, highly colourful,
+WildStar-leaning treatment ([evidence](Evidence/P7.1-visual-refinement/README.md); frames under
+`screenshots/A/`).
+- Richer volumetric trees and vegetation, rounded and chunky storefront geometry, richer rocks and
+  material response.
+- **No environment outlines.**
+- It is the game's default look (`UGLStyleSubsystem`, variant `A`).
+- **The rejected variants are not averaged in.** B (environment silhouettes) and C (grounded) exist
+  only as the review record.
+
+**The target: A COLOURFUL, RICHLY STYLIZED, DIMENSIONAL 3D WORLD.**
+- **WildStar is PRIMARY** for:
+  - degree of stylization and dimensionality;
+  - exaggerated geometry and playful shape language;
+  - environmental richness and material separation;
+  - strong silhouettes;
+  - the willingness to use lots of colour.
+- **RuneScape: Dragonwilds is SECONDARY** for:
+  - an inhabitable-world feeling;
+  - readable survival environments;
+  - dimensional environmental presentation;
+  - visual longevity over long sessions.
+- **These are references, never assets or designs to copy.** Gridlands develops its own identity.
+
+**Colour is canonical.** Dimensionality is never permission to:
+- desaturate, or move toward brown or grey realism;
+- mute vegetation;
+- apply generic cinematic desaturation;
+- become visually conservative.
+
+> **LOTS OF COLOUR + DIMENSIONAL GEOMETRY + RICH STYLIZED MATERIAL RESPONSE + STRONG LIGHTING AND SHADOW = GRIDLANDS.**
+> **COLOURFUL DOES NOT MEAN FLAT.**
+
+Zones may take very different palettes and moods; Gridlands stays comfortable with the full colour
+wheel.
+
+**The P7 illustrated treatment is superseded as the production target.** P7 remains valid
+engineering history (`p7-visual-green`). Do not return to:
+- heavy environment outlines;
+- paper-cutout vegetation;
+- extremely flat materials;
+- primitive environmental geometry;
+- "a 2D cartoon rendered in 3D".
+
+**Nor move toward photorealism:** P7.1 is still highly stylized.
+
+**Environment outlines:**
+- **The baseline is none.** Geometry, materials, lighting and silhouette carry the stylization.
+- **The outline system stays** (cheap and useful). It may serve selectively:
+  - Zenny, Pehlichi and creatures;
+  - interactables;
+  - special readability cases;
+  - particular effects.
+- **None of those categories is assumed to need outlines either.** Judge them visually once
+  production assets exist.
+- Environment outlines are never reintroduced globally without operator visual review.
+
+**Production assets may be much richer.** The P7.1 assets are style proofs; they set the visual
+**language**, not the detail ceiling.
+- Production assets may carry far more:
+  - authored detail and shape personality;
+  - geometric sophistication;
+  - material and texture work;
+  - silhouette design and architectural ornament;
+  - animation and environmental layering.
+- A production Roman statue, Victorian house, Japanese dwelling, 1920s carnival, 1950s
+  university, museum, municipal library, dungeon or legendary item should have considerably more
+  identity than these proofs, while clearly belonging to the same world.
+- **Consequence: LODs are required before substantial production content density.** The P7.1
+  proofs are already 3–9× the P7 triangle counts.
+
+**NICE corruption:** the principle holds, and the richer world strengthens the contrast.
+- *Normal Gridlands:* dimensional, colourful, organic, exaggerated, imperfect, expressive.
+- *NICE:* unnaturally precise, exact, geometric, digital, artificial.
+- Keep it sparse: never cover the environment in cubes because corruption exists.
+
+**Characters remain unapproved proxies.** P7.1 approves the environmental and rendering language
+only, not the final Zenny, Pehlichi or creature designs, proportions, animation, faces or emotes.
+Characters will gain far more personality and sophistication while fitting this world.
+
+*History below is kept as it was decided: the 2026-09-25 north star, the P7 review and the P7.1
+brief. Where it conflicts with this section, this section wins.*
+
 ## Visual north star (LOCKED DESIGN INTENT, operator, 2026-09-25; NOT IMPLEMENTED)
 **Primary inspiration: WildStar.** This is inspiration, not imitation. Never reproduce WildStar
 assets, characters, iconography, proprietary designs or specific content.
@@ -53,7 +137,7 @@ Gridlands should look like **a highly colorful, playable animated series**:
   palette**, not from a muted world.
 - **The core rule stands:** normal things look physical; glitched things reveal the Grid.
 
-### P7 visual review: the direction is APPROVED (LOCKED DESIGN INTENT, operator, 2026-09-26)
+### P7 visual review: the direction was APPROVED (operator, 2026-09-26; superseded as the production target by P7.1)
 The P7 screenshots ([evidence](Evidence/P7-visual-spike/README.md), [ADR-0032](ADR/0032-visual-pipeline-and-stylization.md),
 [ART-PIPELINE](ART-PIPELINE.md)) establish **the correct visual family** for Gridlands.
 
@@ -129,6 +213,75 @@ The contrast is the language:
 Never "cover everything in blue cubes": sparse corruption is stronger. **An otherwise normal prop
 or creature with a few impossible geometric intrusions stays the default.** VIS-2 enforces the
 budget: at most 4 cubes of at most 0.35 m per visual.
+
+### P7.1 visual-direction refinement brief (operator, 2026-09-26; RESOLVED: variant A approved, see the canonical section above)
+**P7 stays accepted and GREEN.** Its engineering results stand: the pipeline, strong colour,
+selective outlines, the corruption language, compatibility and performance. What changed is the
+desired **degree and type** of stylization.
+
+**The target is not "a 2D/cartoon illustration rendered in 3D" but "a richly stylized 3D game
+world."**
+- **WildStar is now the PRIMARY north star** for:
+  - degree of stylization and dimensionality;
+  - exaggerated geometry and shape language;
+  - environmental and material richness;
+  - strong colour and playful personality.
+- **RuneScape: Dragonwilds is SECONDARY:** dimensional world presentation, readable survival
+  environments, longevity over long sessions, a world that feels inhabitable.
+- **These are references only.** Copy no assets, characters, environments, textures or proprietary
+  designs. Gridlands keeps its own identity inside this territory.
+
+**Canonical principle: COLOURFUL DOES NOT MEAN FLAT.**
+- **Keep** the aggressive colour:
+  - vivid greens and strong blues;
+  - purples and pinks;
+  - warm/cool contrast;
+  - neon and synthwave accents;
+  - colourful vegetation;
+  - regional palettes;
+  - colourful nights.
+- **Move away from:**
+  - universal heavy comic outlines;
+  - paper-cutout looks and flat surfaces;
+  - overly primitive geometry;
+  - card-like vegetation;
+  - flat-colour-only presentation.
+- **Move toward:**
+  - chunky, volumetric, exaggerated forms;
+  - stronger (and curved) architectural silhouettes;
+  - richer stylized materials and controlled surface variation;
+  - bevels that catch light;
+  - stronger lighting response;
+  - dimensional vegetation, rocks and terrain;
+  - environmental layering and depth.
+- **Neither photorealism nor the loss of stylization.**
+
+**Gridlands identity stays:**
+- synthwave;
+- NICE's precise geometric corruption;
+- historical architectural collisions;
+- a broad palette and humour;
+- Pehlichi and Zenny;
+- terrain manipulation and structural destruction;
+- readable telegraphs.
+
+**NICE should read even more distinct** against the richer world:
+- *normal world:* dimensional, colourful, imperfect, organic, expressive;
+- *NICE:* precise, geometric, artificial, digitally impossible.
+
+**Historical coherence:** Roman, feudal Japanese, Victorian, 1920s carnival, 1950s, modern,
+museums, universities, libraries and fantasy must look like one game. The common language comes
+from proportion, exaggeration, materials, colour, lighting and presentation, never from identical
+architecture.
+
+**Outlines are re-evaluated, not removed.** The opt-in outline architecture stays (it is cheap);
+how strongly the environment is outlined is a presentation decision.
+
+**The P7.1 proof** ([evidence](Evidence/P7.1-visual-refinement/README.md)) is the same scene and
+cameras as P7. It came in three variants; **A was approved** (2026-09-26):
+- **A:** dimensional, with no environment outlines and lightly outlined characters.
+- **B:** dimensional, with environment silhouettes only, lighter and fading with distance.
+- **C:** a more grounded dimensional treatment, keeping P7's saturation.
 
 ### Art-direction spike (the plan it followed)
 **No mass asset production until a real-time Unreal scene proves the pipeline** can produce the

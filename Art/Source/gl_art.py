@@ -1,4 +1,9 @@
-"""Gridlands art kit for Blender (P7 visual spike): the shared stylization every asset recipe uses.
+"""Gridlands art kit for Blender (P7 visual spike; P7.1 dimensional refinement): the shared stylization
+every asset recipe uses.
+
+P7.1 adds dimensionality underneath the colour: rounder bevels that catch light, curved and bent forms,
+chiselled rocks, ambient occlusion baked into the vertex colour's alpha (the material decides how much
+of it to show), and material classes (the slot names; the importer binds each to a master instance).
 
 The look is built from a few reusable decisions, not hand-fixing per asset:
   - chunky forms: generous bevels, exaggerated proportions (recipes choose sizes);
@@ -81,6 +86,63 @@ def blob(name, radius, at=(0, 0, 0), squash=(1, 1, 1), subdiv=2, lump=0.12, seed
     return obj
 
 
+def subdivide_z(obj, cuts):
+    """Cuts every mostly-vertical edge into cuts+1 pieces (so blades and walls can bend and bulge)."""
+    bm = bmesh.new()
+    bm.from_mesh(obj.data)
+    edges = [e for e in bm.edges if abs((e.verts[0].co - e.verts[1].co).normalized().z) > 0.7]
+    bmesh.ops.subdivide_edges(bm, edges=edges, cuts=cuts, use_grid_fill=True)
+    bm.to_mesh(obj.data)
+    bm.free()
+
+
+def subdivide_axis(obj, axis, cuts):
+    """Cuts every edge that runs mostly along an axis (0 x, 1 y, 2 z) into cuts+1 pieces."""
+    bm = bmesh.new()
+    bm.from_mesh(obj.data)
+    edges = [e for e in bm.edges if (e.verts[0].co - e.verts[1].co).length > 1e-6 and abs((e.verts[0].co - e.verts[1].co).normalized()[axis]) > 0.7]
+    bmesh.ops.subdivide_edges(bm, edges=edges, cuts=cuts, use_grid_fill=True)
+    bm.to_mesh(obj.data)
+    bm.free()
+
+
+def bend(obj, amount, axis=0, power=2.0):
+    """Leans the top over along an axis (local metres at the top), curving from the base: blades, awnings."""
+    zs = [v.co.z for v in obj.data.vertices]
+    z0, z1 = min(zs), max(zs)
+    for v in obj.data.vertices:
+        t = (v.co.z - z0) / max(1e-4, z1 - z0)
+        v.co[axis] += amount * (t ** power)
+
+
+def bulge(obj, amount, axes=(0, 1)):
+    """Swells the middle of a form outward (a gently curved wall or trunk): amount in metres at mid height."""
+    zs = [v.co.z for v in obj.data.vertices]
+    z0, z1 = min(zs), max(zs)
+    cx = sum(v.co.x for v in obj.data.vertices) / len(obj.data.vertices)
+    cy = sum(v.co.y for v in obj.data.vertices) / len(obj.data.vertices)
+    for v in obj.data.vertices:
+        t = (v.co.z - z0) / max(1e-4, z1 - z0)
+        k = amount * math.sin(math.pi * t)
+        d = Vector((v.co.x - cx if 0 in axes else 0, v.co.y - cy if 1 in axes else 0, 0))
+        if d.length > 1e-5:
+            v.co += d.normalized() * k
+
+
+def chisel(obj, planes, depth, seed, up_bias=0.5):
+    """Cuts flat facets into a rounded form (chunky rocks): vertices beyond a random plane are pushed onto it."""
+    rng = random.Random(seed)
+    centre = sum((v.co for v in obj.data.vertices), Vector()) / len(obj.data.vertices)
+    radius = max((v.co - centre).length for v in obj.data.vertices)
+    for _ in range(planes):
+        n = Vector((rng.uniform(-1, 1), rng.uniform(-1, 1), rng.uniform(-up_bias, 1))).normalized()
+        d = radius * (1.0 - rng.uniform(depth * 0.4, depth))
+        for v in obj.data.vertices:
+            k = (v.co - centre).dot(n)
+            if k > d:
+                v.co -= n * (k - d)
+
+
 def _bevel(obj, width, segments):
     mod = obj.modifiers.new("bevel", "BEVEL")
     mod.width = width
@@ -123,6 +185,59 @@ def paint(obj, colour, top=1.12, bottom=0.72, up_boost=0.10, variation=0.05, see
             h = (z - z0) / span
             k = (bottom + (top - bottom) * h) * vary + (up_boost if normal_z > 0.7 else 0.0)
             attr.data[li].color = (min(1, colour[0] * k), min(1, colour[1] * k), min(1, colour[2] * k), 1.0)
+    return obj
+
+
+def paint_up(obj, colour, threshold=0.55, softness=0.25, top=1.1):
+    """Paints up-facing faces (moss on rock, snow, grass on a ledge), blending by how much they face up."""
+    mesh = obj.data
+    attr = mesh.color_attributes["Col"]
+    world = obj.matrix_world.to_3x3()
+    for poly in mesh.polygons:
+        nz = (world @ poly.normal).normalized().z
+        t = max(0.0, min(1.0, (nz - threshold) / softness))
+        if t <= 0:
+            continue
+        for li in poly.loop_indices:
+            c = attr.data[li].color
+            attr.data[li].color = (c[0] + (colour[0] * top - c[0]) * t, c[1] + (colour[1] * top - c[1]) * t, c[2] + (colour[2] * top - c[2]) * t, c[3])
+    return obj
+
+
+def bake_ao(obj, samples=24, distance=0.8, strength=0.9, seed=7):
+    """Ambient occlusion baked into the colour attribute's ALPHA (1 = open, 0 = fully occluded).
+
+    Rays from each vertex over its normal's hemisphere against the whole joined mesh: crevices, the
+    underside of an awning, the base of a trunk darken; the master material decides how much shows."""
+    from mathutils.bvhtree import BVHTree
+    mesh = obj.data
+    attr = mesh.color_attributes.get("Col")
+    if attr is None:
+        return obj
+    tree = BVHTree.FromPolygons([v.co.copy() for v in mesh.vertices], [p.vertices[:] for p in mesh.polygons])
+    rng = random.Random(seed)
+    dirs = []
+    for i in range(samples):  # a fixed cosine-weighted set, rotated per vertex by the normal frame
+        u, w = (i + 0.5) / samples, rng.random()
+        r, a = math.sqrt(u), math.tau * w
+        dirs.append(Vector((r * math.cos(a), r * math.sin(a), math.sqrt(max(0.0, 1.0 - u)))))
+    mesh.calc_normals_split() if hasattr(mesh, "calc_normals_split") else None
+    ao = []
+    for v in mesh.vertices:
+        n = v.normal.normalized()
+        t = n.orthogonal().normalized()
+        b = n.cross(t)
+        origin = v.co + n * 0.004
+        hit = 0
+        for d in dirs:
+            world_d = (t * d.x + b * d.y + n * d.z).normalized()
+            loc, _, _, dist = tree.ray_cast(origin, world_d, distance)
+            if loc is not None:
+                hit += 1.0 - (dist / distance) * 0.5
+        ao.append(max(0.0, 1.0 - strength * hit / samples))
+    for li, loop in enumerate(mesh.loops):
+        c = attr.data[li].color
+        attr.data[li].color = (c[0], c[1], c[2], ao[loop.vertex_index])
     return obj
 
 
@@ -188,7 +303,7 @@ def export_fbx(obj, path: Path):
         apply_scale_options="FBX_SCALE_NONE",
         axis_forward="-Y",
         axis_up="Z",
-        mesh_smooth_type="FACE",
+        mesh_smooth_type="OFF",  # P7.1: export Blender's split normals (smooth forms, sharp creases) as-is
         use_mesh_modifiers=True,
         colors_type="LINEAR",  # the FBX importer gamma-encodes once; sRGB here would double it (pastel colours)
         add_leaf_bones=False,

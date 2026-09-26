@@ -30,8 +30,15 @@ namespace GLVisuals
 	/** Attaches VisualId under Parent. Returns the main mesh component, or null if the visual is unknown. */
 	GRIDLANDSGAME_API UStaticMeshComponent* Attach(AActor* Owner, USceneComponent* Parent, FName VisualId, const FTransform& Local = FTransform::Identity);
 
-	/** Adds the dark graphic outline to a component (it writes custom depth, which the stylize post reads). */
-	GRIDLANDSGAME_API void SetOutlined(UPrimitiveComponent* Component, bool bOutlined);
+	/** Outline categories (P7.1): the custom-depth stencil tells the stylize post which weight applies. */
+	constexpr int32 OutlineEnvironment = 1;
+	constexpr int32 OutlineCharacter = 2;
+
+	/**
+	 * Adds the graphic outline to a component (it writes custom depth, which the stylize post reads), in a
+	 * category: environment (structures, props, nature) or character (Zenny, Pehlichi, creatures).
+	 */
+	GRIDLANDSGAME_API void SetOutlined(UPrimitiveComponent* Component, bool bOutlined, int32 Category = OutlineEnvironment);
 
 	/** How many corruption cubes the visual adds (for evidence and tests). */
 	GRIDLANDSGAME_API int32 CorruptionCount(FName VisualId);

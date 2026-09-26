@@ -1,0 +1,139 @@
+{
+	"mode": "reversal",
+	"speedMetresPerSecond": 12,
+	"frames": 34668,
+	"worstFrameMs": 36.810441059060395,
+	"frameMsMean": 4.0857859519743078,
+	"frameMsP99": 8.7764270137995481,
+	"streamingGameThreadMsWorst": 7.3294679168611765,
+	"streamingGameThreadMsMean": 0.1452191270238494,
+	"gameThreadMsMean": 1.8020005478562677,
+	"denseProof": true,
+	"presentationBudgetMs": 1.5,
+	"presentationFrames": 453,
+	"presentationUnits": 1038,
+	"presentationMsWorst": 1.7264910275116563,
+	"presentationMsMean": 0.57479706166258648,
+	"presentationPendingPeak": 346,
+	"authoritativeLayerMsWorst": 5.0151000032201409,
+	"gpuMsMean": 3.5762554809641944,
+	"memStartMb": 3313.1875,
+	"memPeakMb": 4578.28515625,
+	"navActiveTilesPeak": 301,
+	"navPendingTasksPeak": 243,
+	"navInvokersOnly": true,
+	"endNavActiveTiles": 223,
+	"endNavTileMb": 0.118377685546875,
+	"endNavPendingTasks": 0,
+	"emergencyChunks": 0,
+	"staleResultsDropped": 0,
+	"chunksReused": 512,
+	"arrival": "crossed at frame 27061; lots ground ready, lots complete yes, emergency chunks so far 0",
+	"cellLoads": [
+		{
+			"cell": "cell.home.origin",
+			"epoch": 1,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.02454147906973958,
+			"runtimeReadySeconds": 0.50406926404684782,
+			"presentedSeconds": 0.59800089604686946,
+			"cellCompleteSeconds": 2.8020430330652744
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 2,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.096759394975379109,
+			"runtimeReadySeconds": 0.10154093999881297,
+			"presentedSeconds": 2.5261598440119997,
+			"cellCompleteSeconds": 2.5261600939556956
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 3,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.097347244038246572,
+			"runtimeReadySeconds": 0.10235028003808111,
+			"presentedSeconds": 1.315267522004433,
+			"cellCompleteSeconds": 2.3141279149567708
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 4,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.09948601690120995,
+			"runtimeReadySeconds": 0.10337630088906735,
+			"presentedSeconds": 1.2534710589097813,
+			"cellCompleteSeconds": 2.328631563927047
+		}
+	],
+	"hitches": [
+		{
+			"frame": 5792,
+			"engineFrame": 6042,
+			"ms": 18.167464062571526,
+			"xMetres": 257.30081820767373,
+			"streamingMs": 6.0375749599188566,
+			"gameThreadMs": 11.845999717712402,
+			"renderThreadMs": 4.4210000038146973,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 8550,
+			"engineFrame": 8800,
+			"ms": 36.810441059060395,
+			"xMetres": 127.82588463835418,
+			"streamingMs": 2.3623760789632797,
+			"gameThreadMs": 6.5339999198913574,
+			"renderThreadMs": 3.375,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 13597,
+			"engineFrame": 13847,
+			"ms": 18.185915891081095,
+			"xMetres": 257.33316631242633,
+			"streamingMs": 6.0211290838196874,
+			"gameThreadMs": 9.4659996032714844,
+			"renderThreadMs": 3.4779999256134033,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 16397,
+			"engineFrame": 16647,
+			"ms": 34.098890027962625,
+			"xMetres": 127.81782054062933,
+			"streamingMs": 2.5669489987194538,
+			"gameThreadMs": 6.7210001945495605,
+			"renderThreadMs": 3.6740000247955322,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 22762,
+			"engineFrame": 23012,
+			"ms": 17.406700062565506,
+			"xMetres": 257.34159738663584,
+			"streamingMs": 6.1510700033977628,
+			"gameThreadMs": 9.0030002593994141,
+			"renderThreadMs": 3.3929998874664307,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		},
+		{
+			"frame": 30763,
+			"engineFrame": 31013,
+			"ms": 18.982146983034909,
+			"xMetres": 705.39504343736917,
+			"streamingMs": 0.012262025848031044,
+			"gameThreadMs": 3.9270000457763672,
+			"renderThreadMs": 2.8640000820159912,
+			"garbageCollected": false,
+			"levelStreamingPending": false
+		}
+	],
+	"garbageCollections": 4
+}
