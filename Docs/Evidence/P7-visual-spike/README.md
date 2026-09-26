@@ -199,4 +199,6 @@ kill, creature, tree, edge and noise.
   exported floor support.
 
 ## Fresh clone
-FRESH_CLONE
+**PASS.** A fresh clone of `1fb9845` built and passed **105/105** tests (39 requirements) from
+tracked inputs, including the LFS art content, plus the pinned engine (`00-*`). Blender is not
+needed: the imported assets are committed.
