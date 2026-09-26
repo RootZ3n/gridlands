@@ -1,0 +1,63 @@
+{
+	"scatterInstances": 1545,
+	"scatterPatches": 4,
+	"gpu": "AMD Radeon RX 6800 (RADV NAVI21)",
+	"resX": 1920,
+	"resY": 1080,
+	"full":
+	{
+		"frameMsMedian": 3.8575809448957443,
+		"frameMsP95": 4.2207359801977873,
+		"gpuMsMedian": 3.4440000057220459,
+		"gameThreadMsMedian": 1.3700000047683716,
+		"renderThreadMsMedian": 2.1830000877380371
+	},
+	"outlineOff":
+	{
+		"frameMsMedian": 3.8513069739565253,
+		"frameMsP95": 4.1904370300471783,
+		"gpuMsMedian": 3.437999963760376,
+		"gameThreadMsMedian": 1.3259999752044678,
+		"renderThreadMsMedian": 2.125
+	},
+	"celOff":
+	{
+		"frameMsMedian": 3.8417199393734336,
+		"frameMsP95": 4.15848009288311,
+		"gpuMsMedian": 3.440000057220459,
+		"gameThreadMsMedian": 1.3200000524520874,
+		"renderThreadMsMedian": 2.1119999885559082
+	},
+	"postOff":
+	{
+		"frameMsMedian": 3.6795290652662516,
+		"frameMsP95": 3.9694230072200298,
+		"gpuMsMedian": 3.2750000953674316,
+		"gameThreadMsMedian": 1.2699999809265137,
+		"renderThreadMsMedian": 2.062999963760376
+	},
+	"vegetationOff":
+	{
+		"frameMsMedian": 3.6920040147379041,
+		"frameMsP95": 3.9909090846776962,
+		"gpuMsMedian": 3.2929999828338623,
+		"gameThreadMsMedian": 1.3070000410079956,
+		"renderThreadMsMedian": 2.0840001106262207
+	},
+	"corruptionOff":
+	{
+		"frameMsMedian": 3.8528010481968522,
+		"frameMsP95": 4.1524129919707775,
+		"gpuMsMedian": 3.440000057220459,
+		"gameThreadMsMedian": 1.312999963760376,
+		"renderThreadMsMedian": 2.1089999675750732
+	},
+	"shadowsOff":
+	{
+		"frameMsMedian": 3.2933600014075637,
+		"frameMsP95": 3.5671500954777002,
+		"gpuMsMedian": 2.9890000820159912,
+		"gameThreadMsMedian": 1.2649999856948853,
+		"renderThreadMsMedian": 1.6480000019073486
+	}
+}

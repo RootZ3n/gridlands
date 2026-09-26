@@ -1,7 +1,8 @@
 # Art pipeline (P7 visual spike)
 
-Status: **proven for the P7 style slice**; **not yet a production pipeline.** Visual direction is
-**AWAITING OPERATOR REVIEW**. Decision record: [ADR-0032](ADR/0032-visual-pipeline-and-stylization.md).
+Status: **proven for the P7 style slice**; **not yet a production pipeline.**
+- The P7 direction was approved; the P7.1 refinement (section 4a) is **AWAITING OPERATOR REVIEW**.
+- Decision record: [ADR-0032](ADR/0032-visual-pipeline-and-stylization.md).
 
 ## Goal
 **Every asset is produced from source by one repeatable command.** It is validated before runtime,
@@ -100,6 +101,38 @@ authoritative data: `buildpiece` shapes and sockets, `structure` parts, creature
 at world start. A cell's runtime layer must never load art synchronously: that broke the P5
 streaming budget, see ADR-0032. A future large catalogue needs per-cell async loading ahead of the
 runtime layer instead.
+
+## 4a. P7.1 refinement spike: what the pipeline gained (visual direction AWAITING OPERATOR)
+The flow is unchanged (recipe → FBX + manifest → import + validation → `visual.*`). These additions
+make the style dimensional under the same colour:
+- **Material classes:**
+  - Slots `GL_Painted`, `GL_Plastic`, `GL_Metal`, `GL_Stone`, `GL_Wood` and `GL_Foliage` bind to
+    instances (`MI_GL*`) of one painted master.
+  - Each class has its own roughness, metallic and specular, and a procedural surface detail in
+    world space at two scales (colour and roughness variation; stretched for wood grain).
+  - Foliage adds a per-instance hue and value shift for scattered vegetation.
+  - Colour stays in the vertex colours; textures can come later without changing the flow.
+- **Baked ambient occlusion:**
+  - `gl_art.bake_ao` ray-casts each vertex's hemisphere against the joined mesh and stores the
+    result in the colour attribute's alpha.
+  - The master uses it for base-colour depth (`AOStrength`) and indirect light.
+- **Split normals exported as authored** (`mesh_smooth_type="OFF"`): smooth forms with crisp
+  creases, not faceted flat shading.
+- **Recipe helpers for volume:**
+  - `subdivide_z` / `subdivide_axis`;
+  - `bend` (grass blades, stems);
+  - `bulge`;
+  - `chisel` (chunky rock facets);
+  - `paint_up` (moss on up-facing faces);
+  - more bevel segments.
+- **Clean reimports:** every mesh package is deleted before import. Replacing an existing mesh kept
+  its old material slots, and validation caught it as `unexpected material slot` on 15 assets.
+- **Outline categories:**
+  - Stencil 1 is the environment; stencil 2 is characters and creatures (pawns).
+  - The stylize post weights each category (`EnvOutline`, `CharOutline`), and can keep the
+    environment's silhouettes while dropping its interior creases (`EnvCreases`).
+- **Triangles:** 14,348 → 38,804 over the 24 proof assets. The grass tuft goes from 108 to 504,
+  instanced by the thousand. **LODs become necessary** before production density.
 
 ## 5. Adding an asset
 1. **Write a recipe** in `Art/Source/build_assets.py`, reusing `gl_art` helpers and the palette, and

@@ -153,8 +153,12 @@ namespace GLStyleDemo
 
 	struct FStep { double At; TFunction<void()> Run; };
 
-	void Tour(UWorld* World)
+	void Tour(const TArray<FString>& Args, UWorld* World)
 	{
+		if (Args.Num() > 0) // P7.1: the variant to review (gl.Style.Tour A)
+		{
+			World->GetSubsystem<UGLStyleSubsystem>()->SetVariant(FName(*Args[0]));
+		}
 		TArray<FStep> Steps = {
 			{ 1.0, [World]() { Stage(World); World->GetSubsystem<UGLStyleSubsystem>()->ApplyPreset(TEXT("day")); } },
 			{ 5.0, [World]() { View(World, FVector2D(-1250, -2300), 520.0, FVector2D(0, -200), 160.0); } },
@@ -206,6 +210,19 @@ namespace GLStyleDemo
 			{ 43.5, []() { Shot(TEXT("07b-collapse-debris-and-felled-pine")); } },
 			{ 46.0, []() { GEngine->DeferredCommands.Add(TEXT("quit")); } },
 		};
+		// P7.1: two more views, before anything is changed: a closer look at the structure, and vegetation and
+		// terrain detail (the other views keep the P7 camera positions for a direct comparison).
+		for (FStep& Step : Steps)
+		{
+			Step.At += Step.At >= 7.9 ? 4.6 : 0.0;
+		}
+		Steps.Append({
+			{ 7.9, [World]() { View(World, FVector2D(-640, -1180), 175.0, FVector2D(-120, -80), 170.0, 52.0); } },
+			{ 9.4, []() { Shot(TEXT("08-structure-closer")); } },
+			{ 9.7, [World]() { View(World, FVector2D(-1120, -1330), 70.0, FVector2D(-700, -900), 35.0, 55.0); } },
+			{ 11.3, []() { Shot(TEXT("09-vegetation-terrain-detail")); } },
+		});
+		Steps.Sort([](const FStep& A, const FStep& B) { return A.At < B.At; });
 		for (FStep& Step : Steps)
 		{
 			FTimerHandle Handle;
@@ -295,8 +312,12 @@ namespace GLStyleDemo
 		return true;
 	}
 
-	void PerfStyle(UWorld* World)
+	void PerfStyle(const TArray<FString>& Args, UWorld* World)
 	{
+		if (Args.Num() > 0) // P7.1: measure a variant
+		{
+			World->GetSubsystem<UGLStyleSubsystem>()->SetVariant(FName(*Args[0]));
+		}
 		Perf = FStylePerf();
 		Perf.World = World;
 		Perf.Out = MakeShared<FJsonObject>();
@@ -327,13 +348,13 @@ namespace GLStyleDemo
 		}), 3.0f, false);
 	}
 
-	FAutoConsoleCommandWithWorld PerfStyleCommand(TEXT("gl.Perf.Style"),
-		TEXT("DEV ONLY (P7): measures the styled slice with each rendering feature switched off in turn; writes Saved/Perf/style.json."),
-		FConsoleCommandWithWorldDelegate::CreateStatic(&PerfStyle));
+	FAutoConsoleCommandWithWorldAndArgs PerfStyleCommand(TEXT("gl.Perf.Style"),
+		TEXT("DEV ONLY (P7/P7.1): gl.Perf.Style [variant] - measures the styled slice with each rendering feature switched off in turn; writes Saved/Perf/style.json."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic(&PerfStyle));
 
-	FAutoConsoleCommandWithWorld TourCommand(TEXT("gl.Style.Tour"),
-		TEXT("DEV ONLY (P7): the visual review tour: stages the diner-lots slice, frames views, edits terrain, collapses the awning, fells a pine; screenshots and quits."),
-		FConsoleCommandWithWorldDelegate::CreateStatic(&Tour));
+	FAutoConsoleCommandWithWorldAndArgs TourCommand(TEXT("gl.Style.Tour"),
+		TEXT("DEV ONLY (P7/P7.1): gl.Style.Tour [P7|A|B|C] - the visual review tour: stages the diner-lots slice, frames views, edits terrain, collapses the awning, fells a pine; screenshots and quits."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic(&Tour));
 	FAutoConsoleCommandWithWorld StageCommand(TEXT("gl.Style.Stage"),
 		TEXT("DEV ONLY (P7): puts Zenny, Pehlichi and two posed proof creatures in the style slice."),
 		FConsoleCommandWithWorldDelegate::CreateStatic(&Stage));
