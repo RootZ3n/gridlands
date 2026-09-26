@@ -25,6 +25,7 @@ enum class EGLCreatureState : uint8
 	Attack,      // in reach; strikes when the cooldown allows
 	Return,      // lost Zenny or went too far from home
 	Defeated,
+	Search,      // lost sight of Zenny: goes to where Zenny was last seen (P6)
 };
 
 /** What the creature knows this moment. The game fills it in (positions, line of sight). */
@@ -37,9 +38,15 @@ struct GRIDLANDSCORE_API FGLCreatureFacts
 	bool bZennyAlive = true;
 	/** Nothing solid between the creature's eyes and Zenny. */
 	bool bLineOfSight = false;
-	/** Seconds left on a lure the creature heard (0 = none). */
+	/** Seconds left on a lure the creature heard (Pehlichi's distraction; 0 = none). Overrides even a chase. */
 	double LureSecondsLeft = 0.0;
 	FVector Lure = FVector::ZeroVector;
+	/** Seconds left investigating an ordinary noise it heard (P6; 0 = none). Never overrides seeing Zenny. */
+	double NoiseSecondsLeft = 0.0;
+	FVector Noise = FVector::ZeroVector;
+	/** Seconds left searching where Zenny was last seen (P6; 0 = forgotten). */
+	double SearchSecondsLeft = 0.0;
+	FVector LastKnown = FVector::ZeroVector;
 	double SecondsSinceAttack = 1e9;
 	bool bDefeated = false;
 };
@@ -68,6 +75,12 @@ namespace GLCreatureRules
 	GRIDLANDSCORE_API bool Sees(const FGLCreatureDef& Def, const FGLCreatureFacts& Facts, bool bAlreadyChasing);
 
 	GRIDLANDSCORE_API FGLCreatureDecision Decide(const FGLCreatureDef& Def, EGLCreatureState Previous, const FGLCreatureFacts& Facts);
+
+	/**
+	 * Does it hear a noise (P6)? Within the noise's own radius (how far that sound carries) and within
+	 * the creature's hearing radius (how far it listens). Hearing is separate from sight.
+	 */
+	GRIDLANDSCORE_API bool Hears(const FGLCreatureDef& Def, const FVector& Self, const FVector& Noise, double NoiseRadiusCm);
 
 	GRIDLANDSCORE_API const TCHAR* StateName(EGLCreatureState State);
 }

@@ -1,6 +1,7 @@
 # Building, salvage, discovery and terrain
 
-Status: **design; building and terrain not built.** Decision records:
+Status: design. Building v0 and terraform v0 are built (ADR-0022, ADR-0024). Structural salvage,
+collapse and trees are built as of P6 (ADR-0030). Decision records:
 [ADR-0004](ADR/0004-snap-socket-building.md) (snap sockets),
 [ADR-0016](ADR/0016-world-settings-and-yield-categories.md) (yields),
 [ADR-0012](ADR/0012-world-axes-band-cell-era.md) (era is not a tech tier).
@@ -14,6 +15,21 @@ gameplay, not side activities.
 - Better tools salvage more efficiently (the first-playable loop proves this).
 - Salvage yields pass through world settings by category (E-1).
 - The underground offers salvage unavailable in ordinary houses.
+
+### 1a. Structural salvage, collapse and natural gathering (P6, [ADR-0030](ADR/0030-structural-salvage-and-deterministic-collapse.md))
+**Authored buildings are structures:** a data part graph in the same structural language as
+player building (`structure.*`, parts are `buildpiece.*`).
+- **Salvaging a part** can remove a support. What loses support **collapses deterministically**:
+  - it drops or topples, per data;
+  - its impact volume and damage are decided up front;
+  - the damage reaches Zenny or a creature through the normal health system.
+- **The debris persists** through saves, streaming and restarts, and can be salvaged.
+- **Trees are structures.** Chop the stump; the trunk topples (the direction policy is data and
+  provisional) and becomes a log you gather through the same salvage pipeline.
+- **Every hit, break and collapse makes authoritative noise** ([ADR-0031](ADR/0031-authoritative-world-noise.md)).
+- **All numbers are provisional data** (`tuning.world.physical`, salvage yields).
+- **Player-built structures are unchanged for now** (ADR-0024). Whether they adopt physical
+  collapse is a future operator decision.
 
 ## 2. Discovery and knowledge
 

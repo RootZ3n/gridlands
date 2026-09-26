@@ -201,6 +201,7 @@ def cross_check(ds: Dataset) -> None:
     check_puzzles(ds)
     check_building(ds)
     check_terraform(ds)
+    check_structures(ds)
     check_creatures(ds)
     check_grid(ds)
     check_knowledge_domains(ds)
@@ -369,6 +370,50 @@ def check_building(ds: Dataset) -> None:
             x, y, z = (s.get("offset", [0, 0, 0]) + [0, 0, 0])[:3]
             if abs(x) > size[0] / 2 + 1e-6 or abs(y) > size[1] / 2 + 1e-6 or z < -1e-6 or z > size[2] + 1e-6:
                 ds.problem("BLD-4", rel, ".sockets", f"socket '{s.get('name')}' lies outside the piece's size {size}")
+        if data.get("buildable", True) and not data.get("cost"):
+            ds.problem("BLD-5", rel, ".cost", "a buildable piece needs a cost (world-only pieces say \"buildable\": false)")
+        if data.get("buildable", True) is False and (data.get("cost") or data.get("unlockedBy")):
+            ds.problem("BLD-5", rel, ".buildable", "a world-only piece has no cost or unlockedBy (the player never builds it)")
+
+
+TUNING_ID = "tuning.world.physical"
+
+
+def check_structures(ds: Dataset) -> None:
+    """STR-1 part names are unique; STR-2 a structure stands on the ground: at least one grounded part at z = 0;
+    STR-3 a structure placement is a transform with a yaw in quarter turns (bounds stay exact, ADR-0024);
+    TUN-1 exactly one tuning entity, tuning.world.physical; TUN-2 its noise radii are declared Noise.* tags."""
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        data, rel = entity.data, entity.file
+        if entity.kind == "structure":
+            parts = [p for p in data.get("parts", []) if isinstance(p, dict)]
+            names = [p.get("name") for p in parts]
+            if len(names) != len(set(names)):
+                ds.problem("STR-1", rel, ".parts", "part names must be unique (saves refer to parts by name)")
+            grounded = False
+            for part in parts:
+                piece = ds.entities.get(part.get("piece", ""))
+                location = (part.get("location") or [0, 0, 1]) + [0, 0, 0]
+                if piece and piece.data.get("grounded") and abs(location[2]) < 1e-6:
+                    grounded = True
+            if parts and not grounded:
+                ds.problem("STR-2", rel, ".parts", "needs a grounded part at z = 0 (something must stand on the ground)")
+        if entity.kind == "placement" and data.get("kind") == "structure":
+            transform = data.get("transform")
+            if not isinstance(transform, dict):
+                ds.problem("STR-3", rel, ".transform", "a structure placement needs a transform (not an anchor)")
+            elif abs(float(transform.get("yaw", 0)) / 90.0 - round(float(transform.get("yaw", 0)) / 90.0)) > 1e-6:
+                ds.problem("STR-3", rel, ".transform.yaw", "a structure's yaw must be a multiple of 90 degrees")
+    tunings = [e for e in ds.entities.values() if e.kind == "tuning"]
+    if [e.id for e in tunings] != [TUNING_ID]:
+        ds.problem("TUN-1", "Data/tuning", "", f"exactly one tuning entity, {TUNING_ID}, is required (found {sorted(e.id for e in tunings)})")
+    declared = tagfiles.declared_tags(ds.root) if hasattr(ds, "root") else None
+    for entity in tunings:
+        for tag in sorted((entity.data.get("noise", {}) or {}).get("radius", {}) or {}):
+            if not tag.startswith("Noise.") or grammar.tag_problem(tag):
+                ds.problem("TUN-2", entity.file, f".noise.radius.{tag}", "keys must be Noise.* tags")
+            elif declared is not None and tag not in declared:
+                ds.problem("TUN-2", entity.file, f".noise.radius.{tag}", f"{tag} is not declared in Config/Tags/*.ini")
 
 
 def check_terraform(ds: Dataset) -> None:

@@ -49,7 +49,7 @@ FGLCreatureDecision GLCreatureRules::Decide(const FGLCreatureDef& Def, EGLCreatu
 		D.Speed = Def.WalkSpeed * 100.0;
 		return D;
 	}
-	const bool bWasHunting = Previous == EGLCreatureState::Chase || Previous == EGLCreatureState::Attack;
+	const bool bWasHunting = Previous == EGLCreatureState::Chase || Previous == EGLCreatureState::Attack || Previous == EGLCreatureState::Search;
 	const bool bZennyInTerritory = FVector::Dist2D(Facts.Zenny, Facts.Home) <= Def.LeashRadius * 100.0;
 	if (bZennyInTerritory && Sees(Def, Facts, bWasHunting))
 	{
@@ -66,6 +66,25 @@ FGLCreatureDecision GLCreatureRules::Decide(const FGLCreatureDef& Def, EGLCreatu
 		D.Speed = Def.ChaseSpeed * 100.0;
 		return D;
 	}
+	const double Leash = Def.LeashRadius * 100.0;
+	// Lost sight: it still knows where Zenny was, and goes to look (sight lost is not knowledge lost).
+	if (bWasHunting && Facts.SearchSecondsLeft > 0.0 && FVector::Dist2D(Facts.LastKnown, Facts.Home) <= Leash)
+	{
+		D.State = EGLCreatureState::Search;
+		D.bMove = FVector::Dist2D(Facts.Self, Facts.LastKnown) > HomeToleranceCm;
+		D.MoveTo = Facts.LastKnown;
+		D.Speed = Def.WalkSpeed * 100.0;
+		return D;
+	}
+	// A noise it heard (within its territory): go and look.
+	if (Facts.NoiseSecondsLeft > 0.0 && FVector::Dist2D(Facts.Noise, Facts.Home) <= Leash)
+	{
+		D.State = EGLCreatureState::Investigate;
+		D.bMove = FVector::Dist2D(Facts.Self, Facts.Noise) > HomeToleranceCm;
+		D.MoveTo = Facts.Noise;
+		D.Speed = Def.WalkSpeed * 100.0;
+		return D;
+	}
 	if (FVector::Dist2D(Facts.Self, Facts.Home) > HomeToleranceCm)
 	{
 		D.State = EGLCreatureState::Return;
@@ -78,6 +97,11 @@ FGLCreatureDecision GLCreatureRules::Decide(const FGLCreatureDef& Def, EGLCreatu
 	return D;
 }
 
+bool GLCreatureRules::Hears(const FGLCreatureDef& Def, const FVector& Self, const FVector& Noise, double NoiseRadiusCm)
+{
+	return FVector::Dist(Self, Noise) <= FMath::Min(NoiseRadiusCm, Def.Perception.HearingRadius * 100.0);
+}
+
 const TCHAR* GLCreatureRules::StateName(EGLCreatureState State)
 {
 	switch (State)
@@ -88,6 +112,7 @@ const TCHAR* GLCreatureRules::StateName(EGLCreatureState State)
 	case EGLCreatureState::Attack: return TEXT("Attack");
 	case EGLCreatureState::Return: return TEXT("Return");
 	case EGLCreatureState::Defeated: return TEXT("Defeated");
+	case EGLCreatureState::Search: return TEXT("Search");
 	}
 	return TEXT("?");
 }

@@ -88,4 +88,44 @@ bool FGLCreatureOptions::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLCreatureHearing, "Gridlands.Core.Combat.HearingAndMemoryAreSeparateFromSight", CreatureFlags)
+bool FGLCreatureHearing::RunTest(const FString& Parameters)
+{
+	const FGLCreatureDef D = Gremlin(); // hearing 16 m, sight 12 m in a 110 degree cone
+	namespace R = GLCreatureRules;
+	// Hearing: within the noise's own reach AND the creature's hearing.
+	TestTrue(TEXT("a 12 m noise 10 m away is heard"), R::Hears(D, FVector::ZeroVector, FVector(1000, 0, 0), 1200.0));
+	TestFalse(TEXT("a 12 m noise 13 m away is not (it does not carry that far)"), R::Hears(D, FVector::ZeroVector, FVector(1300, 0, 0), 1200.0));
+	TestFalse(TEXT("a 40 m noise 20 m away is not (beyond its hearing)"), R::Hears(D, FVector::ZeroVector, FVector(2000, 0, 0), 4000.0));
+	// A heard noise behind it: it goes to look (it did not see anything).
+	FGLCreatureFacts Heard = At(FVector(-5000, 0, 0), false);
+	Heard.NoiseSecondsLeft = 8.0;
+	Heard.Noise = FVector(-800, 0, 0);
+	const FGLCreatureDecision Look = R::Decide(D, EGLCreatureState::Idle, Heard);
+	TestEqual(TEXT("it investigates the noise"), Look.State, EGLCreatureState::Investigate);
+	TestEqual(TEXT("at the noise"), Look.MoveTo, FVector(-800, 0, 0));
+	// A noise never overrides seeing Zenny (only Pehlichi's distraction does).
+	FGLCreatureFacts SeesAndHears = At(FVector(800, 0, 0));
+	SeesAndHears.NoiseSecondsLeft = 8.0;
+	SeesAndHears.Noise = FVector(0, 900, 0);
+	TestEqual(TEXT("seeing wins over a noise"), R::Decide(D, EGLCreatureState::Idle, SeesAndHears).State, EGLCreatureState::Chase);
+	// Losing sight is not forgetting: it searches where Zenny was last seen.
+	FGLCreatureFacts Lost = At(FVector(800, 0, 0), false);
+	Lost.SearchSecondsLeft = 8.0;
+	Lost.LastKnown = FVector(700, 100, 0);
+	const FGLCreatureDecision Search = R::Decide(D, EGLCreatureState::Chase, Lost);
+	TestEqual(TEXT("sight lost mid-chase: it searches"), Search.State, EGLCreatureState::Search);
+	TestEqual(TEXT("where Zenny was last seen"), Search.MoveTo, FVector(700, 100, 0));
+	TestEqual(TEXT("still searching next step"), R::Decide(D, EGLCreatureState::Search, Lost).State, EGLCreatureState::Search);
+	Lost.SearchSecondsLeft = 0.0;
+	Lost.Self = FVector(700, 100, 0);
+	TestEqual(TEXT("memory spent: it goes home"), R::Decide(D, EGLCreatureState::Search, Lost).State, EGLCreatureState::Return);
+	// A last known position beyond its territory is not searched (the leash still holds).
+	FGLCreatureFacts Far = At(FVector(800, 0, 0), false);
+	Far.SearchSecondsLeft = 8.0;
+	Far.LastKnown = FVector(3000, 0, 0);
+	TestNotEqual(TEXT("no search outside the leash"), R::Decide(D, EGLCreatureState::Chase, Far).State, EGLCreatureState::Search);
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

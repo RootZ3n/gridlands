@@ -1,0 +1,13 @@
+diff --git a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+index bfc3402..551bded 100644
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -191,7 +191,7 @@ void UGLStructureSubsystem::Collapse(FGLStructureRuntime& Structure, AActor* By,
+ 			Remaining.Add(Part.Piece);
+ 		}
+ 	}
+-	const TArray<int32> Falling = GLCollapseRules::Unsupported(Content, Remaining, Ground);
++	const TArray<int32> Falling; // PLANTED DEFECT: support loss is never re-derived
+ 	if (Falling.Num() == 0)
+ 	{
+ 		return;

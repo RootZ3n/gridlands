@@ -41,6 +41,8 @@ namespace GLContentRegistry
 		{ TEXT("terraform"), &FGLTerraformDef::StaticStruct },
 		{ TEXT("creature"), &FGLCreatureDef::StaticStruct },
 		{ TEXT("storm"), &FGLStormDef::StaticStruct },
+		{ TEXT("structure"), &FGLStructureDef::StaticStruct },
+		{ TEXT("tuning"), &FGLTuningDef::StaticStruct },
 	};
 
 	/** Top-level entries under Data/ that are not entity kinds. */

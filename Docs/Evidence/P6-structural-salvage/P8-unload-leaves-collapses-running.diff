@@ -1,0 +1,15 @@
+diff --git a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+index bfc3402..4480bc3 100644
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -332,9 +332,7 @@ int32 UGLStructureSubsystem::RemoveCell(FName Cell)
+ 				Actor->Destroy();
+ 			}
+ 		}
+-		const FName Placement = It.Key();
+-		Active.RemoveAll([Placement](const FGLActiveCollapse& Collapse) { return Collapse.Placement == Placement; });
+-		It.RemoveCurrent();
++		It.RemoveCurrent(); // PLANTED DEFECT: its unfinished collapses keep running after the cell is gone
+ 		++Removed;
+ 	}
+ 	return Removed;

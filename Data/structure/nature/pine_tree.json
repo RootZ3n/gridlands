@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "structure.nature.pine_tree",
+  "displayName": "Pine tree",
+  "notes": "P6: natural gathering through the structural pipeline. Cut the stump; the trunk topples (provisional direction policy) and becomes a log.",
+  "parts": [
+    {
+      "name": "stump",
+      "piece": "buildpiece.nature.pine_stump",
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "salvage": "salvage.nature.pine_cut"
+    },
+    {
+      "name": "trunk",
+      "piece": "buildpiece.nature.pine_trunk",
+      "location": [
+        0,
+        0,
+        0.4
+      ],
+      "salvage": "salvage.nature.pine_log"
+    }
+  ]
+}

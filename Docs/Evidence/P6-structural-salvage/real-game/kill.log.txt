@@ -1,0 +1,14 @@
+LogGridlands: Grid: entered cell.home.origin (from None)
+LogGridlands: Grid: loading cell.home.origin (epoch 1)
+LogGridlands: gl.Demo.Collapse: A before: placement.origin.structure_carport_01: post_south=intact post_north=intact deck_west=intact deck_east=intact; Zenny health 50
+LogGridlands: gl.Demo.Collapse: took post_south (not the last support): placement.origin.structure_carport_01: post_south=removed post_north=intact deck_west=intact deck_east=intact; active collapses 0
+LogGridlands: Structures: placement.origin.structure_carport_01 lost support: 2 part(s) collapse (decided in 0.107 ms)
+LogGridlands: gl.Demo.Collapse: B took post_north (the wrong one): decided at once: placement.origin.structure_carport_01: post_south=removed post_north=removed deck_west=debris@V(X=-3000.00, Y=-4000.00)(actor NOT at rest) deck_east=debris@V(X=-2800.00, Y=-4000.00)(actor NOT at rest); active collapses 2
+LogGridlands: gl.Demo.Structure: screenshot mid-collapse
+LogGridlands: Structures: placement.origin.structure_carport_01/deck_west hit (60 damage, 1 hit; impact resolved in 0.091 ms)
+LogGridlands: Structures: placement.origin.structure_carport_01/deck_east hit (60 damage, 0 hit; impact resolved in 0.011 ms)
+LogGridlands: gl.Demo.Collapse: C/D impacts: deck_west(60 dmg, 1 hit) deck_east(60 dmg, 0 hit); Zenny health now 0 (started at 50: killed, then woke at the start)
+LogGridlands: gl.Demo.Collapse: E after: placement.origin.structure_carport_01: post_south=removed post_north=removed deck_west=debris@V(X=-3000.00, Y=-4000.00)(actor at rest) deck_east=debris@V(X=-2800.00, Y=-4000.00)(actor at rest); noises: break 2, collapse 2
+LogGridlands: gl.Demo.Collapse: PASS
+LogGridlands: gl.Demo.Structure: screenshot after-collapse
+LogGridlands: Save: wrote ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json

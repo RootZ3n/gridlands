@@ -1,5 +1,7 @@
 #include "Pehlichi/GLPehlichiCommandComponent.h"
 
+#include "Noise/GLNoiseSubsystem.h"
+
 #include "Engine/World.h"
 #include "Events/GLEventSubsystem.h"
 #include "GameplayTagsManager.h"
@@ -71,6 +73,14 @@ EGLCommandRejection UGLPehlichiCommandComponent::Issue(FName Command, AActor* Co
 			Lure.Instigator = Pehlichi;
 			Lure.Numbers.Add(TEXT("seconds"), Seconds);
 			UGLEventSubsystem::Emit(this, MoveTemp(Lure));
+			// Creatures hear it through the one world-noise model (P6), as a distraction.
+			if (UGLNoiseSubsystem* Noise = GetWorld()->GetSubsystem<UGLNoiseSubsystem>())
+			{
+				FGLNoiseEvent Distraction = Noise->Make(TEXT("Noise.Pehlichi.Lure"), Pehlichi->GetActorLocation(), Pehlichi);
+				Distraction.bDistraction = true;
+				Distraction.InvestigateSeconds = Seconds;
+				Noise->Emit(MoveTemp(Distraction));
+			}
 		}
 	}
 	else if (Command == TEXT("Command.Pehlichi.Scan"))

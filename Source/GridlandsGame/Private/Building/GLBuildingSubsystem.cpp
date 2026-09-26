@@ -1,5 +1,8 @@
 #include "Building/GLBuildingSubsystem.h"
 
+#include "Noise/GLNoiseSubsystem.h"
+#include "Structure/GLStructureSubsystem.h"
+
 #include "Building/GLBuildPiece.h"
 #include "Content/GLContent.h"
 #include "Content/GLContentDefinitions.h"
@@ -28,8 +31,24 @@ FGLBuildCheck UGLBuildingSubsystem::Check(const AActor* Builder, const FGLPlaced
 		NoBuilder.Reason = TEXT("nobody to build it");
 		return NoBuilder;
 	}
-	return GLStructureRules::CanPlace(GLContent::Get(), Pieces, Candidate, [this](const FVector2D& At) { return GroundAt(At); },
+	const FGLBuildPieceDef* Def = GLContent::Get().Find<FGLBuildPieceDef>(Candidate.Def);
+	if (Def && !Def->Buildable)
+	{
+		FGLBuildCheck WorldOnly;
+		WorldOnly.Refusal = EGLBuildRefusal::UnknownPiece;
+		WorldOnly.Reason = TEXT("that is not something Zenny can build");
+		return WorldOnly;
+	}
+	FGLBuildCheck Result = GLStructureRules::CanPlace(GLContent::Get(), Pieces, Candidate, [this](const FVector2D& At) { return GroundAt(At); },
 		Knowledge->GetKnowledge(), Inventory->GetInventory());
+	// Authored structures and their debris (P6) are in the way like any other piece.
+	const UGLStructureSubsystem* Structures = GetWorld()->GetSubsystem<UGLStructureSubsystem>();
+	if (Result.IsAllowed() && Def && Structures && Structures->Overlaps(GLStructureRules::Bounds(*Def, Candidate)))
+	{
+		Result.Refusal = EGLBuildRefusal::Overlaps;
+		Result.Reason = TEXT("something is already there");
+	}
+	return Result;
 }
 
 FGLBuildCheck UGLBuildingSubsystem::Place(AActor* Builder, const FGLPlacedPiece& Candidate)
@@ -53,6 +72,10 @@ FGLBuildCheck UGLBuildingSubsystem::Place(AActor* Builder, const FGLPlacedPiece&
 	Pieces.Add(Placed);
 	SpawnPiece(Placed);
 	Emit(TEXT("Event.Building.Placed"), Placed.Def, Builder, { { TEXT("support"), Result.Support } });
+	if (const FGLBuildPieceDef* PlacedDef = GLContent::Get().Find<FGLBuildPieceDef>(Placed.Def))
+	{
+		UGLNoiseSubsystem::EmitAction(this, TEXT("Noise.Build.Place"), GLStructureRules::Bounds(*PlacedDef, Placed).GetCenter(), Builder, PlacedDef->Material);
+	}
 	return Result;
 }
 
@@ -91,6 +114,7 @@ FGLDemolishResult UGLBuildingSubsystem::Demolish(AActor* Builder, int32 PieceId)
 		}
 	}
 	const FName TargetDef = Target->Def;
+	const FVector TargetAt = Target->Location;
 	for (const int32 Id : Result.Removed)
 	{
 		Pieces.RemoveAll([Id](const FGLPlacedPiece& P) { return P.Id == Id; });
@@ -105,6 +129,8 @@ FGLDemolishResult UGLBuildingSubsystem::Demolish(AActor* Builder, int32 PieceId)
 		verify(Inventory->AddItem(Refund.Key, Refund.Value) == Refund.Value);
 	}
 	const int32 Collapsed = Result.Removed.Num() - 1;
+	const FGLBuildPieceDef* TargetPiece = GLContent::Get().Find<FGLBuildPieceDef>(TargetDef);
+	UGLNoiseSubsystem::EmitAction(this, TEXT("Noise.Build.Demolish"), TargetAt, Builder, TargetPiece ? TargetPiece->Material : NAME_None);
 	Emit(TEXT("Event.Building.Demolished"), TargetDef, Builder, { { TEXT("collapsed"), static_cast<double>(Collapsed) } });
 	if (Collapsed > 0)
 	{

@@ -74,8 +74,10 @@ Rare items are found through:
 - rare fabrication requirements.
 
 Sparse NPCs tell stories casually; they are not quest dispensers. **No automatic map markers, quest
-arrows or "0/5 clues".** Working example: **"My Ex's Caliber"**, a named rare weapon found through
-rumour and clues. Humorous and crass names are on-brand.
+arrows or "0/5 clues".** Working example: **"My Ex's Caliper"** (the operator's name; earlier
+docs said "Caliber"), a named legendary found through rumour and clues. Humorous and crass names are on-brand.
+Legendaries (named, mechanically distinctive discoveries, never a colour tier) and the one-dungeon-per-zone
+rule are in [DUNGEONS-AND-LEGENDARIES.md](DUNGEONS-AND-LEGENDARIES.md).
 
 ## 4. Farming, cooking and expedition food
 **Food and water are preparation, not a survival tax.** Ignoring food while safely building,
@@ -88,6 +90,16 @@ Food mainly grants temporary benefits for:
 - Pehlichi-assisted play.
 
 Buffs support combat **and** non-combat play. When a buff expires, Zenny returns toward baseline.
+
+**Hunger and thirst** (operator, 2026-09-25) are expedition preparation, specified in
+[SURVIVAL-AND-THREAT §11](SURVIVAL-AND-THREAT.md):
+- depletion pauses inside a data-driven home comfort area of about 100 m, with no magic refill;
+- zero does not simply kill Zenny;
+- Hoponi owns recipes;
+- buffs serve non-combat play;
+- cooking quality lowers the flatulence chance, which a tooltip may show.
+
+Not implemented.
 
 ## 5. Digestion (canonical design; not implemented)
 **The chain.** Some foods add a temporary chance of flatulence while their effect lasts. The

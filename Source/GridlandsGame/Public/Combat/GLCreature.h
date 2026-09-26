@@ -8,6 +8,7 @@
 class UGLHealthComponent;
 struct FGLCreatureDef;
 struct FGLGameplayEvent;
+struct FGLNoiseEvent;
 
 /**
  * A corrupted creature (M11) placed by data (ADR-0014: threat from place). Behaviour is
@@ -29,6 +30,16 @@ public:
 	/** One behaviour step (Tick calls it; tests call it directly). */
 	void Think(float DeltaSeconds);
 
+	/**
+	 * A world noise (P6): heard by its own hearing (GLCreatureRules::Hears). An ordinary noise sends it
+	 * to look; Pehlichi's distraction overrides even a chase. Returns whether it heard it.
+	 */
+	bool HearNoise(const FGLNoiseEvent& Noise);
+
+	/** Where it last saw Zenny, and for how much longer it will search there (P6). */
+	const FVector& GetLastKnown() const { return LastKnown; }
+	double GetSearchSecondsLeft() const { return SearchLeft; }
+
 	/** Save support: a defeated creature stays defeated, silently. */
 	void RestoreDefeated();
 
@@ -42,7 +53,6 @@ public:
 	const FVector& GetHome() const { return Home; }
 
 private:
-	void HandleLure(const FGLGameplayEvent& Event);
 	void HandleDied(AActor* Killer);
 	void Enter(EGLCreatureState Next);
 	void Emit(const TCHAR* Tag);
@@ -59,6 +69,9 @@ private:
 	double SinceAttack = 1e9;
 	double LureLeft = 0.0;
 	FVector Lure = FVector::ZeroVector;
+	double NoiseLeft = 0.0;
+	FVector Noise = FVector::ZeroVector;
+	double SearchLeft = 0.0;
+	FVector LastKnown = FVector::ZeroVector;
 	FVector LastMoveTarget = FVector(1e12);
-	FDelegateHandle LureSubscription;
 };

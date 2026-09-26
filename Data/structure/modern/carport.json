@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "id": "structure.modern.carport",
+  "displayName": "Lean-to carport",
+  "notes": "P6 proof structure: two posts hold the first deck; the second deck hangs off it sideways. Either post alone holds it (redundancy); taking the last one away brings both decks down.",
+  "parts": [
+    {
+      "name": "post_south",
+      "piece": "buildpiece.modern.timber_post",
+      "location": [
+        -1,
+        -1,
+        0
+      ],
+      "salvage": "salvage.structure.timber_post"
+    },
+    {
+      "name": "post_north",
+      "piece": "buildpiece.modern.timber_post",
+      "location": [
+        -1,
+        1,
+        0
+      ],
+      "salvage": "salvage.structure.timber_post"
+    },
+    {
+      "name": "deck_west",
+      "piece": "buildpiece.modern.timber_deck",
+      "location": [
+        0,
+        0,
+        2.5
+      ],
+      "salvage": "salvage.structure.timber_deck"
+    },
+    {
+      "name": "deck_east",
+      "piece": "buildpiece.modern.timber_deck",
+      "location": [
+        2,
+        0,
+        2.5
+      ],
+      "salvage": "salvage.structure.timber_deck"
+    }
+  ]
+}

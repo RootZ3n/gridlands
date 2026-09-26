@@ -1,5 +1,72 @@
 # Visual direction
 
+> **Status legend used in the design docs.**
+> - **LOCKED DESIGN INTENT**: an operator decision. Changing it needs the operator.
+> - **UNPROVEN / NOT IMPLEMENTED**: nothing in the build does this yet.
+> - A brainstormed mechanic is never described as existing.
+
+## Visual north star (LOCKED DESIGN INTENT, operator, 2026-09-25; NOT IMPLEMENTED)
+**Primary inspiration: WildStar.** This is inspiration, not imitation. Never reproduce WildStar
+assets, characters, iconography, proprietary designs or specific content.
+
+Gridlands should look like **a highly colorful, playable animated series**:
+- expressive, exaggerated, high-quality stylized 3D;
+- strong silhouettes and chunky, readable forms;
+- saturated, deliberately colorful environments with rich environmental detail;
+- expressive animation;
+- graphic or dark character linework where appropriate;
+- modern Unreal materials, lighting and atmosphere underneath the stylization.
+
+**Secondary reference: Gorillaz**, for:
+- character attitude and graphic presentation;
+- expressive posing;
+- illustrated characters inhabiting a dimensional world.
+
+**Also locked:**
+- **Retro design remains fundamental.** Synthwave remains fundamental but does **not** coat every
+  object indiscriminately.
+- **Color is strongly preferred.** Dark and night environments keep readable color and never
+  collapse into grey or black.
+- **Historical and era assets share one Gridlands rendering language** while keeping distinct
+  architecture. Deliberately eclectic player construction is supported: a feudal Japanese
+  dwelling beside a Victorian house, Roman beside 1950s.
+- **Ofi is the authority for learned building knowledge.** Exploration lets the player bring
+  architectural traditions home.
+
+### NICE's corruption: a protected visual language (LOCKED)
+**What it looks like:**
+- mathematically clean geometry;
+- **electric-blue corruption cubes**;
+- cyan, magenta and violet digital interference where appropriate.
+- Corruption geometry looks unnaturally precise against the illustrated, organic world.
+
+**Blue cubes are used SPARINGLY.** Seeing them must mean *something is wrong*.
+- A normal-looking creature carries only **3–4 cubes** intersecting or replacing small portions of it.
+- An ordinary telephone may have **one** cube replacing part of the receiver.
+- A glitch may be an otherwise normal object with one small, impossible geometric corruption.
+
+### What this supersedes
+- **Target fidelity:** "Valheim-level stylization is acceptable" and "muted, believable
+  physical-layer colours" (sections below) are superseded by the north star. The physical world
+  is now **saturated and colourful**.
+- **The Grid layer's contrast:** it now comes from corruption's **precision and its protected
+  palette**, not from a muted world.
+- **The core rule stands:** normal things look physical; glitched things reveal the Grid.
+
+### Art-direction spike (planned; NOT STARTED; after the P6 gameplay foundation)
+**No mass asset production until a real-time Unreal scene proves the pipeline** can produce the
+"playable colorful animated series" look. The spike contains roughly:
+- Zenny and Pehlichi proxies;
+- an ordinary creature, and a creature with sparse blue-cube corruption;
+- a rotary telephone, and its glitched version with one cube substitution;
+- a small retro/1950s facade or street corner;
+- vegetation and representative terrain;
+- NICE corruption;
+- colorful lighting and atmosphere.
+
+**Hardware.** The RX 6800 is development and performance evidence, **not** the minimum
+specification. Do not optimise the look around it.
+
 ## Core rule
 
 **NORMAL THINGS LOOK PHYSICAL. GLITCHED THINGS REVEAL THE GRID.**
@@ -11,7 +78,7 @@
 - Pehlichi's scan will eventually let the player *see* that underlying Grid.
   In bootstrap this is a clear debug visualization, not a finished shader.
 
-## Target fidelity
+## Target fidelity (superseded 2026-09-25 by the visual north star above; kept for history)
 
 Stylized 3D, roughly in this range:
 - more detailed and cleaner than Stardew-style pixel presentation;
@@ -69,8 +136,10 @@ Other references (carried over from the Godot prototype):
 | Corruption warning | purple `#9933FF` |
 | Danger | red `#FF3333` |
 
-Neon colours belong to the Grid layer. Physical-layer materials use muted,
-believable colours so the contrast carries meaning.
+Neon colours belong to the Grid layer. *(Superseded 2026-09-25:* physical-layer materials were
+"muted, believable". The north star now makes the physical world saturated and colourful. The
+corruption language (electric-blue cubes, cyan/magenta/violet interference) is protected, and
+carries the contrast through precision and sparing use.*)*
 
 ## Bootstrap limits
 

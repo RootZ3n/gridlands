@@ -51,6 +51,33 @@ struct GRIDLANDSCORE_API FGLSavedPiece
 	UPROPERTY() int32 YawQuarter = 0;
 };
 
+/** What happened to one part of an authored structure (P6). Intact parts are not saved (they are the authored default). */
+UENUM()
+enum class EGLStructurePartState : uint8
+{
+	Intact = 0,
+	Removed = 1,        // salvaged whole
+	Debris = 2,         // collapsed; lies at Location/Rotation and can be salvaged
+	DebrisSalvaged = 3, // collapsed, then salvaged
+};
+
+/**
+ * A structural fact (P6, ADR-0030), keyed by the structure's placement and the part's name in the
+ * canonical structure data. Debris keeps its authoritative rest transform, so a returning cell never
+ * replays a collapse.
+ */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLSavedStructurePart
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FName Placement;
+	UPROPERTY() FName Part;
+	UPROPERTY() EGLStructurePartState State = EGLStructurePartState::Intact;
+	UPROPERTY() FVector Location = FVector::ZeroVector;
+	UPROPERTY() FRotator Rotation = FRotator::ZeroRotator;
+};
+
 /**
  * Everything saved about one Grid cell (v2, P3): the state of what lives there. Kept while the
  * cell is streamed out, so leaving and returning never loses or replays anything.
@@ -68,8 +95,10 @@ struct GRIDLANDSCORE_API FGLSavedCell
 	/** Sparse ground delta from the cell's authored base: vertex index -> whole centimetres. */
 	UPROPERTY() TArray<int32> TerrainIndices;
 	UPROPERTY() TArray<int32> TerrainDeltaCm;
+	/** P6: every authored structure part that is no longer intact (optional in v2 files: absent means none). */
+	UPROPERTY() TArray<FGLSavedStructurePart> StructureParts;
 
-	bool IsEmpty() const { return Glitches.Num() == 0 && SalvagedPlacements.Num() == 0 && DefeatedCreatures.Num() == 0 && BuildPieces.Num() == 0 && TerrainIndices.Num() == 0; }
+	bool IsEmpty() const { return Glitches.Num() == 0 && SalvagedPlacements.Num() == 0 && DefeatedCreatures.Num() == 0 && BuildPieces.Num() == 0 && TerrainIndices.Num() == 0 && StructureParts.Num() == 0; }
 };
 
 USTRUCT()

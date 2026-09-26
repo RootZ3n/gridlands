@@ -1,5 +1,7 @@
 #include "World/GLPlacementSubsystem.h"
 
+#include "Structure/GLStructureSubsystem.h"
+
 #include "Content/GLContent.h"
 #include "Content/GLContentDefinitions.h"
 #include "Engine/World.h"
@@ -72,7 +74,7 @@ int32 UGLPlacementSubsystem::SpawnCell(FName CellId)
 		const FGLPlacementDef* Placement = Entry.Definition.GetPtr<FGLPlacementDef>();
 		if (!Placement || Entry.Kind != TEXT("placement") || !Entry.Id.ToString().StartsWith(Prefix)
 			|| (Placement->Kind != TEXT("salvage_node") && Placement->Kind != TEXT("glitch") && Placement->Kind != TEXT("puzzle_site")
-				&& Placement->Kind != TEXT("spawn") && Placement->Kind != TEXT("discovery")))
+				&& Placement->Kind != TEXT("spawn") && Placement->Kind != TEXT("discovery") && Placement->Kind != TEXT("structure")))
 		{
 			return;
 		}
@@ -112,6 +114,16 @@ int32 UGLPlacementSubsystem::SpawnCell(FName CellId)
 			Creatures.Add(Entry.Id, Creature);
 			Owned.Add(Creature);
 			++Spawned;
+			return;
+		}
+		if (Placement->Kind == TEXT("structure"))
+		{
+			// Authored structures (P6) live in the structure subsystem, which owns their part states.
+			const int32 YawQuarter = ((FMath::RoundToInt(Yaw / 90.0) % 4) + 4) % 4;
+			if (World->GetSubsystem<UGLStructureSubsystem>()->SpawnStructure(Entry.Id, Placement->Definition, CellId, Location, YawQuarter))
+			{
+				++Spawned;
+			}
 			return;
 		}
 		if (Placement->Kind == TEXT("discovery"))
@@ -182,10 +194,25 @@ int32 UGLPlacementSubsystem::DespawnCell(FName CellId)
 	for (auto It = SalvageNodes.CreateIterator(); It; ++It) { if (OfCell(It.Key())) { It.RemoveCurrent(); } }
 	for (auto It = Creatures.CreateIterator(); It; ++It) { if (OfCell(It.Key())) { It.RemoveCurrent(); } }
 	Discoveries.RemoveAll([CellId](const FGLDiscoverySite& Site) { return Site.Cell == CellId; });
+	Removed += GetWorld()->GetSubsystem<UGLStructureSubsystem>()->RemoveCell(CellId);
 	GetWorld()->GetSubsystem<UGLGlitchSubsystem>()->Compact();
 	UE_LOG(LogGridlands, Log, TEXT("Placements: despawned %d for %s"), Removed, *CellId.ToString());
 	return Removed;
 }
+
+#if !UE_BUILD_SHIPPING
+AGLCreature* UGLPlacementSubsystem::SpawnProofCreature(FName Def, const FVector& Location, double Yaw, FName Cell)
+{
+	AGLCreature* Creature = GetWorld()->SpawnActor<AGLCreature>(Location + FVector(0, 0, 70), FRotator(0.0, Yaw, 0.0));
+	if (!Creature || !Creature->Setup(Def, TEXT("placement.proof.creature")))
+	{
+		return nullptr;
+	}
+	CellActors.FindOrAdd(Cell).Add(Creature);
+	UE_LOG(LogGridlands, Log, TEXT("Placements: DEV proof creature %s at %s"), *Def.ToString(), *Location.ToCompactString());
+	return Creature;
+}
+#endif
 
 bool UGLPlacementSubsystem::IsPlacementOfCell(FName PlacementId, FName CellId)
 {

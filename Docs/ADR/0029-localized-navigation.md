@@ -1,7 +1,15 @@
 # ADR-0029: Navigation is built only around navigation invokers
 
-- Status: **Accepted for P5** on measured evidence (below). Radii are engineering values, not
-  feel, and are open to revision once creatures have larger reaches.
+- Status: **CANONICAL: operator decision, 2026-09-25.** Localized navigation is canonical, and
+  whole-cell navigation must not be restored.
+  - Zenny and creatures keep their invokers.
+  - Any future system that genuinely needs long-range autonomous pathing gets an appropriate
+    localized invoker.
+  - Radii are engineering values, not feel.
+  - Guards:
+    - `Tools/tests/test_perf_budgets.py` fails if the config turns invokers off;
+    - the navigation budgets are in `Tools/perf/budgets.json`;
+    - the navigation tests fail under whole-cell navigation (planted defect 23).
 - Date: 2026-09-25
 - Evidence: [Docs/Evidence/P5-seamless-grid](../Evidence/P5-seamless-grid/README.md), §F
 - Builds on: [ADR-0022](0022-terrain-chunked-heightfield.md) (navigation follows edits, M10) and
@@ -75,5 +83,7 @@
   - The count stays at 173 after revisiting, and no other tiles linger.
   - It looks like an engine tile-removal corner.
   - It is bounded (it does not grow) and goes when its cell unloads (its bounds go).
+  - **Accepted by the operator (2026-09-25).** Documented; do not destabilise the system trying to
+    eliminate it now.
 - **Test worlds never advance world time**, and invoker updates are scheduled on it. The
   navigation tests advance it explicitly.

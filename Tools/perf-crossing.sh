@@ -52,4 +52,8 @@ for MODE in "${MODES[@]}"; do
 	fi
 done
 rm -f "$SAVE"
+# Regression budgets (Tools/perf/budgets.json): localized runs must stay within them.
+if [ "$NAV" = local ]; then
+	python3 "$GRIDLANDS_ROOT/Tools/perf/check_budgets.py" "$PERF"/local-*.json || result FAIL "P5 regression budget breached (Tools/perf/budgets.json)"
+fi
 result PASS "crossing runs finished (Saved/Perf/$NAV-*)"

@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.timber_deck",
+  "displayName": "Timber deck",
+  "notes": "P6 world-only piece: a floor/ceiling slab. Rests on posts at its corners; side-links to neighbouring decks.",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "role": "floor",
+  "grounded": false,
+  "buildable": false,
+  "size": [
+    2,
+    2,
+    0.2
+  ],
+  "shapes": [
+    {
+      "size": [
+        2,
+        2,
+        0.2
+      ],
+      "offset": [
+        0,
+        0,
+        0.1
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "corner_nw",
+      "role": "bottom",
+      "offset": [
+        -1,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "corner_ne",
+      "role": "bottom",
+      "offset": [
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "corner_sw",
+      "role": "bottom",
+      "offset": [
+        -1,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "corner_se",
+      "role": "bottom",
+      "offset": [
+        1,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "east",
+      "role": "side",
+      "offset": [
+        1,
+        0,
+        0.1
+      ]
+    },
+    {
+      "name": "west",
+      "role": "side",
+      "offset": [
+        -1,
+        0,
+        0.1
+      ]
+    },
+    {
+      "name": "north",
+      "role": "side",
+      "offset": [
+        0,
+        1,
+        0.1
+      ]
+    },
+    {
+      "name": "south",
+      "role": "side",
+      "offset": [
+        0,
+        -1,
+        0.1
+      ]
+    },
+    {
+      "name": "top",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        0.2
+      ]
+    }
+  ],
+  "collapse": {
+    "motion": "drop"
+  }
+}

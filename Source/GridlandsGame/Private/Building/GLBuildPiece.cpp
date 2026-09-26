@@ -82,6 +82,15 @@ bool AGLBuildPiece::Setup(const FGLPlacedPiece& InPiece, bool bGhost)
 	return true;
 }
 
+void AGLBuildPiece::SetSolid(bool bSolid)
+{
+	for (UStaticMeshComponent* Box : Boxes)
+	{
+		Box->SetCollisionEnabled(bSolid ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);
+		Box->SetCanEverAffectNavigation(bSolid);
+	}
+}
+
 void AGLBuildPiece::SetGhostValid(bool bValid)
 {
 	const FLinearColor Colour = bValid ? FLinearColor(0.2f, 0.9f, 0.3f) : FLinearColor(0.95f, 0.15f, 0.1f);

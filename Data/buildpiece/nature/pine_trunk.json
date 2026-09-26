@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.nature.pine_trunk",
+  "displayName": "Pine trunk",
+  "notes": "P6 world-only piece: a tree trunk (blockout canopy on top). Topples when its stump is cut; the direction policy is data and provisional.",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "role": "trunk",
+  "grounded": false,
+  "buildable": false,
+  "size": [
+    0.5,
+    0.5,
+    8
+  ],
+  "shapes": [
+    {
+      "size": [
+        0.5,
+        0.5,
+        8
+      ],
+      "offset": [
+        0,
+        0,
+        4
+      ]
+    },
+    {
+      "size": [
+        2.4,
+        2.4,
+        3
+      ],
+      "offset": [
+        0,
+        0,
+        6.2
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "collapse": {
+    "motion": "topple",
+    "direction": "awayFromInstigator"
+  }
+}

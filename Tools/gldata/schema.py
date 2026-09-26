@@ -193,6 +193,8 @@ REQUIREMENT_KINDS_NEEDING_TARGET = {"Requirement.ObjectSalvaged": "salvage_node"
 COUNT = Int(1, 100000)
 ITEM_STACK = Obj({"item": Ref("item"), "count": COUNT}, required=("item", "count"))
 VEC3 = List(Num(), min_items=3)
+COLLAPSE = Obj({"motion": Enum("drop", "topple"), "direction": Enum("awayFromInstigator", "pieceForward", "pieceBackward")},
+               required=("motion",))
 
 
 def kind(fields: dict[str, Spec], required: tuple[str, ...] = (), one_of=()) -> Obj:
@@ -224,6 +226,9 @@ SCHEMAS: dict[str, Obj] = {
             "salvageHardness": Num(positive=True),
             "support": Obj({"strength": Num(positive=True), "maxHorizontalSpan": Num(positive=True), "maxStack": Int(1, 1000)},
                            required=("strength", "maxHorizontalSpan", "maxStack")),
+            # P6: scales the noise radius of working this material, and collapse impact damage (default 1).
+            "noiseScale": Num(0, 10),
+            "impactScale": Num(0, 10),
         },
         required=("displayName", "tags", "salvageHardness"),
     ),
@@ -271,6 +276,8 @@ SCHEMAS: dict[str, Obj] = {
             "onSalvageUnlocks": List(Ref("knowledge"), unique=True),
             # Gameplay events emitted when salvage completes (dialogue hooks, ADR-0015).
             "onSalvageEvents": List(Tag("Event"), unique=True),
+            # P6: the noise action each hit makes (default Noise.Salvage.Hit).
+            "noise": Tag("Noise"),
         },
         required=("displayName", "integrity", "yields"),
     ),
@@ -280,7 +287,7 @@ SCHEMAS: dict[str, Obj] = {
             "displayName": Str(),
             "era": Ref("era"),
             "material": Ref("material"),
-            "role": Enum("foundation", "wall", "doorway", "roof", "post", "beam"),
+            "role": Enum("foundation", "wall", "doorway", "roof", "post", "beam", "floor", "stump", "trunk"),
             # May rest directly on terrain (foundations, posts); otherwise it needs another piece.
             "grounded": Bool(),
             # Axis-aligned bounds in piece space (overlap tests, terrain protection).
@@ -292,8 +299,12 @@ SCHEMAS: dict[str, Obj] = {
                                 required=("name", "role", "offset")), min_items=1),
             "cost": List(ITEM_STACK, min_items=1),
             "unlockedBy": List(Ref("knowledge"), unique=True),
+            # P6: false = world-only (authored structures, trees): no cost, never offered to the player (BLD-5).
+            "buildable": Bool(),
+            # P6: how it moves when unsupported (deterministic collapse).
+            "collapse": COLLAPSE,
         },
-        required=("displayName", "era", "material", "role", "grounded", "size", "shapes", "sockets", "cost"),
+        required=("displayName", "era", "material", "role", "grounded", "size", "shapes", "sockets"),
     ),
     # M10 terraforming v0 (ADR-0022): one stroke of a heightfield tool. Metres.
     "terraform": kind(
@@ -366,8 +377,8 @@ SCHEMAS: dict[str, Obj] = {
     ),
     "placement": kind(
         {
-            "kind": Enum("glitch", "salvage_node", "spawn", "patrol", "discovery", "encounter", "puzzle_site"),
-            "definition": Ref("glitch", "salvage", "creature", "knowledge", "puzzle"),
+            "kind": Enum("glitch", "salvage_node", "spawn", "patrol", "discovery", "encounter", "puzzle_site", "structure"),
+            "definition": Ref("glitch", "salvage", "creature", "knowledge", "puzzle", "structure"),
             "anchor": Ref("anchor"),
             "offset": VEC3,
             "transform": Obj({"location": VEC3, "yaw": Num(-360, 360)}, required=("location",)),
@@ -386,7 +397,9 @@ SCHEMAS: dict[str, Obj] = {
             "health": Num(positive=True),
             "walkSpeed": Num(0.5, 20),
             "chaseSpeed": Num(0.5, 20),
-            "perception": Obj({"sightRadius": Num(1, 200), "coneDegrees": Num(10, 360), "hearingRadius": Num(0, 200)},
+            "perception": Obj({"sightRadius": Num(1, 200), "coneDegrees": Num(10, 360), "hearingRadius": Num(0, 200),
+                               # P6: seconds it searches Zenny's last known position after losing sight (default: tuning).
+                               "memorySeconds": Num(0, 600)},
                               required=("sightRadius", "coneDegrees", "hearingRadius")),
             "attack": Obj({"damage": Num(positive=True), "reach": Num(0.5, 10), "cooldownSeconds": Num(0.1, 30)},
                           required=("damage", "reach", "cooldownSeconds")),
@@ -411,6 +424,31 @@ SCHEMAS: dict[str, Obj] = {
             "harmless": Bool(),
         },
         required=("displayName", "durationSeconds", "radius", "spawnPerSecond", "maxArtifacts", "artifacts", "trigger", "harmless"),
+    ),
+    # P6: an authored world structure (salvageable building, tree): the canonical structural contract.
+    # Parts are pieces in the shared structural language (buildpiece), placed in structure space (metres).
+    "structure": kind(
+        {
+            "displayName": Str(),
+            "parts": List(Obj({"name": Str(max_len=32), "piece": Ref("buildpiece"), "location": VEC3, "yawQuarter": Int(0, 3),
+                               "salvage": Ref("salvage"), "collapse": COLLAPSE},
+                              required=("name", "piece", "location", "salvage")), min_items=1),
+        },
+        required=("displayName", "parts"),
+    ),
+    # P6: provisional physical and noise tuning (data, never tuned by feel). Metres and seconds.
+    "tuning": kind(
+        {
+            "displayName": Str(),
+            "collapse": Obj({"gravity": Num(positive=True), "startDelaySeconds": Num(0, 10), "impactMarginMetres": Num(0, 5),
+                             "impactHeightMetres": Num(0.1, 20), "damageBase": Num(0, 10000), "damagePerMetreFallen": Num(0, 10000),
+                             "damageMax": Num(0, 10000), "toppleStartDegrees": Num(0.1, 45)},
+                            required=("gravity", "startDelaySeconds", "impactMarginMetres", "impactHeightMetres", "damageBase",
+                                      "damagePerMetreFallen", "damageMax", "toppleStartDegrees")),
+            "noise": Obj({"investigateSeconds": Num(0, 600), "memorySeconds": Num(0, 600), "radius": Map(Num(0, 500))},
+                         required=("investigateSeconds", "memorySeconds", "radius")),
+        },
+        required=("displayName", "collapse", "noise"),
     ),
     # ADR-0023: Zenny answers through gameplay. CONSTRUCT is reserved until building exists.
     "puzzle": kind(
@@ -458,4 +496,5 @@ def key_paths(spec: Spec, prefix: str = "") -> list[str]:
 
 
 PLACEMENT_KIND_DEFINITION = {"glitch": "glitch", "salvage_node": "salvage", "spawn": "creature", "patrol": "creature",
-                             "discovery": "knowledge", "encounter": "creature", "puzzle_site": "puzzle"}
+                             "discovery": "knowledge", "encounter": "creature", "puzzle_site": "puzzle",
+                             "structure": "structure"}

@@ -1,0 +1,333 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0DAEB77C87A3699139B78BEE14FBD",
+			"instanceName": "Pehverse-2253651",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.25-23.35.24",
+	"succeeded": 10,
+	"succeededWithWarnings": 0,
+	"failed": 2,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 50.778091430664062,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "CreatureSeesOnlyWhatItShould",
+			"fullTestPath": "Gridlands.Core.Combat.CreatureSeesOnlyWhatItShould",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAEB77C87A3699139B78BEE14FBD"
+			],
+			"duration": 0.0079961558803915977,
+			"dateTime": "2026.09.25-23.34.33",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "HearingAndMemoryAreSeparateFromSight",
+			"fullTestPath": "Gridlands.Core.Combat.HearingAndMemoryAreSeparateFromSight",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAEB77C87A3699139B78BEE14FBD"
+			],
+			"duration": 0.0081036211922764778,
+			"dateTime": "2026.09.25-23.34.33",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LureBeatsChaseAttackRespectsCooldown",
+			"fullTestPath": "Gridlands.Core.Combat.LureBeatsChaseAttackRespectsCooldown",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAEB77C87A3699139B78BEE14FBD"
+			],
+			"duration": 0.0081008812412619591,
+			"dateTime": "2026.09.25-23.34.33",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DropIsDeterministicAndItsImpactIsTruthful",
+			"fullTestPath": "Gridlands.Core.Structure.DropIsDeterministicAndItsImpactIsTruthful",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAEB77C87A3699139B78BEE14FBD"
+			],
+			"duration": 0.007928171195089817,
+			"dateTime": "2026.09.25-23.34.33",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OnlyWhatLosesSupportFallsAndItCascades",
+			"fullTestPath": "Gridlands.Core.Structure.OnlyWhatLosesSupportFallsAndItCascades",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAEB77C87A3699139B78BEE14FBD"
+			],
+			"duration": 0.0079938322305679321,
+			"dateTime": "2026.09.25-23.34.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ToppleFollowsItsDirectionPolicy",
+			"fullTestPath": "Gridlands.Core.Structure.ToppleFollowsItsDirectionPolicy",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAEB77C87A3699139B78BEE14FBD"
+			],
+			"duration": 0.0079232798889279366,
+			"dateTime": "2026.09.25-23.34.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CoverAfterDetectionLeavesALastKnownPosition",
+			"fullTestPath": "Gridlands.Game.Noise.CoverAfterDetectionLeavesALastKnownPosition",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAEB77C87A3699139B78BEE14FBD"
+			],
+			"duration": 3.0734972953796387,
+			"dateTime": "2026.09.25-23.34.34",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "the mound between them: 400 cm above the creature's ground",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.34.37"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TerraformingIsHeardOnlyWithinHearing",
+			"fullTestPath": "Gridlands.Game.Noise.TerraformingIsHeardOnlyWithinHearing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAEB77C87A3699139B78BEE14FBD"
+			],
+			"duration": 3.0117666721343994,
+			"dateTime": "2026.09.25-23.34.37",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "heard counts: near 1, far 0",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.34.40"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CollapseDamagesCreaturesThroughTheSameModel",
+			"fullTestPath": "Gridlands.Game.Structure.CollapseDamagesCreaturesThroughTheSameModel",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAEB77C87A3699139B78BEE14FBD"
+			],
+			"duration": 2.9712381362915039,
+			"dateTime": "2026.09.25-23.34.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CollapsePersistsThroughStreamingSavesAndRestart",
+			"fullTestPath": "Gridlands.Game.Structure.CollapsePersistsThroughStreamingSavesAndRestart",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0DAEB77C87A3699139B78BEE14FBD"
+			],
+			"duration": 23.65894889831543,
+			"dateTime": "2026.09.25-23.34.43",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: placement.origin.structure_carport_edge: 2 intact part(s) had no support after loading; settled as debris",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.34.49"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: placement.origin.structure_carport_edge: 2 intact part(s) had no support after loading; settled as debris",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.34.52"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: placement.origin.structure_carport_edge: 2 intact part(s) had no support after loading; settled as debris",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.34.54"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: placement.origin.structure_carport_edge: 2 intact part(s) had no support after loading; settled as debris",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.34.57"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: placement.origin.structure_carport_edge: 1 intact part(s) had no support after loading; settled as debris",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.35.03"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'no load problems' to be 0, but it was 1.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 70,
+					"timestamp": "2026.09.25-23.35.03"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "east deck rested at V(X=49200.00, Y=2000.00)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.35.06"
+				}
+			],
+			"warnings": 5,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TreeFellsThroughTheStructuralPipelineAndPersists",
+			"fullTestPath": "Gridlands.Game.Structure.TreeFellsThroughTheStructuralPipelineAndPersists",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAEB77C87A3699139B78BEE14FBD"
+			],
+			"duration": 11.874999046325684,
+			"dateTime": "2026.09.25-23.35.06",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WrongSupportCollapsesAndHurtsZenny",
+			"fullTestPath": "Gridlands.Game.Structure.WrongSupportCollapsesAndHurtsZenny",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0DAEB77C87A3699139B78BEE14FBD"
+			],
+			"duration": 6.1395931243896484,
+			"dateTime": "2026.09.25-23.35.18",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'four facts: two posts removed, two decks as debris' to be 4, but it was 2.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.35.21"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		}
+	]
+}

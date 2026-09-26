@@ -59,7 +59,8 @@ void UGLBuildModeComponent::ToggleBuild()
 	Pieces.Reset();
 	GLContent::Get().ForEachEntry([this](const FGLContentEntry& Entry)
 	{
-		if (Entry.Kind == TEXT("buildpiece"))
+		const FGLBuildPieceDef* Def = Entry.Definition.GetPtr<FGLBuildPieceDef>();
+		if (Entry.Kind == TEXT("buildpiece") && Def && Def->Buildable) // world-only pieces are never offered (P6)
 		{
 			Pieces.Add(Entry.Id);
 		}

@@ -1,0 +1,24 @@
+diff --git a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+index bfc3402..9552891 100644
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -392,7 +392,7 @@ void UGLStructureSubsystem::RestoreCell(FName Cell, const TArray<FGLSavedStructu
+ 			continue;
+ 		}
+ 		Touched.Add(Entry.Placement);
+-		Part->State = Entry.State;
++		Part->State = Entry.State == EGLStructurePartState::Debris ? EGLStructurePartState::Intact : Entry.State; // PLANTED DEFECT: debris restored as intact
+ 		const FName Name = Part->Name, Placement = Entry.Placement;
+ 		Active.RemoveAll([Name, Placement](const FGLActiveCollapse& Collapse) { return Collapse.Placement == Placement && Collapse.Part == Name; });
+ 		if (Entry.State == EGLStructurePartState::Debris)
+@@ -424,8 +424,8 @@ void UGLStructureSubsystem::RestoreCell(FName Cell, const TArray<FGLSavedStructu
+ 		{
+ 			Problem(FString::Printf(TEXT("%s: %d intact part(s) had no support after loading; settled as debris"), *Placement.ToString(), Loose.Num()));
+ 			const int32 Before = Active.Num();
+-			Collapse(Structure, nullptr, FVector::ZeroVector, true);
+-			for (int32 I = Active.Num() - 1; I >= Before; --I)
++			Collapse(Structure, nullptr, FVector::ZeroVector); // PLANTED DEFECT: ...so loading re-runs the collapse
++			for (int32 I = Active.Num() - 1; I >= Before && false; --I)
+ 			{
+ 				if (FGLStructurePartRuntime* Part = Structure.Find(Active[I].Part))
+ 				{

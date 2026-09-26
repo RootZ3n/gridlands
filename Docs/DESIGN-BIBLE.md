@@ -134,6 +134,15 @@ content scope stays narrow at first: one Zenny, one Pehlichi, a few creatures,
 a few tools and weapons, a small building set, a small sewer proof, and a
 small dialogue set. Prove the loop, then scale. See [MILESTONES.md](MILESTONES.md).
 
+## 9a. Direction recorded 2026-09-25 (LOCKED DESIGN INTENT; not implemented unless stated)
+
+| Area | Where |
+|---|---|
+| Visual north star: WildStar-inspired "colorful playable animated series"; protected, sparing blue-cube corruption; art-direction spike before any asset production | [VISUAL-DIRECTION](VISUAL-DIRECTION.md) |
+| Zenny's emotes as semantic reactions; NICE's attention model (eligibility, governor, one AFK line) | [STORY-AND-DIALOGUE §6c–6d](STORY-AND-DIALOGUE.md) |
+| Truthful telegraphs, perception visualization, **systemic noise** (first built in P6), hunger/thirst as expedition prep | [SURVIVAL-AND-THREAT §7–11](SURVIVAL-AND-THREAT.md) |
+| One handcrafted dungeon per zone; named legendaries | [DUNGEONS-AND-LEGENDARIES](DUNGEONS-AND-LEGENDARIES.md) |
+
 ## 10. Pillars
 
 The 14 design pillars are in [DESIGN-PILLARS.md](DESIGN-PILLARS.md). The

@@ -1,0 +1,13 @@
+diff --git a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+index 53fdfca..e8aad71 100644
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+@@ -692,7 +692,7 @@ FGLTerrainEditResult UGLTerrainSubsystem::Terraform(AActor* Instigator, FName Te
+ 	Emit(TEXT("Event.Terrain.Edited"), TerraformId, Instigator, FString());
+ 	// Terraforming is never silent (P6): creatures in earshot hear it.
+ 	const TCHAR* Sound = Edit.Op == EGLTerrainOp::Raise ? TEXT("Noise.Terrain.Raise") : Edit.Op == EGLTerrainOp::Flatten ? TEXT("Noise.Terrain.Flatten") : TEXT("Noise.Terrain.Dig");
+-	UGLNoiseSubsystem::EmitAction(this, Sound, FVector(Centre, HeightAt(Centre)), Instigator);
++	(void)Sound; // PLANTED DEFECT: terraforming makes no noise
+ 	return Result;
+ }
+ 

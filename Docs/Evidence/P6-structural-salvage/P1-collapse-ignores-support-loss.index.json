@@ -1,0 +1,707 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0DAE6FEEC78A382594A52752B2F77",
+			"instanceName": "Pehverse-2213358",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.25-23.30.35",
+	"succeeded": 8,
+	"succeededWithWarnings": 0,
+	"failed": 4,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 51.068508148193359,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "CreatureSeesOnlyWhatItShould",
+			"fullTestPath": "Gridlands.Core.Combat.CreatureSeesOnlyWhatItShould",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAE6FEEC78A382594A52752B2F77"
+			],
+			"duration": 0.0083017274737358093,
+			"dateTime": "2026.09.25-23.29.43",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "HearingAndMemoryAreSeparateFromSight",
+			"fullTestPath": "Gridlands.Core.Combat.HearingAndMemoryAreSeparateFromSight",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAE6FEEC78A382594A52752B2F77"
+			],
+			"duration": 0.0081924600526690483,
+			"dateTime": "2026.09.25-23.29.43",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LureBeatsChaseAttackRespectsCooldown",
+			"fullTestPath": "Gridlands.Core.Combat.LureBeatsChaseAttackRespectsCooldown",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAE6FEEC78A382594A52752B2F77"
+			],
+			"duration": 0.0076480000279843807,
+			"dateTime": "2026.09.25-23.29.43",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DropIsDeterministicAndItsImpactIsTruthful",
+			"fullTestPath": "Gridlands.Core.Structure.DropIsDeterministicAndItsImpactIsTruthful",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAE6FEEC78A382594A52752B2F77"
+			],
+			"duration": 0.0077301422134041786,
+			"dateTime": "2026.09.25-23.29.43",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OnlyWhatLosesSupportFallsAndItCascades",
+			"fullTestPath": "Gridlands.Core.Structure.OnlyWhatLosesSupportFallsAndItCascades",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAE6FEEC78A382594A52752B2F77"
+			],
+			"duration": 0.0084059163928031921,
+			"dateTime": "2026.09.25-23.29.44",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ToppleFollowsItsDirectionPolicy",
+			"fullTestPath": "Gridlands.Core.Structure.ToppleFollowsItsDirectionPolicy",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAE6FEEC78A382594A52752B2F77"
+			],
+			"duration": 0.0080330362543463707,
+			"dateTime": "2026.09.25-23.29.44",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CoverAfterDetectionLeavesALastKnownPosition",
+			"fullTestPath": "Gridlands.Game.Noise.CoverAfterDetectionLeavesALastKnownPosition",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAE6FEEC78A382594A52752B2F77"
+			],
+			"duration": 3.097393274307251,
+			"dateTime": "2026.09.25-23.29.44",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "the mound between them: 400 cm above the creature's ground",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.29.47"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TerraformingIsHeardOnlyWithinHearing",
+			"fullTestPath": "Gridlands.Game.Noise.TerraformingIsHeardOnlyWithinHearing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0DAE6FEEC78A382594A52752B2F77"
+			],
+			"duration": 3.041576623916626,
+			"dateTime": "2026.09.25-23.29.47",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "heard counts: near 1, far 0",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.29.50"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CollapseDamagesCreaturesThroughTheSameModel",
+			"fullTestPath": "Gridlands.Game.Structure.CollapseDamagesCreaturesThroughTheSameModel",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0DAE6FEEC78A382594A52752B2F77"
+			],
+			"duration": 3.0258684158325195,
+			"dateTime": "2026.09.25-23.29.50",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the creature under the deck is defeated by the collapse' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 220,
+					"timestamp": "2026.09.25-23.29.53"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the impact record names the creature (the one authoritative path)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 223,
+					"timestamp": "2026.09.25-23.29.53"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'its drops went to whoever brought the structure down' to be 2, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Public/Combat/GLCreature.h",
+					"lineNumber": 47,
+					"timestamp": "2026.09.25-23.29.53"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "but it heard the collapse and goes to look: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.29.53"
+				}
+			],
+			"warnings": 0,
+			"errors": 4,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CollapsePersistsThroughStreamingSavesAndRestart",
+			"fullTestPath": "Gridlands.Game.Structure.CollapsePersistsThroughStreamingSavesAndRestart",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0DAE6FEEC78A382594A52752B2F77"
+			],
+			"duration": 23.669229507446289,
+			"dateTime": "2026.09.25-23.29.53",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'mid-fall' to be 2, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 240,
+					"timestamp": "2026.09.25-23.29.59"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: placement.origin.structure_carport_edge: 2 intact part(s) had no support after loading; settled as debris",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.29.59"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "west deck: debris: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.02"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "east deck: debris: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.02"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'at the same rest' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 259,
+					"timestamp": "2026.09.25-23.30.02"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: placement.origin.structure_carport_edge: 2 intact part(s) had no support after loading; settled as debris",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.30.02"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "west deck: debris: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.05"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "east deck: debris: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.05"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'at the same rest' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 259,
+					"timestamp": "2026.09.25-23.30.05"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: placement.origin.structure_carport_edge: 2 intact part(s) had no support after loading; settled as debris",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.30.05"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "west deck: debris: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.07"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "east deck: debris: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.07"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'at the same rest' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 259,
+					"timestamp": "2026.09.25-23.30.07"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: placement.origin.structure_carport_edge: 2 intact part(s) had no support after loading; settled as debris",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.30.07"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: placement.origin.structure_carport_edge: 1 intact part(s) had no support after loading; settled as debris",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.30.13"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'no load problems' to be 0, but it was 1.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 70,
+					"timestamp": "2026.09.25-23.30.13"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "after restart: west deck still debris: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.16"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "east deck stays salvaged: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.16"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'where it came to rest' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 284,
+					"timestamp": "2026.09.25-23.30.16"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "east deck rested at V(0)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.25-23.30.16"
+				}
+			],
+			"warnings": 5,
+			"errors": 14,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TreeFellsThroughTheStructuralPipelineAndPersists",
+			"fullTestPath": "Gridlands.Game.Structure.TreeFellsThroughTheStructuralPipelineAndPersists",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0DAE6FEEC78A382594A52752B2F77"
+			],
+			"duration": 12.029045104980469,
+			"dateTime": "2026.09.25-23.30.16",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "the trunk lost its support: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.19"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'it fell away from Zenny (provisional policy): it lies pointing east' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 304,
+					"timestamp": "2026.09.25-23.30.19"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "after reloading the tree stays felled and gathered: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.25"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "log gathered: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.28"
+				}
+			],
+			"warnings": 0,
+			"errors": 4,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WrongSupportCollapsesAndHurtsZenny",
+			"fullTestPath": "Gridlands.Game.Structure.WrongSupportCollapsesAndHurtsZenny",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0DAE6FEEC78A382594A52752B2F77"
+			],
+			"duration": 6.1570839881896973,
+			"dateTime": "2026.09.25-23.30.28",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'both decks lost their support at once' to be 2, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 170,
+					"timestamp": "2026.09.25-23.30.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "the outcome is decided now: the west deck is already debris: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "so is the east deck (it only hung off the west one): The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'a collapse event for the dialogue director' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 96,
+					"timestamp": "2026.09.25-23.30.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the deck hit Zenny with the planned damage (10 + 20 x 2.5 m)' to be 40.000000, but it was 100.000000 and outside tolerance 0.010000.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 177,
+					"timestamp": "2026.09.25-23.30.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'each impact landed once' to be 2, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 178,
+					"timestamp": "2026.09.25-23.30.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the landing is heard' to be 2, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 181,
+					"timestamp": "2026.09.25-23.30.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the deck actor is where the plan put it' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 184,
+					"timestamp": "2026.09.25-23.30.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the ground under debris does not move (dig refused)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 801,
+					"timestamp": "2026.09.25-23.30.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'four facts: two posts removed, two decks as debris' to be 4, but it was 2.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'a weakened Zenny under the deck is killed' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.25-23.30.35"
+				}
+			],
+			"warnings": 0,
+			"errors": 11,
+			"artifacts": []
+		}
+	]
+}

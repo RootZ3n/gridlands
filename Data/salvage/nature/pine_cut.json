@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "salvage.nature.pine_cut",
+  "displayName": "Cut the pine",
+  "integrity": 30.0,
+  "material": "material.timber.pine",
+  "yields": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 1,
+      "yieldCategory": "yield.common.gather"
+    }
+  ],
+  "noise": "Noise.Gather.Chop",
+  "notes": "P6: chopping the base of a tree; the trunk then falls."
+}

@@ -96,6 +96,10 @@ struct GRIDLANDSCORE_API FGLMaterialDef : public FGLDefinitionBase
 	UPROPERTY() double SalvageHardness = 0.0;
 	/** Optional. Absent means the material is not structural (Strength == 0). */
 	UPROPERTY() FGLMaterialSupport Support;
+	/** Optional (P6): scales the radius of noise made by working this material (default 1). */
+	UPROPERTY() double NoiseScale = 1.0;
+	/** Optional (P6): scales collapse impact damage of pieces made of it (default 1). */
+	UPROPERTY() double ImpactScale = 1.0;
 
 	bool IsStructural() const { return Support.Strength > 0.0; }
 };
@@ -207,6 +211,8 @@ struct GRIDLANDSCORE_API FGLSalvageDef : public FGLDefinitionBase
 	UPROPERTY() TArray<FName> OnSalvageUnlocks;
 	/** Event.* tags emitted on completion, e.g. Event.Salvage.WireStripped. */
 	UPROPERTY() TArray<FName> OnSalvageEvents;
+	/** Optional (P6): the Noise.* action each hit makes (default Noise.Salvage.Hit; chopping a tree: Noise.Gather.Chop). */
+	UPROPERTY() FName Noise;
 };
 
 /** A visual/collision box of a build piece, piece-local metres (ADR-0024). */
@@ -233,6 +239,21 @@ struct GRIDLANDSCORE_API FGLBuildSocketDef
 	UPROPERTY() TArray<double> Offset;
 };
 
+/**
+ * How a piece moves when it loses support (P6, deterministic collapse). Data, so new motions and
+ * direction policies can be added without touching the structures that use them.
+ */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLCollapseDef
+{
+	GENERATED_BODY()
+
+	/** drop (falls straight down: slabs, floors) | topple (tips over about a base edge: walls, trees). Default drop. */
+	UPROPERTY() FName Motion;
+	/** topple only: awayFromInstigator (provisional default) | pieceForward | pieceBackward. */
+	UPROPERTY() FName Direction;
+};
+
 USTRUCT()
 struct GRIDLANDSCORE_API FGLBuildPieceDef : public FGLDefinitionBase
 {
@@ -253,6 +274,86 @@ struct GRIDLANDSCORE_API FGLBuildPieceDef : public FGLDefinitionBase
 	UPROPERTY() TArray<FGLBuildSocketDef> Sockets;
 	UPROPERTY() TArray<FGLItemStackDef> Cost;
 	UPROPERTY() TArray<FName> UnlockedBy;
+	/** Optional (P6). false: a world-only piece (trees, authored structures): no cost, never offered to the player. Default true. */
+	UPROPERTY() bool Buildable = true;
+	/** Optional (P6): how it falls when unsupported (default: drop). */
+	UPROPERTY() FGLCollapseDef Collapse;
+};
+
+/** One part of an authored structure (P6): a piece in the shared structural language, placed in structure space. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLStructurePartDef
+{
+	GENERATED_BODY()
+
+	/** Unique within the structure; saves refer to parts by it. */
+	UPROPERTY() FName Name;
+	UPROPERTY() FName Piece;
+	/** Structure-local metres (the structure's origin is its placement point). */
+	UPROPERTY() TArray<double> Location;
+	UPROPERTY() int32 YawQuarter = 0;
+	/** What salvaging it takes and gives (the same salvage pipeline as every other salvage). */
+	UPROPERTY() FName Salvage;
+	/** Optional: overrides the piece's collapse motion for this part. */
+	UPROPERTY() FGLCollapseDef Collapse;
+};
+
+/**
+ * An authored world structure (P6): the canonical runtime and persistence contract for salvageable
+ * buildings and natural resources such as trees. Support is derived by GLStructureRules, exactly as
+ * for player building. Future editor tooling produces this same data (authoring is not this file).
+ */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLStructureDef : public FGLDefinitionBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString DisplayName;
+	UPROPERTY() TArray<FGLStructurePartDef> Parts;
+};
+
+/** Provisional physical tuning (P6): collapse. Metres, seconds; never tuned by feel. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLCollapseTuningDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() double Gravity = 9.81;
+	/** Seconds between losing support and starting to move. */
+	UPROPERTY() double StartDelaySeconds = 0.3;
+	/** Metres the impact volume extends beyond a piece's footprint. */
+	UPROPERTY() double ImpactMarginMetres = 0.3;
+	/** A toppled piece's impact volume height above the ground it lands on. */
+	UPROPERTY() double ImpactHeightMetres = 2.0;
+	UPROPERTY() double DamageBase = 0.0;
+	UPROPERTY() double DamagePerMetreFallen = 0.0;
+	UPROPERTY() double DamageMax = 0.0;
+	/** Starting tilt of a topple (a perfectly upright piece would never start). */
+	UPROPERTY() double ToppleStartDegrees = 5.0;
+};
+
+/** Provisional noise tuning (P6): one authoritative world-noise model. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLNoiseTuningDef
+{
+	GENERATED_BODY()
+
+	/** Seconds a creature investigates a noise it heard. */
+	UPROPERTY() double InvestigateSeconds = 0.0;
+	/** Seconds a creature searches Zenny's last known position after losing sight (creature data may override). */
+	UPROPERTY() double MemorySeconds = 0.0;
+	/** Noise.* action -> radius in metres (before the material's noiseScale). */
+	UPROPERTY() TMap<FString, double> Radius;
+};
+
+USTRUCT()
+struct GRIDLANDSCORE_API FGLTuningDef : public FGLDefinitionBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString DisplayName;
+	UPROPERTY() FGLCollapseTuningDef Collapse;
+	UPROPERTY() FGLNoiseTuningDef Noise;
 };
 
 /** One stroke of a terraforming tool (ADR-0022). Metres. */
@@ -513,6 +614,8 @@ struct GRIDLANDSCORE_API FGLCreaturePerceptionDef
 	UPROPERTY() double SightRadius = 0.0;
 	UPROPERTY() double ConeDegrees = 0.0;
 	UPROPERTY() double HearingRadius = 0.0;
+	/** Optional (P6): seconds it keeps searching Zenny's last known position after losing sight (0: tuning default). */
+	UPROPERTY() double MemorySeconds = 0.0;
 };
 
 USTRUCT()

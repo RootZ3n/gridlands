@@ -165,6 +165,47 @@ Do not sanitise to broaden the audience.
 - The dialogue system's history requirements (`requires.eventCount`), cooldowns, maxUses and
   subject matching already support escalation and callbacks.
 
+## 6c. Zenny's body language: emotes and reactions (LOCKED DESIGN INTENT, 2026-09-25; NOT IMPLEMENTED)
+**Zenny remains silent**, so his body language is a dialogue channel.
+
+**The system is extensible**, covering:
+- shrug, facepalm and point;
+- head shake and nod;
+- confusion and frustration;
+- celebration;
+- rude or adult responses where appropriate;
+- contextual reactions.
+
+**Architecture requirement:**
+- Dialogue and story systems **request semantic reaction events** (e.g. `Reaction.Shrug`).
+- They are never coupled to a specific animation asset.
+- An animation asset can be replaced without changing gameplay or dialogue logic.
+- Final character animation is not produced until an art milestone.
+
+## 6d. NICE's attention model (LOCKED DESIGN INTENT, 2026-09-25; partly served by the director)
+**NICE is an observer and antagonistic commentator, not constant ambient chatter.** An event makes
+NICE **eligible** to speak; eligibility never guarantees speech.
+
+| Opportunity | Events |
+|---|---|
+| Important | story progress, achievements, meaningful discoveries, glitches, new zones, legendary discoveries or events |
+| Lower frequency / contextual | unusual building, occasional combat outcomes, interesting Pehlichi actions (e.g. hacking a glitch guard), occasional digestive events, unusual player/system interactions |
+
+**AFK:**
+- one NICE opportunity per AFK episode, then silence for the rest of it;
+- meaningful resumed activity re-arms AFK eligibility;
+- **never repeated chatter because the game was left running**.
+
+**A global dialogue governor** protects pacing, so a burst of events never produces stacked chatter.
+
+**What exists today** (M5/M11): one conversation at a time, a global silence gap, cooldowns and use
+caps, and categories.
+
+**Not yet implemented:**
+- the AFK-episode rule;
+- the eligibility/opportunity tiers as data;
+- a burst governor beyond the silence gap.
+
 ## 7. Invariants
 
 | # | Invariant |
