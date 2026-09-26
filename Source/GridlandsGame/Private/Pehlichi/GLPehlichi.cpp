@@ -1,5 +1,7 @@
 #include "Pehlichi/GLPehlichi.h"
 
+#include "Presentation/GLVisuals.h"
+
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Pehlichi/GLCapabilityComponent.h"
@@ -35,4 +37,18 @@ AGLPehlichi::AGLPehlichi()
 	Capabilities->Grant(TEXT("capability.pehlichi.scan"), 1);
 	Capabilities->Grant(TEXT("capability.pehlichi.distract"), 1);
 	Capabilities->Grant(TEXT("capability.pehlichi.analysis"), 1);
+}
+
+void AGLPehlichi::BeginPlay()
+{
+	Super::BeginPlay();
+	// P7 style proxy (visual.character.pehlichi) replaces the blockout sphere and cone when imported.
+	// The body is scaled, so the proxy undoes that scale and centres itself on the actor.
+	const FVector Scale = Body->GetRelativeScale3D();
+	const FTransform Local(FRotator::ZeroRotator, FVector(0.0, 0.0, -40.0 / Scale.Z), FVector(1.0 / Scale.X, 1.0 / Scale.Y, 1.0 / Scale.Z));
+	if (GLVisuals::Attach(this, Body, TEXT("visual.character.pehlichi"), Local))
+	{
+		Body->SetVisibility(false);
+		Tail->SetVisibility(false);
+	}
 }

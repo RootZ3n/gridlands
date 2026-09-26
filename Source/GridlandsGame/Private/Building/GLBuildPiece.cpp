@@ -1,5 +1,7 @@
 #include "Building/GLBuildPiece.h"
 
+#include "Presentation/GLVisuals.h"
+
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Content/GLContent.h"
@@ -78,6 +80,15 @@ bool AGLBuildPiece::Setup(const FGLPlacedPiece& InPiece, bool bGhost)
 			}
 		}
 		Boxes.Add(Box);
+	}
+	// P7: an authored look replaces the blockout boxes; the boxes keep the authoritative collision.
+	if (!bGhost && !Def->Visual.IsNone() && GLVisuals::Attach(this, GetRootComponent(), Def->Visual))
+	{
+		for (UStaticMeshComponent* Box : Boxes)
+		{
+			Box->SetVisibility(false);
+			Box->SetCastShadow(false);
+		}
 	}
 	return true;
 }

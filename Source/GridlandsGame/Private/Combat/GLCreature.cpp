@@ -3,6 +3,7 @@
 #include "AIController.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "Noise/GLNoiseSubsystem.h"
+#include "Presentation/GLVisuals.h"
 #include "NavigationInvokerComponent.h"
 #include "Combat/GLHealthComponent.h"
 #include "Presentation/GLDerez.h"
@@ -48,7 +49,7 @@ AGLCreature::AGLCreature()
 	bUseControllerRotationYaw = false;
 }
 
-bool AGLCreature::Setup(FName InDefId, FName InPlacementId)
+bool AGLCreature::Setup(FName InDefId, FName InPlacementId, FName VisualOverride)
 {
 	const FGLCreatureDef* Def = GLContent::Get().Find<FGLCreatureDef>(InDefId);
 	if (!Def)
@@ -60,6 +61,11 @@ bool AGLCreature::Setup(FName InDefId, FName InPlacementId)
 	Home = GetActorLocation();
 	Health->SetMax(Def->Health);
 	GetCharacterMovement()->MaxWalkSpeed = Def->WalkSpeed * 100.0;
+	// P7: its authored look (visual.*) replaces the blockout cube, feet on the capsule's base.
+	if (GLVisuals::Attach(this, GetCapsuleComponent(), VisualOverride.IsNone() ? Def->Visual : VisualOverride, FTransform(FVector(0, 0, -GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight()))))
+	{
+		Body->SetVisibility(false);
+	}
 	Health->OnDied.AddUObject(this, &AGLCreature::HandleDied);
 	if (UMaterialInterface* Shape = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial")))
 	{

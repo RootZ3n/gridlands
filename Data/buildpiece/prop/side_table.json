@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.prop.side_table",
+  "displayName": "Side Table",
+  "era": "era.memory.fifties",
+  "material": "material.timber.pine",
+  "role": "post",
+  "grounded": true,
+  "buildable": false,
+  "size": [
+    0.66,
+    0.66,
+    0.75
+  ],
+  "shapes": [
+    {
+      "size": [
+        0.5,
+        0.5,
+        0.75
+      ],
+      "offset": [
+        0,
+        0,
+        0.375
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "top",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        0.75
+      ]
+    }
+  ],
+  "visual": "visual.prop.side_table",
+  "collapse": {
+    "motion": "topple",
+    "direction": "awayFromInstigator"
+  },
+  "notes": "P7 world-only prop piece."
+}

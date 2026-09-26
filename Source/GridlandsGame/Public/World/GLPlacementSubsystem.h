@@ -49,7 +49,7 @@ public:
 	 * but not saved (it belongs to no placement) and removed with its cell. Never gameplay: threat
 	 * still comes only from placements (ADR-0014).
 	 */
-	AGLCreature* SpawnProofCreature(FName Def, const FVector& Location, double Yaw, FName Cell);
+	AGLCreature* SpawnProofCreature(FName Def, const FVector& Location, double Yaw, FName Cell, FName VisualOverride = NAME_None, bool bPosed = false);
 #endif
 	AGLCreature* FindCreature(FName PlacementId) const { const TWeakObjectPtr<AGLCreature>* Found = Creatures.Find(PlacementId); return Found ? Found->Get() : nullptr; }
 	const TMap<FName, TWeakObjectPtr<AGLCreature>>& GetCreatures() const { return Creatures; }

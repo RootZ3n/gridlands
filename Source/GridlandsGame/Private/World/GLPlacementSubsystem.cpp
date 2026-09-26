@@ -1,5 +1,6 @@
 #include "World/GLPlacementSubsystem.h"
 
+#include "Presentation/GLScatterPatch.h"
 #include "Structure/GLStructureSubsystem.h"
 
 #include "Content/GLContent.h"
@@ -74,7 +75,7 @@ int32 UGLPlacementSubsystem::SpawnCell(FName CellId)
 		const FGLPlacementDef* Placement = Entry.Definition.GetPtr<FGLPlacementDef>();
 		if (!Placement || Entry.Kind != TEXT("placement") || !Entry.Id.ToString().StartsWith(Prefix)
 			|| (Placement->Kind != TEXT("salvage_node") && Placement->Kind != TEXT("glitch") && Placement->Kind != TEXT("puzzle_site")
-				&& Placement->Kind != TEXT("spawn") && Placement->Kind != TEXT("discovery") && Placement->Kind != TEXT("structure")))
+				&& Placement->Kind != TEXT("spawn") && Placement->Kind != TEXT("discovery") && Placement->Kind != TEXT("structure") && Placement->Kind != TEXT("scatter")))
 		{
 			return;
 		}
@@ -124,6 +125,23 @@ int32 UGLPlacementSubsystem::SpawnCell(FName CellId)
 			{
 				++Spawned;
 			}
+			return;
+		}
+		if (Placement->Kind == TEXT("scatter"))
+		{
+			// Vegetation (P7): presentation that follows the ground and structures.
+			AGLScatterPatch* Patch = World->SpawnActor<AGLScatterPatch>(Location, FRotator::ZeroRotator);
+			if (!Patch || !Patch->Setup(Entry.Id, Placement->Definition, Placement->Radius * 100.0, Placement->Count))
+			{
+				UE_LOG(LogGridlands, Error, TEXT("%s: could not scatter %s"), *Entry.Id.ToString(), *Placement->Definition.ToString());
+				if (Patch)
+				{
+					Patch->Destroy();
+				}
+				return;
+			}
+			Owned.Add(Patch);
+			++Spawned;
 			return;
 		}
 		if (Placement->Kind == TEXT("discovery"))
@@ -201,12 +219,16 @@ int32 UGLPlacementSubsystem::DespawnCell(FName CellId)
 }
 
 #if !UE_BUILD_SHIPPING
-AGLCreature* UGLPlacementSubsystem::SpawnProofCreature(FName Def, const FVector& Location, double Yaw, FName Cell)
+AGLCreature* UGLPlacementSubsystem::SpawnProofCreature(FName Def, const FVector& Location, double Yaw, FName Cell, FName VisualOverride, bool bPosed)
 {
 	AGLCreature* Creature = GetWorld()->SpawnActor<AGLCreature>(Location + FVector(0, 0, 70), FRotator(0.0, Yaw, 0.0));
-	if (!Creature || !Creature->Setup(Def, TEXT("placement.proof.creature")))
+	if (!Creature || !Creature->Setup(Def, TEXT("placement.proof.creature"), VisualOverride))
 	{
 		return nullptr;
+	}
+	if (bPosed)
+	{
+		Creature->SetActorTickEnabled(false); // a style proof holds still (no behaviour)
 	}
 	CellActors.FindOrAdd(Cell).Add(Creature);
 	UE_LOG(LogGridlands, Log, TEXT("Placements: DEV proof creature %s at %s"), *Def.ToString(), *Location.ToCompactString());

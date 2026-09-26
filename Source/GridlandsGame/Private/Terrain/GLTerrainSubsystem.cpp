@@ -507,6 +507,12 @@ double UGLTerrainSubsystem::HeightAt(const FVector2D& World) const
 	return Ground ? Ground->Field.HeightAt(World) : (Grounds.Num() == 1 ? Grounds.CreateConstIterator()->Value.Field.HeightAt(World) : 0.0);
 }
 
+double UGLTerrainSubsystem::EditedAt(const FVector2D& World) const
+{
+	const FGLCellGround* Ground = GroundAt(World);
+	return Ground ? Ground->Field.EditedAt(World) : 0.0;
+}
+
 const FGLHeightfield& UGLTerrainSubsystem::GetField() const
 {
 	static const FGLHeightfield Empty;

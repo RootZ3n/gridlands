@@ -63,6 +63,8 @@ public:
 
 	/** Bilinear ground height at a world point (cm); clamps to the edge outside. No physics needed. */
 	double HeightAt(const FVector2D& World) const;
+	/** How far the nearest vertex has been moved from its base (cm, >= 0): dug or raised ground (P7). */
+	double EditedAt(const FVector2D& World) const;
 
 	/**
 	 * Applies an edit atomically. Refused, changing nothing, when:

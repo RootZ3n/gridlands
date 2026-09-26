@@ -25,6 +25,11 @@ class Sandbox:
         self.root = Path(tempfile.mkdtemp())
         shutil.copytree(REPO / "Data", self.root / "Data")
         shutil.copytree(REPO / "Config" / "Tags", self.root / "Config" / "Tags")
+        # VIS-1 looks for imported art meshes: mirror their names (empty files; content is irrelevant).
+        meshes = self.root / "Content" / "Gridlands" / "Art" / "Meshes"
+        meshes.mkdir(parents=True)
+        for mesh in (REPO / "Content" / "Gridlands" / "Art" / "Meshes").glob("*.uasset"):
+            (meshes / mesh.name).touch()
 
     def path(self, entity_id: str) -> Path:
         return self.root / "Data" / Path(*entity_id.split(".")).with_suffix(".json")
@@ -349,3 +354,24 @@ class GenerateTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class VisualRuleTests(unittest.TestCase):
+    """P7: VIS-1 visuals name imported meshes; VIS-2 NICE's corruption stays sparse."""
+
+    def setUp(self):
+        self.box = Sandbox()
+
+    def test_vis1_unknown_mesh(self):
+        self.box.edit("visual.prop.rotary_phone", lambda d: d.update(mesh="SM_NotImported"))
+        self.assertIn("VIS-1", self.box.rules())
+
+    def test_vis2_too_many_cubes(self):
+        cube = {"offset": [0, 0, 0.1], "size": 0.05}
+        self.box.edit("visual.prop.rotary_phone", lambda d: d.update(corruption=[cube] * 5))
+        self.assertIn("VIS-2", self.box.rules())
+
+    def test_vis2_cube_too_big(self):
+        self.box.edit("visual.prop.rotary_phone", lambda d: d.update(corruption=[{"offset": [0, 0, 0], "size": 0.5}]))
+        self.assertIn("VIS-2", self.box.rules())
+

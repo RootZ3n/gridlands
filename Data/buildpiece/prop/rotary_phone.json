@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.prop.rotary_phone",
+  "displayName": "Rotary Phone",
+  "era": "era.memory.fifties",
+  "material": "material.timber.pine",
+  "role": "beam",
+  "grounded": false,
+  "buildable": false,
+  "size": [
+    0.26,
+    0.3,
+    0.17
+  ],
+  "shapes": [
+    {
+      "size": [
+        0.26,
+        0.3,
+        0.17
+      ],
+      "offset": [
+        0,
+        0,
+        0.085
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "visual": "visual.prop.rotary_phone",
+  "collapse": {
+    "motion": "drop"
+  },
+  "notes": "P7 world-only prop piece."
+}
