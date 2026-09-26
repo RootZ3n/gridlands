@@ -1,0 +1,28 @@
+LogGridlands: Grid: entered cell.home.origin (from None)
+LogGridlands: Grid: loading cell.home.origin (epoch 1)
+LogGridlands: Grid: loading cell.outer.diner_lots (epoch 2)
+LogGridlands: Structures: placement.origin.structure_carport_edge lost support: 2 part(s) collapse (decided in 0.078 ms)
+LogGridlands: gl.Demo.StructureEdge: O collapse decided 16 m from the boundary: placement.origin.structure_carport_edge: post_south=removed post_north=removed deck_west=debris@V(X=49000.00, Y=2000.00)(actor NOT at rest) deck_east=debris@V(X=49200.00, Y=2000.00)(actor NOT at rest)
+LogGridlands: gl.Demo.StructureEdge: P crossing away mid-fall (active collapses 2)
+LogGridlands: Grid: entered cell.outer.diner_lots (from cell.home.origin)
+LogGridlands: Grid: unloaded cell.home.origin at frame 71 (epoch 1, was ready)
+LogGridlands: gl.Demo.StructureEdge: deep in the lots: origin loaded 0; active collapses 0
+LogGridlands: Grid: entered cell.home.origin (from cell.outer.diner_lots)
+LogGridlands: Grid: loading cell.home.origin (epoch 3)
+LogGridlands: gl.Demo.StructureEdge: back: placement.origin.structure_carport_edge: post_south=removed post_north=removed deck_west=debris@V(X=49000.00, Y=2000.00)(actor at rest) deck_east=debris@V(X=49200.00, Y=2000.00)(actor at rest)
+LogGridlands: Structures: placement.origin.structure_pine_edge lost support: 1 part(s) collapse (decided in 0.154 ms)
+LogGridlands: gl.Demo.StructureEdge: chopped the edge pine: placement.origin.structure_pine_edge: stump=removed trunk=debris@V(X=49625.00, Y=-1500.00, Z=25.00)(actor NOT at rest)
+LogGridlands: Grid: entered cell.outer.diner_lots (from cell.home.origin)
+LogGridlands: Grid: unloaded cell.home.origin at frame 700 (epoch 3, was ready)
+LogGridlands: Grid: entered cell.home.origin (from cell.outer.diner_lots)
+LogGridlands: Grid: loading cell.home.origin (epoch 4)
+LogGridlands: gl.Demo.StructureEdge: salvaged one piece of debris: placement.origin.structure_carport_edge: post_south=removed post_north=removed deck_west=debris@V(X=49000.00, Y=2000.00)(actor at rest) deck_east=debris-salvaged
+LogGridlands: Grid: entered cell.outer.diner_lots (from cell.home.origin)
+LogGridlands: Grid: unloaded cell.home.origin at frame 1930 (epoch 4, was ready)
+LogGridlands: Grid: entered cell.home.origin (from cell.outer.diner_lots)
+LogGridlands: Grid: loading cell.home.origin (epoch 5)
+LogGridlands: gl.Demo.StructureEdge: Q after 4 crossings: placement.origin.structure_carport_edge: post_south=removed post_north=removed deck_west=debris@V(X=49000.00, Y=2000.00)(actor at rest) deck_east=debris-salvaged; carport actors 1; placement.origin.structure_pine_edge: stump=removed trunk=debris@V(X=49625.00, Y=-1500.00, Z=25.00)(actor at rest) | PASS
+LogGridlands: Grid: entered cell.outer.diner_lots (from cell.home.origin)
+LogGridlands: Grid: unloaded cell.home.origin at frame 2330 (epoch 5, was ready)
+LogGridlands: gl.Demo.StructureEdge: R standing in the lots (the origin streamed out); quitting saves
+LogGridlands: Save: wrote ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json

@@ -1,0 +1,24 @@
+LogGridlands: Grid: entered cell.home.origin (from None)
+LogGridlands: Grid: loading cell.home.origin (epoch 1)
+LogGridlands: Placements: DEV proof creature creature.drain.static_gremlin at V(X=-8000.00, Y=3000.00)
+LogGridlands: gl.Demo.Noise: I dig 9.5 m behind creature 1, out of its sight (Noise.Terrain.Dig, 12 m reach; it hears to 16 m): heard by 1
+LogGridlands: gl.Demo.Noise: J creature 1 reacts: Investigate
+LogGridlands: gl.Demo.Noise: J creature 1 walked to the noise: Investigate, 7.9 m from home (the dig was 9.5 m away) | PASS
+LogGridlands: Save: wrote ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json
+LogGridlands: Placements: DEV proof creature creature.drain.static_gremlin at V(X=-8000.00, Y=9000.00)
+LogGridlands: gl.Demo.Noise: K dig 20 m from creature 2: heard by 0
+LogGridlands: gl.Demo.Noise: K creature 2 did not react: Idle, 0.0 m from home | PASS
+LogGridlands: Placements: DEV proof creature creature.drain.static_gremlin at V(X=-14000.00, Y=3000.00)
+LogGridlands: gl.Demo.Noise: L creature 3 detected Zenny: Chase
+LogGridlands: gl.Demo.Noise: M cover raised between them: creature 3 is Search, last known V(X=-13300.00, Y=3000.00, Z=92.15), 7.8 s of searching left
+LogGridlands: Save: wrote ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json
+LogGridlands: gl.Demo.Noise: M creature 3 goes to the last known position: Search, 4.6 m from home
+LogGridlands: gl.Demo.Noise: M memory spent: creature 3 is Idle, 1.5 m from home
+LogGridlands: Placements: DEV proof creature creature.drain.static_gremlin at V(X=-8000.00, Y=15000.00)
+LogGridlands: gl.Demo.Noise: N control: passing 6 m in front of creature 5 without a distraction: Chase
+LogGridlands: Placements: DEV proof creature creature.drain.static_gremlin at V(X=-14000.00, Y=15000.00)
+LogGridlands: gl.Demo.Noise: N a deliberate dig 10.4 m behind creature 4
+LogGridlands: Save: wrote ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json
+LogGridlands: gl.Demo.Noise: N creature 4 went to the noise: Investigate, 8.9 m from home
+LogGridlands: gl.Demo.Noise: N Zenny passed in front of creature 4's home unseen: yes (it is Return); the control was spotted: yes | PASS
+LogGridlands: Save: wrote ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json
