@@ -1,7 +1,11 @@
-# Render-diagonal visual review (heightfield spike, ADR-0035): AWAITING OPERATOR
+# Render-diagonal visual review (ADR-0035): PASSED (operator, 2026-09-27)
 
-Heightfield collision is **provisionally accepted pending this review**. PR #25 is not merged and
-ADR-0035 is not canonical.
+**The review passed** (operator, 2026-09-27).
+- On ordinary and natural terrain, the differences are negligible.
+- Under aggressive terraforming, they are acceptable.
+- **Keep the aggressive-terraforming pair (`05-*`) as regression evidence.** Extreme 1 m edits produce
+  harsh wedges, creases and material boundaries: that is future terraforming presentation debt, and
+  future work must make that case better, not merely hide or move it.
 
 **The one difference between the two sides:** how each 1 m terrain quad is split into two triangles
 for rendering.

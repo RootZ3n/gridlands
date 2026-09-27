@@ -83,7 +83,7 @@ UE::Geometry::FDynamicMesh3 AGLTerrainChunk::BuildMesh(const FGLChunkSnapshot& S
 			Built.AppendVertex(FVector3d(X * Snap.Spacing, Y * Snap.Spacing, H(Snap.First.X + X, Snap.First.Y + Y)));
 		}
 	}
-	const bool bMainDiagonal = GLTerrainCollision::RenderSplitsMainDiagonal(); // heightfield spike only
+	const bool bMainDiagonal = GLTerrainCollision::RenderSplitsMainDiagonal(); // canonical: the heightfield's diagonal (ADR-0035)
 	for (int32 Y = 0; Y + 1 < V; ++Y)
 	{
 		for (int32 X = 0; X + 1 < V; ++X)
@@ -140,7 +140,7 @@ void AGLTerrainChunk::EnsureSeparateCollision()
 	{
 		return;
 	}
-	// SPIKE modes: the render mesh carries no collision and no navigation; one body does both.
+	// The render mesh carries no collision and no navigation; the collision body does both (ADR-0035).
 	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Mesh->SetCanEverAffectNavigation(false);
 	Collision = NewObject<UGLTerrainCollisionComponent>(this, TEXT("GroundCollision"));

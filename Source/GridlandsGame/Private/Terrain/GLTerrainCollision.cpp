@@ -2,7 +2,6 @@
 
 #include "AI/NavigationSystemHelpers.h"
 #include "Chaos/HeightField.h"
-#include "Chaos/ImplicitObjectTransformed.h"
 #include "Chaos/ShapeInstance.h"
 #include "Chaos/TriangleMeshImplicitObject.h"
 #include "AI/NavigationSystemBase.h"
@@ -20,18 +19,9 @@
 namespace
 {
 	TAutoConsoleVariable<int32> CVarCollisionMode(
-		TEXT("gl.Terrain.CollisionMode"), 0,
-		TEXT("SPIKE: terrain chunk collision. 0 = component trimesh cook (canonical), 1 = heightfield, 2 = worker-built trimesh. Read when the first chunk is made."),
+		TEXT("gl.Terrain.CollisionMode"), 1,
+		TEXT("Terrain chunk collision (ADR-0035). 1 = heightfield (canonical); for measurement only: 0 = the ADR-0034 component trimesh cook, 2 = worker-built trimesh (the documented fallback). Read when the first chunk is made."),
 		ECVF_Default);
-	TAutoConsoleVariable<int32> CVarHeightfieldLayout(
-		TEXT("gl.Terrain.HeightfieldLayout"), 0,
-		TEXT("SPIKE EXPERIMENT: 0 = unrotated heightfield, render mesh split along its diagonal (chosen); 1 = quarter-turned heightfield under the canonical render split (sweeps miss exactly on chunk seams: measured)."),
-		ECVF_Default);
-	int32 HeightfieldLayout()
-	{
-		static const int32 Layout = [] { int32 V = CVarHeightfieldLayout.GetValueOnAnyThread(); FParse::Value(FCommandLine::Get(), TEXT("-GLHeightfieldLayout="), V); return V; }();
-		return Layout;
-	}
 }
 
 EGLTerrainCollisionMode GLTerrainCollision::GetMode()
@@ -40,14 +30,14 @@ EGLTerrainCollisionMode GLTerrainCollision::GetMode()
 	{
 		int32 Value = CVarCollisionMode.GetValueOnAnyThread();
 		FParse::Value(FCommandLine::Get(), TEXT("-GLTerrainCollision="), Value);
-		return static_cast<EGLTerrainCollisionMode>(FMath::Clamp(Value, 0, 2));
+		return static_cast<EGLTerrainCollisionMode>(FMath::Clamp(Value, 0, 2)); // 1 unless asked otherwise
 	}();
 	return Mode;
 }
 
 bool GLTerrainCollision::RenderSplitsMainDiagonal()
 {
-	return GetMode() == EGLTerrainCollisionMode::Heightfield && HeightfieldLayout() != 1;
+	return GetMode() == EGLTerrainCollisionMode::Heightfield;
 }
 
 const TCHAR* GLTerrainCollision::ModeName(EGLTerrainCollisionMode Mode)
@@ -62,12 +52,13 @@ const TCHAR* GLTerrainCollision::ModeName(EGLTerrainCollisionMode Mode)
 
 /**
  * The geometry, in the chunk's local space (the chunk actor sits at its first vertex, Z = 0):
- * - Heightfield: a V x V Chaos heightfield at 1 unit per sample, scaled to the spacing; sample [Row][Col] is
- *   local vertex X = Col, Y = Row. Chaos splits each cell between (x, y) and (x+1, y+1), so in this mode the
- *   render mesh is split the same way (GLTerrainCollision::RenderSplitsMainDiagonal). The experiment layout
- *   1 instead turned the heightfield a quarter to match the canonical render split: Chaos sweeps against the
- *   turned (transformed) heightfield then missed contacts lying exactly on chunk seams (measured).
- * - WorkerTrimesh: the render mesh's own triangles, winding flipped as the engine cook flips them.
+ * - Heightfield (canonical, ADR-0035): a V x V Chaos heightfield at 1 unit per sample, scaled to the
+ *   spacing; sample [Row][Col] is local vertex X = Col, Y = Row. Chaos splits each cell between (x, y) and
+ *   (x+1, y+1), and the render mesh is split the same way (RenderSplitsMainDiagonal), so what is seen is
+ *   what collides. Left unrotated: a turned (transformed) heightfield made Chaos sweeps miss contacts lying
+ *   exactly on chunk seams (measured in the spike).
+ * - WorkerTrimesh (the documented fallback, measurement only): the render mesh's own triangles, winding
+ *   flipped as the engine cook flips them.
  */
 struct FGLChunkCollisionGeometry
 {
@@ -108,7 +99,7 @@ TSharedPtr<const FGLChunkCollisionGeometry> GLTerrainCollision::Build(EGLTerrain
 		{
 			for (int32 Col = 0; Col < V; ++Col)
 			{
-				Heights[Row * V + Col] = HeightfieldLayout() == 1 ? H(V - 1 - Row, Col) : H(Col, Row);
+				Heights[Row * V + Col] = H(Col, Row);
 			}
 		}
 		// One material index PER CELL, never the single "default" entry: with one entry, Chaos's
@@ -117,14 +108,12 @@ TSharedPtr<const FGLChunkCollisionGeometry> GLTerrainCollision::Build(EGLTerrain
 		TArray<uint8> Materials;
 		Materials.SetNumZeroed((V - 1) * (V - 1));
 		G->Heightfield = Chaos::FHeightFieldPtr(new Chaos::FHeightField(MoveTemp(Heights), MoveTemp(Materials), V, V, Chaos::FVec3(1)));
-		const bool bTurn = HeightfieldLayout() == 1;
-		const FQuat Quarter = bTurn ? FQuat(FVector::UpVector, UE_HALF_PI) : FQuat::Identity; // local +X -> +Y, +Y -> -X
-		const FVector Offset = bTurn ? FVector((V - 1) * Snap.Spacing, 0.0, 0.0) : FVector::ZeroVector;
-		G->HeightfieldToLocal = FTransform(Quarter, Offset, FVector(Snap.Spacing, Snap.Spacing, 1.0));
+		// Unrotated: a turned (transformed) heightfield made Chaos sweeps miss contacts exactly on chunk seams.
+		G->HeightfieldToLocal = FTransform(FQuat::Identity, FVector::ZeroVector, FVector(Snap.Spacing, Snap.Spacing, 1.0));
 		// One object serves both: the body sees it scaled to the spacing (as Landscape scales its geometry);
 		// the navigation export reads raw sample indices and carries the scale in its own transform.
 		G->Heightfield->SetScale(Chaos::FVec3(Snap.Spacing, Snap.Spacing, 1.0));
-		G->Implicit = MakeImplicitObjectPtr<Chaos::TImplicitObjectTransformed<Chaos::FReal, 3>>(Chaos::FImplicitObjectPtr(G->Heightfield), Chaos::FRigidTransform3(Offset, Quarter));
+		G->Implicit = Chaos::FImplicitObjectPtr(G->Heightfield);
 	}
 	else
 	{
@@ -203,7 +192,7 @@ double UGLTerrainCollisionComponent::GeometryHeightAtVertex(int32 X, int32 Y) co
 	const int32 V = Geometry->Verts;
 	if (Geometry->Heightfield)
 	{
-		return HeightfieldLayout() == 1 ? Geometry->Heightfield->GetHeight(Y, V - 1 - X) : Geometry->Heightfield->GetHeight(X, Y); // GetHeight(X = column, Y = row)
+		return Geometry->Heightfield->GetHeight(X, Y); // GetHeight(X = column, Y = row)
 	}
 	if (Geometry->Trimesh)
 	{

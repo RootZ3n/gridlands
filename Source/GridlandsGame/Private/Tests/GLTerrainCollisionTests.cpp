@@ -27,6 +27,9 @@ namespace GLTerrainCollisionTests
 		double Trace = 0.0;       // |collision (trace) - visible| cm
 		double Sweep = 0.0;       // |sweep contact - visible surface at the contact| cm
 		double Visible = 0.0;     // |visible - field (same triangles)| cm
+		double Gameplay = 0.0;    // |HeightAt (what structures and building stand on) - visible| cm, anywhere (bilinear inside quads)
+		double GameplayAtVertex = 0.0; // the same, at vertices: must agree exactly
+		int32 Vertices = 0;
 		int32 Missing = 0;        // probes where physics found no ground
 		int32 OverlapWrong = 0;   // embedded probe not overlapping, or clear probe overlapping
 		int32 Probes = 0;
@@ -164,6 +167,23 @@ namespace GLTerrainCollisionTests
 				}
 			}
 			FCollisionWorst W;
+			// At every vertex of the square the ground structures and building stand on (HeightAt) is exactly
+			// the visible surface and the collision. Inside a non-planar quad HeightAt interpolates bilinearly
+			// while the surface is two triangles: that gap is reported, not asserted (pre-existing, ADR-0035).
+			const FGLHeightfield& F = Field();
+			const FVector2D Origin = F.VertexLocation(0, 0);
+			const int32 X0 = FMath::CeilToInt((Centre.X - HalfCm - Origin.X) / F.GetSpacing()), X1 = FMath::FloorToInt((Centre.X + HalfCm - Origin.X) / F.GetSpacing());
+			const int32 Y0 = FMath::CeilToInt((Centre.Y - HalfCm - Origin.Y) / F.GetSpacing()), Y1 = FMath::FloorToInt((Centre.Y + HalfCm - Origin.Y) / F.GetSpacing());
+			for (int32 VY = Y0; VY <= Y1; ++VY)
+			{
+				for (int32 VX = X0; VX <= X1; ++VX)
+				{
+					const FVector2D At = F.VertexLocation(VX, VY);
+					const double Game = Terrain->HeightAt(At), Vis = VisibleZ(At), Tr = TraceZ(At);
+					++W.Vertices;
+					W.GameplayAtVertex = FMath::Max(W.GameplayAtVertex, FMath::IsNaN(Vis) || FMath::IsNaN(Tr) ? 1.0e9 : FMath::Max(FMath::Abs(Game - Vis), FMath::Abs(Game - Tr)));
+				}
+			}
 			for (const FVector2D& P : Probes)
 			{
 				const double Vis = VisibleZ(P), Tri = FieldTriangleZ(P), Tr = TraceZ(P), Sw = SweepError(P);
@@ -181,6 +201,7 @@ namespace GLTerrainCollisionTests
 					continue;
 				}
 				W.Visible = FMath::Max(W.Visible, FMath::Abs(Vis - Tri));
+				W.Gameplay = FMath::Max(W.Gameplay, FMath::Abs(Terrain->HeightAt(P) - Vis));
 				W.Trace = FMath::Max(W.Trace, FMath::Abs(Tr - Vis));
 				W.Sweep = FMath::Max(W.Sweep, Sw);
 				// Collision is a surface, not a solid: a sphere straddling it must touch; one clear above must not
@@ -195,8 +216,9 @@ namespace GLTerrainCollisionTests
 
 		void Expect(FAutomationTestBase& T, const TCHAR* Step, const FCollisionWorst& W) const
 		{
-			T.AddInfo(FString::Printf(TEXT("[%s] %s: %d probes; worst |trace-visible| %.2f cm, |sweep-visible| %.2f cm, |visible-field| %.2f cm; missing %d (capsule %d, 34 cm sphere %d); overlap wrong %d"),
-				GLTerrainCollision::ModeName(GLTerrainCollision::GetMode()), Step, W.Probes, W.Trace, W.Sweep, W.Visible, W.Missing, W.CapsuleMissing, W.BigSphereMissing, W.OverlapWrong));
+			T.AddInfo(FString::Printf(TEXT("[%s] %s: %d probes; worst |trace-visible| %.2f cm, |sweep-visible| %.2f cm, |visible-field| %.2f cm; missing %d (capsule %d, 34 cm sphere %d); overlap wrong %d; ground for structures/building vs visible and collision: %.2f cm at %d vertices, %.2f cm anywhere"),
+				GLTerrainCollision::ModeName(GLTerrainCollision::GetMode()), Step, W.Probes, W.Trace, W.Sweep, W.Visible, W.Missing, W.CapsuleMissing, W.BigSphereMissing, W.OverlapWrong, W.GameplayAtVertex, W.Vertices, W.Gameplay));
+			T.TestTrue(*FString::Printf(TEXT("%s: structures and building stand on the visible, colliding ground at every vertex (%.2f cm)"), Step, W.GameplayAtVertex), W.GameplayAtVertex <= 1.0);
 			T.TestEqual(*FString::Printf(TEXT("%s: a character capsule always lands"), Step), W.CapsuleMissing, 0);
 			for (const FString& Where : W.MissingWhere)
 			{

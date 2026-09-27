@@ -46,7 +46,7 @@ struct FGLMeshJob
 	int32 Slot = 0;
 	int32 Version = 0;
 	double DistanceSq = 0.0;
-	/** The mesh and (heightfield spike modes) the collision geometry, both built on a worker. */
+	/** The mesh and its collision geometry (ADR-0035), both built on a worker. */
 	UE::Tasks::TTask<TPair<TSharedPtr<UE::Geometry::FDynamicMesh3>, TSharedPtr<const FGLChunkCollisionGeometry>>> Task;
 };
 

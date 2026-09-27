@@ -77,3 +77,12 @@ deterministically and be maintainable by agents.
 ## Operator decision
 Approved (B) as recommended. Player-dug caves remain out of scope; revisiting
 that would be a new ADR.
+
+## Addendum (2026-09-27): collision is a heightfield too
+[ADR-0035](0035-terrain-heightfield-collision-spike.md) (accepted) replaced the per-chunk trimesh cook
+with a Chaos heightfield per chunk. The render mesh splits each quad along the heightfield's diagonal,
+so visible terrain and collision agree.
+- The one-height-per-vertex model is a canonical constraint: authored caves and tunnels keep their own
+  geometry and collision.
+- Player-dug caves, voxels, overhangs or undercuts need a new architectural decision, as this ADR
+  already required.

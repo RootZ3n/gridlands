@@ -8,22 +8,22 @@ struct FGLChunkSnapshot;
 namespace UE::Geometry { class FDynamicMesh3; }
 
 /**
- * SPIKE (terrain heightfield-collision decision, after ADR-0034; NOT canonical): how terrain chunks get
- * their collision. Chosen once per process (`-GLTerrainCollision=N` or `gl.Terrain.CollisionMode`
- * before any chunk exists); the default is the canonical ADR-0034 path.
+ * How terrain chunks get their collision (ADR-0035). The heightfield is canonical. The others remain for
+ * measurement and as the documented fallback, chosen once per process (`-GLTerrainCollision=N` or
+ * `gl.Terrain.CollisionMode` before any chunk exists).
  */
 enum class EGLTerrainCollisionMode : uint8
 {
-	ComponentTrimesh = 0, // canonical: the dynamic mesh component cooks complex-as-simple, synchronously
-	Heightfield = 1,      // spike option B: a Chaos heightfield built off the game thread, attached as a static body
-	WorkerTrimesh = 2,    // spike option A: the same triangles built off the game thread, attached the same way
+	ComponentTrimesh = 0, // measurement only: ADR-0034's dynamic-mesh cook (synchronous, ~5 ms per chunk)
+	Heightfield = 1,      // CANONICAL: a Chaos heightfield built off the game thread, attached as one static body
+	WorkerTrimesh = 2,    // the documented fallback (measurement only): the same triangles built off the game thread
 };
 
 namespace GLTerrainCollision
 {
 	GRIDLANDSGAME_API EGLTerrainCollisionMode GetMode();
 	GRIDLANDSGAME_API const TCHAR* ModeName(EGLTerrainCollisionMode Mode);
-	/** Heightfield mode: the render mesh splits each quad between (x, y) and (x+1, y+1), as Chaos does. */
+	/** The render mesh splits each quad between (x, y) and (x+1, y+1), as a Chaos heightfield does (canonical). */
 	GRIDLANDSGAME_API bool RenderSplitsMainDiagonal();
 }
 
@@ -37,7 +37,7 @@ namespace GLTerrainCollision
 }
 
 /**
- * SPIKE: a chunk's collision as one static Chaos body (the engine path Landscape uses for its
+ * A chunk's collision as one static Chaos body (the engine path Landscape uses for its
  * heightfield: FPhysicsInterface::CreateActor, one shape, AddActorsToScene), with its own navigation
  * export. No render state.
  */

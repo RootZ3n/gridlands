@@ -1,11 +1,13 @@
 # Terrain heightfield-collision spike (decision spike; NOT canonical)
 
-**Status: TERRAIN_COLLISION_DECISION_AWAITING_OPERATOR.**
-- **Canonical collision is unchanged:** the ADR-0034 component trimesh is still the default, `-GLTerrainCollision=0`.
-- **The spike adds two opt-in modes** for measurement: `-GLTerrainCollision=1` (Chaos heightfield) and `=2` (option A: trimesh
-  built off the game thread).
-- Decision record: [ADR-0035](../../ADR/0035-terrain-heightfield-collision-spike.md). Branch
-  `terrain-heightfield-spike`; draft PR, not merged.
+**Status: ACCEPTED and canonical** (operator, 2026-09-27; [ADR-0035](../../ADR/0035-terrain-heightfield-collision-spike.md)).
+- The render-diagonal review passed ([diagonal-review](diagonal-review/README.md)). Its
+  aggressive-terraforming comparison is kept as regression evidence for future terraforming
+  presentation work.
+- Heightfield collision is now the default. Modes 0 (ADR-0034 cook) and 2 (worker trimesh, the documented
+  fallback) remain for measurement.
+- This page is the spike's evidence. The quarter-turn layout experiment it describes has been removed
+  from the code.
 
 ## 1. The engine path (what UE 5.8.3 actually allows)
 Landscape does not apply: Gridlands' terrain is custom runtime chunks (ADR-0022), and Landscape's

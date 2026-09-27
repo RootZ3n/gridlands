@@ -624,7 +624,7 @@ namespace GLPerf
 				{
 					return;
 				}
-				auto MakeMesh = [](int32 Verts, float Lift)
+				auto MakeSnap = [](int32 Verts, float Lift)
 				{
 					FGLChunkSnapshot Snap;
 					Snap.First = FIntPoint(1, 1);
@@ -638,8 +638,9 @@ namespace GLPerf
 					{
 						Snap.Heights[I] = Lift + 40.f * FMath::Sin(I * 0.37f);
 					}
-					return AGLTerrainChunk::BuildMesh(Snap);
+					return Snap;
 				};
+				auto MakeMesh = [&MakeSnap](int32 Verts, float Lift) { return AGLTerrainChunk::BuildMesh(MakeSnap(Verts, Lift)); };
 				auto Time = [](AGLTerrainChunk* Chunk, UE::Geometry::FDynamicMesh3&& Mesh)
 				{
 					const double Start = FPlatformTime::Seconds();
@@ -705,13 +706,13 @@ namespace GLPerf
 					LegacyEager.Add(Time(L, MakeMesh(65, 0.f)));
 					AGLTerrainChunk* M = W->SpawnActor<AGLTerrainChunk>(Row + FVector(0, 64000.0, 0), FRotator::ZeroRotator);
 					T0 = FPlatformTime::Seconds();
-					M->ApplyMesh(MakeMesh(65, 0.f), true);
+					M->ApplySnapshot(MakeSnap(65, 0.f), true);
 					ApplyFirst.Add((FPlatformTime::Seconds() - T0) * 1000.0);
 					M->ClearForPool();
 					M->SetActorHiddenInGame(false);
 					M->SetActorEnableCollision(true);
 					T0 = FPlatformTime::Seconds();
-					M->ApplyMesh(MakeMesh(65, 10.f), true);
+					M->ApplySnapshot(MakeSnap(65, 10.f), true);
 					ApplyReused.Add((FPlatformTime::Seconds() - T0) * 1000.0);
 				}
 				auto Stat = [](const TCHAR* Name, TArray<double> V, FJsonObject& O)
@@ -755,7 +756,7 @@ namespace GLPerf
 					const double Empty = UsedMb();
 					for (AGLTerrainChunk* Chunk : Cell)
 					{
-						Chunk->ApplyMesh(MakeMesh(65, 0.f), true);
+						Chunk->ApplySnapshot(MakeSnap(65, 0.f), true);
 					}
 					const double Live = UsedMb();
 					O->SetNumberField(TEXT("mem256EmptyChunksMb"), Empty - Before);

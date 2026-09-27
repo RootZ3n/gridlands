@@ -1,9 +1,9 @@
-# ADR-0035: Terrain chunk collision as a Chaos heightfield (decision spike)
+# ADR-0035: Terrain chunk collision is a Chaos heightfield
 
-- Status: **Proposed, AWAITING OPERATOR.** Measured; **not canonical.** The canonical path is still
-  ADR-0034's component trimesh (`-GLTerrainCollision=0`, the default). The operator's directive was
-  not to commit to heightfield collision architecturally until the spike proves it preserves Gridlands
-  gameplay.
+- Status: **Accepted and canonical** (operator, 2026-09-27: "APPROVE HEIGHTFIELD COLLISION"). The
+  render-diagonal visual review passed: differences on ordinary and natural terrain are negligible, and
+  those under aggressive terraforming are acceptable. Heightfield collision (`-GLTerrainCollision=1`) is
+  the default. The ADR-0034 component cook (0) and the worker trimesh (2) remain for measurement only.
 - Date: 2026-09-26
 - Builds on: [ADR-0022](0022-terrain-chunked-heightfield.md) (terrain is a chunked heightfield; caves
   are authored geometry), [ADR-0027](0027-canonical-grid-scale.md) (64 m chunks, unchanged),
@@ -54,23 +54,60 @@ gameplay semantics of editable terrain, and does that create useful headroom?
    near canonical. Its one advantage: it could represent caves or overhangs later without a second
    collision representation.
 
-## Recommendation (for the operator's decision)
-**Adopt heightfield collision as canonical terrain collision**, with these conditions:
-- **The render mesh splits quads along the heightfield's diagonal.** This is a presentation-only
-  change to triangulation. It is expected to be invisible (smooth normals) and needs an operator
-  visual check before it lands.
-- **Keep the spike's agreement suite and planted defects as gates.**
-- **Record the constraint:** any future ADR that adds player-dug caves or a voxel layer must bring its
-  own collision for those regions.
-- **Option A is the fallback** if that constraint becomes unacceptable.
+## Decision (operator, 2026-09-27)
+**Architectural constraints (canonical):**
+1. **Heightfield collision is canonical for normal Gridlands terrain.**
+2. **Terrain remains one height per vertex.**
+3. **The render mesh uses the heightfield's diagonal,** splitting each quad between (x, y) and (x+1, y+1),
+   so visible terrain and collision agree.
+4. **Authored caves and tunnels use their own geometry and collision** (ADR-0022).
+5. **Anything a heightfield cannot represent needs a NEW architectural decision:** player-dug caves,
+   voxels, overhangs, undercuts. This system is not silently expanded to support them.
+6. **Worker-built triangle collision is the documented fallback** (option A, measured here) if a future
+   requirement genuinely cannot use heightfields.
+7. **The canonical 64 m chunk and 1 m terrain resolution are unchanged** (ADR-0027).
 
-## What adopting it would change (not done)
-- Mode 1 becomes the default, and modes 0/2 become measurement-only or are deleted.
-- ADR-0034's cook path is retired.
-- Evidence for P5–P7.1 budgets is re-measured under the new default (the spike already shows them
-  holding).
+**Permanent gates:**
+- `Gridlands.Game.TerrainCollision` (required). It covers:
+  - collision/render agreement, seams and four-chunk corners;
+  - deformation updating collision at once;
+  - save/restore, flushed and streamed onto pooled chunks;
+  - the ground structures and building stand on agreeing with the visible, colliding ground at every
+    vertex;
+  - holes (every probe finds ground; overlaps exact);
+  - the render diagonal.
+- `Gridlands.Game.TerrainPool` (pooling and reset, stale-generation rejection, cancellation, navigation
+  octree).
+- Navigation, Terrain, Grid, Streaming, Save, Building and Structure suites.
+- The planted defects in `Tools/planted-defects/terrain_collision.py` (17), every one of which must be
+  CAUGHT.
+- No P5–P7.1 performance, memory, streaming, persistence or gameplay gate is weakened.
 
-## Newly exposed
-- **The render mesh is now ~80% of terrain memory:** 2.33 MB per chunk, ~0.6 GB per loaded cell. Its
-  representation (attributes, overlays) and LOD are the next memory lever. LODs are already required
-  before production density (P7.1).
+**Not in this decision, and not approved by it:**
+- **Final terrain art.** P7.1 approved the visual language, not production quality (VISUAL-DIRECTION).
+- **Extreme 1 m edits look harsh.** They show sharp wedges, creases and hard earth/grass boundaries,
+  which are clearest in the aggressive-terraforming comparison
+  ([diagonal review](../Evidence/Terrain-heightfield-spike/diagonal-review/README.md)).
+  - This is **future terraforming presentation and brush-quality debt** (brush behaviour, smoothing,
+    normals, material blending), not a collision defect.
+  - That comparison is kept as regression evidence: future work must make that case better, not hide
+    or move it.
+  - It is not addressed here: no change to brushes, smoothing, normals, materials or geometry.
+
+## Newly exposed (recorded, not acted on)
+- **The render mesh is now ~80% of terrain memory:** ~2.33 MB per chunk, ~0.6 GB per loaded cell.
+  Collision is no longer the dominant cost.
+  - This is measurable future optimization territory: optimize only when production density, profiling
+    or an established budget shows it matters.
+  - No LODs, new representations or reduced resolution come with this decision.
+- **Gameplay heights inside a quad (open, operator decision).**
+  - `HeightAt` (what structures, building, scatter and storm stand on) equals the visible, colliding
+    ground exactly at every vertex (gated).
+  - **Inside a non-planar quad it interpolates bilinearly,** while the drawn and colliding surface is
+    two triangles. On steep edits the gap reaches **~72 cm** (measured: steep dig 68 cm, neighbouring
+    edits 72 cm; untouched ground 0).
+  - It predates this ADR: the canonical trimesh measured the same, because the old surface was
+    triangles too.
+  - **Closing it** means `HeightAt` interpolating over the same triangles. That changes a gameplay height
+    query used by structure support and deterministic collapse (P6), building placement and scatter.
+    So it is left for the operator.
