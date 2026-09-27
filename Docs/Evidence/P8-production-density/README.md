@@ -156,4 +156,18 @@ for each.
   - the validator rules, by the selftest.
 
 ## I. Fresh clone
-See the closure section below.
+`Tools/verify-fresh-clone.sh` of **2ce92ec** passed. It used tracked inputs, LFS meshes with their
+LODs, and the pinned engine, with no local engine override. It built and ran **129/129 tests, 45
+requirements**, and changed no tracked file. The only commit after it is this README line.
+
+## K. Debt recorded
+- **Navigation active tiles reach 557 of 600** with the town block. Each creature's nav invoker
+  (32/48 m radii) adds about 85 tiles. A cell with more than 3 creatures in range of the route would
+  need smaller invoker radii or a tile budget decision; the budget was not moved.
+- **Reversal presentation frames reach 2.6–3.4 ms** against the 1.5 ms budget: the budget plus one
+  heavy unit (a vegetation patch or the retire/destroy of a large group). Streaming stays within
+  12 ms (worst 9.9).
+- **Player-built pieces are still made synchronously** when their cell restores (ADR-0036, Not
+  changed).
+- **The engine reducer's 64-triangle floor** makes LODs meaningless for very small meshes: the cull
+  distance is their tool.
