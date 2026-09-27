@@ -14,6 +14,11 @@ documents win. The superseded material is listed in
 A **single-player survival / salvage / building / exploration game** in
 stylized 3D.
 
+**Direction (LOCKED DESIGN INTENT, 2026-09-27): Gridlands is architecture-first.** It is an architectural
+building game that also contains exploration, combat, survival, NICE and Pehlichi. A skilled player
+should eventually be able to reproduce a recognizable real building. See
+[ARCHITECTURAL-NORTH-STAR](ARCHITECTURAL-NORTH-STAR.md) (not implemented).
+
 **Zenny**, a silent solo game developer, is trapped in a corrupted digital
 world run by **NICE**, a powerful AI and the world's Game Master. His companion
 **Pehlichi** is a former Neurolink scientist trapped in a squirrel body, who
@@ -142,6 +147,7 @@ small dialogue set. Prove the loop, then scale. See [MILESTONES.md](MILESTONES.m
 | Zenny's emotes as semantic reactions; NICE's attention model (eligibility, governor, one AFK line) | [STORY-AND-DIALOGUE §6c–6d](STORY-AND-DIALOGUE.md) |
 | Truthful telegraphs, perception visualization, **systemic noise** (first built in P6), hunger/thirst as expedition prep | [SURVIVAL-AND-THREAT §7–11](SURVIVAL-AND-THREAT.md) |
 | One handcrafted dungeon per zone; named legendaries | [DUNGEONS-AND-LEGENDARIES](DUNGEONS-AND-LEGENDARIES.md) |
+| **Architecture-first (2026-09-27):** REAL HOUSE / HILLSIDE / WINCHESTER tests; non-chronological eras as vocabulary; component-based STRUCTURE / ELECTRICAL (optional) / FINISH; careful vs destructive salvage; Pehlichi's stud finder; Ofi plans as ghost blueprints; no encumbrance, shared base storage; renewal that never touches claimed construction | [ARCHITECTURAL-NORTH-STAR](ARCHITECTURAL-NORTH-STAR.md) |
 
 ## 10. Pillars
 

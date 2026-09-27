@@ -9,6 +9,11 @@ collapse and trees are built as of P6 (ADR-0030). Decision records:
 Gridlands is strongly a **salvage-and-building game**. These are first-class
 gameplay, not side activities.
 
+> **Architecture-first north star (LOCKED DESIGN INTENT, 2026-09-27; not implemented):**
+> [ARCHITECTURAL-NORTH-STAR](ARCHITECTURAL-NORTH-STAR.md). Where this page describes the current v0
+> pieces and yields, the north star is the future direction. Its "Known conflicts" table lists where
+> the current build differs.
+
 ## 1. Salvage
 
 - Buildings and environmental objects are material sources.
