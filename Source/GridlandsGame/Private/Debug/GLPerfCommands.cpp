@@ -25,6 +25,7 @@
 #include "Save/GLWorldSave.h"
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonWriter.h"
+#include "Terrain/GLHeightfield.h"
 #include "Terrain/GLTerrainChunk.h"
 #include "Terrain/GLTerrainCollision.h"
 #include "Chaos/HeightField.h"
@@ -980,6 +981,75 @@ namespace GLPerf
 				FString Text;
 				FJsonSerializer::Serialize(O, TJsonWriterFactory<>::Create(&Text));
 				FFileHelper::SaveStringToFile(Text, *(FPaths::ProjectSavedDir() / TEXT("Perf") / TEXT("collisionpaths.json")));
+				GEngine->DeferredCommands.Add(TEXT("quit"));
+			}), 8.0f, false);
+		}));
+
+	/**
+	 * gl.Perf.HeightAt [Millions]: the terrain height query's cost (2026-09-27, the one terrain surface). Random
+	 * points over a loaded cell: the old bilinear interpolation (a reference copy, for comparison only), the
+	 * canonical FGLHeightfield::HeightAt, and the subsystem query gameplay calls. Writes Saved/Perf/heightat.json.
+	 */
+	FAutoConsoleCommandWithWorldAndArgs HeightAtCommand(
+		TEXT("gl.Perf.HeightAt"),
+		TEXT("DEV ONLY: gl.Perf.HeightAt [Millions=2] - times terrain height queries: old bilinear reference, canonical surface, subsystem."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic([](const TArray<FString>& Args, UWorld* World)
+		{
+			const int32 N = FMath::Max(1, Args.Num() > 0 ? FCString::Atoi(*Args[0]) : 2) * 1000000;
+			TWeakObjectPtr<UWorld> Weak(World);
+			FTimerHandle Handle;
+			World->GetTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda([Weak, N]()
+			{
+				UWorld* W = Weak.Get();
+				UGLTerrainSubsystem* Terrain = W ? W->GetSubsystem<UGLTerrainSubsystem>() : nullptr;
+				const FGLHeightfield* F = Terrain ? Terrain->FieldOf(TEXT("cell.home.origin")) : nullptr;
+				if (!F)
+				{
+					UE_LOG(LogGridlands, Error, TEXT("gl.Perf.HeightAt: no origin ground"));
+					GEngine->DeferredCommands.Add(TEXT("quit"));
+					return;
+				}
+				TArray<FVector2D> Points;
+				Points.SetNumUninitialized(N);
+				FRandomStream Rng(0x4e1a);
+				const FVector2D O = F->GetOrigin();
+				const double Size = (F->GetVertsX() - 1) * F->GetSpacing();
+				for (FVector2D& P : Points)
+				{
+					P = O + FVector2D(Rng.FRandRange(0.0, Size), Rng.FRandRange(0.0, Size));
+				}
+				auto OldBilinear = [F](const FVector2D& World)
+				{
+					const FVector2D Local = World - F->GetOrigin();
+					const double FX = FMath::Clamp(Local.X / F->GetSpacing(), 0.0, F->GetVertsX() - 1.0);
+					const double FY = FMath::Clamp(Local.Y / F->GetSpacing(), 0.0, F->GetVertsY() - 1.0);
+					const int32 X0 = FMath::Min(FMath::FloorToInt(FX), F->GetVertsX() - 2);
+					const int32 Y0 = FMath::Min(FMath::FloorToInt(FY), F->GetVertsY() - 2);
+					const double TX = FX - X0, TY = FY - Y0;
+					return FMath::Lerp(FMath::Lerp<double>(F->VertexHeight(X0, Y0), F->VertexHeight(X0 + 1, Y0), TX), FMath::Lerp<double>(F->VertexHeight(X0, Y0 + 1), F->VertexHeight(X0 + 1, Y0 + 1), TX), TY);
+				};
+				TSharedRef<FJsonObject> O2 = MakeShared<FJsonObject>();
+				O2->SetNumberField(TEXT("queries"), N);
+				double Sink = 0.0;
+				for (int32 Rep = 0; Rep < 3; ++Rep) // the third pass is recorded (warm caches)
+				{
+					double T0 = FPlatformTime::Seconds();
+					for (const FVector2D& P : Points) { Sink += OldBilinear(P); }
+					double T1 = FPlatformTime::Seconds();
+					for (const FVector2D& P : Points) { Sink += F->HeightAt(P); }
+					double T2 = FPlatformTime::Seconds();
+					for (const FVector2D& P : Points) { Sink += Terrain->HeightAt(P); }
+					double T3 = FPlatformTime::Seconds();
+					O2->SetNumberField(TEXT("oldBilinearNsPerQuery"), (T1 - T0) * 1e9 / N);
+					O2->SetNumberField(TEXT("canonicalFieldNsPerQuery"), (T2 - T1) * 1e9 / N);
+					O2->SetNumberField(TEXT("subsystemNsPerQuery"), (T3 - T2) * 1e9 / N);
+				}
+				O2->SetNumberField(TEXT("sink"), Sink);
+				UE_LOG(LogGridlands, Log, TEXT("gl.Perf.HeightAt: old bilinear %.2f ns, canonical field %.2f ns, subsystem %.2f ns per query (%d queries)"),
+					O2->GetNumberField(TEXT("oldBilinearNsPerQuery")), O2->GetNumberField(TEXT("canonicalFieldNsPerQuery")), O2->GetNumberField(TEXT("subsystemNsPerQuery")), N);
+				FString Text;
+				FJsonSerializer::Serialize(O2, TJsonWriterFactory<>::Create(&Text));
+				FFileHelper::SaveStringToFile(Text, *(FPaths::ProjectSavedDir() / TEXT("Perf") / TEXT("heightat.json")));
 				GEngine->DeferredCommands.Add(TEXT("quit"));
 			}), 8.0f, false);
 		}));

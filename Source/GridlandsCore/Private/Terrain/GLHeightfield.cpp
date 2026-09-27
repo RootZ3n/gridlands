@@ -44,10 +44,9 @@ double FGLHeightfield::HeightAt(const FVector2D& World) const
 	const double FY = FMath::Clamp(Local.Y / Spacing, 0.0, VertsY - 1.0);
 	const int32 X0 = FMath::Min(FMath::FloorToInt(FX), VertsX - 2);
 	const int32 Y0 = FMath::Min(FMath::FloorToInt(FY), VertsY - 2);
-	const double TX = FX - X0, TY = FY - Y0;
-	const double Top = FMath::Lerp<double>(VertexHeight(X0, Y0), VertexHeight(X0 + 1, Y0), TX);
-	const double Bottom = FMath::Lerp<double>(VertexHeight(X0, Y0 + 1), VertexHeight(X0 + 1, Y0 + 1), TX);
-	return FMath::Lerp(Top, Bottom, TY);
+	// Until 2026-09-27 this interpolated bilinearly, which differed from the drawn, colliding triangles by up
+	// to ~72 cm inside steep edited quads (found during ADR-0035; closed by using the one surface).
+	return GLTerrainSurface::Height(VertexHeight(X0, Y0), VertexHeight(X0 + 1, Y0), VertexHeight(X0, Y0 + 1), VertexHeight(X0 + 1, Y0 + 1), FX - X0, FY - Y0);
 }
 
 FGLTerrainEditResult FGLHeightfield::Apply(const FGLTerrainEdit& Edit, TFunctionRef<bool(const FVector2D& World)> IsProtected, bool bDryRun)

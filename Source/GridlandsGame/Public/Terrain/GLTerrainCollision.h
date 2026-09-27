@@ -23,8 +23,6 @@ namespace GLTerrainCollision
 {
 	GRIDLANDSGAME_API EGLTerrainCollisionMode GetMode();
 	GRIDLANDSGAME_API const TCHAR* ModeName(EGLTerrainCollisionMode Mode);
-	/** The render mesh splits each quad between (x, y) and (x+1, y+1), as a Chaos heightfield does (canonical). */
-	GRIDLANDSGAME_API bool RenderSplitsMainDiagonal();
 }
 
 /** Collision geometry built for one chunk (anywhere), attached on the game thread. Opaque outside the .cpp. */

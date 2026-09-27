@@ -10,6 +10,32 @@ enum class EGLTerrainOp : uint8
 	Flatten, // move toward TargetHeight (cm)
 };
 
+/**
+ * THE terrain surface (ADR-0035): the stored vertex heights plus one triangle diagonal define one surface,
+ * and rendering, collision and gameplay queries all represent it.
+ *
+ * Quad (x, y) has corners A = (x, y), B = (x+1, y), C = (x, y+1), D = (x+1, y+1). It is split along A-D,
+ * the diagonal a Chaos heightfield uses (its collision cannot be told otherwise): triangle (A, C, D) where
+ * FY >= FX, triangle (A, D, B) where FY < FX. Inside each triangle the height is that triangle's plane.
+ * FX, FY are the position inside the quad in [0, 1].
+ */
+namespace GLTerrainSurface
+{
+	/** The surface height inside a quad from its corner heights (A, B, C, D as above). */
+	inline double Height(double HA, double HB, double HC, double HD, double FX, double FY)
+	{
+		return FY >= FX ? HA + FX * (HD - HC) + FY * (HC - HA)   // triangle (A, C, D)
+		                : HA + FX * (HB - HA) + FY * (HD - HB);  // triangle (A, D, B)
+	}
+
+	/** The quad's two triangles as vertex indices, upward-facing in UE's left-handed space: (A, C, D), (A, D, B). */
+	inline void Triangles(int32 A, int32 B, int32 C, int32 D, int32 Out[6])
+	{
+		Out[0] = A; Out[1] = C; Out[2] = D;
+		Out[3] = A; Out[4] = D; Out[5] = B;
+	}
+}
+
 struct GRIDLANDSCORE_API FGLTerrainEdit
 {
 	EGLTerrainOp Op = EGLTerrainOp::Dig;
@@ -61,7 +87,10 @@ public:
 	FVector2D VertexLocation(int32 X, int32 Y) const { return Origin + FVector2D(X * Spacing, Y * Spacing); }
 	bool Contains(const FVector2D& World) const;
 
-	/** Bilinear ground height at a world point (cm); clamps to the edge outside. No physics needed. */
+	/**
+	 * Ground height at a world point (cm): THE terrain surface (GLTerrainSurface), the same one that is drawn
+	 * and that collides. Exactly the stored height at every vertex; clamps to the edge outside. No physics.
+	 */
 	double HeightAt(const FVector2D& World) const;
 	/** How far the nearest vertex has been moved from its base (cm, >= 0): dug or raised ground (P7). */
 	double EditedAt(const FVector2D& World) const;

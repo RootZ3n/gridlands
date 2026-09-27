@@ -54,7 +54,21 @@ gameplay semantics of editable terrain, and does that create useful headroom?
    near canonical. Its one advantage: it could represent caves or overhangs later without a second
    collision representation.
 
-## Decision (operator, 2026-09-27)
+## The one terrain surface (canonical invariant, operator 2026-09-27)
+**For normal Gridlands heightfield terrain, the stored vertex field plus the canonical triangle diagonal
+defines ONE terrain surface. Rendering, collision and gameplay queries must represent that same
+surface.**
+- Each quad is split between (x, y) and (x+1, y+1), the diagonal a Chaos heightfield uses.
+- Inside each triangle, the height is that triangle's plane.
+- `GLTerrainSurface` (GridlandsCore, `GLHeightfield.h`) states it once:
+  - `Height` is the interpolation that `FGLHeightfield::HeightAt` evaluates;
+  - `Triangles` is the split the render mesh and the worker-trimesh fallback use.
+- The heightfield collision's own split is Chaos's and fixed. The gate checks all three against each
+  other.
+- Every gameplay terrain query goes through `HeightAt`. Structures and building use it through their
+  `GroundAt`, as do collapse landing, scatter, storm, noise and Flatten.
+
+
 **Architectural constraints (canonical):**
 1. **Heightfield collision is canonical for normal Gridlands terrain.**
 2. **Terrain remains one height per vertex.**
@@ -100,7 +114,9 @@ gameplay semantics of editable terrain, and does that create useful headroom?
   - This is measurable future optimization territory: optimize only when production density, profiling
     or an established budget shows it matters.
   - No LODs, new representations or reduced resolution come with this decision.
-- **Gameplay heights inside a quad (open, operator decision).**
+- **Gameplay heights inside a quad: CLOSED 2026-09-27** (operator: "fix the HeightAt gap before P8";
+  evidence in [Terrain-surface-agreement](../Evidence/Terrain-surface-agreement/README.md)).
+  `HeightAt` now evaluates the one surface. The record below is kept as it was found.
   - `HeightAt` (what structures, building, scatter and storm stand on) equals the visible, colliding
     ground exactly at every vertex (gated).
   - **Inside a non-planar quad it interpolates bilinearly,** while the drawn and colliding surface is
@@ -110,4 +126,4 @@ gameplay semantics of editable terrain, and does that create useful headroom?
     triangles too.
   - **Closing it** means `HeightAt` interpolating over the same triangles. That changes a gameplay height
     query used by structure support and deterministic collapse (P6), building placement and scatter.
-    So it is left for the operator.
+    So it was left for the operator, who chose to close it.

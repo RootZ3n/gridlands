@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+@@ -596,6 +596,8 @@
+ double UGLTerrainSubsystem::HeightAt(const FVector2D& World) const
+ {
+ 	const FGLCellGround* Ground = GroundAt(World);
++	thread_local TMap<FVector2D, double> Seen; if (const double* Old = Seen.Find(World)) { return *Old; } // DEFECT: remembers ground across edits
++	if (Ground) { return Seen.Add(World, Ground->Field.HeightAt(World)); }
+ 	return Ground ? Ground->Field.HeightAt(World) : (Grounds.Num() == 1 ? Grounds.CreateConstIterator()->Value.Field.HeightAt(World) : 0.0);
+ }
+ 

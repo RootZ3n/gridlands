@@ -1,6 +1,6 @@
-// DEV ONLY: heightfield-collision spike, the operator's visual review of the render-diagonal change
-// (ADR-0035). The same terrain, edits, cameras, lighting and settings are captured once per process; the
-// process's -GLTerrainCollision mode decides the render split (0: canonical, 1: heightfield's diagonal).
+// DEV ONLY: the terrain visual regression scenes (ADR-0035 render-diagonal review): the same terrain, edits,
+// cameras, lighting and settings every run, for comparison with the stored review (Docs/Evidence/
+// Terrain-heightfield-spike/diagonal-review). The render split is canonical in every mode (GLTerrainSurface).
 // Frame-counted (run with -benchmark -fps=30) so two runs see the same simulated time at every shot.
 // Captures only: it changes nothing visual.
 // Not in shipping builds.
@@ -166,8 +166,8 @@ namespace GLTerrainReview
 				Edit(Terrain, EGLTerrainOp::Dig, Seam + FVector2D(60.0, 380.0), 200.0, 180.0);
 				double Degrees = 0.0;
 				const FVector2D Steep = SteepestNatural(*Terrain->FieldOf(RLots), Degrees);
-				UE_LOG(LogGridlands, Log, TEXT("gl.Terrain.DiagonalReview: collision mode %s, render split %s; steepest natural slope %.1f deg at %s"),
-					GLTerrainCollision::ModeName(GLTerrainCollision::GetMode()), GLTerrainCollision::RenderSplitsMainDiagonal() ? TEXT("(x,y)-(x+1,y+1)") : TEXT("(x+1,y)-(x,y+1) canonical"), Degrees, *Steep.ToString());
+				UE_LOG(LogGridlands, Log, TEXT("gl.Terrain.DiagonalReview: collision mode %s; steepest natural slope %.1f deg at %s"),
+					GLTerrainCollision::ModeName(GLTerrainCollision::GetMode()), Degrees, *Steep.ToString());
 
 				const FVector2D D1 = FVector2D(-0.8, -0.6), D2 = FVector2D(0.6, -0.8), Across = FVector2D(-0.95, 0.31);
 				auto Pair = [&Shots](const FString& Name, const FVector2D& T, const FVector2D& Dir, double TargetUp)

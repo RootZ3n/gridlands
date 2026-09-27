@@ -1,0 +1,40 @@
+== Gridlands.Game.TerrainCollision.EditedCollisionSurvivesSaveRestoreAndStreaming Success
+  [heightfield] restored (flushed): 2491 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.02 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.004 cm (1152 per-quad probes)
+  [heightfield] restored (streamed, reused chunks): 2491 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.02 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.004 cm (1152 per-quad probes)
+  [heightfield] restored in place to the base: 2491 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.000 cm (1152 per-quad probes)
+  [heightfield] restored in place with the edits: 2491 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.02 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.004 cm (1152 per-quad probes)
+== Gridlands.Game.TerrainCollision.NaturalTerrainIsOneSurface Success
+  steepest natural slope 31.9 deg at vertex (838, 390)
+  [heightfield] rolling natural terrain: 5363 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.009 cm (2592 per-quad probes)
+  [heightfield] steepest natural slope: 5363 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.009 cm (2592 per-quad probes)
+  placement.diner_lots.: the whole natural cell moved by at most 16.864 cm (old bilinear vs the one surface)
+  authored placement.diner_lots.slice_boulder_01: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.500 cm
+  authored placement.diner_lots.slice_boulder_02: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.250 cm
+  authored placement.diner_lots.slice_phone_table: its base (the ground at its origin) moved -0.000 cm; ground within 5 m moved by at most 0.225 cm
+  authored placement.diner_lots.slice_phone_table_glitched: its base (the ground at its origin) moved +0.100 cm; ground within 5 m moved by at most 0.225 cm
+  authored placement.diner_lots.slice_pine_01: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.500 cm
+  authored placement.diner_lots.slice_pine_02: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 10.750 cm
+  authored placement.diner_lots.slice_storefront: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.250 cm
+  placement.origin.: the whole natural cell moved by at most 0.000 cm (old bilinear vs the one surface)
+  authored placement.origin.structure_carport_01: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.000 cm
+  authored placement.origin.structure_carport_edge: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.000 cm
+  authored placement.origin.structure_pine_01: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.000 cm
+  authored placement.origin.structure_pine_edge: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.000 cm
+== Gridlands.Game.TerrainCollision.StructuresAndBuildingStandOnTheVisibleGround Success
+  placement: a snapped floor vs visible 0.000 cm, vs collision 0.002 cm (the old interpolation: up to 60.8 cm)
+  placement rules on 858 candidates: 0 decisions differ from the visible ground (the old interpolation: 10)
+  authored structure base at the worst point: vs visible 0.000 cm, vs collision 0.001 cm (the old interpolation: 60.8 cm off)
+== Gridlands.Game.TerrainCollision.VisibleAndCollisionSurfacesAgreeUnderDeformation Success
+  [heightfield] untouched: 5363 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.000 cm (2592 per-quad probes)
+  [heightfield] small dig: 619 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.000 cm (200 per-quad probes)
+  [heightfield] steep dig (4 m in 1.2 m): 619 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.002 cm (200 per-quad probes)
+  [heightfield] steep raise: 619 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.000 cm (200 per-quad probes)
+  [heightfield] 10 repeated digs: 1166 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.002 cm (512 per-quad probes)
+  [heightfield] neighbouring vertices edited: 1391 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.004 cm (576 per-quad probes)
+  [heightfield] edit on an X seam, both sides: 1166 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.005 cm (512 per-quad probes)
+  [heightfield] edit on a chunk corner (four chunks): 1794 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.005 cm (800 per-quad probes)
+  [heightfield] flatten: 799 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.006 cm (288 per-quad probes)
+  [heightfield] 4 m dig limit: 799 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.02 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.006 cm (288 per-quad probes)
+  [heightfield] edit crossing the west X seam: 1327 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.005 cm (512 per-quad probes)
+  [heightfield] edit crossing the north Y seam: 1327 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.008 cm (512 per-quad probes)
+  [heightfield] 30 rapid edits in one frame: 6635 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.05 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.008 cm (3200 per-quad probes)

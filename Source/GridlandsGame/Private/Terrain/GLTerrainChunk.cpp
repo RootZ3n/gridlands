@@ -83,22 +83,14 @@ UE::Geometry::FDynamicMesh3 AGLTerrainChunk::BuildMesh(const FGLChunkSnapshot& S
 			Built.AppendVertex(FVector3d(X * Snap.Spacing, Y * Snap.Spacing, H(Snap.First.X + X, Snap.First.Y + Y)));
 		}
 	}
-	const bool bMainDiagonal = GLTerrainCollision::RenderSplitsMainDiagonal(); // canonical: the heightfield's diagonal (ADR-0035)
 	for (int32 Y = 0; Y + 1 < V; ++Y)
 	{
 		for (int32 X = 0; X + 1 < V; ++X)
 		{
-			const int32 A = Y * V + X, B = A + 1, C = A + V, D = C + 1;
-			if (bMainDiagonal)
-			{
-				Built.AppendTriangle(A, C, D); // split A-D, as a Chaos heightfield splits its cells
-				Built.AppendTriangle(A, D, B);
-			}
-			else
-			{
-				Built.AppendTriangle(A, C, B); // upward-facing in UE's left-handed space
-				Built.AppendTriangle(B, C, D);
-			}
+			int32 T[6];
+			GLTerrainSurface::Triangles(Y * V + X, Y * V + X + 1, (Y + 1) * V + X, (Y + 1) * V + X + 1, T); // THE surface's split
+			Built.AppendTriangle(T[0], T[1], T[2]);
+			Built.AppendTriangle(T[3], T[4], T[5]);
 		}
 	}
 	Built.EnableAttributes();

@@ -1,0 +1,190 @@
+{
+	"schemaVersion": 2,
+	"cell": "cell.outer.diner_lots",
+	"settingsPreset": "settings.preset.default",
+	"glitches": [],
+	"salvagedPlacements": [],
+	"inventory": [],
+	"knowledge": [],
+	"pehlichiCapabilities": [
+		{
+			"id": "capability.pehlichi.analysis",
+			"count": 1
+		},
+		{
+			"id": "capability.pehlichi.distract",
+			"count": 1
+		},
+		{
+			"id": "capability.pehlichi.scan",
+			"count": 1
+		}
+	],
+	"exchangeUses": [
+		{
+			"id": "exchange.story.opening",
+			"count": 1
+		},
+		{
+			"id": "exchange.world.static_thickens",
+			"count": 1
+		}
+	],
+	"eventCounts": [
+		{
+			"id": "Event.Ambient.Tick",
+			"count": 1
+		},
+		{
+			"id": "Event.Game.Started",
+			"count": 1
+		},
+		{
+			"id": "Event.World.InterferenceTierChanged",
+			"count": 1
+		}
+	],
+	"solvedPuzzles": [],
+	"posedPuzzles": [],
+	"puzzleHints": [],
+	"buildPieces": [],
+	"nextPieceId": 1,
+	"terrainIndices": [],
+	"terrainDeltaCm": [],
+	"defeatedCreatures": [],
+	"discoveries": [],
+	"stormsOccurred": [],
+	"zennyHealth": 100,
+	"cells": [
+		{
+			"cell": "cell.home.origin",
+			"glitches": [
+				{
+					"placement": "placement.origin.drain_glitch_echo_loop",
+					"state": "Latent",
+					"progressSeconds": 0,
+					"itemsDelivered": false
+				},
+				{
+					"placement": "placement.origin.glitch_buried_signal",
+					"state": "Latent",
+					"progressSeconds": 0,
+					"itemsDelivered": false
+				},
+				{
+					"placement": "placement.origin.glitch_cartographer",
+					"state": "Latent",
+					"progressSeconds": 0,
+					"itemsDelivered": false
+				},
+				{
+					"placement": "placement.origin.glitch_dead_transformer",
+					"state": "Latent",
+					"progressSeconds": 0,
+					"itemsDelivered": false
+				},
+				{
+					"placement": "placement.origin.glitch_flicker_lamp",
+					"state": "Latent",
+					"progressSeconds": 0,
+					"itemsDelivered": false
+				}
+			],
+			"salvagedPlacements": [],
+			"defeatedCreatures": [],
+			"buildPieces": [],
+			"terrainIndices": [],
+			"terrainDeltaCm": [],
+			"structureParts": []
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"glitches": [
+				{
+					"placement": "placement.diner_lots.glitch_jukebox",
+					"state": "Latent",
+					"progressSeconds": 0,
+					"itemsDelivered": false
+				}
+			],
+			"salvagedPlacements": [],
+			"defeatedCreatures": [],
+			"buildPieces": [],
+			"terrainIndices": [
+				215641,
+				215642,
+				215643,
+				215644,
+				215645,
+				216666,
+				216667,
+				216668,
+				216669,
+				216670,
+				217691,
+				217692,
+				217693,
+				217694,
+				217695,
+				218716,
+				218717,
+				218718,
+				218719,
+				218720,
+				219741,
+				219742,
+				219743,
+				219744,
+				219745
+			],
+			"terrainDeltaCm": [
+				2,
+				32,
+				52,
+				32,
+				2,
+				32,
+				108,
+				148,
+				108,
+				32,
+				52,
+				148,
+				200,
+				148,
+				52,
+				32,
+				108,
+				148,
+				108,
+				32,
+				2,
+				32,
+				52,
+				32,
+				2
+			],
+			"structureParts": []
+		}
+	],
+	"zenny":
+	{
+		"location":
+		{
+			"x": 90000,
+			"y": -30000,
+			"z": 400
+		},
+		"yaw": 89.999999999999986
+	},
+	"pehlichi":
+	{
+		"location":
+		{
+			"x": 35861.447680332923,
+			"y": -27516.581475823958,
+			"z": 40
+		},
+		"yaw": -2.6265309412258944
+	}
+}

@@ -14,6 +14,7 @@
 #include "Physics/PhysicsInterfaceScene.h"
 #include "PhysicsProxy/SingleParticlePhysicsProxy.h"
 #include "PBDRigidsSolver.h"
+#include "Terrain/GLHeightfield.h"
 #include "Terrain/GLTerrainChunk.h"
 
 namespace
@@ -35,11 +36,6 @@ EGLTerrainCollisionMode GLTerrainCollision::GetMode()
 	return Mode;
 }
 
-bool GLTerrainCollision::RenderSplitsMainDiagonal()
-{
-	return GetMode() == EGLTerrainCollisionMode::Heightfield;
-}
-
 const TCHAR* GLTerrainCollision::ModeName(EGLTerrainCollisionMode Mode)
 {
 	switch (Mode)
@@ -54,7 +50,7 @@ const TCHAR* GLTerrainCollision::ModeName(EGLTerrainCollisionMode Mode)
  * The geometry, in the chunk's local space (the chunk actor sits at its first vertex, Z = 0):
  * - Heightfield (canonical, ADR-0035): a V x V Chaos heightfield at 1 unit per sample, scaled to the
  *   spacing; sample [Row][Col] is local vertex X = Col, Y = Row. Chaos splits each cell between (x, y) and
- *   (x+1, y+1), and the render mesh is split the same way (RenderSplitsMainDiagonal), so what is seen is
+ *   (x+1, y+1), and the render mesh is split the same way (GLTerrainSurface), so what is seen is
  *   what collides. Left unrotated: a turned (transformed) heightfield made Chaos sweeps miss contacts lying
  *   exactly on chunk seams (measured in the spike).
  * - WorkerTrimesh (the documented fallback, measurement only): the render mesh's own triangles, winding
@@ -132,10 +128,11 @@ TSharedPtr<const FGLChunkCollisionGeometry> GLTerrainCollision::Build(EGLTerrain
 		{
 			for (int32 X = 0; X + 1 < V; ++X)
 			{
-				const uint16 A = Y * V + X, B = A + 1, C = A + V, D = C + 1;
-				// Render triangles (A, C, B) and (B, C, D), flipped as the engine cook flips them (bFlipNormals).
-				Triangles.Add(Chaos::TVec3<uint16>(C, A, B));
-				Triangles.Add(Chaos::TVec3<uint16>(C, B, D));
+				int32 T[6];
+				GLTerrainSurface::Triangles(Y * V + X, Y * V + X + 1, (Y + 1) * V + X, (Y + 1) * V + X + 1, T);
+				// The render triangles, flipped as the engine cook flips them (bFlipNormals).
+				Triangles.Add(Chaos::TVec3<uint16>(T[1], T[0], T[2]));
+				Triangles.Add(Chaos::TVec3<uint16>(T[4], T[3], T[5]));
 			}
 		}
 		TArray<uint16> Materials;

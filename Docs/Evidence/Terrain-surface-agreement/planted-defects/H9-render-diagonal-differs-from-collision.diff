@@ -1,0 +1,13 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
+@@ -89,8 +89,8 @@
+ 		{
+ 			int32 T[6];
+ 			GLTerrainSurface::Triangles(Y * V + X, Y * V + X + 1, (Y + 1) * V + X, (Y + 1) * V + X + 1, T); // THE surface's split
+-			Built.AppendTriangle(T[0], T[1], T[2]);
+-			Built.AppendTriangle(T[3], T[4], T[5]);
++			Built.AppendTriangle(T[0], T[1], T[5]); // DEFECT: the render mesh split B-C, the rest A-D
++			Built.AppendTriangle(T[5], T[1], T[2]);
+ 		}
+ 	}
+ 	Built.EnableAttributes();

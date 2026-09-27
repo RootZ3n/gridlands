@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Public/Terrain/GLHeightfield.h
++++ b/Source/GridlandsCore/Public/Terrain/GLHeightfield.h
+@@ -24,7 +24,7 @@
+ 	/** The surface height inside a quad from its corner heights (A, B, C, D as above). */
+ 	inline double Height(double HA, double HB, double HC, double HD, double FX, double FY)
+ 	{
+-		return FY >= FX ? HA + FX * (HD - HC) + FY * (HC - HA)   // triangle (A, C, D)
++		return FY <= FX ? HA + FX * (HD - HC) + FY * (HC - HA)   // DEFECT: the other triangle's plane
+ 		                : HA + FX * (HB - HA) + FY * (HD - HB);  // triangle (A, D, B)
+ 	}
+ 

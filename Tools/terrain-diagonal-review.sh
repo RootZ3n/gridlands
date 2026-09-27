@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# Heightfield-collision spike (ADR-0035): the operator's visual review of the render-diagonal change.
-# Captures the same scenes with the same cameras, lighting and settings in each collision mode's render
-# split (0: canonical, "before"; 1: the heightfield's diagonal, "after"), plus a second "before" run as a
-# determinism control. Frame-counted with a fixed timestep. Screenshots land in Saved/TerrainDiagonal/<run>/.
+# Terrain visual regression scenes (ADR-0035): the render-diagonal review's scenes with the same cameras,
+# lighting and settings, captured twice (the second run is the determinism control). Compare "current"
+# with Docs/Evidence/Terrain-heightfield-spike/diagonal-review (its "after" side is the approved state; the
+# aggressive-terraforming pair 05-* is the regression case future presentation work must improve).
+# Frame-counted with a fixed timestep. Screenshots land in Saved/TerrainDiagonal/<run>/.
 # Usage: Tools/terrain-diagonal-review.sh
 set -uo pipefail
 . "$(dirname "$0")/lib/common.sh"
@@ -26,7 +27,6 @@ capture() { # run name, collision mode
 	for i in "${!FILES[@]}"; do cp "${FILES[$i]}" "$OUT/$1/${NAMES[$i]}.png"; done
 	echo "  $1: ${#FILES[@]} screenshots"
 }
-capture before 0
-capture after 1
-capture before-control 0
-result PASS "render-diagonal review captured in Saved/TerrainDiagonal (before, after, before-control)"
+capture current 1
+capture current-control 1
+result PASS "terrain regression scenes captured in Saved/TerrainDiagonal (current, current-control)"
