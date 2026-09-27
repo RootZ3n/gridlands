@@ -133,6 +133,10 @@ public:
 	void AddProofPlacement(FName CellId, FName Id, const FGLPlacementDef& Placement);
 	/** The dense authored stress fixture (GLDenseProof.h) in the diner lots; -GLDenseProof enables it. Returns its placement count. */
 	int32 AddDenseProof();
+	/** The P8 production-density town block (GLTownBlock.cpp) on the crossing route in the lots; -GLTownBlock enables it. Returns its placement count. */
+	int32 AddTownBlock();
+	/** The id of the town block's Index-th placement (its layout order, GLTownBlockSites.inl). */
+	static FName TownBlockId(int32 Index);
 	void ClearProofPlacements() { ProofPlacements.Reset(); }
 #endif
 	/** The presented creature of a placement (null while it waits, once defeated before it was made, or when unknown). */

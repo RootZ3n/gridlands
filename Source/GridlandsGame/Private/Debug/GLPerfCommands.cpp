@@ -460,6 +460,7 @@ namespace GLPerf
 				O->SetNumberField(TEXT("streamingGameThreadMsMean"), FFrameStats::Mean(Crossing.AdvanceMs));
 				O->SetNumberField(TEXT("gameThreadMsMean"), FFrameStats::Mean(Crossing.GameMs));
 				O->SetBoolField(TEXT("denseProof"), FParse::Param(FCommandLine::Get(), TEXT("GLDenseProof")));
+				O->SetBoolField(TEXT("townBlock"), FParse::Param(FCommandLine::Get(), TEXT("GLTownBlock")));
 				O->SetNumberField(TEXT("presentationBudgetMs"), Grid->PresentationBudgetMs);
 				O->SetNumberField(TEXT("presentationFrames"), Crossing.PresentMs.Num());
 				O->SetNumberField(TEXT("presentationUnits"), Crossing.PresentUnits);

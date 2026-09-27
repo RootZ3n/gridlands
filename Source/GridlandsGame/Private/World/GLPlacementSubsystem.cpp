@@ -47,6 +47,10 @@ void UGLPlacementSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 	{
 		AddDenseProof();
 	}
+	if (FParse::Param(FCommandLine::Get(), TEXT("GLTownBlock")))
+	{
+		AddTownBlock();
+	}
 #endif
 	// The cell whose definition names this world's map.
 	const FString MapPackage = InWorld.GetOutermost()->GetName();

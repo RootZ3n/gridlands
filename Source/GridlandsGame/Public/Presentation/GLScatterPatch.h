@@ -28,6 +28,7 @@ public:
 	int32 GetInstanceCount() const;
 	/** The layout seed: stable across processes and builds (the id's text, not its FName index). */
 	static int32 SeedFor(FName PlacementId);
+	FName GetPlacementId() const { return PlacementId; }
 
 private:
 	void HandleChange(const FGLGameplayEvent& Event);
