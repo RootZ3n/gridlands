@@ -143,42 +143,42 @@ namespace GLTerrainNavTests
 	}
 }
 
-using namespace GLTerrainNavTests;
+// No using-directive: its short names (A, B) leak into unity blobs and shadow engine parameters.
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLNavFollowsEdits, "Gridlands.Game.Terrain.NavigationFollowsRuntimeEdits", GLTestUtils::Flags)
 bool FGLNavFollowsEdits::RunTest(const FString& Parameters)
 {
 	// M10 HARD GATE (ADR-0022 open proof 1): paths follow runtime terrain edits.
-	FNavScene Scene(TEXT("GLTerrainNavWorld"), *this);
+	GLTerrainNavTests::FNavScene Scene(TEXT("GLTerrainNavWorld"), *this);
 	if (!TestNotNull(TEXT("navigation system"), Scene.Nav) || !TestTrue(TEXT("initial navmesh builds"), Scene.Settle()))
 	{
 		return false;
 	}
 	AddInfo(FString::Printf(TEXT("navigable bounds from the cell: %s"), *Scene.Nav->GetNavigableWorldBounds().ToString()));
 	FNavLocation Projected;
-	TestTrue(TEXT("the cell's runtime bounds produced a navmesh on the ground"), Scene.Nav->ProjectPointToNavigation(A, Projected, FVector(50, 50, 300)));
+	TestTrue(TEXT("the cell's runtime bounds produced a navmesh on the ground"), Scene.Nav->ProjectPointToNavigation(GLTerrainNavTests::A, Projected, FVector(50, 50, 300)));
 
 	bool bPartial = true;
-	const TArray<FVector> Before = Scene.Path(A, B, &bPartial);
+	const TArray<FVector> Before = Scene.Path(GLTerrainNavTests::A, GLTerrainNavTests::B, &bPartial);
 	TestFalse(TEXT("before: a complete path"), bPartial);
-	const double BeforeCrossing = CrossingY(Before);
+	const double BeforeCrossing = GLTerrainNavTests::CrossingY(Before);
 	TestTrue(FString::Printf(TEXT("before: the path goes straight across (crosses at y = %.0f)"), BeforeCrossing), FMath::Abs(BeforeCrossing - 3200.0) < 200.0);
 
 	Scene.RaiseRidge();
-	TestTrue(TEXT("a 3 m ridge now stands on the old route"), Scene.Terrain->HeightAt(FVector2D(SeamX, 3200)) > 250.0);
+	TestTrue(TEXT("a 3 m ridge now stands on the old route"), Scene.Terrain->HeightAt(FVector2D(GLTerrainNavTests::SeamX, 3200)) > 250.0);
 	TestTrue(TEXT("navigation rebuilds after the edit"), Scene.Settle());
-	const TArray<FVector> After = Scene.Path(A, B, &bPartial);
+	const TArray<FVector> After = Scene.Path(GLTerrainNavTests::A, GLTerrainNavTests::B, &bPartial);
 	TestFalse(TEXT("after: still reachable"), bPartial);
-	const double AfterCrossing = CrossingY(After);
-	TestTrue(FString::Printf(TEXT("after: the path detours through the gap (crosses at y = %.0f, gap from %.0f)"), AfterCrossing, GapFromY), AfterCrossing > GapFromY - 50.0);
+	const double AfterCrossing = GLTerrainNavTests::CrossingY(After);
+	TestTrue(FString::Printf(TEXT("after: the path detours through the gap (crosses at y = %.0f, gap from %.0f)"), AfterCrossing, GLTerrainNavTests::GapFromY), AfterCrossing > GLTerrainNavTests::GapFromY - 50.0);
 	TestFalse(TEXT("after: the old straight route is not offered"), FMath::Abs(AfterCrossing - 3200.0) < 1000.0);
 
 	AddInfo(FString::Printf(TEXT("path crossings of x = 64 m: before y = %.0f, after the ridge y = %.0f"), BeforeCrossing, AfterCrossing));
 	Scene.FlattenRidge();
-	TestTrue(TEXT("the ridge is gone"), FMath::Abs(Scene.Terrain->HeightAt(FVector2D(SeamX, 3200))) < 10.0);
+	TestTrue(TEXT("the ridge is gone"), FMath::Abs(Scene.Terrain->HeightAt(FVector2D(GLTerrainNavTests::SeamX, 3200))) < 10.0);
 	TestTrue(TEXT("navigation rebuilds after flattening"), Scene.Settle());
-	const TArray<FVector> Restored = Scene.Path(A, B, &bPartial);
-	TestTrue(FString::Printf(TEXT("flattened: the direct route is back (crosses at y = %.0f)"), CrossingY(Restored)), !bPartial && FMath::Abs(CrossingY(Restored) - 3200.0) < 200.0);
+	const TArray<FVector> Restored = Scene.Path(GLTerrainNavTests::A, GLTerrainNavTests::B, &bPartial);
+	TestTrue(FString::Printf(TEXT("flattened: the direct route is back (crosses at y = %.0f)"), GLTerrainNavTests::CrossingY(Restored)), !bPartial && FMath::Abs(GLTerrainNavTests::CrossingY(Restored) - 3200.0) < 200.0);
 	return true;
 }
 
@@ -186,12 +186,12 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLNavAgentWalks, "Gridlands.Game.Terrain.AIWal
 bool FGLNavAgentWalks::RunTest(const FString& Parameters)
 {
 	// An AI-controlled character actually walks the new route; it never goes through the old one.
-	FNavScene Scene(TEXT("GLTerrainAgentWorld"), *this);
+	GLTerrainNavTests::FNavScene Scene(TEXT("GLTerrainAgentWorld"), *this);
 	TestTrue(TEXT("initial navmesh"), Scene.Settle());
 	Scene.RaiseRidge();
 	TestTrue(TEXT("rebuilt after the ridge"), Scene.Settle());
 
-	ACharacter* Walker = Scene.Test.World->SpawnActor<ACharacter>(A + FVector(0, 0, 100), FRotator::ZeroRotator);
+	ACharacter* Walker = Scene.Test.World->SpawnActor<ACharacter>(GLTerrainNavTests::A + FVector(0, 0, 100), FRotator::ZeroRotator);
 	if (!TestNotNull(TEXT("walker"), Walker))
 	{
 		return false;
@@ -219,7 +219,7 @@ bool FGLNavAgentWalks::RunTest(const FString& Parameters)
 	{
 		Step(0.05f); // settle on the ground
 	}
-	const EPathFollowingRequestResult::Type Request = Brain->MoveToLocation(B, 100.f, false, true, false, true);
+	const EPathFollowingRequestResult::Type Request = Brain->MoveToLocation(GLTerrainNavTests::B, 100.f, false, true, false, true);
 	TestEqual(TEXT("the move is accepted"), static_cast<int32>(Request), static_cast<int32>(EPathFollowingRequestResult::RequestSuccessful));
 
 	TArray<FVector> Trail;
@@ -228,11 +228,11 @@ bool FGLNavAgentWalks::RunTest(const FString& Parameters)
 		Step(0.05f);
 		Trail.Add(Walker->GetActorLocation());
 	}
-	const double Remaining = FVector::Dist2D(Walker->GetActorLocation(), B);
+	const double Remaining = FVector::Dist2D(Walker->GetActorLocation(), GLTerrainNavTests::B);
 	TestTrue(FString::Printf(TEXT("the walker arrives (%.0f cm from B after %d ticks)"), Remaining, Trail.Num()), Remaining < 200.0);
-	const double Crossing = CrossingY(Trail);
-	TestTrue(FString::Printf(TEXT("it crossed the ridge line through the gap (y = %.0f)"), Crossing), Crossing > GapFromY - 100.0);
-	TestTrue(TEXT("it went out of its way to do so"), MaxY(Trail) > GapFromY - 100.0);
+	const double Crossing = GLTerrainNavTests::CrossingY(Trail);
+	TestTrue(FString::Printf(TEXT("it crossed the ridge line through the gap (y = %.0f)"), Crossing), Crossing > GLTerrainNavTests::GapFromY - 100.0);
+	TestTrue(TEXT("it went out of its way to do so"), GLTerrainNavTests::MaxY(Trail) > GLTerrainNavTests::GapFromY - 100.0);
 	double HighestZ = -1e12;
 	for (const FVector& P : Trail)
 	{
@@ -240,7 +240,7 @@ bool FGLNavAgentWalks::RunTest(const FString& Parameters)
 	}
 	TestTrue(FString::Printf(TEXT("it never climbed the ridge (highest z %.0f)"), HighestZ), HighestZ < 200.0);
 	AddInfo(FString::Printf(TEXT("walker: arrived %.0f cm from B in %d ticks, crossed x = 64 m at y = %.0f, max y %.0f, max z %.0f"),
-		Remaining, Trail.Num(), Crossing, MaxY(Trail), HighestZ));
+		Remaining, Trail.Num(), Crossing, GLTerrainNavTests::MaxY(Trail), HighestZ));
 	return true;
 }
 
@@ -250,14 +250,14 @@ bool FGLNavStaleControl::RunTest(const FString& Parameters)
 	// Control: if edits do NOT tell navigation, the old straight route over the ridge is still
 	// offered. This is what the acceptance tests above would see if navigation were not updated,
 	// so their "detours through the gap" assertions can fail.
-	FNavScene Scene(TEXT("GLTerrainNavControlWorld"), *this);
+	GLTerrainNavTests::FNavScene Scene(TEXT("GLTerrainNavControlWorld"), *this);
 	TestTrue(TEXT("initial navmesh"), Scene.Settle());
 	Scene.Terrain->bNotifyNavigation = false;
 	Scene.RaiseRidge();
-	TestTrue(TEXT("the ridge is really there (collision/height)"), Scene.Terrain->HeightAt(FVector2D(SeamX, 3200)) > 250.0);
+	TestTrue(TEXT("the ridge is really there (collision/height)"), Scene.Terrain->HeightAt(FVector2D(GLTerrainNavTests::SeamX, 3200)) > 250.0);
 	Scene.Settle();
 	bool bPartial = true;
-	const double Crossing = CrossingY(Scene.Path(A, B, &bPartial));
+	const double Crossing = GLTerrainNavTests::CrossingY(Scene.Path(GLTerrainNavTests::A, GLTerrainNavTests::B, &bPartial));
 	TestTrue(FString::Printf(TEXT("stale navigation still offers the straight route over the ridge (y = %.0f)"), Crossing), !bPartial && FMath::Abs(Crossing - 3200.0) < 200.0);
 	AddInfo(FString::Printf(TEXT("control (navigation not told): path crosses x = 64 m at y = %.0f, straight over the ridge"), Crossing));
 	return true;
@@ -267,21 +267,21 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLNavAroundWalls, "Gridlands.Game.Building.Pie
 bool FGLNavAroundWalls::RunTest(const FString& Parameters)
 {
 	// Built walls are obstacles too: a wall line across the route, with a gap, forces a detour.
-	FNavScene Scene(TEXT("GLBuildNavWorld"), *this);
+	GLTerrainNavTests::FNavScene Scene(TEXT("GLBuildNavWorld"), *this);
 	TestTrue(TEXT("initial navmesh"), Scene.Settle());
 	TArray<FGLPlacedPiece> Line;
 	int32 Id = 1;
-	for (double Y = 100.0; Y < GapFromY; Y += 200.0)
+	for (double Y = 100.0; Y < GLTerrainNavTests::GapFromY; Y += 200.0)
 	{
-		Line.Add({ Id++, TEXT("buildpiece.modern.timber_foundation"), FVector(SeamX, Y, 0.0), 0 });
-		Line.Add({ Id++, TEXT("buildpiece.modern.timber_wall"), FVector(SeamX + 100.0, Y, 30.0), 1 });
+		Line.Add({ Id++, TEXT("buildpiece.modern.timber_foundation"), FVector(GLTerrainNavTests::SeamX, Y, 0.0), 0 });
+		Line.Add({ Id++, TEXT("buildpiece.modern.timber_wall"), FVector(GLTerrainNavTests::SeamX + 100.0, Y, 30.0), 1 });
 	}
 	Scene.Test.World->GetSubsystem<UGLBuildingSubsystem>()->Restore(Line, Id);
 	TestTrue(TEXT("navigation rebuilds around the pieces"), Scene.Settle());
 	bool bPartial = true;
-	const double WallX = SeamX + 100.0; // the walls stand on the floors' east edge
-	const double Crossing = CrossingY(Scene.Path(A, B, &bPartial), WallX);
-	TestTrue(FString::Printf(TEXT("the path passes the wall line through the gap (crosses at y = %.0f)"), Crossing), !bPartial && Crossing > GapFromY - 50.0);
+	const double WallX = GLTerrainNavTests::SeamX + 100.0; // the walls stand on the floors' east edge
+	const double Crossing = GLTerrainNavTests::CrossingY(Scene.Path(GLTerrainNavTests::A, GLTerrainNavTests::B, &bPartial), WallX);
+	TestTrue(FString::Printf(TEXT("the path passes the wall line through the gap (crosses at y = %.0f)"), Crossing), !bPartial && Crossing > GLTerrainNavTests::GapFromY - 50.0);
 	AddInfo(FString::Printf(TEXT("wall line with a gap: path crosses the wall line x = 65 m at y = %.0f"), Crossing));
 	return true;
 }

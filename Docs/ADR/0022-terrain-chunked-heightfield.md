@@ -86,3 +86,8 @@ so visible terrain and collision agree.
   geometry and collision.
 - Player-dug caves, voxels, overhangs or undercuts need a new architectural decision, as this ADR
   already required.
+
+**2026-09-27: one surface.** The stored vertex field plus the canonical diagonal (x, y)–(x+1, y+1)
+defines the only terrain surface, and it is drawn, collides and answers `HeightAt` (ADR-0035).
+`HeightAt` interpolated bilinearly until then. That differed from the drawn, colliding triangles by up
+to ~72 cm on steep edits: pre-existing debt found during the heightfield work, now closed.

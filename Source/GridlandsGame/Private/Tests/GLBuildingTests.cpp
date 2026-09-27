@@ -229,7 +229,9 @@ bool FGLTerraformPlay::RunTest(const FString& Parameters)
 	double Z = 0.0;
 	TestTrue(TEXT("with collision"), Reloaded.Trace(FVector2D(1000, 0), Z) && FMath::IsNearlyEqual(Z, -150.0, 2.0));
 	TestEqual(TEXT("the floor on levelled ground is back"), Reloaded.Building->GetPieces().Num(), 1);
-	TestTrue(TEXT("and still supported by the restored ground"), Reloaded.Building->Support().FindRef(Reloaded.Building->GetPieces()[0].Id) > 0.0);
+	// Fail, never crash, when the floor is missing: a crash here once hid every test after it.
+	TestTrue(TEXT("and still supported by the restored ground"), Reloaded.Building->GetPieces().Num() > 0
+		&& Reloaded.Building->Support().FindRef(Reloaded.Building->GetPieces()[0].Id) > 0.0);
 	IFileManager::Get().Delete(*UGLSaveSubsystem::SlotPath(BuildSlot));
 	return true;
 }
