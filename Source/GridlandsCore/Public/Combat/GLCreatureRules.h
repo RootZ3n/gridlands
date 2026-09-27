@@ -26,6 +26,8 @@ enum class EGLCreatureState : uint8
 	Return,      // lost Zenny or went too far from home
 	Defeated,
 	Search,      // lost sight of Zenny: goes to where Zenny was last seen (P6)
+	Patrol,      // P9: walking its data-defined loop of waypoints (calm)
+	Neutralized, // P9: taken out of the encounter by a non-damage outcome (contained, disabled...): inert, alive
 };
 
 /** What the creature knows this moment. The game fills it in (positions, line of sight). */
@@ -49,6 +51,11 @@ struct GRIDLANDSCORE_API FGLCreatureFacts
 	FVector LastKnown = FVector::ZeroVector;
 	double SecondsSinceAttack = 1e9;
 	bool bDefeated = false;
+	/** P9: neutralized (a non-damage outcome): no behaviour at all, and it never counts as defeated. */
+	bool bNeutralized = false;
+	/** P9: its patrol loop (world cm; empty = it guards its home) and the waypoint it is heading for. */
+	TConstArrayView<FVector> Patrol;
+	int32 PatrolIndex = 0;
 };
 
 struct GRIDLANDSCORE_API FGLCreatureDecision
@@ -59,6 +66,8 @@ struct GRIDLANDSCORE_API FGLCreatureDecision
 	/** cm/s. */
 	double Speed = 0.0;
 	bool bStrike = false;
+	/** P9: the patrol waypoint it heads for next (unchanged unless patrolling advanced it). */
+	int32 PatrolIndex = 0;
 };
 
 /**
@@ -80,7 +89,24 @@ namespace GLCreatureRules
 	 * Does it hear a noise (P6)? Within the noise's own radius (how far that sound carries) and within
 	 * the creature's hearing radius (how far it listens). Hearing is separate from sight.
 	 */
-	GRIDLANDSCORE_API bool Hears(const FGLCreatureDef& Def, const FVector& Self, const FVector& Noise, double NoiseRadiusCm);
+	GRIDLANDSCORE_API bool Hears(const FGLCreatureDef& Def, const FVector& Self, const FVector& Noise, double NoiseRadiusCm, double AmbientMask = 0.0);
+
+	/**
+	 * P9 ambient masking: AMBIENT NOISE REDUCES THE EFFECTIVE AUDIBILITY OF OTHER NOISE AT THE LISTENER.
+	 * First implementation (operator-approved, tunable): heard only within min(noise radius, hearing) x (1 - M),
+	 * M the strongest active ambient mask at the listener (0..1). The same rule for every stimulus, lures included.
+	 */
+	GRIDLANDSCORE_API double AudibleRangeCm(double HearingCm, double NoiseRadiusCm, double AmbientMask);
+
+	/**
+	 * P9 (ADR-0029 as amended): NAVIGATION EXISTS WHERE ACTIVE GAMEPLAY REQUIRES IT. A creature needs
+	 * navigation only while its behaviour may move it: patrolling, investigating, chasing, attacking,
+	 * searching, returning. Idle at home, defeated and neutralized creatures never do.
+	 */
+	GRIDLANDSCORE_API bool NeedsNavigation(EGLCreatureState State);
+
+	/** P9: taking part in the encounter as a hostile (neither defeated nor neutralized). */
+	GRIDLANDSCORE_API bool IsActiveHostile(EGLCreatureState State);
 
 	GRIDLANDSCORE_API const TCHAR* StateName(EGLCreatureState State);
 }

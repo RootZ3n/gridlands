@@ -35,9 +35,15 @@ bool GLCreatureRules::Sees(const FGLCreatureDef& Def, const FGLCreatureFacts& Fa
 FGLCreatureDecision GLCreatureRules::Decide(const FGLCreatureDef& Def, EGLCreatureState Previous, const FGLCreatureFacts& Facts)
 {
 	FGLCreatureDecision D;
+	D.PatrolIndex = Facts.PatrolIndex;
 	if (Facts.bDefeated)
 	{
 		D.State = EGLCreatureState::Defeated;
+		return D;
+	}
+	if (Facts.bNeutralized)
+	{
+		D.State = EGLCreatureState::Neutralized;
 		return D;
 	}
 	// A lure wins over everything else, even a chase: that is what makes distraction a real option.
@@ -85,6 +91,21 @@ FGLCreatureDecision GLCreatureRules::Decide(const FGLCreatureDef& Def, EGLCreatu
 		D.Speed = Def.WalkSpeed * 100.0;
 		return D;
 	}
+	// P9: a patroller walks its loop instead of standing at home (and goes back to it after a hunt).
+	if (Facts.Patrol.Num() > 0)
+	{
+		int32 Index = ((Facts.PatrolIndex % Facts.Patrol.Num()) + Facts.Patrol.Num()) % Facts.Patrol.Num();
+		if (FVector::Dist2D(Facts.Self, Facts.Patrol[Index]) <= HomeToleranceCm)
+		{
+			Index = (Index + 1) % Facts.Patrol.Num();
+		}
+		D.State = EGLCreatureState::Patrol;
+		D.bMove = true;
+		D.MoveTo = Facts.Patrol[Index];
+		D.Speed = Def.WalkSpeed * 100.0;
+		D.PatrolIndex = Index;
+		return D;
+	}
 	if (FVector::Dist2D(Facts.Self, Facts.Home) > HomeToleranceCm)
 	{
 		D.State = EGLCreatureState::Return;
@@ -97,9 +118,24 @@ FGLCreatureDecision GLCreatureRules::Decide(const FGLCreatureDef& Def, EGLCreatu
 	return D;
 }
 
-bool GLCreatureRules::Hears(const FGLCreatureDef& Def, const FVector& Self, const FVector& Noise, double NoiseRadiusCm)
+bool GLCreatureRules::Hears(const FGLCreatureDef& Def, const FVector& Self, const FVector& Noise, double NoiseRadiusCm, double AmbientMask)
 {
-	return FVector::Dist(Self, Noise) <= FMath::Min(NoiseRadiusCm, Def.Perception.HearingRadius * 100.0);
+	return FVector::Dist(Self, Noise) <= AudibleRangeCm(Def.Perception.HearingRadius * 100.0, NoiseRadiusCm, AmbientMask);
+}
+
+double GLCreatureRules::AudibleRangeCm(double HearingCm, double NoiseRadiusCm, double AmbientMask)
+{
+	return FMath::Min(NoiseRadiusCm, HearingCm) * (1.0 - FMath::Clamp(AmbientMask, 0.0, 1.0));
+}
+
+bool GLCreatureRules::NeedsNavigation(EGLCreatureState State)
+{
+	return State != EGLCreatureState::Idle && IsActiveHostile(State);
+}
+
+bool GLCreatureRules::IsActiveHostile(EGLCreatureState State)
+{
+	return State != EGLCreatureState::Defeated && State != EGLCreatureState::Neutralized;
 }
 
 const TCHAR* GLCreatureRules::StateName(EGLCreatureState State)
@@ -113,6 +149,8 @@ const TCHAR* GLCreatureRules::StateName(EGLCreatureState State)
 	case EGLCreatureState::Return: return TEXT("Return");
 	case EGLCreatureState::Defeated: return TEXT("Defeated");
 	case EGLCreatureState::Search: return TEXT("Search");
+	case EGLCreatureState::Patrol: return TEXT("Patrol");
+	case EGLCreatureState::Neutralized: return TEXT("Neutralized");
 	}
 	return TEXT("?");
 }

@@ -6,6 +6,7 @@
 #include "Engine/StaticMesh.h"
 #include "Pehlichi/GLCapabilityComponent.h"
 #include "Pehlichi/GLCompanionPositioningComponent.h"
+#include "Pehlichi/GLOperateComponent.h"
 #include "Pehlichi/GLPehlichiCommandComponent.h"
 #include "Pehlichi/GLRepairComponent.h"
 #include "Pehlichi/GLScanComponent.h"
@@ -33,6 +34,7 @@ AGLPehlichi::AGLPehlichi()
 	Repair = CreateDefaultSubobject<UGLRepairComponent>(TEXT("Repair"));
 	Capabilities = CreateDefaultSubobject<UGLCapabilityComponent>(TEXT("Capabilities"));
 	Positioning = CreateDefaultSubobject<UGLCompanionPositioningComponent>(TEXT("Positioning"));
+	Operate = CreateDefaultSubobject<UGLOperateComponent>(TEXT("Operate"));
 	// Starting levels (a new world); later loaded from the world save (M9).
 	Capabilities->Grant(TEXT("capability.pehlichi.scan"), 1);
 	Capabilities->Grant(TEXT("capability.pehlichi.distract"), 1);

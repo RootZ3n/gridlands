@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "structure.proof.grate_strip",
+  "displayName": "Grate strip (proof)",
+  "notes": "P9 dev proof: a 2 x 6 m run of metal grates across a corridor.",
+  "parts": [
+    {
+      "name": "grate_0",
+      "piece": "buildpiece.proof.grate",
+      "location": [
+        0,
+        -2,
+        0
+      ],
+      "salvage": "salvage.structure.fifties_foundation"
+    },
+    {
+      "name": "grate_1",
+      "piece": "buildpiece.proof.grate",
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "salvage": "salvage.structure.fifties_foundation"
+    },
+    {
+      "name": "grate_2",
+      "piece": "buildpiece.proof.grate",
+      "location": [
+        0,
+        2,
+        0
+      ],
+      "salvage": "salvage.structure.fifties_foundation"
+    }
+  ]
+}

@@ -78,6 +78,57 @@ struct GRIDLANDSCORE_API FGLSavedStructurePart
 	UPROPERTY() FRotator Rotation = FRotator::ZeroRotator;
 };
 
+/** P9: how an encounter creature left the fight (ADR-0037). Stored as a number: append only. */
+UENUM()
+enum class EGLCreatureOutcome : uint8
+{
+	None = 0,
+	Defeated = 1,    // through the health/death system
+	Neutralized = 2, // a legitimate non-damage outcome (Neutralize.*): alive, inert, still presented
+};
+
+/**
+ * P9: a creature's gameplay facts (ADR-0037), so streaming and save/restart never reset its memory: where it
+ * is, what it is doing, what it remembers and for how much longer, its health and its outcome. Timers are
+ * seconds remaining at capture; nothing about animation or presentation is kept.
+ */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLSavedCreature
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FName Placement;
+	/** EGLCreatureState as a number (append-only enum). */
+	UPROPERTY() uint8 State = 0;
+	UPROPERTY() FVector Location = FVector::ZeroVector;
+	UPROPERTY() double Yaw = 0.0;
+	UPROPERTY() double Health = -1.0; // < 0: full
+	UPROPERTY() int32 PatrolIndex = 0;
+	UPROPERTY() FVector LastKnown = FVector::ZeroVector;
+	UPROPERTY() double SearchSeconds = 0.0;
+	UPROPERTY() FVector Noise = FVector::ZeroVector;
+	UPROPERTY() double NoiseSeconds = 0.0;
+	UPROPERTY() FVector Lure = FVector::ZeroVector;
+	UPROPERTY() double LureSeconds = 0.0;
+	UPROPERTY() EGLCreatureOutcome Outcome = EGLCreatureOutcome::None;
+	/** Neutralized only: how (Neutralize.*), by which mechanism, and where it is held. */
+	UPROPERTY() FName NeutralizedHow;
+	UPROPERTY() FName NeutralizedBy;
+	UPROPERTY() FVector HeldAt = FVector::ZeroVector;
+	UPROPERTY() double HeldYaw = 0.0;
+};
+
+/** P9: a mechanism's authoritative state (ADR-0037): the state it is in, and how many times it switched. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLSavedMechanism
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FName Placement;
+	UPROPERTY() FString State;
+	UPROPERTY() int32 Switches = 0;
+};
+
 /**
  * Everything saved about one Grid cell (v2, P3): the state of what lives there. Kept while the
  * cell is streamed out, so leaving and returning never loses or replays anything.
@@ -97,8 +148,13 @@ struct GRIDLANDSCORE_API FGLSavedCell
 	UPROPERTY() TArray<int32> TerrainDeltaCm;
 	/** P6: every authored structure part that is no longer intact (optional in v2 files: absent means none). */
 	UPROPERTY() TArray<FGLSavedStructurePart> StructureParts;
+	/** P9: every creature's gameplay facts, and every mechanism's state (optional in v2 files). */
+	UPROPERTY() TArray<FGLSavedCreature> Creatures;
+	UPROPERTY() TArray<FGLSavedMechanism> Mechanisms;
+	/** P9: world seconds when captured while streaming out (< 0: loaded from a file, so no time has passed). */
+	UPROPERTY() double CapturedWorldSeconds = -1.0;
 
-	bool IsEmpty() const { return Glitches.Num() == 0 && SalvagedPlacements.Num() == 0 && DefeatedCreatures.Num() == 0 && BuildPieces.Num() == 0 && TerrainIndices.Num() == 0 && StructureParts.Num() == 0; }
+	bool IsEmpty() const { return Glitches.Num() == 0 && SalvagedPlacements.Num() == 0 && DefeatedCreatures.Num() == 0 && BuildPieces.Num() == 0 && TerrainIndices.Num() == 0 && StructureParts.Num() == 0 && Creatures.Num() == 0 && Mechanisms.Num() == 0; }
 };
 
 USTRUCT()

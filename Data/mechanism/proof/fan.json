@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "mechanism.proof.fan",
+  "displayName": "HVAC fan (proof)",
+  "states": [
+    "on",
+    "off"
+  ],
+  "initial": "on",
+  "operate": {
+    "from": "on",
+    "to": "off",
+    "capability": "capability.pehlichi.analysis",
+    "minLevel": 1,
+    "seconds": 3.0,
+    "reach": 1.5
+  },
+  "ambient": {
+    "activeIn": [
+      "on"
+    ],
+    "radius": 10.0,
+    "mask": 0.8,
+    "period": 12.0,
+    "onSeconds": 8.0,
+    "phase": 0.0
+  },
+  "notes": "P9 dev proof: masks other noise at listeners within 10 m for 8 s of every 12 s while on."
+}

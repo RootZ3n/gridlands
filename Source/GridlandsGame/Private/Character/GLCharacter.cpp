@@ -22,6 +22,7 @@
 #include "Building/GLBuildModeComponent.h"
 #include "Combat/GLCombatComponent.h"
 #include "Combat/GLHealthComponent.h"
+#include "Character/GLFootstepsComponent.h"
 #include "Save/GLSaveSubsystem.h"
 #include "Pehlichi/GLPehlichiCommandComponent.h"
 #include "GridlandsGame.h"
@@ -89,6 +90,7 @@ AGLCharacter::AGLCharacter()
 	Fabricator = CreateDefaultSubobject<UGLFabricatorComponent>(TEXT("Fabricator"));
 	BuildMode = CreateDefaultSubobject<UGLBuildModeComponent>(TEXT("BuildMode"));
 	Health = CreateDefaultSubobject<UGLHealthComponent>(TEXT("Health"));
+	Footsteps = CreateDefaultSubobject<UGLFootstepsComponent>(TEXT("Footsteps")); // P9: movement is world noise
 	Combat = CreateDefaultSubobject<UGLCombatComponent>(TEXT("Combat"));
 
 	// Navigation exists around Zenny, not across the whole cell (ADR-0029): one chunk (64 m) out,

@@ -1,5 +1,6 @@
 #include "Combat/GLCreature.h"
 
+#include "World/GLNavRegionSubsystem.h"
 #include "World/GLPlacementSubsystem.h"
 
 #include "AIController.h"
@@ -69,6 +70,7 @@ bool AGLCreature::Setup(FName InDefId, FName InPlacementId, FName VisualOverride
 		Body->SetVisibility(false);
 	}
 	Health->OnDied.AddUObject(this, &AGLCreature::HandleDied);
+	Health->OnDamaged.AddUObject(this, &AGLCreature::HandleDamaged);
 	if (UMaterialInterface* Shape = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial")))
 	{
 		if (UMaterialInstanceDynamic* Paint = Body->CreateDynamicMaterialInstance(0, Shape))
@@ -82,6 +84,83 @@ bool AGLCreature::Setup(FName InDefId, FName InPlacementId, FName VisualOverride
 void AGLCreature::BeginPlay()
 {
 	Super::BeginPlay();
+	UpdateNavigationNeed(); // P9: an idle creature at home pays for no navigation of its own
+}
+
+void AGLCreature::RestoreFromModel(const FGLCreatureModel& Model, double Now)
+{
+	const double Passed = FMath::Max(0.0, Now - Model.StampWorldSeconds);
+	Home = Model.Home;
+	Patrol = Model.Patrol;
+	PatrolIndex = Model.PatrolIndex;
+	SetActorRotation(FRotator(0.0, Model.Yaw, 0.0));
+	if (Model.Health >= 0.0)
+	{
+		Health->Restore(Model.Health); // P9: a wounded creature stays wounded
+	}
+	LastKnown = Model.LastKnown;
+	SearchLeft = FMath::Max(0.0, Model.SearchSeconds - Passed);
+	Noise = Model.Noise;
+	NoiseLeft = FMath::Max(0.0, Model.NoiseSeconds - Passed);
+	Lure = Model.Lure;
+	LureLeft = FMath::Max(0.0, Model.LureSeconds - Passed);
+	// Attack is re-derived from range every step; it resumes as the chase it was.
+	State = Model.State == EGLCreatureState::Attack ? EGLCreatureState::Chase : Model.State;
+	if (Model.Outcome == EGLCreatureOutcome::Neutralized)
+	{
+		PresentNeutralized(Model.HeldAt, Model.HeldYaw);
+	}
+	UpdateNavigationNeed();
+}
+
+void AGLCreature::PresentNeutralized(const FVector& HeldAt, double HeldYaw)
+{
+	State = EGLCreatureState::Neutralized;
+	if (AAIController* Brain = Cast<AAIController>(GetController()))
+	{
+		Brain->StopMovement();
+	}
+	SetActorLocationAndRotation(HeldAt + FVector(0, 0, 70), FRotator(0.0, HeldYaw, 0.0), false, nullptr, ETeleportType::TeleportPhysics);
+	GetCharacterMovement()->StopMovementImmediately();
+	GetCharacterMovement()->DisableMovement();
+	SetActorTickEnabled(false); // no behaviour, no strikes; hearing and combat skip it (not an active hostile)
+	Health->SetIgnoresDamage(true);
+	LureLeft = NoiseLeft = SearchLeft = 0.0;
+	UpdateNavigationNeed();
+}
+
+bool AGLCreature::HasOwnNavigation() const
+{
+	return NavInvoker && NavInvoker->IsActive();
+}
+
+void AGLCreature::UpdateNavigationNeed()
+{
+	if (!NavInvoker)
+	{
+		return;
+	}
+	// ADR-0029 as amended (P9): NAVIGATION EXISTS WHERE ACTIVE GAMEPLAY REQUIRES IT, and an active authored
+	// region already provides it for everyone inside.
+	const UGLNavRegionSubsystem* Regions = GetWorld() ? GetWorld()->GetSubsystem<UGLNavRegionSubsystem>() : nullptr;
+	const bool bNeed = GLCreatureRules::NeedsNavigation(State) && !(Regions && Regions->ProvideFor(GetActorLocation()));
+	if (bNeed != NavInvoker->IsActive())
+	{
+		NavInvoker->SetActive(bNeed);
+	}
+}
+
+void AGLCreature::WriteThrough()
+{
+	if (UGLPlacementSubsystem* Placements = GetWorld() ? GetWorld()->GetSubsystem<UGLPlacementSubsystem>() : nullptr)
+	{
+		Placements->SyncCreatureFromActor(*this);
+	}
+}
+
+void AGLCreature::HandleDamaged(double Taken, AActor* Instigator)
+{
+	WriteThrough(); // its health is a gameplay fact (P9: never restored to full by a reload)
 }
 
 void AGLCreature::EndPlay(const EEndPlayReason::Type Reason)
@@ -98,7 +177,10 @@ void AGLCreature::Tick(float DeltaSeconds)
 bool AGLCreature::HearNoise(const FGLNoiseEvent& Heard)
 {
 	const FGLCreatureDef* Def = GLContent::Get().Find<FGLCreatureDef>(DefId);
-	if (!Def || IsDefeated() || !GLCreatureRules::Hears(*Def, GetActorLocation(), Heard.Location, Heard.RadiusCm))
+	// P9: the ambient mask at this listener lowers what it can hear, lures included (one rule, no exemption).
+	const UGLNoiseSubsystem* NoiseWorld = GetWorld() ? GetWorld()->GetSubsystem<UGLNoiseSubsystem>() : nullptr;
+	const double Mask = NoiseWorld ? NoiseWorld->MaskAt(GetActorLocation()) : 0.0;
+	if (!Def || !IsActiveHostile() || !GLCreatureRules::Hears(*Def, GetActorLocation(), Heard.Location, Heard.RadiusCm, Mask))
 	{
 		return false;
 	}
@@ -112,6 +194,7 @@ bool AGLCreature::HearNoise(const FGLNoiseEvent& Heard)
 		Noise = Heard.Location;
 		NoiseLeft = Heard.InvestigateSeconds;
 	}
+	WriteThrough();
 	return true;
 }
 
@@ -127,7 +210,7 @@ bool AGLCreature::LineOfSightTo(const AActor* Target) const
 void AGLCreature::Think(float DeltaSeconds)
 {
 	const FGLCreatureDef* Def = GLContent::Get().Find<FGLCreatureDef>(DefId);
-	if (!Def || IsDefeated())
+	if (!Def || !IsActiveHostile())
 	{
 		return;
 	}
@@ -166,7 +249,10 @@ void AGLCreature::Think(float DeltaSeconds)
 	Facts.SearchSecondsLeft = SearchLeft;
 	Facts.LastKnown = LastKnown;
 	Facts.SecondsSinceAttack = SinceAttack;
+	Facts.Patrol = Patrol;
+	Facts.PatrolIndex = PatrolIndex;
 	const FGLCreatureDecision Decision = GLCreatureRules::Decide(*Def, State, Facts);
+	PatrolIndex = Decision.PatrolIndex;
 	if ((Decision.State == EGLCreatureState::Chase || Decision.State == EGLCreatureState::Attack) && Zenny)
 	{
 		// It sees Zenny now: remember where, for when it stops seeing (P6).
@@ -195,6 +281,7 @@ void AGLCreature::Think(float DeltaSeconds)
 	{
 		SetActorRotation(FRotator(0.0, (Zenny->GetActorLocation() - GetActorLocation()).Rotation().Yaw, 0.0));
 	}
+	UpdateNavigationNeed();
 	if (Decision.bStrike && Zenny)
 	{
 		if (UGLHealthComponent* Target = Zenny->FindComponentByClass<UGLHealthComponent>())
@@ -203,6 +290,7 @@ void AGLCreature::Think(float DeltaSeconds)
 		}
 		SinceAttack = 0.0;
 	}
+	WriteThrough(); // P9: the model mirrors every step (position, awareness, memory, patrol)
 }
 
 void AGLCreature::Enter(EGLCreatureState Next)
@@ -227,7 +315,7 @@ void AGLCreature::Enter(EGLCreatureState Next)
 	{
 		Emit(TEXT("Event.Creature.Searching"));
 	}
-	else if ((Next == EGLCreatureState::Return || Next == EGLCreatureState::Idle)
+	else if ((Next == EGLCreatureState::Return || Next == EGLCreatureState::Idle || Next == EGLCreatureState::Patrol)
 		&& (Was == EGLCreatureState::Chase || Was == EGLCreatureState::Attack || Was == EGLCreatureState::Search))
 	{
 		Emit(TEXT("Event.Creature.Lost"));

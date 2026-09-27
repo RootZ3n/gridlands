@@ -9,6 +9,8 @@
 #include "Glitch/GLGlitchComponent.h"
 #include "Glitch/GLGlitchSubsystem.h"
 #include "Pehlichi/GLCompanionPositioningComponent.h"
+#include "Mechanism/GLMechanismSubsystem.h"
+#include "Pehlichi/GLOperateComponent.h"
 #include "Pehlichi/GLRepairComponent.h"
 #include "Pehlichi/GLScanComponent.h"
 #include "Content/GLContent.h"
@@ -37,8 +39,13 @@ EGLCommandRejection UGLPehlichiCommandComponent::Issue(FName Command, AActor* Co
 	AActor* Pehlichi = GetOwner();
 	UGLCompanionPositioningComponent* Positioning = Pehlichi->FindComponentByClass<UGLCompanionPositioningComponent>();
 	UGLRepairComponent* Repair = Pehlichi->FindComponentByClass<UGLRepairComponent>();
+	UGLOperateComponent* Operate = Pehlichi->FindComponentByClass<UGLOperateComponent>();
 	EGLCommandRejection Result = EGLCommandRejection::None;
 
+	if (Operate && Operate->IsWorking() && Command != TEXT("Command.Pehlichi.Operate") && Command != TEXT("Command.Pehlichi.Scan"))
+	{
+		Operate->Stop(); // any other order interrupts an operation (it must be commanded again)
+	}
 	if (Command == TEXT("Command.Pehlichi.Follow"))
 	{
 		Repair->Stop(); // an active repair becomes Interrupted
@@ -81,6 +88,32 @@ EGLCommandRejection UGLPehlichiCommandComponent::Issue(FName Command, AActor* Co
 				Distraction.InvestigateSeconds = Seconds;
 				Noise->Emit(MoveTemp(Distraction));
 			}
+		}
+	}
+	else if (Command == TEXT("Command.Pehlichi.Operate"))
+	{
+		// P9 (ADR-0037): go and work the nearest operable control. The mechanism decides what happens, when it
+		// switches; Pehlichi deals no damage (ADR-0017).
+		const UGLMechanismSubsystem* Mechanisms = GetWorld()->GetSubsystem<UGLMechanismSubsystem>();
+		const FGLMechanismRecord* Control = Mechanisms ? Mechanisms->FindOperable(Commander->GetActorLocation(), OperateSearchRadius) : nullptr;
+		const FGLMechanismDef* Def = Control ? UGLMechanismSubsystem::DefOf(*Control) : nullptr;
+		const UGLCapabilityComponent* Capabilities = Pehlichi->FindComponentByClass<UGLCapabilityComponent>();
+		if (!Operate || !Def)
+		{
+			Result = EGLCommandRejection::NothingToOperate;
+		}
+		else if (Operate->IsWorking())
+		{
+			Result = EGLCommandRejection::Busy;
+		}
+		else if (!Capabilities || Capabilities->Level(Def->Operate.Capability) < FMath::Max(1, Def->Operate.MinLevel))
+		{
+			Result = EGLCommandRejection::RequirementsUnmet;
+		}
+		else
+		{
+			Repair->Stop();
+			Operate->Assign(Control->Placement, Commander);
 		}
 	}
 	else if (Command == TEXT("Command.Pehlichi.Scan"))

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "mechanism.proof.cage",
+  "displayName": "Drop cage (proof)",
+  "states": [
+    "raised",
+    "dropped"
+  ],
+  "initial": "raised",
+  "operate": {
+    "from": "raised",
+    "to": "dropped",
+    "capability": "capability.pehlichi.analysis",
+    "minLevel": 1,
+    "seconds": 6.0,
+    "reach": 1.5
+  },
+  "neutralize": {
+    "inState": "dropped",
+    "tag": "Neutralize.Contained",
+    "offset": [
+      -10.0,
+      0.0,
+      0.0
+    ],
+    "extent": [
+      2.0,
+      2.0,
+      2.0
+    ],
+    "presentSeconds": 0.6
+  },
+  "enterNoise": {
+    "dropped": "Noise.Mechanism.Slam"
+  },
+  "notes": "P9 dev proof: the placement is the control panel; the cage hangs over the box 10 m away. Dropping it decides, at that moment, who is contained."
+}

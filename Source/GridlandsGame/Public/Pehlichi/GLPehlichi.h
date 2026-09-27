@@ -30,6 +30,7 @@ public:
 	UGLRepairComponent* GetRepair() const { return Repair; }
 	UGLCapabilityComponent* GetCapabilities() const { return Capabilities; }
 	UGLCompanionPositioningComponent* GetPositioning() const { return Positioning; }
+	class UGLOperateComponent* GetOperate() const { return Operate; }
 
 private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Body;
@@ -39,4 +40,5 @@ private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGLRepairComponent> Repair;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGLCapabilityComponent> Capabilities;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGLCompanionPositioningComponent> Positioning;
+	UPROPERTY(VisibleAnywhere) TObjectPtr<class UGLOperateComponent> Operate;
 };

@@ -14,6 +14,7 @@
 #include "Terrain/GLTerrainSubsystem.h"
 #include "Tests/GLTestUtils.h"
 #include "World/GLGridSubsystem.h"
+#include "World/GLNavRegionSubsystem.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -62,6 +63,8 @@ namespace GLLocalNavTests
 		{
 			Test.World->TimeSeconds += 0.05;
 			Nav->Tick(0.05f);
+			// The game's per-frame streaming step also runs the navigation-region update and stale-tile sweep (P9).
+			Test.World->GetSubsystem<UGLNavRegionSubsystem>()->Update(Zenny->GetActorLocation());
 		}
 
 		/** Ticks navigation until nothing is pending or running. False on timeout. */
@@ -153,6 +156,16 @@ bool FGLNavLocalOnly::RunTest(const FString& Parameters)
 	TestTrue(TEXT("settles after the walk"), S.Settle());
 	AddInfo(FString::Printf(TEXT("active tiles after the walk: %d; old place on navigation: %s"), S.ActiveTiles(), S.OnNav(FVector2D(0, -1200)) ? TEXT("yes") : TEXT("no")));
 	TestTrue(TEXT("navigation where Zenny now is"), S.OnNav(FVector2D(31500, -1200)));
+	// P9: nothing left behind anywhere: no built tile outside the active set (a finishing task used to put some back;
+	// the sweep, every 0.5 s of the streaming step, removes it again: give it that long, then settle).
+	for (int32 T = 0; T < 30; ++T)
+	{
+		S.TickNav();
+	}
+	S.Settle();
+	const int32 Stale = S.Test.World->GetSubsystem<UGLNavRegionSubsystem>()->CountStaleTiles(FVector(15000, -1200, 0), 45);
+	AddInfo(FString::Printf(TEXT("stale tiles (built, not active): %d; swept so far: %d"), Stale, S.Test.World->GetSubsystem<UGLNavRegionSubsystem>()->GetSweptTiles()));
+	TestEqual(TEXT("no built tile outside the active set"), Stale, 0);
 	TestFalse(TEXT("removed where Zenny was (beyond the removal radius)"), S.OnNav(FVector2D(0, -1200)));
 	TestTrue(TEXT("still bounded after moving"), S.ActiveTiles() < S.WholeCellTiles() / 10.0);
 

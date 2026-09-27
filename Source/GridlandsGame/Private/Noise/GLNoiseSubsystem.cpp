@@ -6,6 +6,8 @@
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GridlandsGame.h"
+#include "Mechanism/GLMechanismSubsystem.h"
+#include "World/GLPlacementSubsystem.h"
 
 namespace
 {
@@ -36,9 +38,16 @@ int32 UGLNoiseSubsystem::Emit(FGLNoiseEvent Noise)
 	Noise.WorldSeconds = World ? World->GetTimeSeconds() : 0.0;
 	if (World && Noise.RadiusCm > 0.0)
 	{
+		UGLPlacementSubsystem* Placements = World->GetSubsystem<UGLPlacementSubsystem>();
+		Noise.Heard += Placements ? Placements->DeliverNoise(Noise) : 0;
 		for (TActorIterator<AGLCreature> It(World); It; ++It)
 		{
-			Noise.Heard += It->HearNoise(Noise) ? 1 : 0;
+			// Creatures with no placement model (dev proof creatures, bare test actors) hear by their actors.
+			const FGLActorPlacement* Model = Placements ? Placements->FindActorModel(It->GetPlacementId()) : nullptr;
+			if (!Model || Model->Actor.Get() != *It)
+			{
+				Noise.Heard += It->HearNoise(Noise) ? 1 : 0;
+			}
 		}
 	}
 	++Emitted;
@@ -58,6 +67,12 @@ int32 UGLNoiseSubsystem::EmitAction(const UObject* Context, FName Action, const 
 	UWorld* World = Context ? Context->GetWorld() : nullptr;
 	UGLNoiseSubsystem* Noise = World ? World->GetSubsystem<UGLNoiseSubsystem>() : nullptr;
 	return Noise ? Noise->Emit(Noise->Make(Action, Location, Instigator, Material)) : 0;
+}
+
+double UGLNoiseSubsystem::MaskAt(const FVector& Listener) const
+{
+	const UGLMechanismSubsystem* Mechanisms = GetWorld() ? GetWorld()->GetSubsystem<UGLMechanismSubsystem>() : nullptr;
+	return Mechanisms ? Mechanisms->MaskAt(Listener) : 0.0;
 }
 
 int32 UGLNoiseSubsystem::CountOf(FName Action) const

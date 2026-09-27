@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "id": "structure.proof.wall_8m",
+  "displayName": "8 m wall (proof)",
+  "notes": "P9 dev proof: an ugly 8 m wall (four foundations, four plain walls) that blocks sight and paths.",
+  "parts": [
+    {
+      "name": "floor_0",
+      "piece": "buildpiece.fifties.foundation",
+      "location": [
+        -3,
+        0,
+        0
+      ],
+      "salvage": "salvage.structure.fifties_foundation"
+    },
+    {
+      "name": "wall_0",
+      "piece": "buildpiece.fifties.wall_plain",
+      "location": [
+        -3,
+        1,
+        0.3
+      ],
+      "salvage": "salvage.structure.fifties_wall"
+    },
+    {
+      "name": "floor_1",
+      "piece": "buildpiece.fifties.foundation",
+      "location": [
+        -1,
+        0,
+        0
+      ],
+      "salvage": "salvage.structure.fifties_foundation"
+    },
+    {
+      "name": "wall_1",
+      "piece": "buildpiece.fifties.wall_plain",
+      "location": [
+        -1,
+        1,
+        0.3
+      ],
+      "salvage": "salvage.structure.fifties_wall"
+    },
+    {
+      "name": "floor_2",
+      "piece": "buildpiece.fifties.foundation",
+      "location": [
+        1,
+        0,
+        0
+      ],
+      "salvage": "salvage.structure.fifties_foundation"
+    },
+    {
+      "name": "wall_2",
+      "piece": "buildpiece.fifties.wall_plain",
+      "location": [
+        1,
+        1,
+        0.3
+      ],
+      "salvage": "salvage.structure.fifties_wall"
+    },
+    {
+      "name": "floor_3",
+      "piece": "buildpiece.fifties.foundation",
+      "location": [
+        3,
+        0,
+        0
+      ],
+      "salvage": "salvage.structure.fifties_foundation"
+    },
+    {
+      "name": "wall_3",
+      "piece": "buildpiece.fifties.wall_plain",
+      "location": [
+        3,
+        1,
+        0.3
+      ],
+      "salvage": "salvage.structure.fifties_wall"
+    }
+  ]
+}

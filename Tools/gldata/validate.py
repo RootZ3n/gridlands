@@ -1,7 +1,7 @@
 """Validate Data/ against Docs/CONTENT-IDS-AND-TAGS.md and the design invariants.
 
 Every problem is a Problem(rule, file, where, message). Rule codes match the
-documents: ID-*, TAG-*, ERA-1, NC-2, E-1, P-3, DLG-1, PLC-*, GEN-1, SCHEMA.
+documents: ID-*, TAG-*, ERA-1, NC-2, E-1, P-3, DLG-1, PLC-*, GEN-1, SCHEMA, PRF-1, MEC-*, NAV-1.
 Output is sorted, so two runs over the same data print the same thing.
 """
 
@@ -205,6 +205,7 @@ def cross_check(ds: Dataset) -> None:
     check_visuals(ds)
     check_lods(ds)
     check_creatures(ds)
+    check_encounters(ds)
     check_grid(ds)
     check_knowledge_domains(ds)
     check_generated_tags(ds)
@@ -502,8 +503,49 @@ def check_creatures(ds: Dataset) -> None:
             item = ds.entities.get(drop.get("item", "")) if isinstance(drop, dict) else None
             if item and "Source.CreatureDrop" not in item.data.get("sources", []):
                 ds.problem("CR-1", entity.file, f".drops[{index}]", f"{drop['item']} must list Source.CreatureDrop among its sources")
-        if entity.id not in placed:
+        if entity.id not in placed and not is_proof(entity.id):
             ds.problem("CR-2", entity.file, "", "a creature must be placed somewhere (threat comes from places, ADR-0014)")
+
+
+def is_proof(entity_id: str) -> bool:
+    """A dev-proof definition (P9): its second id segment is `proof` (e.g. creature.proof.warden)."""
+    parts = entity_id.split(".")
+    return len(parts) > 1 and parts[1] == "proof"
+
+
+def check_encounters(ds: Dataset) -> None:
+    """PRF-1 dev-proof definitions (<kind>.proof.*) are placed only by dev fixtures (never shipping content): no
+    Data placement may reference one, and they are exempt from CR-2. PLC-4 only a spawn placement has a patrol.
+    MEC-1 a mechanism's initial, operate from/to, neutralize inState, ambient activeIn and enterNoise keys name its
+    own states, and operate changes the state. MEC-2 an ambient duty cycle's onSeconds fits in its period.
+    NAV-1 a navregion's extent is positive on every axis."""
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        data, rel = entity.data, entity.file
+        if entity.kind == "placement":
+            if is_proof(str(data.get("definition", ""))):
+                ds.problem("PRF-1", rel, ".definition", f"{data.get('definition')} is a dev-proof definition: only dev fixtures place it")
+            if "patrol" in data and data.get("kind") != "spawn":
+                ds.problem("PLC-4", rel, ".patrol", "only a spawn placement has a patrol loop")
+        elif entity.kind == "mechanism":
+            states = [x for x in data.get("states", []) if isinstance(x, str)]
+            named = [(".initial", data.get("initial"))]
+            operate = data.get("operate") if isinstance(data.get("operate"), dict) else {}
+            named += [(".operate.from", operate.get("from")), (".operate.to", operate.get("to"))] if operate else []
+            neutralize = data.get("neutralize") if isinstance(data.get("neutralize"), dict) else {}
+            named += [(".neutralize.inState", neutralize.get("inState"))] if neutralize else []
+            ambient = data.get("ambient") if isinstance(data.get("ambient"), dict) else {}
+            named += [(".ambient.activeIn", x) for x in ambient.get("activeIn", [])]
+            named += [(f".enterNoise.{k}", k) for k in (data.get("enterNoise") or {})]
+            for where, name in named:
+                if name not in states:
+                    ds.problem("MEC-1", rel, where, f"'{name}' is not one of its states {states}")
+            if operate and operate.get("from") == operate.get("to"):
+                ds.problem("MEC-1", rel, ".operate", "an operation must change the state")
+            if ambient.get("period") and ambient.get("onSeconds", 0) > ambient["period"]:
+                ds.problem("MEC-2", rel, ".ambient.onSeconds", "must fit in the period")
+        elif entity.kind == "navregion":
+            if any(not isinstance(x, (int, float)) or x <= 0 for x in data.get("extent", [])[:3]):
+                ds.problem("NAV-1", rel, ".extent", "half-extents must be positive")
 
 
 def check_grid(ds: Dataset) -> None:

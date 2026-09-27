@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "creature.proof.warden",
+  "displayName": "Warden (proof)",
+  "health": 240.0,
+  "walkSpeed": 1.8,
+  "chaseSpeed": 3.6,
+  "perception": {
+    "sightRadius": 14.0,
+    "coneDegrees": 120.0,
+    "hearingRadius": 18.0,
+    "memorySeconds": 10.0
+  },
+  "attack": {
+    "damage": 10.0,
+    "reach": 1.8,
+    "cooldownSeconds": 1.5
+  },
+  "leashRadius": 30.0,
+  "visual": "visual.creature.raccoon_glitched",
+  "neutralizableBy": [
+    "Neutralize.Contained"
+  ],
+  "encounter": {
+    "rewards": [
+      {
+        "item": "item.material.static_residue",
+        "count": 5,
+        "yieldCategory": "yield.reward.unique"
+      }
+    ]
+  },
+  "notes": "P9 dev proof encounter target: defeated through health, or neutralized by containment. Values provisional."
+}

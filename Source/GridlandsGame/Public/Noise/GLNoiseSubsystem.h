@@ -42,8 +42,17 @@ public:
 	/** Builds a noise from data (radius, investigate seconds) at Location. */
 	FGLNoiseEvent Make(FName Action, const FVector& Location, AActor* Instigator, FName Material = NAME_None) const;
 
-	/** Every creature in the world gets to hear it (by its own hearing). Returns how many heard. */
+	/**
+	 * Every creature gets to hear it by its own hearing and the ambient mask at it (P9): creature models
+	 * through UGLPlacementSubsystem::DeliverNoise (presented or not), proof creatures by their actors. Returns how many heard.
+	 */
 	int32 Emit(FGLNoiseEvent Noise);
+
+	/**
+	 * P9 ambient masking (ADR-0037): the strongest ambient mask (0..1) sounding at a listener's location now. Every
+	 * listener applies it to every stimulus, Pehlichi's lures included. Ambient sound itself is never a stimulus.
+	 */
+	double MaskAt(const FVector& Listener) const;
 
 	/** Convenience: Make + Emit. */
 	static int32 EmitAction(const UObject* Context, FName Action, const FVector& Location, AActor* Instigator, FName Material = NAME_None);
