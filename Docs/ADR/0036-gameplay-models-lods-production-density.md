@@ -127,3 +127,6 @@ The operator's rule applies: **redesign only if a budget is breached.** None is 
   same model/presentation split before player houses grow to hundreds of pieces.
 - **Partial salvage integrity is still not persisted** (unchanged behaviour).
 - **The P7 dense stress strip is unchanged** and still measured (`dense-*`).
+- **Dungeon/infiltration intent (recorded after this ADR):** audited, with no conflict. The constraints it places
+  on future work (a creature outcome richer than defeated, persistent search state, the navigation
+  tile budget with patrols, data-based concealment) are in the evidence, section M.
