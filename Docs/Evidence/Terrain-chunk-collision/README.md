@@ -168,4 +168,5 @@ terrain subsystem, not chunks. That is why M6b guards the vegetation case, not a
   unchanged).
 
 ## Fresh clone
-*(filled in after verification)*
+**PASS.** A fresh clone of `64c48e2` built and passed **115/115** tests (41 requirements), from
+tracked inputs plus the pinned engine (`00-fresh-clone.summary.txt`).
