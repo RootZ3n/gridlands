@@ -222,3 +222,7 @@ every mode.
 - **Newly exposed, not in scope:** the render mesh (2.33 MB per chunk, ~0.6 GB per cell) is now the
   dominant terrain memory. The remaining synchronous whole-cell load (~90 ms, field generation) is
   unchanged.
+
+## Fresh clone
+**PASS.** A fresh clone of `08b4d7f` built and passed **117/117** tests (42 requirements, default
+canonical mode) from tracked inputs plus the pinned engine (`00-fresh-clone.summary.txt`).
