@@ -124,7 +124,7 @@ UE::Geometry::FDynamicMesh3 AGLTerrainChunk::BuildMesh(const FGLChunkSnapshot& S
 	return Built;
 }
 
-void AGLTerrainChunk::ApplyMesh(UE::Geometry::FDynamicMesh3&& Built, bool bNotifyNavigation, bool bAsyncCollision)
+void AGLTerrainChunk::ApplyMesh(UE::Geometry::FDynamicMesh3&& Built, bool bNotifyNavigation)
 {
 	const double Start = FPlatformTime::Seconds();
 	Mesh->SetMesh(MoveTemp(Built));
@@ -133,7 +133,7 @@ void AGLTerrainChunk::ApplyMesh(UE::Geometry::FDynamicMesh3&& Built, bool bNotif
 	// The one collision cook (collision updates are deferred, so SetMesh did not cook). Synchronous: in this
 	// engine an async cook's completion costs the game thread more than the cook itself (~7.5 vs ~5 ms per
 	// chunk, measured), and a synchronous cook leaves no window in which the new ground lacks collision.
-	Mesh->bUseAsyncCooking = bAsyncCollision;
+	Mesh->bUseAsyncCooking = false; // never asynchronous (ADR-0034)
 	Mesh->UpdateCollision(false);
 	const double Collided = FPlatformTime::Seconds();
 	if (bNotifyNavigation)
@@ -152,7 +152,7 @@ void AGLTerrainChunk::Rebuild(const FGLHeightfield& Field, bool bNotifyNavigatio
 	const double Start = FPlatformTime::Seconds();
 	UE::Geometry::FDynamicMesh3 Built = BuildMesh(MakeSnapshot(Field, FirstVertex, VertsPerSide));
 	MeshSeconds += FPlatformTime::Seconds() - Start;
-	ApplyMesh(MoveTemp(Built), bNotifyNavigation, false);
+	ApplyMesh(MoveTemp(Built), bNotifyNavigation);
 }
 
 bool AGLTerrainChunk::IsEmptyAndInert() const

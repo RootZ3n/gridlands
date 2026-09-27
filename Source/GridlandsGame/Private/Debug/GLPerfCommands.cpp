@@ -700,13 +700,13 @@ namespace GLPerf
 					LegacyEager.Add(Time(L, MakeMesh(65, 0.f)));
 					AGLTerrainChunk* M = W->SpawnActor<AGLTerrainChunk>(Row + FVector(0, 64000.0, 0), FRotator::ZeroRotator);
 					T0 = FPlatformTime::Seconds();
-					M->ApplyMesh(MakeMesh(65, 0.f), true, false);
+					M->ApplyMesh(MakeMesh(65, 0.f), true);
 					ApplyFirst.Add((FPlatformTime::Seconds() - T0) * 1000.0);
 					M->ClearForPool();
 					M->SetActorHiddenInGame(false);
 					M->SetActorEnableCollision(true);
 					T0 = FPlatformTime::Seconds();
-					M->ApplyMesh(MakeMesh(65, 10.f), true, false);
+					M->ApplyMesh(MakeMesh(65, 10.f), true);
 					ApplyReused.Add((FPlatformTime::Seconds() - T0) * 1000.0);
 				}
 				auto Stat = [](const TCHAR* Name, TArray<double> V, FJsonObject& O)
@@ -750,7 +750,7 @@ namespace GLPerf
 					const double Empty = UsedMb();
 					for (AGLTerrainChunk* Chunk : Cell)
 					{
-						Chunk->ApplyMesh(MakeMesh(65, 0.f), true, false);
+						Chunk->ApplyMesh(MakeMesh(65, 0.f), true);
 					}
 					const double Live = UsedMb();
 					O->SetNumberField(TEXT("mem256EmptyChunksMb"), Empty - Before);

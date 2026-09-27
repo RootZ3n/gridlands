@@ -196,7 +196,7 @@ public:
 
 private:
 	void FinishGround(FName CellId, FGLHeightfield&& Field, const FGLGroundParams& Params, int32 Generation, bool bBuildNow);
-	void BuildSlotNow(FGLCellGround& Ground, FGLChunkSlot& Slot, bool bAsyncCollision);
+	void BuildSlotNow(FGLCellGround& Ground, FGLChunkSlot& Slot);
 	void CancelPending(FName CellId);
 	AGLTerrainChunk* AcquireChunk(const FGLCellGround& Ground, const FGLChunkSlot& Slot);
 	void RetireOne();

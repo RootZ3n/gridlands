@@ -197,7 +197,7 @@ void UGLTerrainSubsystem::FinishGround(FName CellId, FGLHeightfield&& Field, con
 			Slot.First = FIntPoint(CX * (P.ChunkVerts - 1), CY * (P.ChunkVerts - 1));
 			if (bBuildNow)
 			{
-				BuildSlotNow(Ground, Slot, false);
+				BuildSlotNow(Ground, Slot);
 			}
 		}
 	}
@@ -256,13 +256,13 @@ AGLTerrainChunk* UGLTerrainSubsystem::AcquireChunk(const FGLCellGround& Ground, 
 	return Chunk;
 }
 
-void UGLTerrainSubsystem::BuildSlotNow(FGLCellGround& Ground, FGLChunkSlot& Slot, bool bAsyncCollision)
+void UGLTerrainSubsystem::BuildSlotNow(FGLCellGround& Ground, FGLChunkSlot& Slot)
 {
 	if (!Slot.Actor)
 	{
 		Slot.Actor = AcquireChunk(Ground, Slot);
 	}
-	Slot.Actor->ApplyMesh(AGLTerrainChunk::BuildMesh(AGLTerrainChunk::MakeSnapshot(Ground.Field, Slot.First, Ground.VertsPerChunk)), true, bAsyncCollision);
+	Slot.Actor->ApplyMesh(AGLTerrainChunk::BuildMesh(AGLTerrainChunk::MakeSnapshot(Ground.Field, Slot.First, Ground.VertsPerChunk)), true);
 	Slot.BuiltVersion = Slot.Version;
 }
 
@@ -316,7 +316,7 @@ void UGLTerrainSubsystem::Pump(const FVector2D& Near, double BudgetSeconds, int3
 		const double One = FPlatformTime::Seconds();
 		const double M0 = AGLTerrainChunk::MeshSeconds, C0 = AGLTerrainChunk::CollisionSeconds, N0 = AGLTerrainChunk::NavigationSeconds;
 		const bool bFirstBuild = Slot.Actor->GetLifetimeMeshes() == 0;
-		Slot.Actor->ApplyMesh(MoveTemp(*Job->Task.GetResult()), true, false); // one synchronous cook (see ApplyMesh)
+		Slot.Actor->ApplyMesh(MoveTemp(*Job->Task.GetResult()), true); // one synchronous cook (see ApplyMesh)
 		const double ApplyMs = (FPlatformTime::Seconds() - One) * 1000.0;
 		(bFirstBuild ? Stats.FirstBuildApplies : Stats.ReusedApplies) += 1;
 		(bFirstBuild ? Stats.FirstBuildMsSum : Stats.ReusedMsSum) += ApplyMs;
@@ -423,7 +423,7 @@ bool UGLTerrainSubsystem::EnsureReadyAt(const FVector2D& World, double RadiusCm)
 			if (Slot.BuiltVersion != Slot.Version || !Slot.Actor)
 			{
 				// Never let Zenny stand over missing ground: build it here, with collision at once.
-				BuildSlotNow(Ground, Slot, false);
+				BuildSlotNow(Ground, Slot);
 				++Stats.EmergencyChunks;
 			}
 
@@ -491,7 +491,7 @@ void UGLTerrainSubsystem::FlushAll()
 		{
 			if (Slot.BuiltVersion != Slot.Version || !Slot.Actor)
 			{
-				BuildSlotNow(Entry.Value, Slot, false);
+				BuildSlotNow(Entry.Value, Slot);
 			}
 			Slot.InFlightVersion = -1;
 		}

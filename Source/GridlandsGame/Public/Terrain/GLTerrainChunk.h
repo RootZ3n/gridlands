@@ -49,7 +49,7 @@ public:
 	/** Streaming (P5): copy what a worker needs, build the mesh anywhere, apply it on the game thread. */
 	static FGLChunkSnapshot MakeSnapshot(const FGLHeightfield& Field, FIntPoint First, int32 Verts);
 	static UE::Geometry::FDynamicMesh3 BuildMesh(const FGLChunkSnapshot& Snapshot);
-	void ApplyMesh(UE::Geometry::FDynamicMesh3&& Built, bool bNotifyNavigation, bool bAsyncCollision);
+	void ApplyMesh(UE::Geometry::FDynamicMesh3&& Built, bool bNotifyNavigation);
 	bool IsBuilt() const { return bBuilt; }
 	/** A pooled chunk holds nothing: an empty mesh, no collision body, hidden, no collision. */
 	bool IsEmptyAndInert() const;

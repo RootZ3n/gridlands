@@ -1,6 +1,7 @@
 # ADR-0034: Terrain chunk collision cook and pool hardening (after P7.1)
 
-- Status: **Proposed**. The engineering cleanup between P7.1 and P8 (operator, 2026-09-26: "warm
+- Status: **Accepted as an engineering checkpoint** (operator, 2026-09-26: merge the safe improvements; do
+  not claim the streaming problem solved; next, a bounded heightfield-collision spike). Originally **Proposed**. The engineering cleanup between P7.1 and P8 (operator, 2026-09-26: "warm
   terrain chunk pool"). **The warm pool was measured and is not the remedy** (below); the operator's
   directive was to stop and report before any materially different architecture, and this ADR
   stops there. The decision it leaves open is under "Open decision".
@@ -41,7 +42,7 @@ never complete an async cook at all (no frame ticks), so tests would also lose t
 ## Decision (made, within the existing architecture)
 1. **One collision cook per chunk mesh, synchronous.** The chunk component defers collision updates
    (`SetDeferredCollisionUpdatesEnabled(true)`); `ApplyMesh` cooks once, synchronously, for streaming,
-   edits and restores alike. There is no window in which new ground lacks collision.
+   edits and restores alike. The asynchronous-cook parameter was removed, so no path can request one. There is no window in which new ground lacks collision.
 2. **The pool is hardened, bounded, and checked**, because a reused chunk must never show another
    cell's ground (operator):
    - each chunk carries a state (`Live`, `Retiring`, `Pooled`) and an owner cell;
