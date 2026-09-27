@@ -4,6 +4,16 @@ Status: **proven for the P7 style slice**; **not yet a production pipeline.**
 - **The canonical look is P7.1 variant A** (operator, 2026-09-26; section 4a). The P7 direction is
   superseded.
 - **LODs are required before production density.**
+- **The P7.1 assets are the approved visual LANGUAGE, not the production quality target**
+  ([VISUAL-DIRECTION](VISUAL-DIRECTION.md), operator clarification 2026-09-26).
+  - **Open art and pipeline debt:** the procedural P7.1 proofs fall short of the WildStar-like
+    target in authored geometric detail, silhouette sophistication, texture and material richness,
+    environmental, vegetation and prop density, architectural personality, character and animation
+    quality, and polish.
+  - Production refinement starts from P7.1 and moves toward more WildStar-like richness: never back
+    toward the P7 cartoon look, never toward photorealism.
+  - Closing the gap likely needs artist-authored sources (hand-made meshes, textures or trim sheets)
+    alongside the recipes. The export and validation contract already accepts them.
 - Decision record: [ADR-0032](ADR/0032-visual-pipeline-and-stylization.md).
 
 ## Goal

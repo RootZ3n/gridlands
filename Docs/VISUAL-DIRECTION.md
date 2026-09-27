@@ -16,6 +16,28 @@ WildStar-leaning treatment ([evidence](Evidence/P7.1-visual-refinement/README.md
 - **The rejected variants are not averaged in.** B (environment silhouettes) and C (grounded) exist
   only as the review record.
 
+**P7.1 approved the VISUAL LANGUAGE and direction, NOT final production-art quality** (operator,
+2026-09-26, clarification). This does not reopen P7 or P7.1; both stay approved, and their tags
+(`p7-visual-green`, `p7.1-visual-approved`) and `playtest-baseline-2` stand.
+- **Variant A establishes the baseline:**
+  - richly colourful, dimensional stylized 3D, environment outlines off;
+  - exaggerated forms, richer material response, strong lighting and shadow;
+  - sparse geometric NICE corruption.
+- **The P7.1 screenshots are NOT the quality ceiling.** The current procedural P7.1 assets have not
+  reached the desired WildStar-like level of:
+  - authored geometric detail and silhouette sophistication;
+  - texture and material richness;
+  - environmental, vegetation and prop density;
+  - architectural personality;
+  - character and animation quality;
+  - overall production polish.
+- **Production-art refinement moves FROM the approved P7.1 foundation TOWARD greater WildStar-like
+  richness and dimensional stylization.**
+  - It does not move back toward the P7 cartoon treatment.
+  - It does not move toward photorealism.
+- **This gap is art and pipeline debt,** recorded in [ART-PIPELINE](ART-PIPELINE.md). It is not a
+  reason to reopen P7.1.
+
 **The target: A COLOURFUL, RICHLY STYLIZED, DIMENSIONAL 3D WORLD.**
 - **WildStar is PRIMARY** for:
   - degree of stylization and dimensionality;
