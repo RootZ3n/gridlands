@@ -95,6 +95,16 @@ namespace GLPerf
 
 	double UsedMb() { return FPlatformMemory::GetStats().UsedPhysical / (1024.0 * 1024.0); }
 
+	/** P8: the terrain's render-mesh memory (live and pooled chunks) into a result, keys suffixed (e.g. "AtEnd"). */
+	void AddTerrainMesh(const FGLTerrainMeshMemory& M, FJsonObject& Out, const TCHAR* Suffix)
+	{
+		Out.SetNumberField(FString(TEXT("terrainMeshChunks")) + Suffix, M.Chunks);
+		Out.SetNumberField(FString(TEXT("terrainMeshPooled")) + Suffix, M.Pooled);
+		Out.SetNumberField(FString(TEXT("terrainMeshTriangles")) + Suffix, static_cast<double>(M.Triangles));
+		Out.SetNumberField(FString(TEXT("terrainMeshCpuMb")) + Suffix, M.CpuBytes / (1024.0 * 1024.0));
+		Out.SetNumberField(FString(TEXT("terrainMeshGpuMb")) + Suffix, M.GpuBytes / (1024.0 * 1024.0));
+	}
+
 	ARecastNavMesh* Recast(UWorld* World)
 	{
 		UNavigationSystemV1* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
@@ -475,6 +485,7 @@ namespace GLPerf
 				O->SetNumberField(TEXT("navPendingTasksPeak"), Crossing.PeakNavTasks);
 				AddNavigation(World, *O, TEXT("end"));
 				O->SetNumberField(TEXT("emergencyChunks"), Terrain->GetStats().EmergencyChunks - Crossing.EmergencyAtStart);
+				AddTerrainMesh(Terrain->MeasureMeshMemory(), *O, TEXT("AtEnd")); // after the frame statistics closed: measuring is not measured
 				O->SetNumberField(TEXT("staleResultsDropped"), Terrain->GetStats().StaleDropped);
 				O->SetNumberField(TEXT("chunksReused"), Terrain->GetStats().ChunksReused);
 				{
@@ -557,7 +568,8 @@ namespace GLPerf
 			const int32 RoundTrips = FMath::Max(2, Args.Num() > 0 ? FCString::Atoi(*Args[0]) : 8);
 			TWeakObjectPtr<UWorld> Weak(World);
 			TSharedRef<TArray<double>> Samples = MakeShared<TArray<double>>();
-			FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Weak, Samples, RoundTrips](float)
+			TSharedRef<FGLTerrainMeshMemory> MeshPeak = MakeShared<FGLTerrainMeshMemory>();
+			FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Weak, Samples, MeshPeak, RoundTrips](float)
 			{
 				UWorld* W = Weak.Get();
 				APawn* Zenny = W ? UGameplayStatics::GetPlayerPawn(W, 0) : nullptr;
@@ -583,6 +595,7 @@ namespace GLPerf
 					O->SetArrayField(TEXT("memMbAfterMove"), Values);
 					O->SetNumberField(TEXT("memGrowthMb"), Peak - (*Samples)[1]);
 					O->SetNumberField(TEXT("memPeakMb"), FMath::Max(Peak, FMath::Max((*Samples)[0], (*Samples)[1])));
+					AddTerrainMesh(*MeshPeak, *O, TEXT("Peak"));
 					FString Text;
 					FJsonSerializer::Serialize(O, TJsonWriterFactory<>::Create(&Text));
 					FFileHelper::SaveStringToFile(Text, *(FPaths::ProjectSavedDir() / TEXT("Perf") / TEXT("roundtrips.json")));
@@ -600,6 +613,11 @@ namespace GLPerf
 				CollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS);
 				Samples->Add(FPlatformMemory::GetStats().UsedPhysical / (1024.0 * 1024.0));
 				UE_LOG(LogGridlands, Log, TEXT("gl.Perf.RoundTrips move %d: %.0f MB"), Samples->Num(), Samples->Last());
+				const FGLTerrainMeshMemory Mesh = Terrain->MeasureMeshMemory();
+				if (Mesh.CpuBytes + Mesh.GpuBytes > MeshPeak->CpuBytes + MeshPeak->GpuBytes)
+				{
+					*MeshPeak = Mesh;
+				}
 				return true;
 			}), 6.0f);
 		}));

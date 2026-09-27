@@ -63,6 +63,22 @@ struct FGLCellGround
 };
 
 /** Streaming counters (evidence and tests). */
+/**
+ * P8: what the terrain's render meshes hold, over every chunk actor (live and pooled). CpuBytes is the engine's
+ * own count of the chunk meshes (FDynamicMesh3::GetByteCount). GpuBytes is derived from the render buffers the
+ * dynamic-mesh proxy builds: one vertex per triangle corner (position 12 B, high-precision tangents 16 B,
+ * full-precision UV 8 B, colour 4 B) and a 32-bit index, 44 B per corner.
+ */
+struct FGLTerrainMeshMemory
+{
+	int32 Chunks = 0;
+	int32 Pooled = 0;
+	int64 Triangles = 0;
+	int64 CpuBytes = 0;
+	int64 GpuBytes = 0;
+	static constexpr int64 GpuBytesPerCorner = 44;
+};
+
 struct FGLTerrainStreamStats
 {
 	int32 ChunksApplied = 0;
@@ -167,6 +183,8 @@ public:
 	const FGLHeightfield* FieldOf(FName CellId) const { const FGLCellGround* G = Grounds.Find(CellId); return G ? &G->Field : nullptr; }
 	/** Built chunk actors across all grounds. */
 	int32 NumChunks() const;
+	/** P8: the render-mesh memory of every chunk actor, live and pooled (FGLTerrainMeshMemory). */
+	FGLTerrainMeshMemory MeasureMeshMemory() const;
 
 	/** Applies an edit; rebuilds touched chunks, their collision and their navigation. */
 	FGLTerrainEditResult ApplyEdit(const FGLTerrainEdit& Edit, TFunctionRef<bool(const FVector2D&)> IsProtected);
