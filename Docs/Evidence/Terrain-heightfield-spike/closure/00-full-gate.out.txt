@@ -1,0 +1,142 @@
+  Ran 94 tests in 1.653s (tooling)
+  entities: 223 (band 6, buildpiece 22, capability 3, cell 2, creature 1, era 10, exchange 49, glitch 6, item 10, knowledge 6, material 4, placement 36, puzzle 1, recipe 2, salvage 15, settings 2, storm 1, structure 7, terraform 3, tuning 1, visual 26, yield 10); anchors: 15
+RESULT: PASS 223 entities valid
+Building GridlandsEditor with Unreal 5.8.3 at /pehverse/engines/UE_5.8.3
+Setting up bundled DotNet SDK
+Running command : dotnet Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll GridlandsEditor Linux Development -Project=/pehverse/repos/game-dev/gridlands/Gridlands.uproject -WaitMutex -UBAHost=127.0.0.1 -UBADisableRemote -DisableAdaptiveUnity
+Log file: /home/zen/.config/Epic/UnrealBuildTool/Log.txt
+Determining max actions to execute in parallel (8 physical cores, 16 logical cores)
+  Executing up to 8 processes, one per physical core
+Using 'git status' to determine working set for adaptive non-unity build (/pehverse/repos/game-dev/gridlands).
+UbaStorageServer - FileMapping backing: memfd
+UbaSessionServer - Disable remote execution (remote sessions will finish current processes)
+Target is up to date
+Using Unreal Build Accelerator local executor to run 0 action(s)
+Total time in Unreal Build Accelerator local executor: 0.15 seconds
+Output binary: /pehverse/engines/UE_5.8.3/Engine/Binaries/Linux/UnrealEditor
+
+Result: Succeeded
+Total execution time: 1.27 seconds
+Trace written to file /home/zen/.config/Epic/UnrealBuildTool/Trace.uba with size 2.6kb
+RESULT: PASS GridlandsEditor built
+Running automation filter 'Gridlands' -> /pehverse/repos/game-dev/gridlands/.test-reports/20260927-061312
+  editor exit 0 (informational; the report decides)
+  Success    Gridlands.Core.Building.GroundDecidesWhereFloorsGo
+  Success    Gridlands.Core.Building.KnowledgeItemsAndSnapping
+  Success    Gridlands.Core.Building.RemovingASupportCollapsesWhatItHeld
+  Success    Gridlands.Core.Building.ShelterStandsAndEveryPlacementIsValid
+  Success    Gridlands.Core.Building.SupportWeakensUpAndOut
+  Success    Gridlands.Core.Combat.CreatureSeesOnlyWhatItShould
+  Success    Gridlands.Core.Combat.HearingAndMemoryAreSeparateFromSight
+  Success    Gridlands.Core.Combat.LureBeatsChaseAttackRespectsCooldown
+  Success    Gridlands.Core.Content.IdGrammarMatchesCorpus
+  Success    Gridlands.Core.Content.LoaderRejectsMalformedEntities
+  Success    Gridlands.Core.Content.RepositoryDataLoadsClean
+  Success    Gridlands.Core.Content.RoundTripKeepsEveryField
+  Success    Gridlands.Core.Content.SchemaKeysMatchValidator
+  Success    Gridlands.Core.Content.TypedLookupReadsAuthoredValues
+  Success    Gridlands.Core.Dialogue.DeterministicUnderSeed
+  Success    Gridlands.Core.Dialogue.FrequencyScalesOptionalOnly
+  Success    Gridlands.Core.Dialogue.SilenceGapAndRepetitionLimits
+  Success    Gridlands.Core.Dialogue.StoryCriticalIgnoresSetting
+  Success    Gridlands.Core.Dialogue.TriggersSubjectsAndHistory
+  Success    Gridlands.Core.Economy.YieldScalingFollowsCategory
+  Success    Gridlands.Core.Fabrication.CraftIsTransactional
+  Success    Gridlands.Core.Fabrication.KnowledgeAndStationGates
+  Success    Gridlands.Core.Glitch.Lifecycle.EveryUnrepairedStateCanStillBeRepaired
+  Success    Gridlands.Core.Glitch.Lifecycle.OnlyPehlichiRepairCompletesRepair
+  Success    Gridlands.Core.Glitch.Lifecycle.PlayerHasNoAuthority
+  Success    Gridlands.Core.Glitch.Lifecycle.RepairedIsTerminal
+  Success    Gridlands.Core.Glitch.Lifecycle.RepairRequiresPehlichiScanAndRepair
+  Success    Gridlands.Core.Glitch.Lifecycle.TableMatchesDocumentedTransitions
+  Success    Gridlands.Core.Glitch.Lifecycle.VisibilityAndPersistedState
+  Success    Gridlands.Core.Inventory.StacksWeightAndCapacity
+  Success    Gridlands.Core.Salvage.ToolEfficiencyAndGating
+  Success    Gridlands.Core.Save.CodecRoundTripAndVersions
+  Success    Gridlands.Core.Save.Version1MigratesToCellRecords
+  Success    Gridlands.Core.Stability.DerivedDeterministicAndMonotone
+  Success    Gridlands.Core.Stability.NiceComposureAndTiers
+  Success    Gridlands.Core.Structure.DropIsDeterministicAndItsImpactIsTruthful
+  Success    Gridlands.Core.Structure.OnlyWhatLosesSupportFallsAndItCascades
+  Success    Gridlands.Core.Structure.ToppleFollowsItsDirectionPolicy
+  Success    Gridlands.Core.Terrain.AuthoredBaseIsTheReference
+  Success    Gridlands.Core.Terrain.DigRaiseFlatten
+  Success    Gridlands.Core.Terrain.RefusalsAreAtomic
+  Success    Gridlands.Core.Terrain.SaveDeltaReproducesExactly
+  Success    Gridlands.Editor.Anchors.ExportMatchesCommitted
+  Success    Gridlands.Editor.Blockout.OriginMatchesBrief
+  Success    Gridlands.Game.Building.DemolitionRefundsEverythingThatFalls
+  Success    Gridlands.Game.Building.PiecesBlockNavigation
+  Success    Gridlands.Game.Building.RefusalsChangeNothing
+  Success    Gridlands.Game.Building.ShelterFromInventoryPersistsAcrossReload
+  Success    Gridlands.Game.Character.InputIsDefinedInCode
+  Success    Gridlands.Game.Combat.GremlinCanBeAvoidedAndTheDrainFixedWithoutAFight
+  Success    Gridlands.Game.Combat.PehlichiDistractionIsNonLethal
+  Success    Gridlands.Game.Combat.ZennyCanFightTheGremlin
+  Success    Gridlands.Game.Content.ConfigTagsAreRegisteredWithEngine
+  Success    Gridlands.Game.Content.EngineSubsystemLoadsContent
+  Success    Gridlands.Game.Dialogue.DirectorReactsToRealGameplay
+  Success    Gridlands.Game.Dialogue.StoryCriticalIsDeferredNotDropped
+  Success    Gridlands.Game.Events.SubscribersReceiveMatchingTags
+  Success    Gridlands.Game.Fabrication.FMakesWhatZennyLacks
+  Success    Gridlands.Game.Fabrication.PryBarFromSalvagedScrap
+  Success    Gridlands.Game.Fabrication.StationsInReach
+  Success    Gridlands.Game.Grid.RapidReversalMidLoadKeepsEverything
+  Success    Gridlands.Game.Grid.SaveInTheSecondCellAndRestart
+  Success    Gridlands.Game.Grid.StaleAsyncWorkNeverLandsAndZennyNeverFalls
+  Success    Gridlands.Game.Grid.StaticDepthAndEraAreIndependentPerCell
+  Success    Gridlands.Game.Grid.StreamingNeverLosesDuplicatesOrReplays
+  Success    Gridlands.Game.Interaction.FocusAndInteract
+  Success    Gridlands.Game.Inventory.OverencumbranceIsAnnouncedOnce
+  Success    Gridlands.Game.Knowledge.UnlocksFromDataDrivenSources
+  Success    Gridlands.Game.Navigation.BuiltOnlyAroundInvokersAndFollowsEdits
+  Success    Gridlands.Game.Navigation.CreaturesPathFarFromThePlayer
+  Success    Gridlands.Game.Navigation.CrossesBoundariesAndUnloadsCleanly
+  Success    Gridlands.Game.Noise.CoverAfterDetectionLeavesALastKnownPosition
+  Success    Gridlands.Game.Noise.TerraformingIsHeardOnlyWithinHearing
+  Success    Gridlands.Game.Pehlichi.ItemDeliveryInterruptAndResume
+  Success    Gridlands.Game.Pehlichi.LampLoopRevealPrepareRepairUpgrade
+  Success    Gridlands.Game.Pehlichi.PlayerHasNoWayToRepair
+  Success    Gridlands.Game.Pehlichi.ScanRevealsByRangeAndLevel
+  Success    Gridlands.Game.Placement.SpawnsSalvageNodesFromData
+  Success    Gridlands.Game.Presentation.CorruptionIsSparseAndPrecise
+  Success    Gridlands.Game.Presentation.DefeatedCreatureDerezzesThenIsGone
+  Success    Gridlands.Game.Presentation.DirectorLinesBecomeSubtitles
+  Success    Gridlands.Game.Presentation.SubtitleTimelineFollowsTheDirector
+  Success    Gridlands.Game.Presentation.VegetationFollowsTheGround
+  Success    Gridlands.Game.Presentation.VisualsCarryNoCollisionAndFollowCollapse
+  Success    Gridlands.Game.Puzzle.AnsweredByPresentingNotBySpeaking
+  Success    Gridlands.Game.Puzzle.HintCapFollowsAnalysis
+  Success    Gridlands.Game.Puzzle.SolvedStateSurvivesReload
+  Success    Gridlands.Game.Salvage.CompletesGrantsYieldsAndEvents
+  Success    Gridlands.Game.Salvage.PryBarSalvagesFaster
+  Success    Gridlands.Game.Salvage.WorldSettingsScaleRepeatableYields
+  Success    Gridlands.Game.Save.MidRepairLoadsAsInterrupted
+  Success    Gridlands.Game.Save.StaleIdsAreReportedNotFatal
+  Success    Gridlands.Game.Save.WorldStaysChangedAcrossReload
+  Success    Gridlands.Game.Stability.StaticRecedesWhenPehlichiRepairs
+  Success    Gridlands.Game.Storm.RainingCatsAndDogsIsBoundedAndCleansUp
+  Success    Gridlands.Game.Streaming.ACollapseDecidedBeforePresentationShowsTheDecision
+  Success    Gridlands.Game.Streaming.DenseFixtureStandsAndPresentsCompletely
+  Success    Gridlands.Game.Streaming.PresentationNeverRunsAheadOfSavedState
+  Success    Gridlands.Game.Streaming.UnloadDuringPresentationCancelsCleanly
+  Success    Gridlands.Game.Structure.CollapseDamagesCreaturesThroughTheSameModel
+  Success    Gridlands.Game.Structure.CollapsePersistsThroughStreamingSavesAndRestart
+  Success    Gridlands.Game.Structure.EveryAuthoredStructureStandsOnItsGround
+  Success    Gridlands.Game.Structure.TreeFellsThroughTheStructuralPipelineAndPersists
+  Success    Gridlands.Game.Structure.WrongSupportCollapsesAndHurtsZenny
+  Success    Gridlands.Game.Terrain.AIWalksAroundARaisedRidge
+  Success    Gridlands.Game.Terrain.NavigationFollowsRuntimeEdits
+  Success    Gridlands.Game.Terrain.StaleNavigationIsDetectedControl
+  Success    Gridlands.Game.Terrain.TerraformConservesProtectsAndPersists
+  Success    Gridlands.Game.TerrainCollision.EditedCollisionSurvivesSaveRestoreAndStreaming
+  Success    Gridlands.Game.TerrainCollision.VisibleAndCollisionSurfacesAgreeUnderDeformation
+  Success    Gridlands.Game.TerrainPool.CancellationNeverHandsOutAHalfResetChunk
+  Success    Gridlands.Game.TerrainPool.PooledChunksLeaveNavigation
+  Success    Gridlands.Game.TerrainPool.PoolStaysInsideItsBound
+  Success    Gridlands.Game.TerrainPool.ReusedChunksAreRebornCleanInAnotherCell
+  Success    Gridlands.Game.TerrainPool.StaleMeshWorkNeverLandsOnAReassignedChunk
+  Success    Gridlands.Game.TerrainPool.StreamedReusedChunksCollideAsTheirNewCell
+  Success    Gridlands.Game.World.DiscoveriesSilenceAndPersistence
+  warning x1: LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204
+RESULT: PASS 117 tests succeeded, 42 requirement(s) met, 1 warning(s)

@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
+@@ -232,7 +232,6 @@
+ 	}
+ 	SetActorHiddenInGame(true);
+ 	SetActorEnableCollision(false);
+-	bBuilt = false;
+ 	OwnerCell = NAME_None;
+ 	State = EGLChunkState::Pooled;
+ }

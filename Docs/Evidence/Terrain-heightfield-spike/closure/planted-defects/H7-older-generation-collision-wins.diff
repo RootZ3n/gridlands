@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+@@ -293,7 +293,7 @@
+ 	{
+ 		const TSharedPtr<FGLMeshJob> Job = Jobs[I];
+ 		FGLCellGround* Ground = Grounds.Find(Job->Cell);
+-		const bool bStale = !Ground || Ground->Generation != Job->Generation || !Ground->Slots.IsValidIndex(Job->Slot)
++		const bool bStale = !Ground || !Ground->Slots.IsValidIndex(Job->Slot)
+ 			|| Ground->Slots[Job->Slot].Version != Job->Version;
+ 		if (bStale)
+ 		{

@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
+@@ -227,7 +227,6 @@
+ 	UNavigationSystemV1::UpdateComponentInNavOctree(*Mesh);
+ 	if (Collision)
+ 	{
+-		Collision->SetGeometry(nullptr); // the body goes now
+ 		UNavigationSystemV1::UpdateComponentInNavOctree(*Collision);
+ 	}
+ 	SetActorHiddenInGame(true);

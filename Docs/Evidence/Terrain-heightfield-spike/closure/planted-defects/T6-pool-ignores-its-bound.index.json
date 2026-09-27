@@ -1,0 +1,635 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0E29FA37C7379A2C554A25B6DD1F5",
+			"instanceName": "Pehverse-1641745",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.27-11.28.55",
+	"succeeded": 14,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 13.503023147583008,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BuiltOnlyAroundInvokersAndFollowsEdits",
+			"fullTestPath": "Gridlands.Game.Navigation.BuiltOnlyAroundInvokersAndFollowsEdits",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 1.4574270248413086,
+			"dateTime": "2026.09.27-11.28.42",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "active tiles around Zenny: 212 (a whole 1 km cell: 10816)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.42"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "active tiles after the walk: 224; old place on navigation: no",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.43"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "navmesh at the mound: 10 -> 175 cm (ground 300)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.43"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CreaturesPathFarFromThePlayer",
+			"fullTestPath": "Gridlands.Game.Navigation.CreaturesPathFarFromThePlayer",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 0.62982082366943359,
+			"dateTime": "2026.09.27-11.28.43",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CrossesBoundariesAndUnloadsCleanly",
+			"fullTestPath": "Gridlands.Game.Navigation.CrossesBoundariesAndUnloadsCleanly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 1.7935453653335571,
+			"dateTime": "2026.09.27-11.28.44",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AIWalksAroundARaisedRidge",
+			"fullTestPath": "Gridlands.Game.Terrain.AIWalksAroundARaisedRidge",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 0.22987575829029083,
+			"dateTime": "2026.09.27-11.28.46",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "walker: arrived 100 cm from B in 399 ticks, crossed x = 64 m at y = 5052, max y 5054, max z 114",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.46"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NavigationFollowsRuntimeEdits",
+			"fullTestPath": "Gridlands.Game.Terrain.NavigationFollowsRuntimeEdits",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 0.54128199815750122,
+			"dateTime": "2026.09.27-11.28.46",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "navigable bounds from the cell: IsValid=true, Min=(X=0.000 Y=0.000 Z=-3900.000), Max=(X=12800.000 Y=6400.000 Z=3900.000)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.46"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "path crossings of x = 64 m: before y = 3200, after the ridge y = 5035",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.46"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaleNavigationIsDetectedControl",
+			"fullTestPath": "Gridlands.Game.Terrain.StaleNavigationIsDetectedControl",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 0.20171035826206207,
+			"dateTime": "2026.09.27-11.28.46",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "control (navigation not told): path crosses x = 64 m at y = 3200, straight over the ridge",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.47"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TerraformConservesProtectsAndPersists",
+			"fullTestPath": "Gridlands.Game.Terrain.TerraformConservesProtectsAndPersists",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 0.077280282974243164,
+			"dateTime": "2026.09.27-11.28.47",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "EditedCollisionSurvivesSaveRestoreAndStreaming",
+			"fullTestPath": "Gridlands.Game.TerrainCollision.EditedCollisionSurvivesSaveRestoreAndStreaming",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 1.078965425491333,
+			"dateTime": "2026.09.27-11.28.47",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] restored (flushed): 1339 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.30 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; ground for structures/building vs visible and collision: 0.00 cm at 169 vertices, 32.91 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.48"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] restored (streamed, reused chunks): 1339 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.30 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; ground for structures/building vs visible and collision: 0.00 cm at 169 vertices, 32.91 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.48"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "VisibleAndCollisionSurfacesAgreeUnderDeformation",
+			"fullTestPath": "Gridlands.Game.TerrainCollision.VisibleAndCollisionSurfacesAgreeUnderDeformation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 1.006095290184021,
+			"dateTime": "2026.09.27-11.28.48",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] untouched: 2771 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; ground for structures/building vs visible and collision: 0.00 cm at 361 vertices, 0.00 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.48"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] small dig: 419 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; ground for structures/building vs visible and collision: 0.00 cm at 36 vertices, 2.69 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.48"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] steep dig (4 m in 1.2 m): 419 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.16 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; ground for structures/building vs visible and collision: 0.00 cm at 36 vertices, 68.22 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.48"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] steep raise: 419 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.07 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; ground for structures/building vs visible and collision: 0.00 cm at 36 vertices, 39.43 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.48"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] 10 repeated digs: 654 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; ground for structures/building vs visible and collision: 0.00 cm at 81 vertices, 17.82 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.48"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] neighbouring vertices edited: 815 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.10 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; ground for structures/building vs visible and collision: 0.00 cm at 90 vertices, 72.16 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.48"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] edit on an X seam, both sides: 654 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; ground for structures/building vs visible and collision: 0.00 cm at 81 vertices, 12.60 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.48"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] edit on a chunk corner (four chunks): 994 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.09 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; ground for structures/building vs visible and collision: 0.01 cm at 121 vertices, 59.47 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.48"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] 30 rapid edits in one frame: 3435 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.14 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; ground for structures/building vs visible and collision: 0.01 cm at 441 vertices, 54.22 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.49"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CancellationNeverHandsOutAHalfResetChunk",
+			"fullTestPath": "Gridlands.Game.TerrainPool.CancellationNeverHandsOutAHalfResetChunk",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 0.9977647066116333,
+			"dateTime": "2026.09.27-11.28.49",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PooledChunksLeaveNavigation",
+			"fullTestPath": "Gridlands.Game.TerrainPool.PooledChunksLeaveNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 1.2277342081069946,
+			"dateTime": "2026.09.27-11.28.50",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "pooled 256 (in navigation 0), live 256 (missing from navigation 0)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.51"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoolStaysInsideItsBound",
+			"fullTestPath": "Gridlands.Game.TerrainPool.PoolStaysInsideItsBound",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 1.4144190549850464,
+			"dateTime": "2026.09.27-11.28.51",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'round 0: the pool holds at most its bound (256)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.28.51"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "bounded: the pool holds 256 chunks, over its bound 100",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.28.51"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  integrity' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
+					"lineNumber": 230,
+					"timestamp": "2026.09.27-11.28.51"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'round 1: the pool holds at most its bound (256)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.28.52"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "bounded: the pool holds 256 chunks, over its bound 100",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.28.52"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  integrity' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
+					"lineNumber": 230,
+					"timestamp": "2026.09.27-11.28.52"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'round 2: the pool holds at most its bound (256)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.28.52"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "bounded: the pool holds 256 chunks, over its bound 100",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.28.52"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  integrity' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
+					"lineNumber": 236,
+					"timestamp": "2026.09.27-11.28.52"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'chunks beyond the bound were destroyed, not kept' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
+					"lineNumber": 238,
+					"timestamp": "2026.09.27-11.28.52"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'chunk actors in the world are bounded by live + pool (256)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.28.52"
+				}
+			],
+			"warnings": 0,
+			"errors": 11,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReusedChunksAreRebornCleanInAnotherCell",
+			"fullTestPath": "Gridlands.Game.TerrainPool.ReusedChunksAreRebornCleanInAnotherCell",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 0.98751860857009888,
+			"dateTime": "2026.09.27-11.28.52",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaleMeshWorkNeverLandsOnAReassignedChunk",
+			"fullTestPath": "Gridlands.Game.TerrainPool.StaleMeshWorkNeverLandsOnAReassignedChunk",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 1.2367451190948486,
+			"dateTime": "2026.09.27-11.28.53",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "stale mesh results dropped: 64",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.28.55"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StreamedReusedChunksCollideAsTheirNewCell",
+			"fullTestPath": "Gridlands.Game.TerrainPool.StreamedReusedChunksCollideAsTheirNewCell",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29FA37C7379A2C554A25B6DD1F5"
+			],
+			"duration": 0.62283849716186523,
+			"dateTime": "2026.09.27-11.28.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}
