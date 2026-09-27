@@ -6,6 +6,7 @@
 #include "DynamicMesh/MeshNormals.h"
 #include "Materials/MaterialInterface.h"
 #include "NavigationSystem.h"
+#include "PhysicsEngine/BodySetup.h"
 #include "Terrain/GLHeightfield.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -15,6 +16,8 @@ AGLTerrainChunk::AGLTerrainChunk()
 	SetRootComponent(Mesh);
 	Mesh->SetCollisionProfileName(TEXT("BlockAll"));
 	Mesh->SetComplexAsSimpleCollisionEnabled(true, false);
+	// ApplyMesh/ClearForPool cook collision explicitly; SetMesh must not cook it again, synchronously.
+	Mesh->SetDeferredCollisionUpdatesEnabled(true, false);
 	Mesh->SetCanEverAffectNavigation(true);
 	// Temporary ground material (P4): colours come from the vertices (see Rebuild). Falls back to
 	// the engine grid if the generated material is missing.
@@ -121,14 +124,16 @@ UE::Geometry::FDynamicMesh3 AGLTerrainChunk::BuildMesh(const FGLChunkSnapshot& S
 	return Built;
 }
 
-void AGLTerrainChunk::ApplyMesh(UE::Geometry::FDynamicMesh3&& Built, bool bNotifyNavigation, bool bAsyncCollision)
+void AGLTerrainChunk::ApplyMesh(UE::Geometry::FDynamicMesh3&& Built, bool bNotifyNavigation)
 {
 	const double Start = FPlatformTime::Seconds();
 	Mesh->SetMesh(MoveTemp(Built));
+	++LifetimeMeshes;
 	const double Meshed = FPlatformTime::Seconds();
-	// Streaming cooks collision off the game thread; edits (and the ground under Zenny) cook at once
-	// so a trace right after sees the new ground.
-	Mesh->bUseAsyncCooking = bAsyncCollision;
+	// The one collision cook (collision updates are deferred, so SetMesh did not cook). Synchronous: in this
+	// engine an async cook's completion costs the game thread more than the cook itself (~7.5 vs ~5 ms per
+	// chunk, measured), and a synchronous cook leaves no window in which the new ground lacks collision.
+	Mesh->bUseAsyncCooking = false; // never asynchronous (ADR-0034)
 	Mesh->UpdateCollision(false);
 	const double Collided = FPlatformTime::Seconds();
 	if (bNotifyNavigation)
@@ -147,16 +152,26 @@ void AGLTerrainChunk::Rebuild(const FGLHeightfield& Field, bool bNotifyNavigatio
 	const double Start = FPlatformTime::Seconds();
 	UE::Geometry::FDynamicMesh3 Built = BuildMesh(MakeSnapshot(Field, FirstVertex, VertsPerSide));
 	MeshSeconds += FPlatformTime::Seconds() - Start;
-	ApplyMesh(MoveTemp(Built), bNotifyNavigation, false);
+	ApplyMesh(MoveTemp(Built), bNotifyNavigation);
+}
+
+bool AGLTerrainChunk::IsEmptyAndInert() const
+{
+	const UBodySetup* Body = Mesh->GetBodySetup();
+	const bool bNoBody = !Body || (Body->TriMeshGeometries.Num() == 0 && Body->AggGeom.GetElementCount() == 0);
+	return Mesh->GetMesh()->TriangleCount() == 0 && bNoBody && IsHidden() && !GetActorEnableCollision();
 }
 
 void AGLTerrainChunk::ClearForPool()
 {
 	Mesh->bUseAsyncCooking = false;
 	Mesh->SetMesh(UE::Geometry::FDynamicMesh3());
-	Mesh->UpdateCollision(false);
+	Mesh->UpdateCollision(false); // synchronous, and it drops any async cook still in flight
 	UNavigationSystemV1::UpdateComponentInNavOctree(*Mesh);
 	SetActorHiddenInGame(true);
 	SetActorEnableCollision(false);
 	bBuilt = false;
+	OwnerCell = NAME_None;
+	State = EGLChunkState::Pooled;
 }
+

@@ -117,6 +117,8 @@ footprint query was fixed.
   already made heavy.
 - The P5 terrain's first build of a fresh 64 m chunk actor costs ~5 ms (9–15 ms under load), which
   is the remaining source of streaming spikes in both the normal and the dense game.
+  (After P7.1: the cost is the chunk's collision cook, not the actor; a pool cannot remove it.
+  See [ADR-0034](0034-terrain-chunk-collision-and-pool.md).)
 - With the ceiling, the dense lots are fully presented in ~2.4–2.5 s: together with their ground,
   long before Zenny can walk the 256 m load margin.
 

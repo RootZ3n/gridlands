@@ -1,0 +1,89 @@
+{
+	"chunks": 64,
+	"freshFirstSetMesh":
+	{
+		"meanMs": 0.03703997572301887,
+		"medianMs": 0.034024938941001892,
+		"maxMs": 0.076108961366117001
+	},
+	"pooledReuseSetMesh":
+	{
+		"meanMs": 0.025572202503099106,
+		"medianMs": 0.023951055482029915,
+		"maxMs": 0.04854204598814249
+	},
+	"tinyWarmedFirstRealSetMesh":
+	{
+		"meanMs": 0.032895291951717809,
+		"medianMs": 0.031917938031256199,
+		"maxMs": 0.10345398914068937
+	},
+	"fullWarmedFirstRealSetMesh":
+	{
+		"meanMs": 0.030482646252494305,
+		"medianMs": 0.029747025109827518,
+		"maxMs": 0.053525087423622608
+	},
+	"fullWarmUpCost":
+	{
+		"meanMs": 1.7630496458878042,
+		"medianMs": 1.7437469214200974,
+		"maxMs": 2.0140160340815783
+	},
+	"deferredCollisionSetMesh":
+	{
+		"meanMs": 0.040248509321827441,
+		"medianMs": 0.039629056118428707,
+		"maxMs": 0.059186946600675583
+	},
+	"asyncCookingSetMesh":
+	{
+		"meanMs": 0.043974972868454643,
+		"medianMs": 0.039720907807350159,
+		"maxMs": 0.09568000677973032
+	},
+	"noCollisionSetMesh":
+	{
+		"meanMs": 0.043295547584421001,
+		"medianMs": 0.04008202813565731,
+		"maxMs": 0.081820064224302769
+	},
+	"deferredNoTangentsSetMesh":
+	{
+		"meanMs": 0.044284057366894558,
+		"medianMs": 0.042176921851933002,
+		"maxMs": 0.075822928920388222
+	},
+	"explicitSyncCook":
+	{
+		"meanMs": 5.1670581615326228,
+		"medianMs": 5.1582069136202335,
+		"maxMs": 5.6383759947493672
+	},
+	"explicitSyncCookWithoutNavigation":
+	{
+		"meanMs": 4.9087670031440211,
+		"medianMs": 4.9334990326315165,
+		"maxMs": 5.3726790938526392
+	},
+	"legacyEagerSetMeshBefore":
+	{
+		"meanMs": 4.9159667614731006,
+		"medianMs": 4.9481421010568738,
+		"maxMs": 5.2790860645473003
+	},
+	"applyMeshFirstBuildAfter":
+	{
+		"meanMs": 6.6407037884346209,
+		"medianMs": 6.629988900385797,
+		"maxMs": 7.599265081807971
+	},
+	"applyMeshReusedAfter":
+	{
+		"meanMs": 6.3534295786666917,
+		"medianMs": 6.3109740149229765,
+		"maxMs": 7.7721199486404657
+	},
+	"mem256EmptyChunksMb": 17.54296875,
+	"mem256LiveChunksMb": 741.203125
+}

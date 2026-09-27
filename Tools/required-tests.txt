@@ -73,3 +73,6 @@ Gridlands.Core.Structure 3
 Gridlands.Game.Structure 5
 Gridlands.Game.Noise 2
 Gridlands.Game.Streaming 4
+
+# Terrain chunk collision and pool hardening (ADR-0034): reused chunks are reborn clean; stale work, bound, cancellation.
+Gridlands.Game.TerrainPool 6

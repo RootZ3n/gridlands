@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
+@@ -134,7 +134,7 @@
+ 	// engine an async cook's completion costs the game thread more than the cook itself (~7.5 vs ~5 ms per
+ 	// chunk, measured), and a synchronous cook leaves no window in which the new ground lacks collision.
+ 	Mesh->bUseAsyncCooking = bAsyncCollision;
+-	Mesh->UpdateCollision(false);
++	if (LifetimeMeshes <= 1) { Mesh->UpdateCollision(false); } // MUTANT: reuse skips the cook
+ 	const double Collided = FPlatformTime::Seconds();
+ 	if (bNotifyNavigation)
+ 	{

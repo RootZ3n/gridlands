@@ -1,0 +1,288 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0E056C77A7F58A0BE6E84B252A036",
+			"instanceName": "Pehverse-2828041",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.27-00.50.11",
+	"succeeded": 1,
+	"succeededWithWarnings": 3,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 18.352394104003906,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "CancellationNeverHandsOutAHalfResetChunk",
+			"fullTestPath": "Gridlands.Game.TerrainPool.CancellationNeverHandsOutAHalfResetChunk",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E056C77A7F58A0BE6E84B252A036"
+			],
+			"duration": 3.6215384006500244,
+			"dateTime": "2026.09.27-00.49.52",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoolStaysInsideItsBound",
+			"fullTestPath": "Gridlands.Game.TerrainPool.PoolStaysInsideItsBound",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0E056C77A7F58A0BE6E84B252A036"
+			],
+			"duration": 4.9936256408691406,
+			"dateTime": "2026.09.27-00.49.56",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'round 0: the pool holds at most its bound (256)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.49.58"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "bounded: the pool holds 256 chunks, over its bound 100",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.49.58"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  integrity' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
+					"lineNumber": 230,
+					"timestamp": "2026.09.27-00.49.58"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'round 1: the pool holds at most its bound (256)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.49.59"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "bounded: the pool holds 256 chunks, over its bound 100",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.49.59"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  integrity' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
+					"lineNumber": 230,
+					"timestamp": "2026.09.27-00.49.59"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'round 2: the pool holds at most its bound (256)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.50.01"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "bounded: the pool holds 256 chunks, over its bound 100",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.50.01"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  integrity' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
+					"lineNumber": 236,
+					"timestamp": "2026.09.27-00.50.01"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'chunks beyond the bound were destroyed, not kept' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
+					"lineNumber": 238,
+					"timestamp": "2026.09.27-00.50.01"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'chunk actors in the world are bounded by live + pool (256)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.50.01"
+				}
+			],
+			"warnings": 0,
+			"errors": 11,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReusedChunksAreRebornCleanInAnotherCell",
+			"fullTestPath": "Gridlands.Game.TerrainPool.ReusedChunksAreRebornCleanInAnotherCell",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E056C77A7F58A0BE6E84B252A036"
+			],
+			"duration": 3.3993673324584961,
+			"dateTime": "2026.09.27-00.50.01",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-00.50.04"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaleMeshWorkNeverLandsOnAReassignedChunk",
+			"fullTestPath": "Gridlands.Game.TerrainPool.StaleMeshWorkNeverLandsOnAReassignedChunk",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E056C77A7F58A0BE6E84B252A036"
+			],
+			"duration": 3.3035266399383545,
+			"dateTime": "2026.09.27-00.50.04",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-00.50.07"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "stale mesh results dropped: 64",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-00.50.08"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StreamedReusedChunksCollideAsTheirNewCell",
+			"fullTestPath": "Gridlands.Game.TerrainPool.StreamedReusedChunksCollideAsTheirNewCell",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E056C77A7F58A0BE6E84B252A036"
+			],
+			"duration": 3.0343360900878906,
+			"dateTime": "2026.09.27-00.50.08",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-00.50.11"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

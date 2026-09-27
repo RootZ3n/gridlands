@@ -402,6 +402,9 @@ bool FGLDenseCancel::RunTest(const FString& Parameters)
 		TestEqual(TEXT("  no stale presentation landed after the unload"), Actors, 0);
 		TestEqual(TEXT("  every retired actor was destroyed, within the budget"), S.Structures->RetiringActors(), 0);
 		AddInfo(FString::Printf(TEXT("cycle %d: retired actors destroyed over %d frames at 0.05 ms"), Cycle, Drain));
+		// Count in a settled state: an automation world never finishes async collision cooks (each pending
+		// cook holds a queued body setup), so finish streaming, including collision, before counting.
+		S.Grid->FlushAll();
 		CollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS);
 		if (Cycle == 0)
 		{

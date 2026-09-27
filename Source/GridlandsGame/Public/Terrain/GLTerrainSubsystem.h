@@ -53,6 +53,8 @@ struct FGLCellGround
 	GENERATED_BODY()
 
 	FGLHeightfield Field;
+	/** The cell this ground belongs to (chunk actors carry it while they are Live). */
+	FName Cell;
 	int32 VertsPerChunk = 0;
 	/** Which load of the cell this is: results for an earlier one are discarded. */
 	int32 Generation = 0;
@@ -68,6 +70,19 @@ struct FGLTerrainStreamStats
 	int32 EmergencyChunks = 0;
 	int32 EmergencyFields = 0;
 	int32 ChunksReused = 0;
+	/** Chunk actors created during play (not from the pool): each one's first mesh is the expensive build. */
+	int32 ChunksSpawned = 0;
+	/** Streamed applies onto an actor's first mesh (fresh) vs an actor that already had one (pooled or warmed). */
+	int32 FirstBuildApplies = 0;
+	double FirstBuildMsSum = 0.0;
+	double FirstBuildMsMax = 0.0;
+	int32 ReusedApplies = 0;
+	double ReusedMsSum = 0.0;
+	double ReusedMsMax = 0.0;
+	/** Pooled entries that were not in the Pooled state when taken (never reused; a defect if ever non-zero). */
+	int32 PoolRejected = 0;
+	/** Cleared chunk actors destroyed because the pool was full. */
+	int32 PoolOverflowDestroyed = 0;
 };
 
 /**
@@ -108,6 +123,8 @@ public:
 	/** Streaming (P5): starts building a cell's field on a worker; chunks follow through Pump. */
 	bool BeginCellGround(FName CellId, TConstArrayView<int32> DeltaIndices = {}, TConstArrayView<int32> DeltaCm = {});
 	bool IsCellPending(FName CellId) const { return Pending.Contains(CellId); }
+	/** The cell's field has been generated off-thread and waits for the next Pump to become ground. */
+	bool IsCellFieldReady(FName CellId) const;
 	/** Streaming work for one frame: finished fields, finished meshes (within BudgetSeconds), new jobs nearest Near. */
 	void Pump(const FVector2D& Near, double BudgetSeconds = 0.003, int32 MaxInFlight = 8);
 	/** Guarantees built ground (with collision) within RadiusCm of a point. False if no ground covers it. */
@@ -119,6 +136,15 @@ public:
 	const FGLTerrainPumpBreakdown& GetLastPump() const { return LastPump; }
 	int32 NumRetiring() const { return Retiring.Num(); }
 	int32 NumPooled() const { return Pool.Num(); }
+	/**
+	 * The pool's bound: cleared chunk actors kept for reuse (beyond it, retired actors are destroyed).
+	 * One cell is 16 x 16 = 256 chunks and at most two cells are live at once (the unload margin), so
+	 * 512 lets a full cell come back entirely from the pool; memory stays bounded (cleared actors hold
+	 * no mesh or collision).
+	 */
+	int32 PoolLimit = 512;
+	/** Evidence and tests: every chunk actor, live or pooled, is in exactly one place. */
+	bool CheckChunkIntegrity(TArray<FString>* OutProblems = nullptr) const;
 	int32 NumJobs() const { return Jobs.Num(); }
 
 	/** Removes a cell's ground (pending field, chunks, navigation bounds). */
@@ -170,7 +196,7 @@ public:
 
 private:
 	void FinishGround(FName CellId, FGLHeightfield&& Field, const FGLGroundParams& Params, int32 Generation, bool bBuildNow);
-	void BuildSlotNow(FGLCellGround& Ground, FGLChunkSlot& Slot, bool bAsyncCollision);
+	void BuildSlotNow(FGLCellGround& Ground, FGLChunkSlot& Slot);
 	void CancelPending(FName CellId);
 	AGLTerrainChunk* AcquireChunk(const FGLCellGround& Ground, const FGLChunkSlot& Slot);
 	void RetireOne();

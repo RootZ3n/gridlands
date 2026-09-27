@@ -26,7 +26,7 @@ namespace
 	// Chunk actors of an unloaded ground cleared per frame (the rest wait, hidden, without collision).
 	constexpr int32 RetirePerFrame = 16;
 	// Cleared chunk actors kept for reuse: two cells' worth (ADR-0027: 256 per cell). Beyond, destroyed.
-	constexpr int32 MaxPooled = 512;
+	// (The pool's bound is UGLTerrainSubsystem::PoolLimit.)
 }
 
 /** A cell's field built off the game thread (P5). */
@@ -185,6 +185,7 @@ void UGLTerrainSubsystem::FinishGround(FName CellId, FGLHeightfield&& Field, con
 	RemoveCell(CellId);
 	UWorld* World = GetWorld();
 	FGLCellGround& Ground = Grounds.Add(CellId);
+	Ground.Cell = CellId;
 	Ground.Generation = Generation;
 	Ground.VertsPerChunk = P.ChunkVerts;
 	Ground.Field = MoveTemp(Field);
@@ -196,7 +197,7 @@ void UGLTerrainSubsystem::FinishGround(FName CellId, FGLHeightfield&& Field, con
 			Slot.First = FIntPoint(CX * (P.ChunkVerts - 1), CY * (P.ChunkVerts - 1));
 			if (bBuildNow)
 			{
-				BuildSlotNow(Ground, Slot, false);
+				BuildSlotNow(Ground, Slot);
 			}
 		}
 	}
@@ -216,6 +217,12 @@ void UGLTerrainSubsystem::FinishGround(FName CellId, FGLHeightfield&& Field, con
 	}
 }
 
+bool UGLTerrainSubsystem::IsCellFieldReady(FName CellId) const
+{
+	const TSharedPtr<FGLPendingGround>* Job = Pending.Find(CellId);
+	return Job && (*Job)->Task.IsCompleted();
+}
+
 AGLTerrainChunk* UGLTerrainSubsystem::AcquireChunk(const FGLCellGround& Ground, const FGLChunkSlot& Slot)
 {
 	const FVector2D At = Ground.Field.VertexLocation(Slot.First.X, Slot.First.Y);
@@ -223,6 +230,13 @@ AGLTerrainChunk* UGLTerrainSubsystem::AcquireChunk(const FGLCellGround& Ground, 
 	while (!Chunk && Pool.Num() > 0)
 	{
 		Chunk = Pool.Pop().Get();
+		if (Chunk && Chunk->State != EGLChunkState::Pooled)
+		{
+			// Only a fully cleared chunk may serve a new owner (never a live or half-retired one).
+			++Stats.PoolRejected;
+			UE_LOG(LogGridlands, Error, TEXT("Terrain: a pooled chunk was not in the Pooled state; not reused"));
+			Chunk = nullptr;
+		}
 	}
 	if (Chunk)
 	{
@@ -234,18 +248,21 @@ AGLTerrainChunk* UGLTerrainSubsystem::AcquireChunk(const FGLCellGround& Ground, 
 	else
 	{
 		Chunk = GetWorld()->SpawnActor<AGLTerrainChunk>(FVector(At.X, At.Y, 0.0), FRotator::ZeroRotator);
+		++Stats.ChunksSpawned;
 	}
 	Chunk->Setup(Slot.First, Ground.VertsPerChunk);
+	Chunk->State = EGLChunkState::Live;
+	Chunk->OwnerCell = Ground.Cell;
 	return Chunk;
 }
 
-void UGLTerrainSubsystem::BuildSlotNow(FGLCellGround& Ground, FGLChunkSlot& Slot, bool bAsyncCollision)
+void UGLTerrainSubsystem::BuildSlotNow(FGLCellGround& Ground, FGLChunkSlot& Slot)
 {
 	if (!Slot.Actor)
 	{
 		Slot.Actor = AcquireChunk(Ground, Slot);
 	}
-	Slot.Actor->ApplyMesh(AGLTerrainChunk::BuildMesh(AGLTerrainChunk::MakeSnapshot(Ground.Field, Slot.First, Ground.VertsPerChunk)), true, bAsyncCollision);
+	Slot.Actor->ApplyMesh(AGLTerrainChunk::BuildMesh(AGLTerrainChunk::MakeSnapshot(Ground.Field, Slot.First, Ground.VertsPerChunk)), true);
 	Slot.BuiltVersion = Slot.Version;
 }
 
@@ -298,8 +315,13 @@ void UGLTerrainSubsystem::Pump(const FVector2D& Near, double BudgetSeconds, int3
 		}
 		const double One = FPlatformTime::Seconds();
 		const double M0 = AGLTerrainChunk::MeshSeconds, C0 = AGLTerrainChunk::CollisionSeconds, N0 = AGLTerrainChunk::NavigationSeconds;
-		Slot.Actor->ApplyMesh(MoveTemp(*Job->Task.GetResult()), true, true);
+		const bool bFirstBuild = Slot.Actor->GetLifetimeMeshes() == 0;
+		Slot.Actor->ApplyMesh(MoveTemp(*Job->Task.GetResult()), true); // one synchronous cook (see ApplyMesh)
 		const double ApplyMs = (FPlatformTime::Seconds() - One) * 1000.0;
+		(bFirstBuild ? Stats.FirstBuildApplies : Stats.ReusedApplies) += 1;
+		(bFirstBuild ? Stats.FirstBuildMsSum : Stats.ReusedMsSum) += ApplyMs;
+		double& Worst = bFirstBuild ? Stats.FirstBuildMsMax : Stats.ReusedMsMax;
+		Worst = FMath::Max(Worst, ApplyMs);
 		if (ApplyMs > LastPump.WorstApplyMs)
 		{
 			LastPump.WorstApplyMs = ApplyMs;
@@ -401,9 +423,10 @@ bool UGLTerrainSubsystem::EnsureReadyAt(const FVector2D& World, double RadiusCm)
 			if (Slot.BuiltVersion != Slot.Version || !Slot.Actor)
 			{
 				// Never let Zenny stand over missing ground: build it here, with collision at once.
-				BuildSlotNow(Ground, Slot, false);
+				BuildSlotNow(Ground, Slot);
 				++Stats.EmergencyChunks;
 			}
+
 		}
 	}
 	return bAny;
@@ -421,9 +444,10 @@ bool UGLTerrainSubsystem::RemoveCell(FName CellId)
 	{
 		if (AGLTerrainChunk* Chunk = Slot.Actor.Get())
 		{
-			// Gone from the game at once (no collision, not drawn); destroyed a few per frame.
+			// Gone from the game at once (no collision, not drawn); cleared a few per frame, then pooled.
 			Chunk->SetActorHiddenInGame(true);
 			Chunk->SetActorEnableCollision(false);
+			Chunk->State = EGLChunkState::Retiring;
 			Retiring.Add(Chunk);
 		}
 	}
@@ -467,7 +491,7 @@ void UGLTerrainSubsystem::FlushAll()
 		{
 			if (Slot.BuiltVersion != Slot.Version || !Slot.Actor)
 			{
-				BuildSlotNow(Entry.Value, Slot, false);
+				BuildSlotNow(Entry.Value, Slot);
 			}
 			Slot.InFlightVersion = -1;
 		}
@@ -478,6 +502,47 @@ void UGLTerrainSubsystem::FlushAll()
 	}
 }
 
+bool UGLTerrainSubsystem::CheckChunkIntegrity(TArray<FString>* OutProblems) const
+{
+	TSet<const AGLTerrainChunk*> Seen;
+	bool bOk = true;
+	auto Problem = [&](const FString& Message) { bOk = false; if (OutProblems) { OutProblems->Add(Message); } };
+	for (const TPair<FName, FGLCellGround>& Entry : Grounds)
+	{
+		for (const FGLChunkSlot& Slot : Entry.Value.Slots)
+		{
+			const AGLTerrainChunk* Chunk = Slot.Actor.Get();
+			if (!Chunk)
+			{
+				continue;
+			}
+			if (Seen.Contains(Chunk)) { Problem(FString::Printf(TEXT("a chunk is owned twice (%s)"), *Entry.Key.ToString())); }
+			Seen.Add(Chunk);
+			if (Chunk->State != EGLChunkState::Live) { Problem(FString::Printf(TEXT("a slot of %s holds a chunk that is not Live"), *Entry.Key.ToString())); }
+			if (Chunk->OwnerCell != Entry.Key) { Problem(FString::Printf(TEXT("a chunk of %s names %s as its owner"), *Entry.Key.ToString(), *Chunk->OwnerCell.ToString())); }
+			if (Chunk->GetFirstVertex() != Slot.First) { Problem(FString::Printf(TEXT("a chunk of %s covers another slot's vertices"), *Entry.Key.ToString())); }
+		}
+	}
+	for (const TWeakObjectPtr<AGLTerrainChunk>& Weak : Pool)
+	{
+		const AGLTerrainChunk* Chunk = Weak.Get();
+		if (!Chunk)
+		{
+			continue;
+		}
+		if (Seen.Contains(Chunk)) { Problem(TEXT("a pooled chunk is also live")); }
+		Seen.Add(Chunk);
+		if (Chunk->State != EGLChunkState::Pooled || Chunk->IsBuilt() || !Chunk->OwnerCell.IsNone() || !Chunk->IsEmptyAndInert()) { Problem(TEXT("a pooled chunk is not fully cleared")); }
+	}
+	for (const TWeakObjectPtr<AGLTerrainChunk>& Weak : Retiring)
+	{
+		const AGLTerrainChunk* Chunk = Weak.Get();
+		if (Chunk && Seen.Contains(Chunk)) { Problem(TEXT("a retiring chunk is also live or pooled")); }
+	}
+	if (Pool.Num() > PoolLimit) { Problem(FString::Printf(TEXT("the pool holds %d chunks, over its bound %d"), Pool.Num(), PoolLimit)); }
+	return bOk;
+}
+
 void UGLTerrainSubsystem::RetireOne()
 {
 	AGLTerrainChunk* Chunk = Retiring.Pop().Get();
@@ -485,13 +550,14 @@ void UGLTerrainSubsystem::RetireOne()
 	{
 		return;
 	}
-	if (Pool.Num() < MaxPooled)
+	if (Pool.Num() < PoolLimit)
 	{
 		Chunk->ClearForPool();
 		Pool.Add(Chunk);
 	}
 	else
 	{
+		++Stats.PoolOverflowDestroyed;
 		Chunk->Destroy();
 	}
 }

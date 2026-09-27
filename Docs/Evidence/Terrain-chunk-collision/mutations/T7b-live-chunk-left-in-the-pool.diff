@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+@@ -254,6 +254,7 @@
+ 	Chunk->Setup(Slot.First, Ground.VertsPerChunk);
+ 	Chunk->State = EGLChunkState::Live;
+ 	Chunk->OwnerCell = Ground.Cell;
++	Pool.Add(Chunk); // MUTANT: still handed out
+ 	return Chunk;
+ }
+ 

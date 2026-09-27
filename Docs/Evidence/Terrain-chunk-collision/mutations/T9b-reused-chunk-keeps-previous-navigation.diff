@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
+@@ -136,7 +136,7 @@
+ 	Mesh->bUseAsyncCooking = bAsyncCollision;
+ 	Mesh->UpdateCollision(false);
+ 	const double Collided = FPlatformTime::Seconds();
+-	if (bNotifyNavigation)
++	if (bNotifyNavigation && LifetimeMeshes <= 1)
+ 	{
+ 		UNavigationSystemV1::UpdateComponentInNavOctree(*Mesh);
+ 	}
