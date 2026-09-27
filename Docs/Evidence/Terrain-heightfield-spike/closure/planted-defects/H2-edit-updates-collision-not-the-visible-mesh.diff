@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
+@@ -155,7 +155,7 @@
+ 	{
+ 		const double Start = FPlatformTime::Seconds();
+ 		EnsureSeparateCollision();
+-		Mesh->SetMesh(MoveTemp(Built));
++		if (!bBuilt) { Mesh->SetMesh(MoveTemp(Built)); } // DEFECT
+ 		++LifetimeMeshes;
+ 		const double Meshed = FPlatformTime::Seconds();
+ 		ensureMsgf(Geometry.IsValid(), TEXT("Terrain: a chunk mesh was applied without its collision geometry"));

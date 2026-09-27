@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+@@ -556,7 +556,7 @@
+ 	{
+ 		return;
+ 	}
+-	if (Pool.Num() < PoolLimit)
++	if (true)
+ 	{
+ 		Chunk->ClearForPool();
+ 		Pool.Add(Chunk);

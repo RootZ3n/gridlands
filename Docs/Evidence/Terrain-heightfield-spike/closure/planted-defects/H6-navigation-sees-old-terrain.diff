@@ -1,0 +1,15 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
+@@ -161,9 +161,9 @@
+ 		ensureMsgf(Geometry.IsValid(), TEXT("Terrain: a chunk mesh was applied without its collision geometry"));
+ 		Collision->SetGeometry(MoveTemp(Geometry)); // the body is recreated now: no window without collision
+ 		const double Collided = FPlatformTime::Seconds();
+-		if (bNotifyNavigation)
+-		{
+-			UNavigationSystemV1::UpdateComponentInNavOctree(*Collision);
++		if (false)
++		{
++			UNavigationSystemV1::UpdateComponentInNavOctree(*Collision); // DEFECT
+ 		}
+ 		MeshSeconds += Meshed - Start;
+ 		CollisionSeconds += Collided - Meshed;

@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainCollision.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainCollision.cpp
+@@ -106,7 +106,7 @@
+ 		// GetMaterialIndex fails its bounds check for every cell but the first and returns 255, which IsHole
+ 		// reads as a hole. The navigation export then skipped every cell, and overlap/sweep queries skip holes.
+ 		TArray<uint8> Materials;
+-		Materials.SetNumZeroed((V - 1) * (V - 1));
++		Materials.SetNumZeroed(1); // DEFECT: the "default material" form
+ 		G->Heightfield = Chaos::FHeightFieldPtr(new Chaos::FHeightField(MoveTemp(Heights), MoveTemp(Materials), V, V, Chaos::FVec3(1)));
+ 		// Unrotated: a turned (transformed) heightfield made Chaos sweeps miss contacts exactly on chunk seams.
+ 		G->HeightfieldToLocal = FTransform(FQuat::Identity, FVector::ZeroVector, FVector(Snap.Spacing, Snap.Spacing, 1.0));

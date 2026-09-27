@@ -1,0 +1,1524 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0E29324BE749BBA42B1A625BFFF01",
+			"instanceName": "Pehverse-1523782",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.27-11.15.16",
+	"succeeded": 8,
+	"succeededWithWarnings": 0,
+	"failed": 7,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 13.505339622497559,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BuiltOnlyAroundInvokersAndFollowsEdits",
+			"fullTestPath": "Gridlands.Game.Navigation.BuiltOnlyAroundInvokersAndFollowsEdits",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 1.4566358327865601,
+			"dateTime": "2026.09.27-11.15.03",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(354): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.03"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "active tiles around Zenny: 212 (a whole 1 km cell: 10816)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.03"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "active tiles after the walk: 223; old place on navigation: no",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.04"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "navmesh at the mound: 10 -> 10 cm (ground 300)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.04"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the navmesh rose with the ground (well over a metre)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLLocalizedNavigationTests.cpp",
+					"lineNumber": 177,
+					"timestamp": "2026.09.27-11.15.04"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CreaturesPathFarFromThePlayer",
+			"fullTestPath": "Gridlands.Game.Navigation.CreaturesPathFarFromThePlayer",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 0.62396693229675293,
+			"dateTime": "2026.09.27-11.15.04",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CrossesBoundariesAndUnloadsCleanly",
+			"fullTestPath": "Gridlands.Game.Navigation.CrossesBoundariesAndUnloadsCleanly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 1.7770398855209351,
+			"dateTime": "2026.09.27-11.15.05",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AIWalksAroundARaisedRidge",
+			"fullTestPath": "Gridlands.Game.Terrain.AIWalksAroundARaisedRidge",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 0.22797520458698273,
+			"dateTime": "2026.09.27-11.15.07",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'it crossed the ridge line through the gap (y = 3200)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.07"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'it went out of its way to do so' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainNavigationTests.cpp",
+					"lineNumber": 237,
+					"timestamp": "2026.09.27-11.15.07"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "walker: arrived 73 cm from B in 361 ticks, crossed x = 64 m at y = 3200, max y 3200, max z 90",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.07"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NavigationFollowsRuntimeEdits",
+			"fullTestPath": "Gridlands.Game.Terrain.NavigationFollowsRuntimeEdits",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 0.55500316619873047,
+			"dateTime": "2026.09.27-11.15.07",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "navigable bounds from the cell: IsValid=true, Min=(X=0.000 Y=0.000 Z=-3900.000), Max=(X=12800.000 Y=6400.000 Z=3900.000)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.07"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'after: the path detours through the gap (crosses at y = 3200, gap from 5000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.07"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'after: the old straight route is not offered' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/UnrealString.h.inl",
+					"lineNumber": 1378,
+					"timestamp": "2026.09.27-11.15.07"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "path crossings of x = 64 m: before y = 3200, after the ridge y = 3200",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.07"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaleNavigationIsDetectedControl",
+			"fullTestPath": "Gridlands.Game.Terrain.StaleNavigationIsDetectedControl",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 0.20677612721920013,
+			"dateTime": "2026.09.27-11.15.07",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "control (navigation not told): path crosses x = 64 m at y = 3200, straight over the ridge",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.08"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TerraformConservesProtectsAndPersists",
+			"fullTestPath": "Gridlands.Game.Terrain.TerraformConservesProtectsAndPersists",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 0.066915921866893768,
+			"dateTime": "2026.09.27-11.15.08",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'collision follows the dig: a trace lands in the hole' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingTests.cpp",
+					"lineNumber": 192,
+					"timestamp": "2026.09.27-11.15.08"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'collision follows the mound' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingTests.cpp",
+					"lineNumber": 198,
+					"timestamp": "2026.09.27-11.15.08"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(373): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.08"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'with collision' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingTests.cpp",
+					"lineNumber": 231,
+					"timestamp": "2026.09.27-11.15.08"
+				}
+			],
+			"warnings": 0,
+			"errors": 3,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "EditedCollisionSurvivesSaveRestoreAndStreaming",
+			"fullTestPath": "Gridlands.Game.TerrainCollision.EditedCollisionSurvivesSaveRestoreAndStreaming",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 1.0712541341781616,
+			"dateTime": "2026.09.27-11.15.08",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'restored: collision is where it was before unloading' to be 0, but it was 18.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainCollisionTests.cpp",
+					"lineNumber": 328,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] restored (flushed): 1339 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.30 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; ground for structures/building vs visible and collision: 0.00 cm at 169 vertices, 32.91 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'streamed: collision is where it was before unloading' to be 0, but it was 18.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainCollisionTests.cpp",
+					"lineNumber": 346,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] restored (streamed, reused chunks): 1339 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.30 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; ground for structures/building vs visible and collision: 0.00 cm at 169 vertices, 32.91 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.09"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "VisibleAndCollisionSurfacesAgreeUnderDeformation",
+			"fullTestPath": "Gridlands.Game.TerrainCollision.VisibleAndCollisionSurfacesAgreeUnderDeformation",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 0.98771238327026367,
+			"dateTime": "2026.09.27-11.15.09",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] untouched: 2771 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 0; ground for structures/building vs visible and collision: 0.00 cm at 361 vertices, 0.00 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] small dig: 419 probes; worst |trace-visible| 14.14 cm, |sweep-visible| 14.14 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 46; ground for structures/building vs visible and collision: 16.00 cm at 36 vertices, 2.69 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'small dig: structures and building stand on the visible, colliding ground at every vertex (16.00 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'small dig: the trace is the visible surface (14.14 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'small dig: the sweep touches the visible surface (14.14 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'small dig: overlaps touch the surface exactly' to be 0, but it was 46.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] steep dig (4 m in 1.2 m): 419 probes; worst |trace-visible| 286.01 cm, |sweep-visible| 286.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 50; ground for structures/building vs visible and collision: 331.00 cm at 36 vertices, 68.22 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'steep dig (4 m in 1.2 m): structures and building stand on the visible, colliding ground at every vertex (331.00 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'steep dig (4 m in 1.2 m): the trace is the visible surface (286.01 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'steep dig (4 m in 1.2 m): the sweep touches the visible surface (286.01 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'steep dig (4 m in 1.2 m): overlaps touch the surface exactly' to be 0, but it was 50.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] steep raise: 419 probes; worst |trace-visible| 149.32 cm, |sweep-visible| 149.32 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 39; ground for structures/building vs visible and collision: 177.00 cm at 36 vertices, 39.43 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'steep raise: structures and building stand on the visible, colliding ground at every vertex (177.00 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'steep raise: the trace is the visible surface (149.32 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'steep raise: the sweep touches the visible surface (149.32 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'steep raise: overlaps touch the surface exactly' to be 0, but it was 39.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'repeated dig 0: collision follows at once (27.84 cm, 0 missing)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'repeated dig 1: collision follows at once (55.68 cm, 0 missing)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'repeated dig 2: collision follows at once (83.52 cm, 0 missing)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'repeated dig 3: collision follows at once (111.36 cm, 0 missing)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'repeated dig 4: collision follows at once (139.20 cm, 0 missing)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'repeated dig 5: collision follows at once (167.04 cm, 0 missing)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'repeated dig 6: collision follows at once (194.88 cm, 0 missing)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'repeated dig 7: collision follows at once (222.72 cm, 0 missing)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'repeated dig 8: collision follows at once (250.56 cm, 0 missing)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'repeated dig 9: collision follows at once (278.40 cm, 0 missing)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] 10 repeated digs: 654 probes; worst |trace-visible| 283.20 cm, |sweep-visible| 283.20 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 115; ground for structures/building vs visible and collision: 300.00 cm at 81 vertices, 17.82 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '10 repeated digs: structures and building stand on the visible, colliding ground at every vertex (300.00 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '10 repeated digs: the trace is the visible surface (283.20 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '10 repeated digs: the sweep touches the visible surface (283.20 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '10 repeated digs: overlaps touch the surface exactly' to be 0, but it was 115.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] neighbouring vertices edited: 815 probes; worst |trace-visible| 276.55 cm, |sweep-visible| 276.55 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 159; ground for structures/building vs visible and collision: 331.00 cm at 90 vertices, 72.16 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'neighbouring vertices edited: structures and building stand on the visible, colliding ground at every vertex (331.00 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'neighbouring vertices edited: the trace is the visible surface (276.55 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'neighbouring vertices edited: the sweep touches the visible surface (276.55 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'neighbouring vertices edited: overlaps touch the surface exactly' to be 0, but it was 159.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] edit on an X seam, both sides: 654 probes; worst |trace-visible| 139.00 cm, |sweep-visible| 139.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 114; ground for structures/building vs visible and collision: 139.00 cm at 81 vertices, 12.60 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'edit on an X seam, both sides: structures and building stand on the visible, colliding ground at every vertex (139.00 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'edit on an X seam, both sides: the trace is the visible surface (139.00 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'edit on an X seam, both sides: the sweep touches the visible surface (139.00 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'edit on an X seam, both sides: overlaps touch the surface exactly' to be 0, but it was 114.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] edit on a chunk corner (four chunks): 994 probes; worst |trace-visible| 291.28 cm, |sweep-visible| 291.28 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 435; ground for structures/building vs visible and collision: 331.00 cm at 121 vertices, 59.47 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'edit on a chunk corner (four chunks): structures and building stand on the visible, colliding ground at every vertex (331.00 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'edit on a chunk corner (four chunks): the trace is the visible surface (291.28 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'edit on a chunk corner (four chunks): the sweep touches the visible surface (291.28 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'edit on a chunk corner (four chunks): overlaps touch the surface exactly' to be 0, but it was 435.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 0: no stale collision at its centre (0.0 vs 28.4)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 1: no stale collision at its centre (0.0 vs 81.4)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 2: no stale collision at its centre (0.0 vs -118.9)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 3: no stale collision at its centre (0.0 vs 17.2)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 4: no stale collision at its centre (0.0 vs -166.8)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 5: no stale collision at its centre (0.0 vs 40.6)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 6: no stale collision at its centre (0.0 vs 60.3)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 7: no stale collision at its centre (0.0 vs -16.1)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 8: no stale collision at its centre (0.0 vs -113.9)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 9: no stale collision at its centre (0.0 vs 50.8)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 10: no stale collision at its centre (0.0 vs 73.9)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 11: no stale collision at its centre (0.0 vs -110.7)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 12: no stale collision at its centre (0.0 vs -73.5)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 13: no stale collision at its centre (0.0 vs 2.7)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 14: no stale collision at its centre (0.0 vs -51.2)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 15: no stale collision at its centre (0.0 vs -74.6)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 16: no stale collision at its centre (0.0 vs -102.3)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 17: no stale collision at its centre (0.0 vs -33.2)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 18: no stale collision at its centre (0.0 vs -88.4)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 19: no stale collision at its centre (0.0 vs 28.1)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 20: no stale collision at its centre (0.0 vs 23.5)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 21: no stale collision at its centre (0.0 vs 45.1)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 22: no stale collision at its centre (0.0 vs -1.1)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 23: no stale collision at its centre (0.0 vs 57.7)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 24: no stale collision at its centre (0.0 vs -133.3)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 25: no stale collision at its centre (0.0 vs 44.4)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 26: no stale collision at its centre (0.0 vs 132.4)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 27: no stale collision at its centre (0.0 vs -63.5)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 28: no stale collision at its centre (0.0 vs 106.0)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rapid edit 29: no stale collision at its centre (0.0 vs 116.4)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] 30 rapid edits in one frame: 3435 probes; worst |trace-visible| 257.79 cm, |sweep-visible| 257.79 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 2188; ground for structures/building vs visible and collision: 304.00 cm at 441 vertices, 54.22 cm anywhere",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '30 rapid edits in one frame: structures and building stand on the visible, colliding ground at every vertex (304.00 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '30 rapid edits in one frame: the trace is the visible surface (257.79 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '30 rapid edits in one frame: the sweep touches the visible surface (257.79 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '30 rapid edits in one frame: overlaps touch the surface exactly' to be 0, but it was 2188.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-11.15.10"
+				}
+			],
+			"warnings": 0,
+			"errors": 72,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CancellationNeverHandsOutAHalfResetChunk",
+			"fullTestPath": "Gridlands.Game.TerrainPool.CancellationNeverHandsOutAHalfResetChunk",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 0.99934005737304688,
+			"dateTime": "2026.09.27-11.15.10",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PooledChunksLeaveNavigation",
+			"fullTestPath": "Gridlands.Game.TerrainPool.PooledChunksLeaveNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 1.2368285655975342,
+			"dateTime": "2026.09.27-11.15.11",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "pooled 256 (in navigation 0), live 256 (missing from navigation 0)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.12"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoolStaysInsideItsBound",
+			"fullTestPath": "Gridlands.Game.TerrainPool.PoolStaysInsideItsBound",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 1.4616429805755615,
+			"dateTime": "2026.09.27-11.15.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReusedChunksAreRebornCleanInAnotherCell",
+			"fullTestPath": "Gridlands.Game.TerrainPool.ReusedChunksAreRebornCleanInAnotherCell",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 0.98214393854141235,
+			"dateTime": "2026.09.27-11.15.14",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'its collision has the pit' to be -300.000000, but it was 0.000000 and outside tolerance 5.000000.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
+					"lineNumber": 130,
+					"timestamp": "2026.09.27-11.15.14"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaleMeshWorkNeverLandsOnAReassignedChunk",
+			"fullTestPath": "Gridlands.Game.TerrainPool.StaleMeshWorkNeverLandsOnAReassignedChunk",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 1.233494758605957,
+			"dateTime": "2026.09.27-11.15.14",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "stale mesh results dropped: 64",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-11.15.16"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StreamedReusedChunksCollideAsTheirNewCell",
+			"fullTestPath": "Gridlands.Game.TerrainPool.StreamedReusedChunksCollideAsTheirNewCell",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E29324BE749BBA42B1A625BFFF01"
+			],
+			"duration": 0.61860805749893188,
+			"dateTime": "2026.09.27-11.15.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}
