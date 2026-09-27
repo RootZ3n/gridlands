@@ -61,7 +61,8 @@ over. Anchors are exported from maps with transforms computed from serialized da
 so the export is identical whether or not the map's world is initialized.
 
 **Salvage and inventory (M4).** Pure rules in Core: `FGLInventory` (stacking,
-slots, weight; overencumbrance is allowed but slows Zenny), `GLYield::Apply` (the
+slots, weight; overencumbrance is allowed but slows Zenny; the architecture-first north star intends
+no weight or encumbrance in future, see [ARCHITECTURAL-NORTH-STAR](ARCHITECTURAL-NORTH-STAR.md)), `GLYield::Apply` (the
 ADR-0016 category rule), and `GLSalvageRules` (hits = integrity / (10 x tool
 multiplier / hardness); required-tool gating). The game layer wires them:
 `UGLInventoryComponent`, `UGLSalvageableComponent` (an `IGLInteractable`),
