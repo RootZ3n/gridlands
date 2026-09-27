@@ -1,0 +1,21 @@
+LogGridlands: Grid: entered cell.home.origin (from None)
+LogGridlands: Grid: loading cell.home.origin (epoch 1)
+LogGridlands: Grid: slow streaming frame 15.90 ms: load/unload 0.29, ground 15.54 [finish 0.00, apply 0.00 (0, worst 0.00 = mesh 0.00 + collision 0.00 + nav 0.00), launch 0.19, retire 0.00 (0)], authoritative 0.00, presentation 0.04 (0 units)
+LogGridlands: Grid: slow streaming frame 17.34 ms: load/unload 0.01, ground 17.33 [finish 0.00, apply 4.81 (1, worst 4.72 = mesh 0.03 + collision 4.68 + nav 0.01), launch 0.03, retire 0.00 (0)], authoritative 0.00, presentation 0.00 (0 units)
+LogGridlands: Placements: spawned 23 for cell.home.origin (presentation deferred); discovery 0.06 ms glitch 0.29 ms spawn 3.87 ms salvage_node 0.99 ms puzzle_site 0.12 ms structure 0.06 ms
+LogGridlands: Grid: cell.home.origin runtime layer in (epoch 1, kept state: no)
+LogGridlands: Grid: slow streaming frame 13.02 ms: load/unload 0.01, ground 5.18 [finish 0.00, apply 5.14 (1, worst 4.93 = mesh 0.05 + collision 4.87 + nav 0.02), launch 0.04, retire 0.00 (0)], authoritative 7.82, presentation 0.00 (0 units)
+LogGridlands: Grid: slow streaming frame 10.87 ms: load/unload 0.01, ground 10.84 [finish 0.00, apply 10.73 (1, worst 10.35 = mesh 0.09 + collision 10.19 + nav 0.07), launch 0.10, retire 0.00 (0)], authoritative 0.00, presentation 0.01 (0 units)
+LogGridlands: Grid: cell.home.origin (epoch 1) ready: ground 16 ms, authoritative runtime 465 ms, presented 556 ms, every chunk 2629 ms
+LogGridlands: Grid: loading cell.outer.diner_lots (epoch 2)
+LogGridlands: Grid: unloaded cell.outer.diner_lots at frame 6015 (epoch 2, cancelled mid-load)
+LogGridlands: Grid: loading cell.outer.diner_lots (epoch 3)
+LogGridlands: Placements: spawned 13 for cell.outer.diner_lots (presentation deferred); glitch 0.15 ms salvage_node 0.22 ms
+LogGridlands: Grid: cell.outer.diner_lots runtime layer in (epoch 3, kept state: no)
+LogGridlands: Grid: cell.outer.diner_lots (epoch 3) ready: ground 97 ms, authoritative runtime 101 ms, presented 243 ms, every chunk 2280 ms
+LogGridlands: Grid: entered cell.outer.diner_lots (from cell.home.origin)
+LogGridlands: Placements: despawned 20 for cell.home.origin (0.69 ms)
+LogGridlands: Grid: unloaded cell.home.origin at frame 29297 (epoch 1, was ready)
+LogGridlands: gl.Demo.GridReport: in cell.outer.diner_lots | loaded [cell.outer.diner_lots] | origin: lamp (not loaded), pieces 0, mound -9999 cm, level actors 0 | lots: jukebox Latent, pieces 0, level actors 10 | glitch actors 1, creatures 0 | loads 3 unloads 2
+LogGridlands: Save: wrote ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json
+machine: load average: 4.84, 4.01, 3.04

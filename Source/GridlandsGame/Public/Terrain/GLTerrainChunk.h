@@ -6,6 +6,8 @@
 
 class FGLHeightfield;
 class UDynamicMeshComponent;
+class UGLTerrainCollisionComponent;
+struct FGLChunkCollisionGeometry;
 
 /** Where a chunk actor is in its life (P5 pool; the terrain pool work after P7.1 made it explicit). */
 enum class EGLChunkState : uint8
@@ -49,7 +51,13 @@ public:
 	/** Streaming (P5): copy what a worker needs, build the mesh anywhere, apply it on the game thread. */
 	static FGLChunkSnapshot MakeSnapshot(const FGLHeightfield& Field, FIntPoint First, int32 Verts);
 	static UE::Geometry::FDynamicMesh3 BuildMesh(const FGLChunkSnapshot& Snapshot);
-	void ApplyMesh(UE::Geometry::FDynamicMesh3&& Built, bool bNotifyNavigation);
+	/** Builds mesh (and, in the spike modes, collision geometry) from a snapshot on this thread, then applies them. */
+	void ApplySnapshot(const FGLChunkSnapshot& Snapshot, bool bNotifyNavigation);
+	/**
+	 * Collision is the dynamic mesh's own cook (canonical), or, in the heightfield spike's modes, Collision (built
+	 * off the game thread when given; built here from the chunk's snapshot when not).
+	 */
+	void ApplyMesh(UE::Geometry::FDynamicMesh3&& Built, bool bNotifyNavigation, TSharedPtr<const FGLChunkCollisionGeometry> Collision = nullptr);
 	bool IsBuilt() const { return bBuilt; }
 	/** A pooled chunk holds nothing: an empty mesh, no collision body, hidden, no collision. */
 	bool IsEmptyAndInert() const;
@@ -78,9 +86,16 @@ public:
 	static inline double NavigationSeconds = 0.0;
 	static inline int32 Rebuilds = 0;
 	UDynamicMeshComponent* GetMesh() const { return Mesh; }
+	/** SPIKE: the separate collision body (heightfield or worker trimesh modes; null in the canonical mode). */
+	UGLTerrainCollisionComponent* GetCollisionComponent() const { return Collision; }
+	/** SPIKE: game-thread seconds spent building collision geometry (edits, sync loads) and worker seconds (streaming). */
+	static inline double CollisionBuildGameThreadSeconds = 0.0;
+	static inline std::atomic<int64> CollisionBuildWorkerMicros{0};
 
 private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UDynamicMeshComponent> Mesh;
+	UPROPERTY() TObjectPtr<UGLTerrainCollisionComponent> Collision;
+	void EnsureSeparateCollision();
 	FIntPoint FirstVertex = FIntPoint::ZeroValue;
 	int32 VertsPerSide = 0;
 	bool bBuilt = false;

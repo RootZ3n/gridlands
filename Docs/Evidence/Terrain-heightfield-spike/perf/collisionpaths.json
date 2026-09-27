@@ -1,0 +1,92 @@
+{
+	"chunks": 64,
+	"processCollisionMode": "component-trimesh",
+	"componentTrimesh.gameThreadCook":
+	{
+		"meanMs": 4.9260117430094397,
+		"medianMs": 4.8888919409364462,
+		"maxMs": 6.4863960724323988
+	},
+	"componentTrimesh.navigationNotify":
+	{
+		"meanMs": 0.011479494787636213,
+		"medianMs": 0.010333023965358734,
+		"maxMs": 0.022182939574122429
+	},
+	"componentTrimesh.editUpdateCook":
+	{
+		"meanMs": 5.0076293955498841,
+		"medianMs": 4.9869409995153546,
+		"maxMs": 5.7765940437093377
+	},
+	"heightfield.build":
+	{
+		"meanMs": 0.041553439587005414,
+		"medianMs": 0.040296930819749832,
+		"maxMs": 0.078977085649967194
+	},
+	"heightfield.gameThreadAttach":
+	{
+		"meanMs": 0.010216646842309274,
+		"medianMs": 0.0081229954957962036,
+		"maxMs": 0.058543053455650806
+	},
+	"heightfield.navigationNotify":
+	{
+		"meanMs": 0.0017157817637780681,
+		"medianMs": 0.001551932655274868,
+		"maxMs": 0.0052450923249125481
+	},
+	"heightfield.editBuild":
+	{
+		"meanMs": 0.042917079554172233,
+		"medianMs": 0.039897975511848927,
+		"maxMs": 0.084856990724802017
+	},
+	"heightfield.editAttach":
+	{
+		"meanMs": 0.0059728808992076665,
+		"medianMs": 0.005647074431180954,
+		"maxMs": 0.016225967556238174
+	},
+	"workerTrimesh.build":
+	{
+		"meanMs": 1.265540098756901,
+		"medianMs": 1.2248939601704478,
+		"maxMs": 1.5956279821693897
+	},
+	"workerTrimesh.gameThreadAttach":
+	{
+		"meanMs": 0.014118830222287215,
+		"medianMs": 0.012519070878624916,
+		"maxMs": 0.036278972402215004
+	},
+	"workerTrimesh.navigationNotify":
+	{
+		"meanMs": 0.0018325463315704837,
+		"medianMs": 0.0018089776858687401,
+		"maxMs": 0.0026290072128176689
+	},
+	"workerTrimesh.editBuild":
+	{
+		"meanMs": 1.2723816707875812,
+		"medianMs": 1.2427910696715117,
+		"maxMs": 1.7332429997622967
+	},
+	"workerTrimesh.editAttach":
+	{
+		"meanMs": 0.010884077710215934,
+		"medianMs": 0.0093680573627352715,
+		"maxMs": 0.02699799370020628
+	},
+	"heightfield.partialEditHeights9x9":
+	{
+		"meanMs": 0.025618508516345173,
+		"medianMs": 0.023863045498728752,
+		"maxMs": 0.054105999879539013
+	},
+	"mem256HeightfieldBodiesMb": 4.19921875,
+	"mem256WorkerTrimeshBodiesMb": 105.73828125,
+	"mem256RenderMeshesOnlyMb": 597.2890625,
+	"mem256ComponentTrimeshCookMb": 142.484375
+}

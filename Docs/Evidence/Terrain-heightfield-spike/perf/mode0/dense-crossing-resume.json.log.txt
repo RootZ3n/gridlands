@@ -1,0 +1,12 @@
+LogGridlands: Placements: DEV dense proof fixture registered (92 placements in cell.outer.diner_lots)
+LogGridlands: Load: 2 cell records (0 loaded now, the rest when they stream in): 6 glitches, 0 salvaged placements, 0 build pieces, 25 edited ground vertices from ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json
+LogGridlands: Grid: entered cell.outer.diner_lots (from None)
+LogGridlands: Grid: loading cell.outer.diner_lots (epoch 1)
+LogGridlands: Grid: slow streaming frame 102.28 ms: load/unload 0.29, ground 101.93 [finish 0.00, apply 0.00 (0, worst 0.00 = mesh 0.00 + collision 0.00 + nav 0.00), launch 0.30, retire 0.00 (0)], authoritative 0.00, presentation 0.03 (0 units)
+LogGridlands: Placements: spawned 105 for cell.outer.diner_lots (presentation deferred); glitch 0.15 ms salvage_node 0.18 ms structure 0.11 ms
+LogGridlands: Grid: cell.outer.diner_lots runtime layer in (epoch 1, kept state: yes)
+LogGridlands: Grid: slow streaming frame 12.20 ms: load/unload 0.01, ground 5.44 [finish 0.00, apply 5.41 (1, worst 5.16 = mesh 0.08 + collision 5.08 + nav 0.01), launch 0.03, retire 0.00 (0)], authoritative 6.74, presentation 0.01 (0 units)
+LogGridlands: Grid: cell.outer.diner_lots (epoch 1) ready: ground 102 ms, authoritative runtime 537 ms, presented 1794 ms, every chunk 2806 ms
+LogGridlands: gl.Demo.GridReport: in cell.outer.diner_lots | loaded [cell.outer.diner_lots] | origin: lamp (not loaded), pieces 0, mound -9999 cm, level actors 0 | lots: jukebox Latent, pieces 0, level actors 10 | glitch actors 1, creatures 0 | loads 1 unloads 0
+LogGridlands: Save: wrote ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json
+machine: load average: 3.75, 3.81, 3.42

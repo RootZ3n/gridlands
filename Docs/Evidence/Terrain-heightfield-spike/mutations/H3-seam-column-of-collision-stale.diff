@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainCollision.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainCollision.cpp
+@@ -108,7 +108,7 @@
+ 		{
+ 			for (int32 Col = 0; Col < V; ++Col)
+ 			{
+-				Heights[Row * V + Col] = HeightfieldLayout() == 1 ? H(V - 1 - Row, Col) : H(Col, Row);
++				Heights[Row * V + Col] = HeightfieldLayout() == 1 ? H(V - 1 - Row, Col) : H(FMath::Min(Col, V - 2), Row); // MUTANT: last column copies its neighbour
+ 			}
+ 		}
+ 		// One material index PER CELL, never the single "default" entry: with one entry, Chaos's

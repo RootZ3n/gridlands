@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainCollision.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainCollision.cpp
+@@ -115,7 +115,7 @@
+ 		// GetMaterialIndex fails its bounds check for every cell but the first and returns 255, which IsHole
+ 		// reads as a hole. The navigation export then skipped every cell, and overlap/sweep queries skip holes.
+ 		TArray<uint8> Materials;
+-		Materials.SetNumZeroed((V - 1) * (V - 1));
++		Materials.SetNumZeroed(1); // MUTANT: the "default material" form
+ 		G->Heightfield = Chaos::FHeightFieldPtr(new Chaos::FHeightField(MoveTemp(Heights), MoveTemp(Materials), V, V, Chaos::FVec3(1)));
+ 		const bool bTurn = HeightfieldLayout() == 1;
+ 		const FQuat Quarter = bTurn ? FQuat(FVector::UpVector, UE_HALF_PI) : FQuat::Identity; // local +X -> +Y, +Y -> -X

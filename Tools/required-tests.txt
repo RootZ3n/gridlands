@@ -76,3 +76,6 @@ Gridlands.Game.Streaming 4
 
 # Terrain chunk collision and pool hardening (ADR-0034): reused chunks are reborn clean; stale work, bound, cancellation.
 Gridlands.Game.TerrainPool 6
+
+# Terrain collision agreement (heightfield spike; runs in every collision mode): visible = collision = heights through edits, seams, restore, streaming.
+Gridlands.Game.TerrainCollision 2

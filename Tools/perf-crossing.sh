@@ -27,6 +27,7 @@ if [ $DENSE -eq 1 ]; then
 	[ "$NAV" = local ] || result FAIL "-d measures the canonical (localized) navigation only"
 	NAV=dense; EXTRA+=(-GLDenseProof)
 fi
+[ -n "${GRIDLANDS_PERF_ARGS:-}" ] && EXTRA+=(${GRIDLANDS_PERF_ARGS}) # e.g. the heightfield spike: -GLTerrainCollision=1
 MODES=("$@"); [ ${#MODES[@]} -eq 0 ] && MODES=(straight reversal sprint teleport resume roundtrips)
 PERF="$GRIDLANDS_ROOT/Saved/Perf"
 SAVE="$GRIDLANDS_ROOT/Saved/SaveGames/Gridlands/world.json"
