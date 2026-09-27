@@ -139,6 +139,17 @@ Construction depends on these:
 - Abstract them when realism would merely create repetitive labour.
 - **Complexity is opt-in depth,** not mandatory friction.
 
+## 10. Dungeons read and weaponize the same spaces (2026-09-27)
+The dungeon decisions ([DUNGEONS-AND-LEGENDARIES §1.2–1.7](DUNGEONS-AND-LEGENDARIES.md)) strengthen
+this north star. One systemic language:
+
+**BUILD → UNDERSTAND → SALVAGE → TRAVERSE → MANIPULATE → WEAPONIZE** the environment.
+
+- A balcony a player collapses onto a boss by removing its supports is a legitimate environmental
+  resolution when the normal structural rules produce it.
+- Dungeon systems reuse the structural, terrain, noise and environmental systems; they never
+  duplicate or bypass them.
+
 ## Constraints this places on current work (P8 onward)
 Infrastructure must not make the above impossible:
 - **Structures are part graphs** in one structural language shared by authored and player building

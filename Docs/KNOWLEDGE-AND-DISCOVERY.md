@@ -131,6 +131,25 @@ is the intended path.
 A skilled cook's normal, high-quality food approaches **0%**. By late game, a fart takes deliberate
 low-quality or volatile food, so the joke thins out naturally as mastery grows.
 
+**Timing and stealth (LOCKED, 2026-09-27).** This is intended gameplay, not merely an animation gag.
+- **The starting target (PROVISIONAL, must be playtested):** roughly **one event per ~10 minutes**
+  on an average ordinary diet, at randomized times. Never an exact, predictable clock.
+- **Diet quality changes the frequency.** Lower-quality food raises it; higher-quality food lowers
+  it. The near-0% for a skilled cook's high-quality food (above) is the far end of that scale.
+- **Diet is not a punitive, mandatory optimization system.** It makes cooking carry small systemic
+  consequences beyond generic stat buffs.
+- **Hearing rules are unchanged:**
+  - a fart is a legitimate world-noise stimulus;
+  - only creatures able to hear it respond;
+  - the response normally begins as investigation or search, never magic aggro.
+- **A subtle warning before an event may be explored,** so randomness creates a situation the
+  player can react to, not an unavoidable stealth failure.
+- **The legendary recipe 5th Amendment** (brisket: "You have a right to remain silent.") suppresses
+  fart events for a substantial duration, and is renewable. See
+  [DUNGEONS-AND-LEGENDARIES](DUNGEONS-AND-LEGENDARIES.md), Sue Shi.
+- **Canonical NICE reaction candidate:** "Oh, Sweetie. That one wasn't sweet."
+- Dialogue and cinematic handling is decided later.
+
 **Food sensitivities.** Optional randomised food sensitivities or intolerances at world creation
 (Random / Choose / None). They change recipe suitability and digestive volatility. There are **no
 medically dangerous allergies** unless designed separately. Hoponi owns this knowledge.

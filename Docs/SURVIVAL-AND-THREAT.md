@@ -107,6 +107,26 @@ discovery, and practical mastery, are complementary axes
 
 The skill list and curves are not fixed. Skills stay separate from Pehlichi's capabilities.
 
+**Non-attack mastery: agility is a major alternative path (LOCKED, 2026-09-27).**
+- **"Non-combat" does not mean avoiding dangerous encounters.** Zenny may be in full combat state,
+  under direct attack, and never attack the boss ([DUNGEONS-AND-LEGENDARIES §1.4](DUNGEONS-AND-LEGENDARIES.md)).
+- **What a non-attack Zenny develops through use:**
+  - running and jumping;
+  - dodging and evasion;
+  - climbing and mantling, where supported;
+  - movement control;
+  - stamina-related movement abilities;
+  - physical mastery for stealth and evasion, where appropriate.
+- **The loop:**
+
+  ```
+  avoid direct fighting -> move and evade more -> movement mastery improves
+  -> Zenny survives better without attacking -> harder encounters become environmentally resolvable
+  ```
+- **Environmental resolution is never a lesser victory.** It satisfies progression and gives the
+  major dungeon reward, just as direct defeat does.
+- The exact skill list and numbers are future design work.
+
 ## 4a. Death and failure-forward (LOCKED DESIGN INTENT, operator, 2026-09-26; NOT IMPLEMENTED beyond respawn)
 
 **Gridlands does not use corpse runs.** Death never:
@@ -158,6 +178,27 @@ understanding NICE's systems. Growth takes the form of capability levels
 jamming, temporary disabling, pacification, escape assistance, later
 traversal). **None of them deals damage** ([ADR-0017](ADR/0017-pehlichi-deals-zero-damage.md)).
 All progression lives in the world save ([ADR-0019](ADR/0019-world-save-bound-progression.md)).
+
+**Use-based progression, complementary to Zenny's (LOCKED, 2026-09-27).** Pehlichi improves by
+doing:
+- investigation and scanning;
+- hacking (it improves with use);
+- glitch repair and distraction;
+- structural investigation;
+- environmental and system analysis.
+
+**Higher skill shortens his part of an environmental boss solution** ([DUNGEONS-AND-LEGENDARIES §1.4](DUNGEONS-AND-LEGENDARIES.md)).
+It may reduce:
+- the analysis duration;
+- the number of opportunities Zenny must create;
+- the hack duration.
+
+It may eventually reveal more sophisticated possibilities.
+
+**It never removes Zenny's participation,** and never reduces every solution to "Pehlichi hacks the
+boss". Some solutions are mechanical, structural, environmental, or simply absurd.
+
+**Pehlichi's broad role: FIGURE THIS BASTARD OUT.**
 
 ## 6. Resource economy
 
@@ -237,9 +278,34 @@ investigates; its sight cone moves; Zenny slips past.
 
 Proven in the real game and in tests.
 
+**Dungeon infiltration uses this same model (LOCKED, 2026-09-27; not built)**
+([DUNGEONS-AND-LEGENDARIES §1.2–1.3](DUNGEONS-AND-LEGENDARIES.md)).
+
+**Noise sources may include:**
+- walking and running;
+- jumping, landing and hard falls;
+- striking objects and environmental interactions;
+- terraforming, salvage and building;
+- environmental machinery;
+- Zenny farting (§11).
+
+**Surface and material may change noise where it is useful:**
+- carpet and soft materials are relatively quiet;
+- wood can creak;
+- metal ducts are loud;
+- rubble is risky.
+
+**No microscopic noise simulation.**
+
+**Environmental sound can mask player noise:** fans, machinery, storms, crowds, carnival rides,
+waterfalls. Timing movement against the masking is a skill.
+
+**Detection is a state, not a failure:** STEALTH → DETECTED → ESCAPE/SEARCH → HIDDEN → STEALTH.
+
 **Extensibility to preserve, not build yet:**
 - quieter or louder tools;
 - material-dependent noise;
+- ambient masking sources;
 - Pehlichi's noise visualization;
 - stealth gear and modifiers;
 - structural weapons such as Hammer Toe.
@@ -277,3 +343,5 @@ handcrafted dungeon per zone**. Dungeons are voluntary and never make combat man
   - a **noise event through §9**, with AI hearing consequences;
   - a possible Zenny reaction;
   - possible but **not guaranteed** Pehlichi/NICE dialogue.
+- **Timing, the warning and the 5th Amendment** (2026-09-27) are in
+  [KNOWLEDGE-AND-DISCOVERY §5](KNOWLEDGE-AND-DISCOVERY.md).

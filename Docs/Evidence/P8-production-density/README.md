@@ -171,3 +171,22 @@ requirements**, and changed no tracked file. The only commit after it is this RE
   changed).
 - **The engine reducer's 64-triangle floor** makes LODs meaningless for very small meshes: the cull
   distance is their tool.
+
+## M. P8 audited against the dungeon/infiltration design intent (recorded 2026-09-27, after P8 merged)
+The operator's dungeon, stealth, boss-resolution, legendary and NICE decisions
+([DUNGEONS-AND-LEGENDARIES §1.2–1.7](../../DUNGEONS-AND-LEGENDARIES.md) and the linked sections)
+were recorded after P8 merged (PR #29).
+
+**The audit found no genuine conflict:** P8 made no architectural decision that constrains them.
+They constrain future work as follows:
+
+| P8 reality | Future system it touches | Constraint (no decision taken) |
+|---|---|---|
+| The creature model persists only `bDefeated`, and a defeated creature has **no actor** after reload | environmental boss resolution; non-lethal outcomes (SURVIVAL §3: disabled, pacified, fled); reward parity | Environmental resolution needs an outcome distinct from killed (e.g. neutralized, contained), with its own presentation rule: a trapped boss may still need an actor, in its trapped pose. The model/presentation split supports this (presentation is derived from the model). The field becomes an outcome, not a bool. |
+| Creature AI state (alert, search, last known position) lives on the actor; unload retires it | STEALTH → DETECTED → ESCAPE/SEARCH → HIDDEN across a cell boundary, and across save | A chase that crosses a streaming boundary, or a save, returns creatures calm. If search state must persist, it moves into the model, as glitch state did in P8. |
+| **Navigation active tiles reach 557/600** with the town's 3 creatures (each invoker adds ~85 tiles) | patrol-heavy infiltration dungeons | Many patrols in range will exceed the budget. An operator decision is needed for dungeon navigation: prebuilt navigation for authored interiors, invokers only for alerted creatures, or smaller radii. The budget was not moved. |
+| Vegetation (HISM scatter) is pure presentation, culled at 60 m; LODs never affect gameplay (tested) | hiding in bushes; line-of-sight breaks | Concealment must come from data in the model (like structures), never from rendered instances or a LOD. |
+| The noise model (ADR-0031) has radii and hearing but no masking | environmental masking (fans, rides, storms); surface-material noise; fart events | Masking needs ambient noise sources in the same model. P8 did not touch noise. |
+| Collapse is decided by rules (ADR-0030); the P6 mid-fall impact debt remains | the systemic balcony-collapse boss solution | A collapse must be able to neutralize a creature by rule, and a save mid-fall must keep the outcome. The existing debt blocks the second part. |
+| Stateful placements (glitches, nodes, creatures) share the model-first pattern | dungeon mechanisms Pehlichi finds (trapdoors, sprinklers, controls) | A new stateful kind should follow the same pattern (a model plus presented actor), not be spawned as a live actor. |
+| ADR-0017's enforcement test: no Pehlichi action produces a damage event | Pehlichi activating a mechanism that neutralizes a boss | Needs an attribution rule (an operator question, recorded in DUNGEONS §1.4). ADR-0017 is unchanged. |

@@ -149,6 +149,10 @@ small dialogue set. Prove the loop, then scale. See [MILESTONES.md](MILESTONES.m
 | One handcrafted dungeon per zone; named legendaries | [DUNGEONS-AND-LEGENDARIES](DUNGEONS-AND-LEGENDARIES.md) |
 | **Architecture-first (2026-09-27):** REAL HOUSE / HILLSIDE / WINCHESTER tests; non-chronological eras as vocabulary; component-based STRUCTURE / ELECTRICAL (optional) / FINISH; careful vs destructive salvage; Pehlichi's stud finder; Ofi plans as ghost blueprints; no encumbrance, shared base storage; renewal that never touches claimed construction | [ARCHITECTURAL-NORTH-STAR](ARCHITECTURAL-NORTH-STAR.md) |
 
+| **Dungeons and encounters (2026-09-27):** two complete routes per major dungeon (direct / non-attack infiltration, never an easier bypass); detection as a state; direct defeat or environmental boss resolution with Pehlichi investigating the arena (reward parity); systemic solutions legitimate; legendaries as verbs; Sue Shi, Drew Id's Fang, USB's Tick, Your Nemesis | [DUNGEONS-AND-LEGENDARIES §1.2–1.7, §2.2](DUNGEONS-AND-LEGENDARIES.md) |
+| Noise sources, surface materials and environmental masking; agility as non-attack mastery; Pehlichi's use-based hacking; fart timing, warning and the 5th Amendment | [SURVIVAL-AND-THREAT §4, §5, §9](SURVIVAL-AND-THREAT.md), [KNOWLEDGE-AND-DISCOVERY §5](KNOWLEDGE-AND-DISCOVERY.md) |
+| NICE calls the player "Sweetie"; her language rule and the cultural-comedy rule; NICE reacts to playstyle; Zenny's gesture vocabulary | [STORY-AND-DIALOGUE §1, §6c–6e](STORY-AND-DIALOGUE.md) |
+
 ## 10. Pillars
 
 The 14 design pillars are in [DESIGN-PILLARS.md](DESIGN-PILLARS.md). The

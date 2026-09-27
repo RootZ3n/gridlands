@@ -17,6 +17,9 @@ content. No runtime language model is involved
   unpredictable, and increasingly unstable. She does not deliver villain
   exposition; she **plays with Zenny** and makes sure he knows she is
   watching. She taunts Zenny at least as much as she spars with Pehlichi.
+- **NICE calls the player "Sweetie"** (LOCKED, 2026-09-27).
+  - The player character can have any chosen name; Zenny is the default.
+  - Her delivery is condescending and patronizing, and it can evolve over the game.
 
 **Arc: the more Pehlichi repairs the world, the more NICE comes apart.**
 Early NICE is composed and confident. Late NICE is unstable, and the core is
@@ -182,6 +185,18 @@ Do not sanitise to broaden the audience.
 - An animation asset can be replaced without changing gameplay or dialogue logic.
 - Final character animation is not produced until an art milestone.
 
+**The physical vocabulary (2026-09-27):** looks, shrugs, pointing, head turns, facepalms, gestures,
+item interactions and other expressive animation.
+- Pehlichi carries much of the spoken reaction.
+- **NICE can react to Zenny's gestures.**
+- *Locked beat (Drew Id's Fang):*
+  - Peh: "What are we supposed to do with this?"
+  - NICE: "Stick them with the pointy end, Sweetie."
+  - Peh: "I'd stab you with the pointy end if I could."
+  - Zenny silently holds the fang upright toward NICE, like a middle finger.
+
+  The final wording may be polished; the beat is preserved.
+
 ## 6d. NICE's attention model (LOCKED DESIGN INTENT, 2026-09-25; partly served by the director)
 **NICE is an observer and antagonistic commentator, not constant ambient chatter.** An event makes
 NICE **eligible** to speak; eligibility never guarantees speech.
@@ -198,6 +213,18 @@ NICE **eligible** to speak; eligibility never guarantees speech.
 
 **A global dialogue governor** protects pacing, so a burst of events never produces stacked chatter.
 
+**NICE reacts to how the player plays; she never assumes one playstyle** (LOCKED, 2026-09-27; not
+required now). Possibly relevant behaviours:
+- direct kills, and low weapon use;
+- repeated stealth or environmental boss resolutions;
+- repeated escapes, and movement/evasion tendencies;
+- deaths, and frequently used tactics.
+
+*Example, to a low-combat Zenny:* "Oh, Sweetie. You hit like a wet noodle."
+
+As the non-attack or environmental strategy keeps succeeding, her mockery may gradually turn into
+irritation.
+
 **What exists today** (M5/M11): one conversation at a time, a global silence gap, cooldowns and use
 caps, and categories.
 
@@ -205,6 +232,29 @@ caps, and categories.
 - the AFK-episode rule;
 - the eligibility/opportunity tiers as data;
 - a burst governor beyond the silence gap.
+
+## 6e. NICE's language rule, and playing within the rules (LOCKED, 2026-09-27)
+**NICE frequently weaponizes ambiguity, homophones, literal interpretation and technically truthful
+wording.**
+- She does not need to lie.
+- She tells Zenny enough truth for him to make a reasonable, incorrect assumption.
+
+**Examples already in the design:**
+- USB's Tick (Ulysses S. Brant, "Not the President");
+- Sue Shi;
+- Drew Id's Fang;
+- Shake's Spear;
+- other established legendary wordplay;
+- ultimately, Your USB Stick.
+
+See [DUNGEONS-AND-LEGENDARIES](DUNGEONS-AND-LEGENDARIES.md). **This is her voice, not a mandatory
+template.** Never force every dungeon or legendary into the same joke structure.
+
+**Cultural-comedy rule:** THE CULTURE/HISTORY IS NOT THE JOKE. NICE'S WORDPLAY, MISINTERPRETATION,
+ANACHRONISMS AND MANIPULATION ARE THE JOKE.
+
+**NICE plays within the game's rules.** She can interfere with or complicate alternate routes, but
+never invalidates them by arbitrary cheating.
 
 ## 7. Invariants
 
