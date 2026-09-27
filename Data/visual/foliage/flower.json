@@ -3,5 +3,18 @@
   "id": "visual.foliage.flower",
   "mesh": "SM_Flower",
   "outline": false,
-  "castShadow": false
+  "castShadow": false,
+  "lod": {
+    "maxTriangles": [
+      700,
+      210,
+      70
+    ],
+    "screenSize": [
+      1.0,
+      0.25,
+      0.08
+    ]
+  },
+  "cullDistance": 60
 }

@@ -262,6 +262,18 @@ struct GRIDLANDSCORE_API FGLVisualLightDef
 	UPROPERTY() TArray<double> Offset;
 };
 
+/** A mesh's level-of-detail budget (P8): the art pipeline builds LODs to it and every test checks it. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLVisualLodDef
+{
+	GENERATED_BODY()
+
+	/** Maximum triangles per LOD, LOD0 first, strictly decreasing (VIS-3). */
+	UPROPERTY() TArray<int32> MaxTriangles;
+	/** Screen size at which each LOD starts: 1.0 for LOD0, strictly decreasing (VIS-3). */
+	UPROPERTY() TArray<double> ScreenSize;
+};
+
 /**
  * How something looks (P7, the art pipeline's runtime contract): an imported mesh (Art/Source recipe
  * -> Tools/art.sh), a tint, whether it is outlined, sparse corruption cubes and an optional light.
@@ -285,6 +297,10 @@ struct GRIDLANDSCORE_API FGLVisualDef : public FGLDefinitionBase
 	UPROPERTY() double Yaw = 0.0;
 	UPROPERTY() TArray<FGLCorruptionDef> Corruption;
 	UPROPERTY() FGLVisualLightDef Light;
+	/** P8: presentation only; no gameplay rule may depend on a mesh or its LOD (ARCHITECTURAL-NORTH-STAR). */
+	UPROPERTY() FGLVisualLodDef Lod;
+	/** Metres beyond which it is not drawn (0: never culled by distance; required for instanced vegetation). */
+	UPROPERTY() double CullDistance = 0.0;
 };
 
 /**

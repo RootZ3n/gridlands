@@ -93,6 +93,10 @@ UStaticMeshComponent* GLVisuals::Attach(AActor* Owner, USceneComponent* Parent, 
 	const FTransform Placement(FRotator(0.0, Def->Yaw, 0.0), Vec(Def->Offset) * 100.0, FVector(Def->Scale));
 	Main->SetRelativeTransform(Placement * Local);
 	Main->SetCastShadow(Def->CastShadow);
+	if (Def->CullDistance > 0.0)
+	{
+		Main->SetCullDistance(Def->CullDistance * 100.0); // presentation only (P8): the mesh stops drawing, nothing else changes
+	}
 	if (Def->Tint.Num() >= 3 && !(Def->Tint[0] == 1.0 && Def->Tint[1] == 1.0 && Def->Tint[2] == 1.0))
 	{
 		// A data-driven variant of the master material: one parameter, no new asset.

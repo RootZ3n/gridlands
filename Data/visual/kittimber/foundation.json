@@ -1,5 +1,17 @@
 {
   "schemaVersion": 1,
   "id": "visual.kittimber.foundation",
-  "mesh": "SM_KT_Foundation"
+  "mesh": "SM_KT_Foundation",
+  "lod": {
+    "maxTriangles": [
+      1100,
+      440,
+      160
+    ],
+    "screenSize": [
+      1.0,
+      0.35,
+      0.12
+    ]
+  }
 }

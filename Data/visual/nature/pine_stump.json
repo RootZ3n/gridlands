@@ -1,5 +1,17 @@
 {
   "schemaVersion": 1,
   "id": "visual.nature.pine_stump",
-  "mesh": "SM_PineStump"
+  "mesh": "SM_PineStump",
+  "lod": {
+    "maxTriangles": [
+      500,
+      200,
+      80
+    ],
+    "screenSize": [
+      1.0,
+      0.35,
+      0.12
+    ]
+  }
 }

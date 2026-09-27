@@ -1,5 +1,17 @@
 {
   "schemaVersion": 1,
   "id": "visual.kit50.post",
-  "mesh": "SM_K50_Post"
+  "mesh": "SM_K50_Post",
+  "lod": {
+    "maxTriangles": [
+      1000,
+      400,
+      150
+    ],
+    "screenSize": [
+      1.0,
+      0.35,
+      0.12
+    ]
+  }
 }

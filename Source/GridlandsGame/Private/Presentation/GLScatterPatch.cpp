@@ -43,6 +43,9 @@ bool AGLScatterPatch::Setup(FName InPlacementId, FName InVisual, double InRadius
 	Instances->SetStaticMesh(Mesh);
 	Instances->SetCastShadow(Def->CastShadow);
 	GLVisuals::SetOutlined(Instances, Def->Outline);
+	// P8: instanced vegetation fades out by distance (VIS-4 makes a scatter visual declare it). LODs come with the mesh.
+	const int32 CullCm = FMath::RoundToInt(Def->CullDistance * 100.0);
+	Instances->SetCullDistances(FMath::RoundToInt(CullCm * 0.75), CullCm);
 	if (UGLEventSubsystem* Bus = GetWorld()->GetSubsystem<UGLEventSubsystem>())
 	{
 		for (const TCHAR* Tag : { TEXT("Event.Terrain.Edited"), TEXT("Event.Structure.Collapsed"), TEXT("Event.Building.Placed"), TEXT("Event.Building.Demolished") })

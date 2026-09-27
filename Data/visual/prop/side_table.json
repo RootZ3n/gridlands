@@ -1,5 +1,17 @@
 {
   "schemaVersion": 1,
   "id": "visual.prop.side_table",
-  "mesh": "SM_SideTable"
+  "mesh": "SM_SideTable",
+  "lod": {
+    "maxTriangles": [
+      1400,
+      560,
+      210
+    ],
+    "screenSize": [
+      1.0,
+      0.35,
+      0.12
+    ]
+  }
 }

@@ -2,5 +2,17 @@
   "schemaVersion": 1,
   "id": "visual.character.zenny",
   "mesh": "SM_Zenny",
-  "notes": "P7 static style proxy (no rig): proportions, silhouette, outline, colour."
+  "notes": "P7 static style proxy (no rig): proportions, silhouette, outline, colour.",
+  "lod": {
+    "maxTriangles": [
+      3900,
+      1560,
+      580
+    ],
+    "screenSize": [
+      1.0,
+      0.4,
+      0.15
+    ]
+  }
 }

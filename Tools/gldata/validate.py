@@ -203,6 +203,7 @@ def cross_check(ds: Dataset) -> None:
     check_terraform(ds)
     check_structures(ds)
     check_visuals(ds)
+    check_lods(ds)
     check_creatures(ds)
     check_grid(ds)
     check_knowledge_domains(ds)
@@ -399,6 +400,46 @@ def check_visuals(ds: Dataset) -> None:
         for i, cube in enumerate(cubes):
             if isinstance(cube.get("size"), (int, float)) and cube["size"] > MAX_CORRUPTION_SIZE:
                 ds.problem("VIS-2", rel, f".corruption[{i}].size", f"a corruption cube is small (at most {MAX_CORRUPTION_SIZE} m)")
+
+
+MAX_LODS = 4
+REDUCER_FLOOR = 64  # UE's static-mesh reduction stops here (measured on SM_GrassTuft, SM_Flower, SM_K50_Roof, P8)
+
+
+def check_lods(ds: Dataset) -> None:
+    """VIS-3 a visual's LOD budget is well formed: 1..4 levels, maxTriangles and screenSize of equal length,
+    maxTriangles strictly decreasing and every reduced LOD at or above the reducer's floor (REDUCER_FLOOR
+    triangles: the engine's reduction does not go below it, so a smaller budget can never be met), screenSize 1.0 for LOD0 then strictly decreasing and above 0;
+    VIS-4 a visual that a scatter placement instances declares a cullDistance;
+    VIS-5 visuals of the same mesh declare the same LOD budget (LODs belong to the mesh)."""
+    by_mesh = {}
+    scattered = {e.data.get("definition") for e in ds.entities.values() if e.kind == "placement" and e.data.get("kind") == "scatter"}
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        if entity.kind != "visual":
+            continue
+        data, rel = entity.data, entity.file
+        lod = data.get("lod") if isinstance(data.get("lod"), dict) else {}
+        tris = [t for t in lod.get("maxTriangles", []) if isinstance(t, int)]
+        screens = [s for s in lod.get("screenSize", []) if isinstance(s, (int, float))]
+        if lod:
+            if not 1 <= len(tris) <= MAX_LODS:
+                ds.problem("VIS-3", rel, ".lod.maxTriangles", f"{len(tris)} LODs; 1 to {MAX_LODS}")
+            if len(tris) != len(screens):
+                ds.problem("VIS-3", rel, ".lod", "maxTriangles and screenSize must have one entry per LOD")
+            if any(b >= a for a, b in zip(tris, tris[1:])):
+                ds.problem("VIS-3", rel, ".lod.maxTriangles", "each LOD must have fewer triangles than the one before")
+            if any(t < REDUCER_FLOOR for t in tris[1:]):
+                ds.problem("VIS-3", rel, ".lod.maxTriangles", f"a reduced LOD's budget must be at least {REDUCER_FLOOR} triangles (the reducer's floor)")
+            if screens and abs(screens[0] - 1.0) > 1e-9:
+                ds.problem("VIS-3", rel, ".lod.screenSize", "LOD0 starts at screen size 1.0")
+            if any(b >= a or b <= 0 for a, b in zip(screens, screens[1:])):
+                ds.problem("VIS-3", rel, ".lod.screenSize", "each LOD starts at a smaller screen size than the one before (and above 0)")
+            key = (tuple(tris), tuple(screens))
+            other = by_mesh.setdefault(data.get("mesh"), (entity.id, key))
+            if other[1] != key:
+                ds.problem("VIS-5", rel, ".lod", f"{data.get('mesh')} has another LOD budget in {other[0]}; LODs belong to the mesh")
+        if entity.id in scattered and not isinstance(data.get("cullDistance"), (int, float)):
+            ds.problem("VIS-4", rel, ".cullDistance", "instanced by a scatter placement: declare a cullDistance (metres)")
 
 
 def check_structures(ds: Dataset) -> None:

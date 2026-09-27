@@ -457,8 +457,14 @@ SCHEMAS: dict[str, Obj] = {
             "corruption": List(Obj({"offset": VEC3, "size": Num(0.01, 2), "rotation": VEC3}, required=("offset", "size"))),
             "light": Obj({"color": List(Num(0, 1), min_items=3), "intensity": Num(0, 100000), "radius": Num(0.1, 200), "offset": VEC3},
                          required=("color", "intensity", "radius")),
+            # P8: the mesh's level-of-detail budget (the art pipeline builds and checks it; VIS-3, VIS-5):
+            # maxTriangles per LOD (LOD0 first), and the screen size at which each LOD starts.
+            "lod": Obj({"maxTriangles": List(Int(1, 200000), min_items=1), "screenSize": List(Num(0, 1), min_items=1)},
+                       required=("maxTriangles", "screenSize")),
+            # P8: metres beyond which it is not drawn at all (required for instanced vegetation, VIS-4).
+            "cullDistance": Num(1, 5000),
         },
-        required=("mesh",),
+        required=("mesh", "lod"),
     ),
     # P6: provisional physical and noise tuning (data, never tuned by feel). Metres and seconds.
     "tuning": kind(

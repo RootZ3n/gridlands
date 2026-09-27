@@ -1,5 +1,17 @@
 {
   "schemaVersion": 1,
   "id": "visual.kit50.roof",
-  "mesh": "SM_K50_Roof"
+  "mesh": "SM_K50_Roof",
+  "lod": {
+    "maxTriangles": [
+      400,
+      160,
+      70
+    ],
+    "screenSize": [
+      1.0,
+      0.35,
+      0.12
+    ]
+  }
 }
