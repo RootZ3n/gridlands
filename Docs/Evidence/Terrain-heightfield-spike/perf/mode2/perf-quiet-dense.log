@@ -1,0 +1,23 @@
+  dense-crossing-straight.json: done
+  1 result(s) checked against budgets.json: within budget
+RESULT: PASS crossing runs finished (Saved/Perf/dense-*)
+group=[straight] attempt=1 load start=2.86 end=4.25 gpu-before=0
+  dense-crossing-reversal.json: done
+  2 result(s) checked against budgets.json: within budget
+RESULT: PASS crossing runs finished (Saved/Perf/dense-*)
+group=[reversal] attempt=1 load start=2.57 end=4.61 gpu-before=0
+  dense-crossing-sprint.json: done
+  3 result(s) checked against budgets.json: within budget
+RESULT: PASS crossing runs finished (Saved/Perf/dense-*)
+group=[sprint] attempt=1 load start=2.81 end=3.45 gpu-before=0
+  dense-crossing-teleport.json: done
+  dense-crossing-resume.json: done
+  5 result(s) checked against budgets.json: within budget
+RESULT: PASS crossing runs finished (Saved/Perf/dense-*)
+group=[teleport resume] attempt=1 load start=2.70 end=4.37 gpu-before=0
+  dense-roundtrips.json: done
+  6 result(s) checked against budgets.json: within budget
+RESULT: PASS crossing runs finished (Saved/Perf/dense-*)
+group=[roundtrips] attempt=1 load start=2.99 end=4.49 gpu-before=0
+  6 result(s) checked against budgets.json: within budget
+QUIETDONE PASS

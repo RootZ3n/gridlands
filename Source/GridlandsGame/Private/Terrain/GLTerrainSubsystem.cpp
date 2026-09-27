@@ -17,6 +17,7 @@
 #include "Tasks/Task.h"
 #include "Terrain/GLCellNavBounds.h"
 #include "Terrain/GLTerrainChunk.h"
+#include "Terrain/GLTerrainCollision.h"
 #include "World/GLGridCells.h"
 
 namespace
@@ -45,7 +46,8 @@ struct FGLMeshJob
 	int32 Slot = 0;
 	int32 Version = 0;
 	double DistanceSq = 0.0;
-	UE::Tasks::TTask<TSharedPtr<UE::Geometry::FDynamicMesh3>> Task;
+	/** The mesh and its collision geometry (ADR-0035), both built on a worker. */
+	UE::Tasks::TTask<TPair<TSharedPtr<UE::Geometry::FDynamicMesh3>, TSharedPtr<const FGLChunkCollisionGeometry>>> Task;
 };
 
 UGLTerrainSubsystem::UGLTerrainSubsystem() = default;
@@ -262,7 +264,7 @@ void UGLTerrainSubsystem::BuildSlotNow(FGLCellGround& Ground, FGLChunkSlot& Slot
 	{
 		Slot.Actor = AcquireChunk(Ground, Slot);
 	}
-	Slot.Actor->ApplyMesh(AGLTerrainChunk::BuildMesh(AGLTerrainChunk::MakeSnapshot(Ground.Field, Slot.First, Ground.VertsPerChunk)), true);
+	Slot.Actor->ApplySnapshot(AGLTerrainChunk::MakeSnapshot(Ground.Field, Slot.First, Ground.VertsPerChunk), true);
 	Slot.BuiltVersion = Slot.Version;
 }
 
@@ -316,7 +318,7 @@ void UGLTerrainSubsystem::Pump(const FVector2D& Near, double BudgetSeconds, int3
 		const double One = FPlatformTime::Seconds();
 		const double M0 = AGLTerrainChunk::MeshSeconds, C0 = AGLTerrainChunk::CollisionSeconds, N0 = AGLTerrainChunk::NavigationSeconds;
 		const bool bFirstBuild = Slot.Actor->GetLifetimeMeshes() == 0;
-		Slot.Actor->ApplyMesh(MoveTemp(*Job->Task.GetResult()), true); // one synchronous cook (see ApplyMesh)
+		Slot.Actor->ApplyMesh(MoveTemp(*Job->Task.GetResult().Key), true, Job->Task.GetResult().Value); // canonical: one synchronous cook (see ApplyMesh)
 		const double ApplyMs = (FPlatformTime::Seconds() - One) * 1000.0;
 		(bFirstBuild ? Stats.FirstBuildApplies : Stats.ReusedApplies) += 1;
 		(bFirstBuild ? Stats.FirstBuildMsSum : Stats.ReusedMsSum) += ApplyMs;
@@ -370,9 +372,13 @@ void UGLTerrainSubsystem::Pump(const FVector2D& Near, double BudgetSeconds, int3
 		Job->Version = Slot.Version;
 		Job->DistanceSq = Want.DistanceSq;
 		FGLChunkSnapshot Snapshot = AGLTerrainChunk::MakeSnapshot(Ground.Field, Slot.First, Ground.VertsPerChunk);
-		Job->Task = UE::Tasks::Launch(UE_SOURCE_LOCATION, [Snapshot = MoveTemp(Snapshot)]()
+		Job->Task = UE::Tasks::Launch(UE_SOURCE_LOCATION, [Snapshot = MoveTemp(Snapshot), Mode = GLTerrainCollision::GetMode()]()
 		{
-			return TSharedPtr<UE::Geometry::FDynamicMesh3>(MakeShared<UE::Geometry::FDynamicMesh3>(AGLTerrainChunk::BuildMesh(Snapshot)));
+			TSharedPtr<UE::Geometry::FDynamicMesh3> Mesh = MakeShared<UE::Geometry::FDynamicMesh3>(AGLTerrainChunk::BuildMesh(Snapshot));
+			const double Start = FPlatformTime::Seconds();
+			TSharedPtr<const FGLChunkCollisionGeometry> Collision = GLTerrainCollision::Build(Mode, Snapshot);
+			AGLTerrainChunk::CollisionBuildWorkerMicros += static_cast<int64>((FPlatformTime::Seconds() - Start) * 1e6);
+			return MakeTuple(MoveTemp(Mesh), MoveTemp(Collision));
 		});
 		Slot.InFlightVersion = Slot.Version;
 		Jobs.Add(Job);

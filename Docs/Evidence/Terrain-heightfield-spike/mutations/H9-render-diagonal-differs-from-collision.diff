@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainCollision.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainCollision.cpp
+@@ -47,7 +47,7 @@
+ 
+ bool GLTerrainCollision::RenderSplitsMainDiagonal()
+ {
+-	return GetMode() == EGLTerrainCollisionMode::Heightfield && HeightfieldLayout() != 1;
++	return false; // MUTANT: canonical render split over a heightfield
+ }
+ 
+ const TCHAR* GLTerrainCollision::ModeName(EGLTerrainCollisionMode Mode)

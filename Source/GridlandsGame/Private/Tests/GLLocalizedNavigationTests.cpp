@@ -10,6 +10,7 @@
 #include "NavMesh/RecastNavMesh.h"
 #include "Terrain/GLCellNavBounds.h"
 #include "Terrain/GLTerrainChunk.h"
+#include "Terrain/GLTerrainCollision.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "Tests/GLTestUtils.h"
 #include "World/GLGridSubsystem.h"
@@ -258,7 +259,9 @@ bool FGLNavPooledChunks::RunTest(const FString& Parameters)
 	int32 Pooled = 0, PooledInNav = 0, Live = 0, LiveMissing = 0;
 	for (TActorIterator<AGLTerrainChunk> It(S.Test.World); It; ++It)
 	{
-		const bool bInNav = S.Nav->GetNavOctreeIdForElement(FNavigationElementHandle(It->GetMesh())) != nullptr;
+		// The component that carries the chunk's navigation: its mesh, or its separate collision (heightfield spike).
+		const UPrimitiveComponent* NavComponent = It->GetCollisionComponent() ? static_cast<const UPrimitiveComponent*>(It->GetCollisionComponent()) : It->GetMesh();
+		const bool bInNav = S.Nav->GetNavOctreeIdForElement(FNavigationElementHandle(NavComponent)) != nullptr;
 		if (It->State == EGLChunkState::Pooled)
 		{
 			++Pooled;

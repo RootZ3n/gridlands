@@ -1,6 +1,9 @@
 # ADR-0034: Terrain chunk collision cook and pool hardening (after P7.1)
 
-- Status: **Accepted as an engineering checkpoint** (operator, 2026-09-26: merge the safe improvements; do
+- Status: **Superseded for collision by [ADR-0035](0035-terrain-heightfield-collision-spike.md)** (heightfield
+  collision, operator 2026-09-27). The pool hardening, bounds and integrity checks here remain canonical. The
+  component cook remains only as a measurement mode (`-GLTerrainCollision=0`).
+- Earlier status: **Accepted as an engineering checkpoint** (operator, 2026-09-26: merge the safe improvements; do
   not claim the streaming problem solved; next, a bounded heightfield-collision spike). Originally **Proposed**. The engineering cleanup between P7.1 and P8 (operator, 2026-09-26: "warm
   terrain chunk pool"). **The warm pool was measured and is not the remedy** (below); the operator's
   directive was to stop and report before any materially different architecture, and this ADR

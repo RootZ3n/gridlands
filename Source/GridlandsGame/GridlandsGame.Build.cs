@@ -8,6 +8,6 @@ public class GridlandsGame : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "GameplayTags", "EnhancedInput", "InputCore", "GridlandsCore",
-			"GeometryCore", "GeometryFramework", "NavigationSystem", "AIModule", "RenderCore", "RHI", "Json", "JsonUtilities" });
+			"GeometryCore", "GeometryFramework", "Chaos", "ChaosCore", "PhysicsCore", "NavigationSystem", "AIModule", "RenderCore", "RHI", "Json", "JsonUtilities" });
 	}
 }

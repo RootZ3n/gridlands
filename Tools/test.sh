@@ -36,7 +36,7 @@ timeout --kill-after=30 "${GRIDLANDS_TEST_TIMEOUT:-1800}" \
 	-ExecCmds="Automation RunTests $FILTER; Quit" \
 	-TestExit="Automation Test Queue Empty" \
 	-ReportExportPath="$REPORT_DIR" \
-	-unattended -nullrhi -nosplash -nosound -nopause -NoP4 -stdout -FullStdOutLogOutput \
+	-unattended -nullrhi -nosplash -nosound -nopause -NoP4 -stdout -FullStdOutLogOutput  ${GRIDLANDS_TEST_ARGS:-} \
 	>"$LOG" 2>&1
 editor_status=$?
 echo "  editor exit $editor_status (informational; the report decides)"

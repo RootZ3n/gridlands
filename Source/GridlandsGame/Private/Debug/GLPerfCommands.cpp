@@ -26,6 +26,8 @@
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonWriter.h"
 #include "Terrain/GLTerrainChunk.h"
+#include "Terrain/GLTerrainCollision.h"
+#include "Chaos/HeightField.h"
 #include "UObject/GarbageCollection.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "World/GLGridSubsystem.h"
@@ -485,6 +487,9 @@ namespace GLPerf
 					O->SetNumberField(TEXT("terrainReusedMsMax"), T.ReusedMsMax);
 					O->SetNumberField(TEXT("terrainPoolRejected"), T.PoolRejected);
 					O->SetNumberField(TEXT("terrainPoolOverflowDestroyed"), T.PoolOverflowDestroyed);
+					O->SetStringField(TEXT("terrainCollisionMode"), GLTerrainCollision::ModeName(GLTerrainCollision::GetMode()));
+					O->SetNumberField(TEXT("terrainCollisionWorkerBuildMsTotal"), AGLTerrainChunk::CollisionBuildWorkerMicros.load() / 1000.0);
+					O->SetNumberField(TEXT("terrainCollisionGameThreadBuildMsTotal"), AGLTerrainChunk::CollisionBuildGameThreadSeconds * 1000.0);
 				}
 				O->SetStringField(TEXT("arrival"), Crossing.Arrival);
 				TArray<TSharedPtr<FJsonValue>> Loads;
@@ -619,7 +624,7 @@ namespace GLPerf
 				{
 					return;
 				}
-				auto MakeMesh = [](int32 Verts, float Lift)
+				auto MakeSnap = [](int32 Verts, float Lift)
 				{
 					FGLChunkSnapshot Snap;
 					Snap.First = FIntPoint(1, 1);
@@ -633,8 +638,9 @@ namespace GLPerf
 					{
 						Snap.Heights[I] = Lift + 40.f * FMath::Sin(I * 0.37f);
 					}
-					return AGLTerrainChunk::BuildMesh(Snap);
+					return Snap;
 				};
+				auto MakeMesh = [&MakeSnap](int32 Verts, float Lift) { return AGLTerrainChunk::BuildMesh(MakeSnap(Verts, Lift)); };
 				auto Time = [](AGLTerrainChunk* Chunk, UE::Geometry::FDynamicMesh3&& Mesh)
 				{
 					const double Start = FPlatformTime::Seconds();
@@ -700,13 +706,13 @@ namespace GLPerf
 					LegacyEager.Add(Time(L, MakeMesh(65, 0.f)));
 					AGLTerrainChunk* M = W->SpawnActor<AGLTerrainChunk>(Row + FVector(0, 64000.0, 0), FRotator::ZeroRotator);
 					T0 = FPlatformTime::Seconds();
-					M->ApplyMesh(MakeMesh(65, 0.f), true);
+					M->ApplySnapshot(MakeSnap(65, 0.f), true);
 					ApplyFirst.Add((FPlatformTime::Seconds() - T0) * 1000.0);
 					M->ClearForPool();
 					M->SetActorHiddenInGame(false);
 					M->SetActorEnableCollision(true);
 					T0 = FPlatformTime::Seconds();
-					M->ApplyMesh(MakeMesh(65, 10.f), true);
+					M->ApplySnapshot(MakeSnap(65, 10.f), true);
 					ApplyReused.Add((FPlatformTime::Seconds() - T0) * 1000.0);
 				}
 				auto Stat = [](const TCHAR* Name, TArray<double> V, FJsonObject& O)
@@ -750,7 +756,7 @@ namespace GLPerf
 					const double Empty = UsedMb();
 					for (AGLTerrainChunk* Chunk : Cell)
 					{
-						Chunk->ApplyMesh(MakeMesh(65, 0.f), true);
+						Chunk->ApplySnapshot(MakeSnap(65, 0.f), true);
 					}
 					const double Live = UsedMb();
 					O->SetNumberField(TEXT("mem256EmptyChunksMb"), Empty - Before);
@@ -760,6 +766,220 @@ namespace GLPerf
 				FString Text;
 				FJsonSerializer::Serialize(O, TJsonWriterFactory<>::Create(&Text));
 				FFileHelper::SaveStringToFile(Text, *(FPaths::ProjectSavedDir() / TEXT("Perf") / TEXT("chunkapply.json")));
+				GEngine->DeferredCommands.Add(TEXT("quit"));
+			}), 8.0f, false);
+		}));
+
+	/**
+	 * gl.Perf.CollisionPaths [N]: HEIGHTFIELD SPIKE. For N real-size 64 m chunks of uneven ground, the three
+	 * collision paths in one process, whatever -GLTerrainCollision says: the canonical dynamic-mesh cook, a
+	 * Chaos heightfield, and a Chaos trimesh built directly (option A). Per path: geometry build (the work a
+	 * worker would do), game-thread attach, navigation notify, one edit's update; then 256 chunks' resident
+	 * memory per path (nothing is freed until the end, so each delta is new memory). Writes
+	 * Saved/Perf/collisionpaths.json and quits.
+	 */
+	FAutoConsoleCommandWithWorldAndArgs CollisionPathsCommand(
+		TEXT("gl.Perf.CollisionPaths"),
+		TEXT("DEV ONLY (heightfield spike): gl.Perf.CollisionPaths [N=64] - builds, attaches and edits chunk collision by each path."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic([](const TArray<FString>& Args, UWorld* World)
+		{
+			const int32 N = Args.Num() > 0 ? FMath::Max(4, FCString::Atoi(*Args[0])) : 64;
+			TWeakObjectPtr<UWorld> Weak(World);
+			FTimerHandle Handle;
+			World->GetTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda([Weak, N]()
+			{
+				UWorld* W = Weak.Get();
+				if (!W)
+				{
+					return;
+				}
+				// Uneven ground (relief), and the same ground after a 3 m-deep, 2 m-radius dig at its middle.
+				auto MakeSnap = [](int32 Seed, bool bDug)
+				{
+					FGLChunkSnapshot Snap;
+					Snap.First = FIntPoint(1, 1);
+					Snap.Verts = 65;
+					Snap.FieldVertsX = Snap.FieldVertsY = 1025;
+					Snap.Spacing = 100.0;
+					const int32 Side = Snap.Verts + 2;
+					Snap.Heights.SetNumUninitialized(Side * Side);
+					Snap.Base.SetNumUninitialized(Side * Side);
+					for (int32 Y = 0; Y < Side; ++Y)
+					{
+						for (int32 X = 0; X < Side; ++X)
+						{
+							float H = 300.f * FMath::Sin((X + Seed) * 0.11f) * FMath::Cos((Y - Seed) * 0.07f) + 40.f * FMath::Sin(X * 0.9f + Y * 0.4f);
+							Snap.Base[Y * Side + X] = H;
+							const float D = FVector2f(X - 33.f, Y - 33.f).Size();
+							if (bDug && D < 2.f)
+							{
+								H -= 300.f * (1.f - D / 2.f);
+							}
+							Snap.Heights[Y * Side + X] = H;
+						}
+					}
+					return Snap;
+				};
+				auto Now = [] { return FPlatformTime::Seconds(); };
+				auto Ms = [](double A, double B) { return (B - A) * 1000.0; };
+				TSharedRef<FJsonObject> O = MakeShared<FJsonObject>();
+				O->SetNumberField(TEXT("chunks"), N);
+				O->SetStringField(TEXT("processCollisionMode"), GLTerrainCollision::ModeName(GLTerrainCollision::GetMode()));
+				auto Stat = [&O](const FString& Name, TArray<double> V)
+				{
+					V.Sort();
+					TSharedRef<FJsonObject> R = MakeShared<FJsonObject>();
+					R->SetNumberField(TEXT("meanMs"), FFrameStats::Mean(V));
+					R->SetNumberField(TEXT("medianMs"), V[V.Num() / 2]);
+					R->SetNumberField(TEXT("maxMs"), V.Last());
+					O->SetObjectField(Name, R);
+					UE_LOG(LogGridlands, Log, TEXT("gl.Perf.CollisionPaths %s: mean %.3f median %.3f max %.3f ms"), *Name, FFrameStats::Mean(V), V[V.Num() / 2], V.Last());
+				};
+				const FVector Far(0.0, 0.0, -300000.0);
+				auto MakeCollisionActor = [W](const FVector& At)
+				{
+					AActor* A = W->SpawnActor<AActor>(AActor::StaticClass(), FTransform(At));
+					UGLTerrainCollisionComponent* C = NewObject<UGLTerrainCollisionComponent>(A);
+					A->SetRootComponent(C);
+					C->SetWorldLocation(At);
+					C->RegisterComponent();
+					return C;
+				};
+				TArray<UObject*> KeepAlive;
+
+				// 1. Canonical: the dynamic mesh component's own synchronous complex-as-simple cook.
+				{
+					TArray<double> Cook, Nav, Update;
+					for (int32 I = 0; I < N; ++I)
+					{
+						AActor* A = W->SpawnActor<AActor>(AActor::StaticClass(), FTransform(Far + FVector(I * 6400.0, 0, 0)));
+						UDynamicMeshComponent* M = NewObject<UDynamicMeshComponent>(A);
+						A->SetRootComponent(M);
+						M->SetCollisionProfileName(TEXT("BlockAll"));
+						M->SetComplexAsSimpleCollisionEnabled(true, false);
+						M->SetDeferredCollisionUpdatesEnabled(true, false);
+						M->RegisterComponent();
+						M->SetMesh(AGLTerrainChunk::BuildMesh(MakeSnap(I, false)));
+						double T0 = Now();
+						M->UpdateCollision(false);
+						double T1 = Now();
+						UNavigationSystemV1::UpdateComponentInNavOctree(*M);
+						Cook.Add(Ms(T0, T1));
+						Nav.Add(Ms(T1, Now()));
+						M->SetMesh(AGLTerrainChunk::BuildMesh(MakeSnap(I, true)));
+						T0 = Now();
+						M->UpdateCollision(false);
+						Update.Add(Ms(T0, Now()));
+						KeepAlive.Add(A);
+					}
+					Stat(TEXT("componentTrimesh.gameThreadCook"), Cook);
+					Stat(TEXT("componentTrimesh.navigationNotify"), Nav);
+					Stat(TEXT("componentTrimesh.editUpdateCook"), Update);
+				}
+				// 2 and 3. Heightfield and direct trimesh: build (worker work, timed here), attach, notify, edit.
+				for (const EGLTerrainCollisionMode Mode : { EGLTerrainCollisionMode::Heightfield, EGLTerrainCollisionMode::WorkerTrimesh })
+				{
+					const FString P = Mode == EGLTerrainCollisionMode::Heightfield ? TEXT("heightfield") : TEXT("workerTrimesh");
+					TArray<double> Build, Attach, Nav, EditBuild, EditAttach;
+					for (int32 I = 0; I < N; ++I)
+					{
+						UGLTerrainCollisionComponent* C = MakeCollisionActor(Far + FVector(I * 6400.0, 80000.0 + (Mode == EGLTerrainCollisionMode::Heightfield ? 0.0 : 80000.0), 0));
+						const FGLChunkSnapshot Snap = MakeSnap(I, false), Dug = MakeSnap(I, true);
+						double T0 = Now();
+						TSharedPtr<const FGLChunkCollisionGeometry> G = GLTerrainCollision::Build(Mode, Snap);
+						double T1 = Now();
+						C->SetGeometry(G);
+						double T2 = Now();
+						UNavigationSystemV1::UpdateComponentInNavOctree(*C);
+						double T3 = Now();
+						TSharedPtr<const FGLChunkCollisionGeometry> G2 = GLTerrainCollision::Build(Mode, Dug);
+						double T4 = Now();
+						C->SetGeometry(G2);
+						double T5 = Now();
+						Build.Add(Ms(T0, T1));
+						Attach.Add(Ms(T1, T2));
+						Nav.Add(Ms(T2, T3));
+						EditBuild.Add(Ms(T3, T4));
+						EditAttach.Add(Ms(T4, T5));
+						KeepAlive.Add(C->GetOwner());
+					}
+					Stat(P + TEXT(".build"), Build);
+					Stat(P + TEXT(".gameThreadAttach"), Attach);
+					Stat(P + TEXT(".navigationNotify"), Nav);
+					Stat(P + TEXT(".editBuild"), EditBuild);
+					Stat(P + TEXT(".editAttach"), EditAttach);
+				}
+				// Chaos's partial update, for reference (in place: not safe while the physics thread reads it).
+				{
+					TArray<double> Partial;
+					for (int32 I = 0; I < N; ++I)
+					{
+						TArray<Chaos::FReal> Heights;
+						Heights.SetNum(65 * 65);
+						TArray<uint8> Mats;
+						Mats.SetNumZeroed(64 * 64);
+						Chaos::FHeightField HF(MoveTemp(Heights), MoveTemp(Mats), 65, 65, Chaos::FVec3(1));
+						TArray<Chaos::FReal> Region;
+						Region.Init(-150.0 - I, 9 * 9);
+						const double T0 = Now();
+						HF.EditHeights(Region, 28, 28, 9, 9);
+						Partial.Add(Ms(T0, Now()));
+					}
+					Stat(TEXT("heightfield.partialEditHeights9x9"), Partial);
+				}
+				// Resident memory of 256 chunks' collision, per path (kept alive: each delta is new memory).
+				{
+					auto UsedMb = [] { CollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS); return FPlatformMemory::GetStats().UsedPhysical / (1024.0 * 1024.0); };
+					double Before = UsedMb();
+					for (int32 I = 0; I < 256; ++I)
+					{
+						UGLTerrainCollisionComponent* C = MakeCollisionActor(Far + FVector((I % 16) * 6400.0, 400000.0 + (I / 16) * 6400.0, 0));
+						C->SetGeometry(GLTerrainCollision::Build(EGLTerrainCollisionMode::Heightfield, MakeSnap(I, false)));
+						KeepAlive.Add(C->GetOwner());
+					}
+					double After = UsedMb();
+					O->SetNumberField(TEXT("mem256HeightfieldBodiesMb"), After - Before);
+					Before = After;
+					for (int32 I = 0; I < 256; ++I)
+					{
+						UGLTerrainCollisionComponent* C = MakeCollisionActor(Far + FVector((I % 16) * 6400.0, 600000.0 + (I / 16) * 6400.0, 0));
+						C->SetGeometry(GLTerrainCollision::Build(EGLTerrainCollisionMode::WorkerTrimesh, MakeSnap(I, false)));
+						KeepAlive.Add(C->GetOwner());
+					}
+					After = UsedMb();
+					O->SetNumberField(TEXT("mem256WorkerTrimeshBodiesMb"), After - Before);
+					// The render mesh alone (no collision), then the same meshes with the canonical cook.
+					Before = After;
+					TArray<UDynamicMeshComponent*> Meshes;
+					for (int32 I = 0; I < 256; ++I)
+					{
+						AActor* A = W->SpawnActor<AActor>(AActor::StaticClass(), FTransform(Far + FVector((I % 16) * 6400.0, 800000.0 + (I / 16) * 6400.0, 0)));
+						UDynamicMeshComponent* M = NewObject<UDynamicMeshComponent>(A);
+						A->SetRootComponent(M);
+						M->SetCollisionProfileName(TEXT("BlockAll"));
+						M->SetComplexAsSimpleCollisionEnabled(true, false);
+						M->SetDeferredCollisionUpdatesEnabled(true, false);
+						M->RegisterComponent();
+						M->SetMesh(AGLTerrainChunk::BuildMesh(MakeSnap(I, false)));
+						Meshes.Add(M);
+						KeepAlive.Add(A);
+					}
+					After = UsedMb();
+					O->SetNumberField(TEXT("mem256RenderMeshesOnlyMb"), After - Before);
+					Before = After;
+					for (UDynamicMeshComponent* M : Meshes)
+					{
+						M->UpdateCollision(false);
+					}
+					After = UsedMb();
+					O->SetNumberField(TEXT("mem256ComponentTrimeshCookMb"), After - Before);
+					UE_LOG(LogGridlands, Log, TEXT("gl.Perf.CollisionPaths memory (256 chunks): heightfield %.1f MB, direct trimesh %.1f MB, render meshes only %.1f MB, canonical cook %.1f MB"),
+						O->GetNumberField(TEXT("mem256HeightfieldBodiesMb")), O->GetNumberField(TEXT("mem256WorkerTrimeshBodiesMb")),
+						O->GetNumberField(TEXT("mem256RenderMeshesOnlyMb")), O->GetNumberField(TEXT("mem256ComponentTrimeshCookMb")));
+				}
+				FString Text;
+				FJsonSerializer::Serialize(O, TJsonWriterFactory<>::Create(&Text));
+				FFileHelper::SaveStringToFile(Text, *(FPaths::ProjectSavedDir() / TEXT("Perf") / TEXT("collisionpaths.json")));
 				GEngine->DeferredCommands.Add(TEXT("quit"));
 			}), 8.0f, false);
 		}));

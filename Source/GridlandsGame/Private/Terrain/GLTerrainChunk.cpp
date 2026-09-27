@@ -8,6 +8,7 @@
 #include "NavigationSystem.h"
 #include "PhysicsEngine/BodySetup.h"
 #include "Terrain/GLHeightfield.h"
+#include "Terrain/GLTerrainCollision.h"
 #include "UObject/ConstructorHelpers.h"
 
 AGLTerrainChunk::AGLTerrainChunk()
@@ -82,13 +83,22 @@ UE::Geometry::FDynamicMesh3 AGLTerrainChunk::BuildMesh(const FGLChunkSnapshot& S
 			Built.AppendVertex(FVector3d(X * Snap.Spacing, Y * Snap.Spacing, H(Snap.First.X + X, Snap.First.Y + Y)));
 		}
 	}
+	const bool bMainDiagonal = GLTerrainCollision::RenderSplitsMainDiagonal(); // canonical: the heightfield's diagonal (ADR-0035)
 	for (int32 Y = 0; Y + 1 < V; ++Y)
 	{
 		for (int32 X = 0; X + 1 < V; ++X)
 		{
 			const int32 A = Y * V + X, B = A + 1, C = A + V, D = C + 1;
-			Built.AppendTriangle(A, C, B); // upward-facing in UE's left-handed space
-			Built.AppendTriangle(B, C, D);
+			if (bMainDiagonal)
+			{
+				Built.AppendTriangle(A, C, D); // split A-D, as a Chaos heightfield splits its cells
+				Built.AppendTriangle(A, D, B);
+			}
+			else
+			{
+				Built.AppendTriangle(A, C, B); // upward-facing in UE's left-handed space
+				Built.AppendTriangle(B, C, D);
+			}
 		}
 	}
 	Built.EnableAttributes();
@@ -124,8 +134,44 @@ UE::Geometry::FDynamicMesh3 AGLTerrainChunk::BuildMesh(const FGLChunkSnapshot& S
 	return Built;
 }
 
-void AGLTerrainChunk::ApplyMesh(UE::Geometry::FDynamicMesh3&& Built, bool bNotifyNavigation)
+void AGLTerrainChunk::EnsureSeparateCollision()
 {
+	if (Collision)
+	{
+		return;
+	}
+	// The render mesh carries no collision and no navigation; the collision body does both (ADR-0035).
+	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Mesh->SetCanEverAffectNavigation(false);
+	Collision = NewObject<UGLTerrainCollisionComponent>(this, TEXT("GroundCollision"));
+	Collision->SetupAttachment(Mesh);
+	Collision->RegisterComponent();
+}
+
+void AGLTerrainChunk::ApplyMesh(UE::Geometry::FDynamicMesh3&& Built, bool bNotifyNavigation, TSharedPtr<const FGLChunkCollisionGeometry> Geometry)
+{
+	const EGLTerrainCollisionMode Mode = GLTerrainCollision::GetMode();
+	if (Mode != EGLTerrainCollisionMode::ComponentTrimesh)
+	{
+		const double Start = FPlatformTime::Seconds();
+		EnsureSeparateCollision();
+		Mesh->SetMesh(MoveTemp(Built));
+		++LifetimeMeshes;
+		const double Meshed = FPlatformTime::Seconds();
+		ensureMsgf(Geometry.IsValid(), TEXT("Terrain: a chunk mesh was applied without its collision geometry"));
+		Collision->SetGeometry(MoveTemp(Geometry)); // the body is recreated now: no window without collision
+		const double Collided = FPlatformTime::Seconds();
+		if (bNotifyNavigation)
+		{
+			UNavigationSystemV1::UpdateComponentInNavOctree(*Collision);
+		}
+		MeshSeconds += Meshed - Start;
+		CollisionSeconds += Collided - Meshed;
+		NavigationSeconds += FPlatformTime::Seconds() - Collided;
+		++Rebuilds;
+		bBuilt = true;
+		return;
+	}
 	const double Start = FPlatformTime::Seconds();
 	Mesh->SetMesh(MoveTemp(Built));
 	++LifetimeMeshes;
@@ -149,17 +195,28 @@ void AGLTerrainChunk::ApplyMesh(UE::Geometry::FDynamicMesh3&& Built, bool bNotif
 
 void AGLTerrainChunk::Rebuild(const FGLHeightfield& Field, bool bNotifyNavigation)
 {
-	const double Start = FPlatformTime::Seconds();
-	UE::Geometry::FDynamicMesh3 Built = BuildMesh(MakeSnapshot(Field, FirstVertex, VertsPerSide));
+	ApplySnapshot(MakeSnapshot(Field, FirstVertex, VertsPerSide), bNotifyNavigation);
+}
+
+void AGLTerrainChunk::ApplySnapshot(const FGLChunkSnapshot& Snapshot, bool bNotifyNavigation)
+{
+	double Start = FPlatformTime::Seconds();
+	UE::Geometry::FDynamicMesh3 Built = BuildMesh(Snapshot);
 	MeshSeconds += FPlatformTime::Seconds() - Start;
-	ApplyMesh(MoveTemp(Built), bNotifyNavigation);
+	Start = FPlatformTime::Seconds();
+	TSharedPtr<const FGLChunkCollisionGeometry> Geometry = GLTerrainCollision::Build(GLTerrainCollision::GetMode(), Snapshot);
+	const double Built_ = FPlatformTime::Seconds() - Start;
+	CollisionBuildGameThreadSeconds += Built_;
+	CollisionSeconds += Built_; // on the game thread here (edits, synchronous loads)
+	ApplyMesh(MoveTemp(Built), bNotifyNavigation, MoveTemp(Geometry));
 }
 
 bool AGLTerrainChunk::IsEmptyAndInert() const
 {
 	const UBodySetup* Body = Mesh->GetBodySetup();
 	const bool bNoBody = !Body || (Body->TriMeshGeometries.Num() == 0 && Body->AggGeom.GetElementCount() == 0);
-	return Mesh->GetMesh()->TriangleCount() == 0 && bNoBody && IsHidden() && !GetActorEnableCollision();
+	const bool bNoSeparateBody = !Collision || (!Collision->HasGeometry() && !Collision->HasBody());
+	return Mesh->GetMesh()->TriangleCount() == 0 && bNoBody && bNoSeparateBody && IsHidden() && !GetActorEnableCollision();
 }
 
 void AGLTerrainChunk::ClearForPool()
@@ -168,6 +225,11 @@ void AGLTerrainChunk::ClearForPool()
 	Mesh->SetMesh(UE::Geometry::FDynamicMesh3());
 	Mesh->UpdateCollision(false); // synchronous, and it drops any async cook still in flight
 	UNavigationSystemV1::UpdateComponentInNavOctree(*Mesh);
+	if (Collision)
+	{
+		Collision->SetGeometry(nullptr); // the body goes now
+		UNavigationSystemV1::UpdateComponentInNavOctree(*Collision);
+	}
 	SetActorHiddenInGame(true);
 	SetActorEnableCollision(false);
 	bBuilt = false;
