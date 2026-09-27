@@ -7,6 +7,8 @@
   (streaming), [ADR-0030](0030-structural-salvage-and-deterministic-collapse.md) (structures),
   [ADR-0032](0032-visual-pipeline-and-stylization.md) (visuals).
 - Evidence: [P7 evidence, dense-spawn proof](../Evidence/P7-visual-spike/README.md#dense-spawn-proof-adr-0033).
+- **Extended by [ADR-0036](0036-gameplay-models-lods-production-density.md) (P8):** glitches, salvage
+  nodes and creatures now follow this same split. The actor-state rows below are amended in place.
 
 ## Context
 **The problem.** A cell's runtime layer (placements plus kept state) came in within one frame.
@@ -29,8 +31,11 @@ save that says it was destroyed, salvaged or moved.
 *The authoritative step* happens in one frame, `UGLGridSubsystem::TryFinishRuntime`:
 1. `SpawnCell(Cell, bDeferPresentation = true)` creates the placements' gameplay model:
    - **Structures:** `FGLStructureRuntime`, every part with its piece and state; no actors.
-   - **Actor-state placements:** creatures, glitches, salvage nodes, puzzle sites and discovery
-     sites. They are few and their state lives on the actor, so they are made now.
+   - **Actor-state placements:** ~~creatures, glitches, salvage nodes, puzzle sites and discovery
+     sites. They are few and their state lives on the actor, so they are made now.~~
+     **P8 (ADR-0036):** glitches, salvage nodes and creatures get an authoritative model now
+     (a glitch record, an actor placement), and their actors are queued presentation. Puzzle sites
+     (stateless, few) are still made now; discovery sites were always data only.
 2. `ApplyCell(Record)` resolves the cell's kept state onto that model **in the same frame**:
    - structure part states and debris rests (`RestoreCell` sets the model and makes no actor
      for a part still waiting);
@@ -65,7 +70,9 @@ No unit is ever made intact and then corrected.
 *In the unload frame:*
 - the cell's state is stowed from the model;
 - the model is removed;
-- gameplay actors (creatures, glitches, salvage nodes, puzzle sites) are destroyed;
+- gameplay actors: puzzle sites are destroyed; **P8:** glitches, salvage nodes and creatures are
+  retired inert (out of every query, hidden, no collision, no tick) and destroyed within the budget,
+  like part actors (ADR-0036);
 - each structure part actor is **retired**:
   - unbound from the salvage pipeline, so a later load of the same placement can never be reached
     through it;
@@ -148,9 +155,9 @@ missing, including right after a teleport or a load.
 - **Gameplay code must not assume a part actor exists** for every present part. The model is the
   authority, and `FindPart` may return null for a waiting part. Every current caller already
   tolerated that.
-- **Actor-state placements (glitches, salvage nodes, creatures) are still made in the
-  authoritative frame.** If they ever become dense, give them a model/actor split first, as
-  structures have. Don't queue them as they are, or their saved state would be applied late.
+- ~~**Actor-state placements (glitches, salvage nodes, creatures) are still made in the
+  authoritative frame.**~~ **Done in P8 (ADR-0036):** they have a model/actor split, as structures
+  have, and their saved state is resolved on the model before any actor exists.
 - **Pure-presentation work must not iterate the whole world per element.** Vegetation checked every
   structure part for every tuft, which the dense fixture exposed: one patch took ~10 ms. It now
   collects the nearby footprints once (`CollectFootprints`).

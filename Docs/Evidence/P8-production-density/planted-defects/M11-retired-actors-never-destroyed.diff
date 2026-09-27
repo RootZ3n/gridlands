@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
+@@ -385,7 +385,7 @@
+ 	int32 Made = GetWorld()->GetSubsystem<UGLStructureSubsystem>()->PumpPresentation(Where, BudgetSeconds, NearCm);
+ 	auto HasBudget = [&]() { return BudgetSeconds >= 0.0 && (BudgetSeconds == 0.0 || FPlatformTime::Seconds() - Start < BudgetSeconds); };
+ 	// P8: gameplay actors of unloaded cells (already inert) go within the budget, before anything new is made.
+-	while (RetiringActors.Num() > 0 && HasBudget())
++	while (false && RetiringActors.Num() > 0) // DEFECT
+ 	{
+ 		if (AActor* Actor = RetiringActors.Pop(EAllowShrinking::No).Get())
+ 		{

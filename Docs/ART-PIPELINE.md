@@ -85,9 +85,11 @@ construction:
    - **pivot** is the bottom centre;
    - **triangles** equal the manifest, within 5%;
    - **material slots** are exactly the manifest's;
-   - **vertex colours** are painted, not all white.
+   - **vertex colours** are painted, not all white;
+4. **builds the LODs (P8)** the mesh's data budget declares (`visual.*.lod`), with the engine's
+   reduction, and **fails the run** if any LOD is over its triangle budget (see §4b).
 
-It writes `Saved/Art/Export/import-report.json`.
+It writes `Saved/Art/Export/import-report.json`, with a row per LOD (triangles, budget, screen size).
 
 **What validation caught in P7:**
 - the scale 100× too small, then 100× too large;
@@ -101,6 +103,9 @@ authoritative data: `buildpiece` shapes and sockets, `structure` parts, creature
 **Validator rules:**
 - **VIS-1:** the mesh is an imported art mesh.
 - **VIS-2:** NICE's corruption stays **sparse**: at most 4 cubes per visual, each at most 0.35 m.
+- **VIS-3 (P8):** the LOD budget is well formed (§4b).
+- **VIS-4 (P8):** a visual that a scatter placement instances declares a `cullDistance`.
+- **VIS-5 (P8):** visuals of the same mesh declare the same LOD budget (LODs belong to the mesh).
 
 **Variants are data:**
 - a `tint` makes a dynamic instance of the master, with no new asset;
@@ -146,24 +151,78 @@ make the style dimensional under the same colour:
 - **Triangles:** 14,348 → 38,804 over the 24 proof assets. The grass tuft goes from 108 to 504,
   instanced by the thousand. **LODs become necessary** before production density.
 
+## 4b. P8: LODs and triangle budgets as data
+**Every visual declares its mesh's LOD budget** (schema-required):
+
+```json
+"lod": { "maxTriangles": [5000, 2000, 750], "screenSize": [1.0, 0.35, 0.12] },
+"cullDistance": 60
+```
+
+- `maxTriangles[i]` is the most triangles LOD *i* may have; `screenSize[i]` is where it takes over.
+- `cullDistance` (metres, optional) stops drawing the visual beyond it. Scattered vegetation must
+  declare one (VIS-4): grass and flowers 60 m, bushes 150 m.
+- **VIS-3:**
+  - 1 to 4 levels, one screen size per level;
+  - triangles strictly decreasing;
+  - screen sizes start at 1.0 and strictly decrease (above 0);
+  - every reduced LOD at least 64 triangles. That is the engine reducer's floor, measured on
+    SM_GrassTuft, SM_Flower and SM_K50_Roof; a smaller budget can never be met.
+
+**The importer builds the LODs.**
+- It asks the reducer for about 92% of each budget, keeping LOD0's build settings. Painted vertex
+  colours, baked AO and material slots survive the reduction.
+- If a LOD lands over budget, it retries harder (up to 6 times).
+- What still does not fit **fails the import**. The first run caught SM_GrassTuft and SM_K50_Roof
+  at 64 > 60. That is how the reducer floor was found; their LOD2 budgets became 70, and the floor
+  became a VIS-3 rule.
+
+**The P8 budgets:**
+- LOD0 is the P7.1 mesh plus about 15% headroom, rounded up to 100.
+- LOD1 is 40% of that and LOD2 15%. Grass and flowers use 30% and 10%, since they are instanced by
+  the thousand.
+- Screen sizes: characters and creatures 1 / 0.4 / 0.15; foliage 1 / 0.25 / 0.08; the rest
+  1 / 0.35 / 0.12.
+- The built result: 24 meshes, 3 LODs each, all within budget, 78 levels checked. Examples:
+
+| Mesh | LOD0 | LOD1 | LOD2 |
+|---|---|---|---|
+| SM_GrassTuft | 504 / 600 | 166 / 180 | 64 / 70 |
+| SM_Pine | 4274 / 5000 | 1840 / 2000 | 690 / 750 |
+| SM_K50_WallDoor | 2604 / 3100 | 1141 / 1240 | 424 / 460 |
+| SM_Zenny | 3316 / 3900 | 1436 / 1560 | 534 / 580 |
+
+**At runtime,** LODs come with the mesh. Visual components take `cullDistance`. Scatter patches set
+their instances' cull distances: faded from 75% of it, gone at it.
+
+**LODs are presentation only.** No gameplay rule may depend on a mesh or LOD level (north star).
+`Gridlands.Game.Lod` checks three things:
+1. every visual's mesh holds its budget: LOD count, triangles per LOD, and screen sizes as data;
+2. cull distances come from data;
+3. forcing a mesh's lightest LOD changes no gameplay trace.
+
+**Changing a budget means re-running `Tools/art.sh`.** The C++ test fails when data and the built
+meshes drift apart: a tighter budget, a moved screen size, or an extra level.
+
 ## 5. Adding an asset
 1. **Write a recipe** in `Art/Source/build_assets.py`, reusing `gl_art` helpers and the palette, and
    append it to `RECIPES`.
 2. **Run `Tools/art.sh`.** It must pass validation.
-3. **Add `Data/visual/<group>/<name>.json`**, then reference it from a `buildpiece.visual`,
+3. **Add `Data/visual/<group>/<name>.json`** with its `lod` budget (and a `cullDistance` if it is
+   scattered), re-run `Tools/art.sh` so the LODs are built to it, then reference it from a `buildpiece.visual`,
    `creature.visual` or a `scatter` placement.
-4. **Run `Tools/data.sh validate`** (VIS-1/VIS-2) and `Tools/test.sh`.
+4. **Run `Tools/data.sh validate`** (VIS-1..VIS-5) and `Tools/test.sh`.
 
 ## What is automated, what is not
 - **Automated:** modelling from recipes, export, import, master materials, slot binding, validation,
-  runtime attachment, data validation, and the review screenshots (`gl.Style.Tour`).
+  LODs built and checked against per-asset triangle budgets in data (P8), cull distances, runtime
+  attachment, data validation, and the review screenshots (`gl.Style.Tour`).
 - **Not yet:**
   - authoring outside code: an artist-facing Blender add-on, or hand-sculpted source files with the
     same export contract;
   - textures and hand-painted detail maps;
   - skeletal meshes and animation (the character proxies are static);
-  - LODs;
-  - per-asset triangle budgets as data;
+  - Nanite and HLOD (not needed at the P8 budgets; see ADR-0036);
   - Unreal-side modular structure assembly and export (see STRUCTURE-AUTHORING.md).
 - **Hand-authored source is compatible.** A hand-made `.blend` exported through `gl_art.export_fbx`
   with a manifest entry goes through the same import and validation.

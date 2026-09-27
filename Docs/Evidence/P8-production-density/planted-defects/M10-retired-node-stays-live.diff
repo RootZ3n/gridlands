@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Salvage/GLSalvageableComponent.cpp
++++ b/Source/GridlandsGame/Private/Salvage/GLSalvageableComponent.cpp
+@@ -102,8 +102,6 @@
+ 	bSalvaged = true; // refuses Interact; nothing is paid and no event fires
+ 	if (AActor* Owner = GetOwner())
+ 	{
+-		Owner->SetActorHiddenInGame(true);
+-		Owner->SetActorEnableCollision(false);
+ 	}
+ }
+ 

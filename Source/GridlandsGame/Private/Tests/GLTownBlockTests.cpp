@@ -390,6 +390,24 @@ bool FGLTownSaveRestart::RunTest(const FString& Parameters)
 	TestTrue(TEXT("the lots' authoritative layer comes in"), S.StepUntil(GLTownBlockTests::TBInTown, true));
 	TestTrue(TEXT("saved state is resolved at once: the models hold every kept fact"), GLTownBlockTests::SameFacts(S.Facts(), Facts));
 	TestTrue(TEXT("while presentation still waits"), S.Placements->PendingPresentation() > 100);
+	// Gameplay actors are presentation under the same budget as parts: the frame the authoritative layer
+	// landed in made only what is near (nothing, at PresentationNearM 0), and the next one little.
+	auto WaitingActors = [&S]
+	{
+		int32 N = 0;
+		for (const TCHAR* Kind : { TEXT("salvage_node"), TEXT("spawn"), TEXT("glitch") })
+		{
+			for (const FName& Id : S.OfKind(Kind))
+			{
+				N += S.Placements->IsActorPending(Id) ? 1 : 0;
+			}
+		}
+		return N;
+	};
+	const int32 ActorsTotal = S.OfKind(TEXT("salvage_node")).Num() + S.OfKind(TEXT("spawn")).Num() + S.OfKind(TEXT("glitch")).Num();
+	TestEqual(TEXT("the authoritative frame made no far gameplay actor"), WaitingActors(), ActorsTotal);
+	S.Grid->Advance(GLTownBlockTests::TBInTown);
+	TestTrue(TEXT("and the next frame made gameplay actors within the budget, not all at once"), WaitingActors() > ActorsTotal / 2);
 	int32 Problems = 0;
 	bool bSavedMid = false;
 	const int32 Frames = S.PresentAll(*this, GLTownBlockTests::TBInTown, Problems, [&]
