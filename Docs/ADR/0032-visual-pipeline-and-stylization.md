@@ -58,6 +58,9 @@ section).
   is superseded as the production target.** It stays reachable as `gl.Style.Variant P7` for the
   record.
 - **LODs are required** before production density.
+- **P7.1 approved the visual language, not final production-art quality** (operator clarification,
+  2026-09-26). The P7.1 assets are not the quality ceiling; refinement moves toward more WildStar-like
+  richness from this foundation. This is art and pipeline debt, and P7.1 is not reopened.
 
 ## Outline techniques evaluated
 
