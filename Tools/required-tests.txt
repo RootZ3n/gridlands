@@ -79,3 +79,6 @@ Gridlands.Game.TerrainPool 6
 
 # The one terrain surface (ADR-0035): visible = collision = gameplay (HeightAt) through natural terrain, edits, seams, restore, streaming; structures and building stand on it.
 Gridlands.Game.TerrainCollision 4
+
+# P8: gameplay models before gameplay actors (glitches, salvage nodes, creatures): resolved first, presented from the model, retired inert.
+Gridlands.Game.ActorPresentation 4

@@ -30,6 +30,8 @@ public:
 	bool IsSalvaged() const { return bSalvaged; }
 	/** Restores a salvaged node from a save: hidden, no yields, no events. */
 	void RestoreSalvaged();
+	/** P8: its placement's cell streamed out: refuses any salvage and its owner is hidden with no collision (the linked visual is left alone). */
+	void Retire();
 
 	/** Fires once when salvage completes (after yields and events). */
 	FGLOnSalvaged OnSalvaged;

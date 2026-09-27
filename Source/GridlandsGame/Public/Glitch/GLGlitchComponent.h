@@ -42,6 +42,15 @@ private:
 	friend class UGLSaveSubsystem;
 };
 
+// Presenting a glitch (P8) is not a gameplay transition either: its actor is made from the glitch
+// subsystem's authoritative record, already in the recorded state. Only that subsystem holds this key.
+struct FGLPresentAuthority
+{
+private:
+	FGLPresentAuthority() = default;
+	friend class UGLGlitchSubsystem;
+};
+
 DECLARE_MULTICAST_DELEGATE_TwoParams(FGLOnGlitchStateChanged, EGLGlitchState /*From*/, EGLGlitchState /*To*/);
 
 /**
@@ -66,10 +75,12 @@ public:
 	bool Interrupt(const FGLRepairAuthority& Authority);
 	bool Interrupt(const FGLWorldAuthority& Authority);
 	/** Pehlichi took the ItemDelivered items at repair start; they stay delivered through interruptions. */
-	void MarkItemsDelivered(const FGLRepairAuthority& Authority) { bItemsDelivered = true; }
+	void MarkItemsDelivered(const FGLRepairAuthority& Authority) { bItemsDelivered = true; NotifyModel(); }
 	bool AreItemsDelivered() const { return bItemsDelivered; }
 	/** Restores saved facts without emitting gameplay events. Refuses Repairing. */
 	bool RestoreFromSave(EGLGlitchState SavedState, double SavedProgress, bool bSavedItemsDelivered, const FGLRestoreAuthority& Authority);
+	/** P8: takes its authoritative record's state as it is being presented (no events; visuals follow). */
+	void PresentFromModel(EGLGlitchState ModelState, double ModelProgress, bool bModelItemsDelivered, const FGLPresentAuthority& Authority);
 
 	EGLGlitchState GetState() const { return State; }
 	FName GetGlitchId() const { return GlitchId; }
@@ -82,6 +93,8 @@ public:
 
 private:
 	bool Transition(EGLGlitchState To, EGLGlitchAuthority By);
+	/** P8: the glitch subsystem's record follows every change made here (state, progress, delivery). */
+	void NotifyModel() const;
 	/** After an interruption: keep or reset progress per the definition's interruptPolicy. Always true. */
 	bool ApplyInterruptPolicy();
 

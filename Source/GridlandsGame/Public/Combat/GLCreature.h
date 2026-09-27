@@ -43,6 +43,8 @@ public:
 
 	/** Save support: a defeated creature stays defeated, silently. */
 	void RestoreDefeated();
+	/** P8: its placement's cell streamed out: out of play at once (no behaviour, hearing, collision or navigation), destroyed later within the presentation budget. */
+	void Retire();
 
 	EGLCreatureState GetState() const { return State; }
 	bool IsDefeated() const { return State == EGLCreatureState::Defeated; }
