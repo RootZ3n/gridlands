@@ -182,7 +182,14 @@ caught.
 ## Regression
 - **Tests:** 119/119, 42 requirements met (`00-full-gate.out.txt`); tooling self-tests; data validation
   (223 entities).
-- **Fresh clone:** see the PR.
+- **Fresh clone of `54f2455`: PASS, 119/119, 42 requirements** (`00-fresh-clone.summary.txt`).
+  - The first attempt (`bbce753`) **failed to build.** `GLTerrainNavigationTests.cpp`'s
+    `using namespace` leaked its short names (A, B) into a unity blob, where they shadowed engine
+    `MathUtil` parameters once `GLTerrainPoolTests` shared the blob.
+  - The local adaptive build compiles changed files alone, so only a clean clone could show it.
+  - Fixed by qualifying the names (`54f2455`; test-only).
+  - Ten other test files still use a using-directive. They are benign today and not changed in this
+    narrow slice (debt).
 
 ## Remaining terrain debt (unchanged)
 - **Extreme 1 m edits look harsh:** terraforming presentation debt
