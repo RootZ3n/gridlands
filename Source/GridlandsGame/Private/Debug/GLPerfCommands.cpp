@@ -5,7 +5,9 @@
 
 #include "Character/GLCharacter.h"
 #include "Containers/Ticker.h"
+#include "Components/DynamicMeshComponent.h"
 #include "Dom/JsonObject.h"
+#include "TimerManager.h"
 #include "DynamicRHI.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
@@ -471,6 +473,19 @@ namespace GLPerf
 				O->SetNumberField(TEXT("emergencyChunks"), Terrain->GetStats().EmergencyChunks - Crossing.EmergencyAtStart);
 				O->SetNumberField(TEXT("staleResultsDropped"), Terrain->GetStats().StaleDropped);
 				O->SetNumberField(TEXT("chunksReused"), Terrain->GetStats().ChunksReused);
+				{
+					const FGLTerrainStreamStats& T = Terrain->GetStats();
+					O->SetNumberField(TEXT("chunksSpawned"), T.ChunksSpawned);
+					O->SetNumberField(TEXT("chunksPooledAtEnd"), Terrain->NumPooled());
+					O->SetNumberField(TEXT("terrainFirstBuildApplies"), T.FirstBuildApplies);
+					O->SetNumberField(TEXT("terrainFirstBuildMsMean"), T.FirstBuildApplies ? T.FirstBuildMsSum / T.FirstBuildApplies : 0.0);
+					O->SetNumberField(TEXT("terrainFirstBuildMsMax"), T.FirstBuildMsMax);
+					O->SetNumberField(TEXT("terrainReusedApplies"), T.ReusedApplies);
+					O->SetNumberField(TEXT("terrainReusedMsMean"), T.ReusedApplies ? T.ReusedMsSum / T.ReusedApplies : 0.0);
+					O->SetNumberField(TEXT("terrainReusedMsMax"), T.ReusedMsMax);
+					O->SetNumberField(TEXT("terrainPoolRejected"), T.PoolRejected);
+					O->SetNumberField(TEXT("terrainPoolOverflowDestroyed"), T.PoolOverflowDestroyed);
+				}
 				O->SetStringField(TEXT("arrival"), Crossing.Arrival);
 				TArray<TSharedPtr<FJsonValue>> Loads;
 				for (const FGLCellLoadRecord& R : Grid->GetLoadRecords())
@@ -580,6 +595,173 @@ namespace GLPerf
 				UE_LOG(LogGridlands, Log, TEXT("gl.Perf.RoundTrips move %d: %.0f MB"), Samples->Num(), Samples->Last());
 				return true;
 			}), 6.0f);
+		}));
+
+	/**
+	 * gl.Perf.ChunkApply [N]: where a terrain chunk's first-build cost comes from (warm-pool investigation,
+	 * after P7.1). For N fresh chunk actors, times SetMesh of a real-size 64 m chunk mesh in four
+	 * situations: a fresh actor's first mesh; the same actor again after ClearForPool (a pool reuse); a
+	 * fresh actor first given a tiny mesh, then the real one; a fresh actor whose first real mesh follows
+	 * a full-size warm-up and ClearForPool. Writes Saved/Perf/chunkapply.json and quits.
+	 */
+	FAutoConsoleCommandWithWorldAndArgs ChunkApplyCommand(
+		TEXT("gl.Perf.ChunkApply"),
+		TEXT("DEV ONLY: gl.Perf.ChunkApply [N=64] - times terrain chunk SetMesh: fresh, pooled reuse, tiny-warmed, full-warmed."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic([](const TArray<FString>& Args, UWorld* World)
+		{
+			const int32 N = Args.Num() > 0 ? FMath::Max(4, FCString::Atoi(*Args[0])) : 64;
+			TWeakObjectPtr<UWorld> Weak(World);
+			FTimerHandle Handle;
+			World->GetTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda([Weak, N]()
+			{
+				UWorld* W = Weak.Get();
+				if (!W)
+				{
+					return;
+				}
+				auto MakeMesh = [](int32 Verts, float Lift)
+				{
+					FGLChunkSnapshot Snap;
+					Snap.First = FIntPoint(1, 1);
+					Snap.Verts = Verts;
+					Snap.FieldVertsX = Snap.FieldVertsY = 1025;
+					Snap.Spacing = 100.0;
+					const int32 Side = Verts + 2;
+					Snap.Heights.Init(0.f, Side * Side);
+					Snap.Base.Init(0.f, Side * Side);
+					for (int32 I = 0; I < Snap.Heights.Num(); ++I)
+					{
+						Snap.Heights[I] = Lift + 40.f * FMath::Sin(I * 0.37f);
+					}
+					return AGLTerrainChunk::BuildMesh(Snap);
+				};
+				auto Time = [](AGLTerrainChunk* Chunk, UE::Geometry::FDynamicMesh3&& Mesh)
+				{
+					const double Start = FPlatformTime::Seconds();
+					Chunk->GetMesh()->SetMesh(MoveTemp(Mesh));
+					return (FPlatformTime::Seconds() - Start) * 1000.0;
+				};
+				TArray<double> Fresh, Reused, TinyWarmed, FullWarmed, WarmCost, Deferred, AsyncFirst, NoCollision, NoTangents, SyncCook, SyncCookNoNav, LegacyEager, ApplyFirst, ApplyReused;
+				const FVector Far(0.0, 0.0, -200000.0); // out of sight: presentation cost only, nothing Zenny meets
+				for (int32 I = 0; I < N; ++I)
+				{
+					const FVector Row = Far + FVector(I * 6400.0, 0, 0);
+					AGLTerrainChunk* A = W->SpawnActor<AGLTerrainChunk>(Row, FRotator::ZeroRotator);
+					Fresh.Add(Time(A, MakeMesh(65, 0.f)));
+					A->ClearForPool();
+					A->SetActorHiddenInGame(false);
+					Reused.Add(Time(A, MakeMesh(65, 10.f)));
+					AGLTerrainChunk* B = W->SpawnActor<AGLTerrainChunk>(Row + FVector(0, 6400.0, 0), FRotator::ZeroRotator);
+					B->GetMesh()->SetMesh(MakeMesh(2, 0.f));
+					B->ClearForPool();
+					B->SetActorHiddenInGame(false);
+					TinyWarmed.Add(Time(B, MakeMesh(65, 0.f)));
+					AGLTerrainChunk* C = W->SpawnActor<AGLTerrainChunk>(Row + FVector(0, 12800.0, 0), FRotator::ZeroRotator);
+					const double WarmStart = FPlatformTime::Seconds();
+					C->GetMesh()->SetMesh(MakeMesh(65, 0.f));
+					C->ClearForPool();
+					WarmCost.Add((FPlatformTime::Seconds() - WarmStart) * 1000.0);
+					C->SetActorHiddenInGame(false);
+					FullWarmed.Add(Time(C, MakeMesh(65, 5.f)));
+					// Where the cost is: collision regenerated inside SetMesh?
+					AGLTerrainChunk* D = W->SpawnActor<AGLTerrainChunk>(Row + FVector(0, 19200.0, 0), FRotator::ZeroRotator);
+					D->GetMesh()->SetDeferredCollisionUpdatesEnabled(true, false);
+					Deferred.Add(Time(D, MakeMesh(65, 0.f)));
+					AGLTerrainChunk* E = W->SpawnActor<AGLTerrainChunk>(Row + FVector(0, 25600.0, 0), FRotator::ZeroRotator);
+					E->GetMesh()->bUseAsyncCooking = true;
+					AsyncFirst.Add(Time(E, MakeMesh(65, 0.f)));
+					AGLTerrainChunk* F = W->SpawnActor<AGLTerrainChunk>(Row + FVector(0, 32000.0, 0), FRotator::ZeroRotator);
+					F->GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+					F->GetMesh()->SetComplexAsSimpleCollisionEnabled(false, false);
+					NoCollision.Add(Time(F, MakeMesh(65, 0.f)));
+					AGLTerrainChunk* G = W->SpawnActor<AGLTerrainChunk>(Row + FVector(0, 38400.0, 0), FRotator::ZeroRotator);
+					G->GetMesh()->SetDeferredCollisionUpdatesEnabled(true, false);
+					G->GetMesh()->SetTangentsType(EDynamicMeshComponentTangentsMode::NoTangents);
+					NoTangents.Add(Time(G, MakeMesh(65, 0.f)));
+					// The cook itself, explicitly and synchronously, as ApplyMesh does it.
+					AGLTerrainChunk* H = W->SpawnActor<AGLTerrainChunk>(Row + FVector(0, 44800.0, 0), FRotator::ZeroRotator);
+					H->GetMesh()->SetMesh(MakeMesh(65, 0.f));
+					H->GetMesh()->bUseAsyncCooking = false;
+					double T0 = FPlatformTime::Seconds();
+					H->GetMesh()->UpdateCollision(false);
+					SyncCook.Add((FPlatformTime::Seconds() - T0) * 1000.0);
+					AGLTerrainChunk* K = W->SpawnActor<AGLTerrainChunk>(Row + FVector(0, 51200.0, 0), FRotator::ZeroRotator);
+					K->GetMesh()->SetCanEverAffectNavigation(false);
+					K->GetMesh()->SetMesh(MakeMesh(65, 0.f));
+					K->GetMesh()->bUseAsyncCooking = false;
+					T0 = FPlatformTime::Seconds();
+					K->GetMesh()->UpdateCollision(false);
+					SyncCookNoNav.Add((FPlatformTime::Seconds() - T0) * 1000.0);
+					// Before and after, whole: the P5..P7.1 component cooked inside SetMesh (and ApplyMesh then
+					// asked for a second, async cook, whose completion is not timed here); the current
+					// ApplyMesh (mesh, the one synchronous cook, navigation) on a fresh actor, then reused.
+					AGLTerrainChunk* L = W->SpawnActor<AGLTerrainChunk>(Row + FVector(0, 57600.0, 0), FRotator::ZeroRotator);
+					L->GetMesh()->SetDeferredCollisionUpdatesEnabled(false, false);
+					LegacyEager.Add(Time(L, MakeMesh(65, 0.f)));
+					AGLTerrainChunk* M = W->SpawnActor<AGLTerrainChunk>(Row + FVector(0, 64000.0, 0), FRotator::ZeroRotator);
+					T0 = FPlatformTime::Seconds();
+					M->ApplyMesh(MakeMesh(65, 0.f), true, false);
+					ApplyFirst.Add((FPlatformTime::Seconds() - T0) * 1000.0);
+					M->ClearForPool();
+					M->SetActorHiddenInGame(false);
+					M->SetActorEnableCollision(true);
+					T0 = FPlatformTime::Seconds();
+					M->ApplyMesh(MakeMesh(65, 10.f), true, false);
+					ApplyReused.Add((FPlatformTime::Seconds() - T0) * 1000.0);
+				}
+				auto Stat = [](const TCHAR* Name, TArray<double> V, FJsonObject& O)
+				{
+					V.Sort();
+					TSharedRef<FJsonObject> R = MakeShared<FJsonObject>();
+					R->SetNumberField(TEXT("meanMs"), FFrameStats::Mean(V));
+					R->SetNumberField(TEXT("medianMs"), V[V.Num() / 2]);
+					R->SetNumberField(TEXT("maxMs"), V.Last());
+					O.SetObjectField(Name, R);
+					UE_LOG(LogGridlands, Log, TEXT("gl.Perf.ChunkApply %s: mean %.2f median %.2f max %.2f ms"), Name, FFrameStats::Mean(V), V[V.Num() / 2], V.Last());
+				};
+				TSharedRef<FJsonObject> O = MakeShared<FJsonObject>();
+				O->SetNumberField(TEXT("chunks"), N);
+				Stat(TEXT("freshFirstSetMesh"), Fresh, *O);
+				Stat(TEXT("pooledReuseSetMesh"), Reused, *O);
+				Stat(TEXT("tinyWarmedFirstRealSetMesh"), TinyWarmed, *O);
+				Stat(TEXT("fullWarmedFirstRealSetMesh"), FullWarmed, *O);
+				Stat(TEXT("fullWarmUpCost"), WarmCost, *O);
+				Stat(TEXT("deferredCollisionSetMesh"), Deferred, *O);
+				Stat(TEXT("asyncCookingSetMesh"), AsyncFirst, *O);
+				Stat(TEXT("noCollisionSetMesh"), NoCollision, *O);
+				Stat(TEXT("deferredNoTangentsSetMesh"), NoTangents, *O);
+				Stat(TEXT("explicitSyncCook"), SyncCook, *O);
+				Stat(TEXT("explicitSyncCookWithoutNavigation"), SyncCookNoNav, *O);
+				Stat(TEXT("legacyEagerSetMeshBefore"), LegacyEager, *O);
+				Stat(TEXT("applyMeshFirstBuildAfter"), ApplyFirst, *O);
+				Stat(TEXT("applyMeshReusedAfter"), ApplyReused, *O);
+				// Memory of one cell's worth of chunks (256). A pooled chunk holds what a never-built one holds
+				// (an empty mesh, no collision body: CheckChunkIntegrity), so the empty actors are the pool's
+				// cost. Resident memory does not fall when chunks are cleared (the allocator keeps the pages
+				// for the next cell), so clearing is not measured by it.
+				{
+					auto UsedMb = [] { CollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS); return FPlatformMemory::GetStats().UsedPhysical / (1024.0 * 1024.0); };
+					const double Before = UsedMb();
+					TArray<AGLTerrainChunk*> Cell;
+					for (int32 I = 0; I < 256; ++I)
+					{
+						Cell.Add(W->SpawnActor<AGLTerrainChunk>(Far + FVector((I % 16) * 6400.0, 80000.0 + (I / 16) * 6400.0, 0), FRotator::ZeroRotator));
+					}
+					const double Empty = UsedMb();
+					for (AGLTerrainChunk* Chunk : Cell)
+					{
+						Chunk->ApplyMesh(MakeMesh(65, 0.f), true, false);
+					}
+					const double Live = UsedMb();
+					O->SetNumberField(TEXT("mem256EmptyChunksMb"), Empty - Before);
+					O->SetNumberField(TEXT("mem256LiveChunksMb"), Live - Before);
+					UE_LOG(LogGridlands, Log, TEXT("gl.Perf.ChunkApply memory: 256 empty (pooled-equivalent) chunks %.1f MB, 256 live chunks %.1f MB"), Empty - Before, Live - Before);
+				}
+				FString Text;
+				FJsonSerializer::Serialize(O, TJsonWriterFactory<>::Create(&Text));
+				FFileHelper::SaveStringToFile(Text, *(FPaths::ProjectSavedDir() / TEXT("Perf") / TEXT("chunkapply.json")));
+				GEngine->DeferredCommands.Add(TEXT("quit"));
+			}), 8.0f, false);
 		}));
 
 	FAutoConsoleCommandWithWorldAndArgs CrossingCommand(

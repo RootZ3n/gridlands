@@ -1,0 +1,12 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
+@@ -165,8 +165,7 @@
+ void AGLTerrainChunk::ClearForPool()
+ {
+ 	Mesh->bUseAsyncCooking = false;
+-	Mesh->SetMesh(UE::Geometry::FDynamicMesh3());
+-	Mesh->UpdateCollision(false); // synchronous, and it drops any async cook still in flight
++	Mesh->UpdateCollision(false); // MUTANT: keeps its mesh
+ 	UNavigationSystemV1::UpdateComponentInNavOctree(*Mesh);
+ 	SetActorHiddenInGame(true);
+ 	SetActorEnableCollision(false);

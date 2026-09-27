@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+@@ -230,7 +230,7 @@
+ 	AGLTerrainChunk* Chunk = nullptr;
+ 	while (!Chunk && Pool.Num() > 0)
+ 	{
+-		Chunk = Pool.Pop().Get();
++		Chunk = Pool.Last().Get();
+ 		if (Chunk && Chunk->State != EGLChunkState::Pooled)
+ 		{
+ 			// Only a fully cleared chunk may serve a new owner (never a live or half-retired one).

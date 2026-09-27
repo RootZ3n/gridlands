@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
+@@ -288,7 +288,6 @@
+ 			if (AGLScatterPatch* Patch = Cast<AGLScatterPatch>(Live))
+ 			{
+ 				Patch->SetActorHiddenInGame(true); // pure presentation: retired now, destroyed within the budget
+-				RetiringScatter.Add(Patch);
+ 			}
+ 			else
+ 			{

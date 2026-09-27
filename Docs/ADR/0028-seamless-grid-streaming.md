@@ -119,3 +119,10 @@
   - they never tick level streaming, so they use `FlushAll` (tests that check state) or `Step`
     (tests that check timing);
   - they never run periodic garbage collection, so they call `CollectGarbage`.
+
+## Addendum (after P7.1)
+The terrain pool and chunk collision are revisited in
+[ADR-0034](0034-terrain-chunk-collision-and-pool.md): one synchronous collision cook per chunk
+mesh (the component no longer also cooks inside `SetMesh`), chunk states and owners, `PoolLimit`
+512, and `CheckChunkIntegrity`. A reused chunk costs what a fresh one does; the collision cook is
+the remaining terrain streaming cost, and where it goes is an open operator decision.

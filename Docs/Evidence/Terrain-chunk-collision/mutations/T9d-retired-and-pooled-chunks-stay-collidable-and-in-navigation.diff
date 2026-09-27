@@ -1,0 +1,22 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+@@ -447,7 +447,6 @@
+ 		{
+ 			// Gone from the game at once (no collision, not drawn); cleared a few per frame, then pooled.
+ 			Chunk->SetActorHiddenInGame(true);
+-			Chunk->SetActorEnableCollision(false);
+ 			Chunk->State = EGLChunkState::Retiring;
+ 			Retiring.Add(Chunk);
+ 		}
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainChunk.cpp
+@@ -167,9 +167,7 @@
+ 	Mesh->bUseAsyncCooking = false;
+ 	Mesh->SetMesh(UE::Geometry::FDynamicMesh3());
+ 	Mesh->UpdateCollision(false); // synchronous, and it drops any async cook still in flight
+-	UNavigationSystemV1::UpdateComponentInNavOctree(*Mesh);
+ 	SetActorHiddenInGame(true);
+-	SetActorEnableCollision(false);
+ 	bBuilt = false;
+ 	OwnerCell = NAME_None;
+ 	State = EGLChunkState::Pooled;

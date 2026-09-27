@@ -9,6 +9,7 @@
 #include "NavigationSystem.h"
 #include "NavMesh/RecastNavMesh.h"
 #include "Terrain/GLCellNavBounds.h"
+#include "Terrain/GLTerrainChunk.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "Tests/GLTestUtils.h"
 #include "World/GLGridSubsystem.h"
@@ -234,6 +235,47 @@ bool FGLNavAcrossCells::RunTest(const FString& Parameters)
 	TestTrue(TEXT("navigation at home again"), S.OnNav(FVector2D(1500, -1200)));
 	TestEqual(TEXT("one set of nav bounds again"), S.NavBoundsActors(), 1);
 	TestFalse(TEXT("nothing left in the lots"), S.OnNav(FVector2D(121500, 0)));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLNavPooledChunks, "Gridlands.Game.TerrainPool.PooledChunksLeaveNavigation", GLTestUtils::Flags)
+bool FGLNavPooledChunks::RunTest(const FString& Parameters)
+{
+	// The origin's chunks are pooled when it unloads. A pooled chunk must be gone from the navigation
+	// octree (its old ground must never feed a navmesh), and a live one must be in it.
+	FNavGridScene S(TEXT("GLPoolNavWorld"), *this);
+	S.GoTo(GLLocalNavTests::NAtBoundary);
+	TestTrue(TEXT("settles at the boundary"), S.Settle());
+	for (int32 Frame = 0; Frame < 400 && !(S.Grid->IsLoaded(TEXT("cell.outer.diner_lots")) && !S.Grid->IsLoaded(TEXT("cell.home.origin"))
+		&& S.Terrain->IsCellComplete(TEXT("cell.outer.diner_lots"))); ++Frame)
+	{
+		S.Zenny->SetActorLocation(GLLocalNavTests::NDeepInLots);
+		S.Grid->Advance(GLLocalNavTests::NDeepInLots);
+		S.TickNav();
+	}
+	S.Grid->FlushAll();
+	TestTrue(TEXT("settles deep in the lots"), S.Settle());
+	int32 Pooled = 0, PooledInNav = 0, Live = 0, LiveMissing = 0;
+	for (TActorIterator<AGLTerrainChunk> It(S.Test.World); It; ++It)
+	{
+		const bool bInNav = S.Nav->GetNavOctreeIdForElement(FNavigationElementHandle(It->GetMesh())) != nullptr;
+		if (It->State == EGLChunkState::Pooled)
+		{
+			++Pooled;
+			PooledInNav += bInNav ? 1 : 0;
+		}
+		else if (It->State == EGLChunkState::Live && It->IsBuilt())
+		{
+			++Live;
+			LiveMissing += bInNav ? 0 : 1;
+		}
+	}
+	AddInfo(FString::Printf(TEXT("pooled %d (in navigation %d), live %d (missing from navigation %d)"), Pooled, PooledInNav, Live, LiveMissing));
+	TestTrue(TEXT("the origin's chunks were pooled"), Pooled >= 200);
+	TestEqual(TEXT("no pooled chunk is in the navigation octree"), PooledInNav, 0);
+	TestTrue(TEXT("live chunks exist"), Live >= 200);
+	TestEqual(TEXT("every live chunk is in the navigation octree"), LiveMissing, 0);
+	TestTrue(TEXT("integrity"), S.Terrain->CheckChunkIntegrity());
 	return true;
 }
 

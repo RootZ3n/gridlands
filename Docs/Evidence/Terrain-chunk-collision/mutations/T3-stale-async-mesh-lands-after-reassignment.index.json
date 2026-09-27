@@ -1,0 +1,659 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0E04E2D627449AA346BB1E18929B0",
+			"instanceName": "Pehverse-2737189",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.27-00.40.47",
+	"succeeded": 2,
+	"succeededWithWarnings": 2,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 18.454784393310547,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "CancellationNeverHandsOutAHalfResetChunk",
+			"fullTestPath": "Gridlands.Game.TerrainPool.CancellationNeverHandsOutAHalfResetChunk",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E04E2D627449AA346BB1E18929B0"
+			],
+			"duration": 3.6174447536468506,
+			"dateTime": "2026.09.27-00.40.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoolStaysInsideItsBound",
+			"fullTestPath": "Gridlands.Game.TerrainPool.PoolStaysInsideItsBound",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E04E2D627449AA346BB1E18929B0"
+			],
+			"duration": 5.1053671836853027,
+			"dateTime": "2026.09.27-00.40.32",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReusedChunksAreRebornCleanInAnotherCell",
+			"fullTestPath": "Gridlands.Game.TerrainPool.ReusedChunksAreRebornCleanInAnotherCell",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E04E2D627449AA346BB1E18929B0"
+			],
+			"duration": 3.3816888332366943,
+			"dateTime": "2026.09.27-00.40.37",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-00.40.40"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaleMeshWorkNeverLandsOnAReassignedChunk",
+			"fullTestPath": "Gridlands.Game.TerrainPool.StaleMeshWorkNeverLandsOnAReassignedChunk",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0E04E2D627449AA346BB1E18929B0"
+			],
+			"duration": 3.3319387435913086,
+			"dateTime": "2026.09.27-00.40.41",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "stale mesh results dropped: 0",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'old jobs were in flight and were dropped' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
+					"lineNumber": 206,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=115500.000 Y=-4500.000 the chunk shows 86, the ground is 386 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=117300.000 Y=-4500.000 the chunk shows 391, the ground is 691 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=119100.000 Y=-4500.000 the chunk shows 321, the ground is 621 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=120900.000 Y=-4500.000 the chunk shows 211, the ground is 511 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=122700.000 Y=-4500.000 the chunk shows 117, the ground is 417 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=124500.000 Y=-4500.000 the chunk shows 62, the ground is 362 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=115500.000 Y=-2700.000 the chunk shows 194, the ground is 494 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=117300.000 Y=-2700.000 the chunk shows 315, the ground is 615 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=119100.000 Y=-2700.000 the chunk shows 380, the ground is 680 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=120900.000 Y=-2700.000 the chunk shows 226, the ground is 526 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=122700.000 Y=-2700.000 the chunk shows 144, the ground is 444 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=124500.000 Y=-2700.000 the chunk shows 95, the ground is 395 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=115500.000 Y=-900.000 the chunk shows 230, the ground is 530 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=117300.000 Y=-900.000 the chunk shows 192, the ground is 492 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=119100.000 Y=-900.000 the chunk shows 292, the ground is 592 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=120900.000 Y=-900.000 the chunk shows 300, the ground is 600 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=122700.000 Y=-900.000 the chunk shows 306, the ground is 606 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=124500.000 Y=-900.000 the chunk shows 271, the ground is 571 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=115500.000 Y=900.000 the chunk shows 219, the ground is 519 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=117300.000 Y=900.000 the chunk shows 218, the ground is 518 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=119100.000 Y=900.000 the chunk shows 249, the ground is 549 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=120900.000 Y=900.000 the chunk shows 306, the ground is 606 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=122700.000 Y=900.000 the chunk shows 212, the ground is 512 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=124500.000 Y=900.000 the chunk shows 183, the ground is 483 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=115500.000 Y=2700.000 the chunk shows 81, the ground is 381 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=117300.000 Y=2700.000 the chunk shows 69, the ground is 369 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=119100.000 Y=2700.000 the chunk shows 23, the ground is 323 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=120900.000 Y=2700.000 the chunk shows 99, the ground is 399 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=122700.000 Y=2700.000 the chunk shows 117, the ground is 417 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=124500.000 Y=2700.000 the chunk shows 112, the ground is 412 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=115500.000 Y=4500.000 the chunk shows 25, the ground is 325 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=117300.000 Y=4500.000 the chunk shows -27, the ground is 273 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=119100.000 Y=4500.000 the chunk shows -47, the ground is 253 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=120900.000 Y=4500.000 the chunk shows -86, the ground is 214 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=122700.000 Y=4500.000 the chunk shows -109, the ground is 191 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "at X=124500.000 Y=4500.000 the chunk shows -101, the ground is 199 (a stale mesh landed)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'every probe on and around the raised patch collides at the new ground' to be 0, but it was 36.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
+					"lineNumber": 219,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "cell.outer.diner_lots chunk at X=640 Y=448: place 1, heights 0 (bounds z 3..496, field 21..776), shown 1",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "cell.outer.diner_lots chunk at X=640 Y=512: place 1, heights 0 (bounds z -267..470, field -247..728), shown 1",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "cell.outer.diner_lots chunk at X=704 Y=448: place 1, heights 0 (bounds z 0..489, field 19..698), shown 1",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.27-00.40.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'every chunk is rebound' to be 0, but it was 6.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.09.27-00.40.44"
+				}
+			],
+			"warnings": 1,
+			"errors": 42,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StreamedReusedChunksCollideAsTheirNewCell",
+			"fullTestPath": "Gridlands.Game.TerrainPool.StreamedReusedChunksCollideAsTheirNewCell",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0E04E2D627449AA346BB1E18929B0"
+			],
+			"duration": 3.0183453559875488,
+			"dateTime": "2026.09.27-00.40.44",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.27-00.40.47"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}
