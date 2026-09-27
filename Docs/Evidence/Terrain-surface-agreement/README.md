@@ -45,7 +45,7 @@ Every gameplay terrain-height query is `UGLTerrainSubsystem::HeightAt`, which ca
 | Creatures and pathing | navigation reads the collision export; no height query | none |
 | Dev and perf commands (demo, perf, style, structure demo, terrain review) | HeightAt | none |
 | `GLTerrainGen` lerp | relief-noise generation, not a surface query | none |
-| Render mesh, worker trimesh | now take their split from `GLTerrainSubsystem::Triangles` | yes (one definition) |
+| Render mesh, worker trimesh | now take their split from `GLTerrainSurface::Triangles` | yes (one definition) |
 | Tests | the agreement oracle keeps its own statement of the split and reads the mesh's actual triangles, so a defect in the primitive cannot also blind it | test only |
 
 ## Agreement proof (`Gridlands.Game.TerrainCollision`, 4 tests, required; `agreement-report.txt`)
