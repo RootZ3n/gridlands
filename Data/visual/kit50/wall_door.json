@@ -1,5 +1,17 @@
 {
   "schemaVersion": 1,
   "id": "visual.kit50.wall_door",
-  "mesh": "SM_K50_WallDoor"
+  "mesh": "SM_K50_WallDoor",
+  "lod": {
+    "maxTriangles": [
+      3100,
+      1240,
+      460
+    ],
+    "screenSize": [
+      1.0,
+      0.35,
+      0.12
+    ]
+  }
 }

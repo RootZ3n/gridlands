@@ -2,5 +2,18 @@
   "schemaVersion": 1,
   "id": "visual.foliage.bush",
   "mesh": "SM_Bush",
-  "outline": true
+  "outline": true,
+  "lod": {
+    "maxTriangles": [
+      2600,
+      1040,
+      390
+    ],
+    "screenSize": [
+      1.0,
+      0.35,
+      0.12
+    ]
+  },
+  "cullDistance": 150
 }

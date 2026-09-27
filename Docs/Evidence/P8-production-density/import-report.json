@@ -1,0 +1,629 @@
+{
+	"assets": [
+		{
+			"name": "SM_Pine",
+			"triangles": 4274,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 4274,
+					"budget": 5000,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 1840,
+					"budget": 2000,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 690,
+					"budget": 750,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-228.66, Y=-236.34)..V(X=228.66, Y=236.34, Z=781.14)",
+			"problems": []
+		},
+		{
+			"name": "SM_PineStump",
+			"triangles": 372,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 372,
+					"budget": 500,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 184,
+					"budget": 200,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 74,
+					"budget": 80,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-28.92, Y=-30.72)..V(X=28.92, Y=30.72, Z=41.92)",
+			"problems": []
+		},
+		{
+			"name": "SM_Boulder_A",
+			"triangles": 1680,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 1680,
+					"budget": 2000,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 736,
+					"budget": 800,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 276,
+					"budget": 300,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-124.09, Y=-91.69)..V(X=124.09, Y=91.69, Z=111.44)",
+			"problems": []
+		},
+		{
+			"name": "SM_Boulder_B",
+			"triangles": 1680,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 1680,
+					"budget": 2000,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 736,
+					"budget": 800,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 276,
+					"budget": 300,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-87.62, Y=-64.08)..V(X=87.62, Y=64.08, Z=77.26)",
+			"problems": []
+		},
+		{
+			"name": "SM_GrassTuft",
+			"triangles": 504,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 504,
+					"budget": 600,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 166,
+					"budget": 180,
+					"screenSize": 0.25
+				},
+				{
+					"lod": 2,
+					"triangles": 64,
+					"budget": 70,
+					"screenSize": 0.080000000000000002
+				}
+			],
+			"bounds": "V(X=-19.81, Y=-21.01)..V(X=19.81, Y=21.01, Z=57.88)",
+			"problems": []
+		},
+		{
+			"name": "SM_Flower",
+			"triangles": 596,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 596,
+					"budget": 700,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 194,
+					"budget": 210,
+					"screenSize": 0.25
+				},
+				{
+					"lod": 2,
+					"triangles": 64,
+					"budget": 70,
+					"screenSize": 0.080000000000000002
+				}
+			],
+			"bounds": "V(X=-15.01, Y=-13.80)..V(X=15.01, Y=13.80, Z=45.26)",
+			"problems": []
+		},
+		{
+			"name": "SM_Bush",
+			"triangles": 2240,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 2240,
+					"budget": 2600,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 956,
+					"budget": 1040,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 358,
+					"budget": 390,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-87.13, Y=-71.76)..V(X=87.13, Y=71.76, Z=100.02)",
+			"problems": []
+		},
+		{
+			"name": "SM_K50_Foundation",
+			"triangles": 1916,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 1916,
+					"budget": 2300,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 846,
+					"budget": 920,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 312,
+					"budget": 340,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-100.00, Y=-100.00)..V(X=100.00, Y=100.00, Z=30.00)",
+			"problems": []
+		},
+		{
+			"name": "SM_K50_WallPlain",
+			"triangles": 1740,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 1740,
+					"budget": 2100,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 772,
+					"budget": 840,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 294,
+					"budget": 320,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-105.30, Y=-21.80)..V(X=105.30, Y=21.80, Z=254.47)",
+			"problems": []
+		},
+		{
+			"name": "SM_K50_WallWindow",
+			"triangles": 2448,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 2448,
+					"budget": 2900,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 1068,
+					"budget": 1160,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 404,
+					"budget": 440,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-105.53, Y=-25.28)..V(X=105.53, Y=25.28, Z=254.46)",
+			"problems": []
+		},
+		{
+			"name": "SM_K50_WallDoor",
+			"triangles": 2604,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 2604,
+					"budget": 3100,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 1141,
+					"budget": 1240,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 424,
+					"budget": 460,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-105.51, Y=-21.74)..V(X=105.51, Y=21.74, Z=254.55)",
+			"problems": []
+		},
+		{
+			"name": "SM_K50_Post",
+			"triangles": 816,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 816,
+					"budget": 1000,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 368,
+					"budget": 400,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 138,
+					"budget": 150,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-16.00, Y=-16.00, Z=-0.00)..V(X=16.00, Y=16.00, Z=280.00)",
+			"problems": []
+		},
+		{
+			"name": "SM_K50_Awning",
+			"triangles": 2408,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 2408,
+					"budget": 2800,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 1030,
+					"budget": 1120,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 386,
+					"budget": 420,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-100.00, Y=-108.75)..V(X=100.00, Y=108.75, Z=57.83)",
+			"problems": []
+		},
+		{
+			"name": "SM_K50_Roof",
+			"triangles": 296,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 296,
+					"budget": 400,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 148,
+					"budget": 160,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 64,
+					"budget": 70,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-104.00, Y=-104.00)..V(X=104.00, Y=104.00, Z=22.00)",
+			"problems": []
+		},
+		{
+			"name": "SM_K50_Sign",
+			"triangles": 696,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 696,
+					"budget": 900,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 332,
+					"budget": 360,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 128,
+					"budget": 140,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-104.83, Y=-15.75)..V(X=104.83, Y=15.75, Z=228.95)",
+			"problems": []
+		},
+		{
+			"name": "SM_KT_Wall",
+			"triangles": 1128,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 1128,
+					"budget": 1300,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 478,
+					"budget": 520,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 184,
+					"budget": 200,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-101.00, Y=-13.00)..V(X=101.00, Y=13.00, Z=251.12)",
+			"problems": []
+		},
+		{
+			"name": "SM_KT_Doorway",
+			"triangles": 1316,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 1316,
+					"budget": 1600,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 588,
+					"budget": 640,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 220,
+					"budget": 240,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-101.00, Y=-13.00)..V(X=101.00, Y=13.00, Z=251.04)",
+			"problems": []
+		},
+		{
+			"name": "SM_KT_Foundation",
+			"triangles": 940,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 940,
+					"budget": 1100,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 404,
+					"budget": 440,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 148,
+					"budget": 160,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-100.88, Y=-99.48)..V(X=100.88, Y=99.48, Z=30.94)",
+			"problems": []
+		},
+		{
+			"name": "SM_KT_Roof",
+			"triangles": 540,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 540,
+					"budget": 700,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 258,
+					"budget": 280,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 92,
+					"budget": 100,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-101.00, Y=-101.23)..V(X=101.00, Y=101.23, Z=106.76)",
+			"problems": []
+		},
+		{
+			"name": "SM_SideTable",
+			"triangles": 1184,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 1184,
+					"budget": 1400,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 516,
+					"budget": 560,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 194,
+					"budget": 210,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-33.50, Y=-33.50, Z=-0.00)..V(X=33.50, Y=33.50, Z=75.00)",
+			"problems": []
+		},
+		{
+			"name": "SM_RotaryPhone",
+			"triangles": 1368,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 1368,
+					"budget": 1600,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 588,
+					"budget": 640,
+					"screenSize": 0.34999999999999998
+				},
+				{
+					"lod": 2,
+					"triangles": 220,
+					"budget": 240,
+					"screenSize": 0.12
+				}
+			],
+			"bounds": "V(X=-12.25, Y=-15.20)..V(X=12.25, Y=15.20, Z=16.50)",
+			"problems": []
+		},
+		{
+			"name": "SM_Raccoon",
+			"triangles": 2060,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 2060,
+					"budget": 2400,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 884,
+					"budget": 960,
+					"screenSize": 0.40000000000000002
+				},
+				{
+					"lod": 2,
+					"triangles": 332,
+					"budget": 360,
+					"screenSize": 0.14999999999999999
+				}
+			],
+			"bounds": "V(X=-68.08, Y=-25.09)..V(X=68.08, Y=25.09, Z=90.70)",
+			"problems": []
+		},
+		{
+			"name": "SM_Zenny",
+			"triangles": 3316,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 3316,
+					"budget": 3900,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 1436,
+					"budget": 1560,
+					"screenSize": 0.40000000000000002
+				},
+				{
+					"lod": 2,
+					"triangles": 534,
+					"budget": 580,
+					"screenSize": 0.14999999999999999
+				}
+			],
+			"bounds": "V(X=-37.40, Y=-47.49)..V(X=37.40, Y=47.49, Z=213.10)",
+			"problems": []
+		},
+		{
+			"name": "SM_Pehlichi",
+			"triangles": 2564,
+			"lods": [
+				{
+					"lod": 0,
+					"triangles": 2564,
+					"budget": 3000,
+					"screenSize": 1
+				},
+				{
+					"lod": 1,
+					"triangles": 1104,
+					"budget": 1200,
+					"screenSize": 0.40000000000000002
+				},
+				{
+					"lod": 2,
+					"triangles": 414,
+					"budget": 450,
+					"screenSize": 0.14999999999999999
+				}
+			],
+			"bounds": "V(X=-52.21, Y=-29.30)..V(X=52.21, Y=29.30, Z=82.50)",
+			"problems": []
+		}
+	],
+	"failures": 0
+}

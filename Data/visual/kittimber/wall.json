@@ -1,5 +1,17 @@
 {
   "schemaVersion": 1,
   "id": "visual.kittimber.wall",
-  "mesh": "SM_KT_Wall"
+  "mesh": "SM_KT_Wall",
+  "lod": {
+    "maxTriangles": [
+      1300,
+      520,
+      200
+    ],
+    "screenSize": [
+      1.0,
+      0.35,
+      0.12
+    ]
+  }
 }

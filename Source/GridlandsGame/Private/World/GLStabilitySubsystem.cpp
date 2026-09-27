@@ -48,18 +48,16 @@ TArray<FGLStabilitySample> UGLStabilitySubsystem::Samples() const
 {
 	TArray<FGLStabilitySample> Out;
 	const UGLGlitchSubsystem* Glitches = GetWorld()->GetSubsystem<UGLGlitchSubsystem>();
-	for (const TWeakObjectPtr<AGLGlitch>& Actor : Glitches->GetAll())
+	// P8: every loaded glitch from its authoritative record, presented or not.
+	for (const TPair<FName, FGLGlitchRecord>& Entry : Glitches->GetRecords())
 	{
-		if (!Actor.IsValid())
-		{
-			continue;
-		}
-		const FGLGlitchDef* Def = GLContent::Get().Find<FGLGlitchDef>(Actor->GetGlitch()->GetGlitchId());
+		const FGLGlitchRecord& Glitch = Entry.Value;
+		const FGLGlitchDef* Def = GLContent::Get().Find<FGLGlitchDef>(Glitch.Glitch);
 		FGLStabilitySample& Sample = Out.AddDefaulted_GetRef();
-		Sample.Location = FVector2D(Actor->GetActorLocation());
+		Sample.Location = FVector2D(Glitch.Location);
 		Sample.Weight = Def ? Def->StabilityWeight : 1.0;
 		Sample.InfluenceRadiusCm = (Def && Def->InfluenceRadius > 0.0 ? Def->InfluenceRadius : DefaultInfluenceMetres) * MetresToCm;
-		Sample.bRepaired = Actor->GetGlitch()->GetState() == EGLGlitchState::Repaired;
+		Sample.bRepaired = Glitch.State == EGLGlitchState::Repaired;
 	}
 	return Out;
 }
@@ -119,12 +117,9 @@ double UGLStabilitySubsystem::NiceComposure() const
 	// a cell that is streamed out, as its kept state says (unrepaired if never touched).
 	TArray<FGLStabilitySample> All = Samples();
 	TSet<FName> Live;
-	for (const TWeakObjectPtr<AGLGlitch>& Actor : GetWorld()->GetSubsystem<UGLGlitchSubsystem>()->GetAll())
+	for (const TPair<FName, FGLGlitchRecord>& Entry : GetWorld()->GetSubsystem<UGLGlitchSubsystem>()->GetRecords())
 	{
-		if (Actor.IsValid())
-		{
-			Live.Add(Actor->GetGlitch()->GetPlacementId());
-		}
+		Live.Add(Entry.Key);
 	}
 	const UGLSaveSubsystem* Saves = GetWorld()->GetSubsystem<UGLSaveSubsystem>();
 	GLContent::Get().ForEachEntry([&](const FGLContentEntry& Entry)

@@ -125,8 +125,8 @@ namespace GLGridTests
 
 		EGLGlitchState StateOf(FName Placement) const
 		{
-			const AGLGlitch* G = Glitches->FindByPlacement(Placement);
-			return G ? G->GetGlitch()->GetState() : EGLGlitchState::Latent;
+			const FGLGlitchRecord* G = Glitches->FindRecord(Placement); // the authoritative model (P8)
+			return G ? G->State : EGLGlitchState::Latent;
 		}
 
 		int32 GlitchActors() const { int32 N = 0; for (TActorIterator<AGLGlitch> It(Test.World); It; ++It) { N += IsValid(*It) ? 1 : 0; } return N; }
@@ -249,14 +249,15 @@ bool FGLGridTorture::RunTest(const FString& Parameters)
 	TestTrue(FString::Printf(TEXT("nothing piles up across round trips (grew:%s)"), Grew.IsEmpty() ? TEXT(" nothing") : *Grew), Grew.IsEmpty());
 	// --- Back in A: everything as it was, exactly once.
 	TestEqual(TEXT("A: lamp still repaired"), S.StateOf(GLamp), EGLGlitchState::Repaired);
-	TestTrue(TEXT("A: blocker still salvaged"), S.Test.World->GetSubsystem<UGLPlacementSubsystem>()->FindSalvageNode(GBlocker)->GetSalvageable()->IsSalvaged());
-	TestTrue(TEXT("A: gremlin still defeated"), S.Test.World->GetSubsystem<UGLPlacementSubsystem>()->FindCreature(GGremlin)->IsDefeated());
+	TestTrue(TEXT("A: blocker still salvaged"), S.Test.World->GetSubsystem<UGLPlacementSubsystem>()->IsSalvaged(GBlocker));
+	TestNull(TEXT("  and never made again (P8: a salvaged node has no presentation)"), S.Test.World->GetSubsystem<UGLPlacementSubsystem>()->FindSalvageNode(GBlocker));
+	TestTrue(TEXT("A: gremlin still defeated"), S.Test.World->GetSubsystem<UGLPlacementSubsystem>()->IsCreatureDefeated(GGremlin));
 	TestEqual(TEXT("A: both pieces back"), S.Building->PiecesOfCell(GOrigin).Num(), PiecesInA);
 	TestEqual(TEXT("A: the mound is back on its side"), S.Terrain->HeightAt(FVector2D(51100, -1500)), MoundA);
 	int32 Glitchy = 0;
 	GLContent::Get().ForEachEntry([&](const FGLContentEntry& E) { const FGLPlacementDef* P = E.Definition.GetPtr<FGLPlacementDef>(); Glitchy += P && P->Kind == TEXT("glitch") && UGLPlacementSubsystem::IsPlacementOfCell(E.Id, GOrigin) ? 1 : 0; });
 	TestEqual(TEXT("no duplicate glitches after 5 round trips"), S.GlitchActors(), Glitchy);
-	TestEqual(TEXT("no duplicate creatures"), S.CreatureActors(), 1);
+	TestEqual(TEXT("no duplicate creatures: the defeated gremlin is never made again (P8)"), S.CreatureActors(), 0);
 	TestEqual(TEXT("streaming made no gameplay events"), S.Events.Num(), EventsBefore);
 	TestEqual(TEXT("and no dialogue replayed"), S.Lines, LinesBefore);
 	// --- And B, from the other side.
@@ -318,7 +319,7 @@ bool FGLGridSaveInB::RunTest(const FString& Parameters)
 	TestEqual(TEXT("and the hole"), R.Terrain->HeightAt(FVector2D(102800, 2000)), HoleDepth);
 	R.GoTo(GInOrigin);
 	TestEqual(TEXT("walking home: the origin's lamp is repaired"), R.StateOf(GLamp), EGLGlitchState::Repaired);
-	TestTrue(TEXT("and its blocker salvaged"), R.Test.World->GetSubsystem<UGLPlacementSubsystem>()->FindSalvageNode(GBlocker)->GetSalvageable()->IsSalvaged());
+	TestTrue(TEXT("and its blocker salvaged"), R.Test.World->GetSubsystem<UGLPlacementSubsystem>()->IsSalvaged(GBlocker));
 	IFileManager::Get().Delete(*UGLSaveSubsystem::SlotPath(GGridSlot));
 	return true;
 }

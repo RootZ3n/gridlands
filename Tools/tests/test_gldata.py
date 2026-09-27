@@ -375,3 +375,48 @@ class VisualRuleTests(unittest.TestCase):
         self.box.edit("visual.prop.rotary_phone", lambda d: d.update(corruption=[{"offset": [0, 0, 0], "size": 0.5}]))
         self.assertIn("VIS-2", self.box.rules())
 
+
+
+class LodRuleTests(unittest.TestCase):
+    """P8: VIS-3 LOD budgets are well formed; VIS-4 instanced vegetation declares a cull distance;
+    VIS-5 visuals of one mesh share its budget; every visual declares one (schema)."""
+
+    def setUp(self):
+        self.box = Sandbox()
+
+    def test_real_data_is_clean(self):
+        rules = self.box.rules()
+        for rule in ("VIS-3", "VIS-4", "VIS-5"):
+            self.assertNotIn(rule, rules)
+
+    def test_lod_is_required(self):
+        self.box.edit("visual.prop.side_table", lambda d: d.pop("lod"))
+        self.assertTrue(self.box.rules(), "a visual without a LOD budget must not validate")
+
+    def test_vis3_triangles_must_decrease(self):
+        self.box.edit("visual.prop.side_table", lambda d: d["lod"].update(maxTriangles=[1400, 1500, 200]))
+        self.assertIn("VIS-3", self.box.rules())
+
+    def test_vis3_one_screen_size_per_lod(self):
+        self.box.edit("visual.prop.side_table", lambda d: d["lod"].update(screenSize=[1.0, 0.35]))
+        self.assertIn("VIS-3", self.box.rules())
+
+    def test_vis3_lod0_starts_at_full_size(self):
+        self.box.edit("visual.prop.side_table", lambda d: d["lod"].update(screenSize=[0.9, 0.35, 0.12]))
+        self.assertIn("VIS-3", self.box.rules())
+
+    def test_vis3_reduced_lod_at_or_above_reducer_floor(self):
+        self.box.edit("visual.prop.side_table", lambda d: d["lod"].update(maxTriangles=[1400, 560, 60]))
+        self.assertIn("VIS-3", self.box.rules())
+
+    def test_vis3_at_most_four_lods(self):
+        self.box.edit("visual.prop.side_table", lambda d: d["lod"].update(maxTriangles=[1400, 600, 300, 100, 50], screenSize=[1.0, 0.5, 0.3, 0.1, 0.05]))
+        self.assertIn("VIS-3", self.box.rules())
+
+    def test_vis4_grass_needs_a_cull_distance(self):
+        self.box.edit("visual.foliage.grass_tuft", lambda d: d.pop("cullDistance"))
+        self.assertIn("VIS-4", self.box.rules())
+
+    def test_vis5_one_mesh_one_budget(self):
+        self.box.edit("visual.prop.rotary_phone_glitched", lambda d: d["lod"].update(maxTriangles=[1600, 700, 240]))
+        self.assertIn("VIS-5", self.box.rules())

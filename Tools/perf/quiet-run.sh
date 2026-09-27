@@ -3,7 +3,7 @@
 # before each run and repeats a run whose 1-minute load at its end was >= 8 (the game itself adds ~4;
 # more means other sessions joined in).
 cd "$(dirname "$0")/../.."
-FLAG="${1:-}"; NAV="${2:-local}"   # Tools/perf/quiet-run.sh "" local | Tools/perf/quiet-run.sh -d dense
+FLAG="${1:-}"; NAV="${2:-local}"   # "" local | -d dense | -b town | "-b -d" towndense
 LOG=Saved/perf-quiet-$NAV.log; : > "$LOG"
 load1() { cut -d' ' -f1 /proc/loadavg; }
 gpu() { cat /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | sort -n | tail -1; }

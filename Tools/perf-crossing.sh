@@ -8,17 +8,20 @@
 #   -w: whole-cell navigation (invokers off) instead of localized navigation (ADR-0029)
 #   -t: also run the 1 km terrain harness (gl.Perf.Terrain 1024)
 #   -d: the P7 dense authored stress fixture in the lots (-GLDenseProof, dev only); results are named dense-*
+#   -b: the P8 production-density town block on the route (-GLTownBlock, dev only); results are named town-*
+#       (with -d as well: towndense-*, the town block and the P7 strip together)
 #   "resume" launches from the save that "teleport" leaves in the second cell (quit autosaves).
 set -uo pipefail
 . "$(dirname "$0")/lib/common.sh"
 resolve_engine_root
 UE_EDITOR="$ENGINE_ROOT/Engine/Binaries/Linux/UnrealEditor"
-NAV=local; EXTRA=(); TERRAIN=0; DENSE=0
-while getopts "wtd" OPT; do
+NAV=local; EXTRA=(); TERRAIN=0; DENSE=0; TOWN=0
+while getopts "wtdb" OPT; do
 	case $OPT in
 		w) NAV=whole; EXTRA=(-ini:Engine:[/Script/NavigationSystem.NavigationSystemV1]:bGenerateNavigationOnlyAroundNavigationInvokers=False) ;;
 		t) TERRAIN=1 ;;
 		d) DENSE=1 ;;
+		b) TOWN=1 ;;
 		*) exit 2 ;;
 	esac
 done
@@ -26,6 +29,11 @@ shift $((OPTIND - 1))
 if [ $DENSE -eq 1 ]; then
 	[ "$NAV" = local ] || result FAIL "-d measures the canonical (localized) navigation only"
 	NAV=dense; EXTRA+=(-GLDenseProof)
+fi
+if [ $TOWN -eq 1 ]; then
+	[ "$NAV" = local ] || [ "$NAV" = dense ] || result FAIL "-b measures the canonical (localized) navigation only"
+	[ "$NAV" = dense ] && NAV=towndense || NAV=town
+	EXTRA+=(-GLTownBlock)
 fi
 [ -n "${GRIDLANDS_PERF_ARGS:-}" ] && EXTRA+=(${GRIDLANDS_PERF_ARGS}) # e.g. the heightfield spike: -GLTerrainCollision=1
 MODES=("$@"); [ ${#MODES[@]} -eq 0 ] && MODES=(straight reversal sprint teleport resume roundtrips)

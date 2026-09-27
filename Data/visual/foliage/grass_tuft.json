@@ -3,5 +3,18 @@
   "id": "visual.foliage.grass_tuft",
   "mesh": "SM_GrassTuft",
   "outline": false,
-  "castShadow": false
+  "castShadow": false,
+  "lod": {
+    "maxTriangles": [
+      600,
+      180,
+      70
+    ],
+    "screenSize": [
+      1.0,
+      0.25,
+      0.08
+    ]
+  },
+  "cullDistance": 60
 }

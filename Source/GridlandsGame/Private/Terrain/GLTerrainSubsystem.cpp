@@ -4,6 +4,7 @@
 #include "Structure/GLStructureSubsystem.h"
 
 #include "Building/GLBuildingSubsystem.h"
+#include "Components/DynamicMeshComponent.h"
 #include "Content/GLContent.h"
 #include "Content/GLContentDefinitions.h"
 #include "DynamicMesh/DynamicMesh3.h"
@@ -15,6 +16,7 @@
 #include "Misc/Paths.h"
 #include "NavigationSystem.h"
 #include "Tasks/Task.h"
+#include "UDynamicMesh.h"
 #include "Terrain/GLCellNavBounds.h"
 #include "Terrain/GLTerrainChunk.h"
 #include "Terrain/GLTerrainCollision.h"
@@ -478,6 +480,44 @@ int32 UGLTerrainSubsystem::NumChunks() const
 		N += G.Value.Slots.FilterByPredicate([](const FGLChunkSlot& S) { return S.Actor != nullptr; }).Num();
 	}
 	return N;
+}
+
+FGLTerrainMeshMemory UGLTerrainSubsystem::MeasureMeshMemory() const
+{
+	FGLTerrainMeshMemory Out;
+	auto Add = [&Out](const AGLTerrainChunk* Chunk)
+	{
+		UDynamicMeshComponent* Component = Chunk ? Chunk->GetMesh() : nullptr;
+		if (const UDynamicMesh* Dynamic = Component ? Component->GetDynamicMesh() : nullptr)
+		{
+			Dynamic->ProcessMesh([&Out](const UE::Geometry::FDynamicMesh3& Mesh)
+			{
+				Out.Triangles += Mesh.TriangleCount();
+				Out.CpuBytes += static_cast<int64>(Mesh.GetByteCount());
+				Out.GpuBytes += static_cast<int64>(Mesh.TriangleCount()) * 3 * FGLTerrainMeshMemory::GpuBytesPerCorner;
+			});
+		}
+	};
+	for (const TPair<FName, FGLCellGround>& G : Grounds)
+	{
+		for (const FGLChunkSlot& Slot : G.Value.Slots)
+		{
+			if (Slot.Actor)
+			{
+				++Out.Chunks;
+				Add(Slot.Actor);
+			}
+		}
+	}
+	for (const TWeakObjectPtr<AGLTerrainChunk>& Pooled : Pool)
+	{
+		if (Pooled.IsValid())
+		{
+			++Out.Pooled;
+			Add(Pooled.Get());
+		}
+	}
+	return Out;
 }
 
 void UGLTerrainSubsystem::FlushAll()

@@ -228,26 +228,28 @@ FGLSavedCell UGLSaveSubsystem::CaptureCell(FName Cell) const
 	UWorld* World = GetWorld();
 	FGLSavedCell Record;
 	Record.Cell = Cell;
-	for (const TWeakObjectPtr<AGLGlitch>& Actor : World->GetSubsystem<UGLGlitchSubsystem>()->GetAll())
+	// P8: from the authoritative models, whether or not their actors are presented yet.
+	for (const TPair<FName, FGLGlitchRecord>& Entry : World->GetSubsystem<UGLGlitchSubsystem>()->GetRecords())
 	{
-		const UGLGlitchComponent* Glitch = Actor.IsValid() ? Actor->GetGlitch() : nullptr;
-		if (Glitch && UGLPlacementSubsystem::IsPlacementOfCell(Glitch->GetPlacementId(), Cell))
+		const FGLGlitchRecord& Glitch = Entry.Value;
+		if (UGLPlacementSubsystem::IsPlacementOfCell(Glitch.Placement, Cell))
 		{
-			Record.Glitches.Add({ Glitch->GetPlacementId(), FGLGlitchLifecycle::ToPersistedState(Glitch->GetState()), Glitch->GetProgressSeconds(), Glitch->AreItemsDelivered() });
-		}
-	}
-	for (TActorIterator<AGLSalvageNode> It(World); It; ++It)
-	{
-		if (IsValid(*It) && It->GetSalvageable()->IsSalvaged() && UGLPlacementSubsystem::IsPlacementOfCell(It->PlacementId, Cell))
-		{
-			Record.SalvagedPlacements.Add(It->PlacementId);
+			Record.Glitches.Add({ Glitch.Placement, FGLGlitchLifecycle::ToPersistedState(Glitch.State), Glitch.ProgressSeconds, Glitch.bItemsDelivered });
 		}
 	}
 	if (const UGLPlacementSubsystem* Placements = World->GetSubsystem<UGLPlacementSubsystem>())
 	{
-		for (const TPair<FName, TWeakObjectPtr<AGLCreature>>& Entry : Placements->GetCreatures())
+		for (const TPair<FName, FGLActorPlacement>& Entry : Placements->GetActorModels())
 		{
-			if (Entry.Value.IsValid() && Entry.Value->IsDefeated() && UGLPlacementSubsystem::IsPlacementOfCell(Entry.Key, Cell))
+			if (!UGLPlacementSubsystem::IsPlacementOfCell(Entry.Key, Cell))
+			{
+				continue;
+			}
+			if (Entry.Value.bSalvaged)
+			{
+				Record.SalvagedPlacements.Add(Entry.Key);
+			}
+			if (Entry.Value.bDefeated)
 			{
 				Record.DefeatedCreatures.Add(Entry.Key);
 			}
@@ -289,37 +291,29 @@ void UGLSaveSubsystem::ApplyCell(const FGLSavedCell& Record, TArray<FString>* Ou
 	UGLGlitchSubsystem* Glitches = World->GetSubsystem<UGLGlitchSubsystem>();
 	UGLPlacementSubsystem* Placements = World->GetSubsystem<UGLPlacementSubsystem>();
 	// Everything here restores silently: no events, so no dialogue replays because a cell came back.
+	// P8: onto the models (and onto any actor already presented); a waiting actor is made from them later.
 	for (const FGLSavedGlitch& Saved : Record.Glitches)
 	{
-		AGLGlitch* Glitch = Glitches->FindByPlacement(Saved.Placement);
-		if (!Glitch)
+		if (!Glitches->FindRecord(Saved.Placement))
 		{
 			Problem(FString::Printf(TEXT("saved glitch placement %s no longer exists"), *Saved.Placement.ToString()));
 			continue;
 		}
-		if (!Glitch->GetGlitch()->RestoreFromSave(Saved.State, Saved.ProgressSeconds, Saved.ItemsDelivered, FGLRestoreAuthority()))
+		if (!Glitches->RestoreRecord(Saved.Placement, Saved.State, Saved.ProgressSeconds, Saved.ItemsDelivered, FGLRestoreAuthority()))
 		{
 			Problem(FString::Printf(TEXT("could not restore %s to %s"), *Saved.Placement.ToString(), FGLGlitchLifecycle::StateName(Saved.State)));
 		}
 	}
 	for (const FName& Id : Record.SalvagedPlacements)
 	{
-		if (AGLSalvageNode* Node = Placements->FindSalvageNode(Id))
-		{
-			Node->GetSalvageable()->RestoreSalvaged();
-		}
-		else
+		if (!Placements->RestoreSalvaged(Id))
 		{
 			Problem(FString::Printf(TEXT("saved salvage placement %s no longer exists"), *Id.ToString()));
 		}
 	}
 	for (const FName& Id : Record.DefeatedCreatures)
 	{
-		if (AGLCreature* Creature = Placements->FindCreature(Id))
-		{
-			Creature->RestoreDefeated();
-		}
-		else
+		if (!Placements->RestoreDefeated(Id))
 		{
 			Problem(FString::Printf(TEXT("saved defeated creature %s no longer exists"), *Id.ToString()));
 		}

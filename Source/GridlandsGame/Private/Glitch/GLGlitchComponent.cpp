@@ -2,7 +2,9 @@
 
 #include "Content/GLContent.h"
 #include "Content/GLContentDefinitions.h"
+#include "Engine/World.h"
 #include "Events/GLEventSubsystem.h"
+#include "Glitch/GLGlitchSubsystem.h"
 #include "GameplayTagsManager.h"
 #include "GridlandsGame.h"
 
@@ -53,6 +55,7 @@ bool UGLGlitchComponent::Transition(EGLGlitchState To, EGLGlitchAuthority By)
 		return false;
 	}
 	State = To;
+	NotifyModel();
 	OnStateChanged.Broadcast(From, To);
 	if (const FName Tag = EventFor(To); !Tag.IsNone())
 	{
@@ -99,8 +102,26 @@ bool UGLGlitchComponent::RestoreFromSave(EGLGlitchState SavedState, double Saved
 	State = SavedState;
 	ProgressSeconds = FMath::Clamp(SavedProgress, 0.0, GetRequiredSeconds());
 	bItemsDelivered = bSavedItemsDelivered;
+	NotifyModel();
 	OnStateChanged.Broadcast(From, State); // visuals only; no Event.Glitch.* for a restore
 	return true;
+}
+
+void UGLGlitchComponent::PresentFromModel(EGLGlitchState ModelState, double ModelProgress, bool bModelItemsDelivered, const FGLPresentAuthority&)
+{
+	const EGLGlitchState From = State;
+	State = ModelState;
+	ProgressSeconds = FMath::Clamp(ModelProgress, 0.0, GetRequiredSeconds());
+	bItemsDelivered = bModelItemsDelivered;
+	OnStateChanged.Broadcast(From, State); // visuals only: this is the record's state, not a transition
+}
+
+void UGLGlitchComponent::NotifyModel() const
+{
+	if (UGLGlitchSubsystem* Glitches = GetWorld() ? GetWorld()->GetSubsystem<UGLGlitchSubsystem>() : nullptr)
+	{
+		Glitches->SyncFromComponent(*this);
+	}
 }
 
 bool UGLGlitchComponent::ApplyInterruptPolicy()
@@ -109,6 +130,7 @@ bool UGLGlitchComponent::ApplyInterruptPolicy()
 	if (Def && Def->Repair.InterruptPolicy == EGLInterruptPolicy::ResetProgress)
 	{
 		ProgressSeconds = 0.0;
+		NotifyModel();
 	}
 	return true;
 }
@@ -120,6 +142,7 @@ bool UGLGlitchComponent::AddRepairProgress(double Seconds, const FGLRepairAuthor
 		return false;
 	}
 	ProgressSeconds += Seconds;
+	NotifyModel();
 	if (ProgressSeconds + UE_KINDA_SMALL_NUMBER >= GetRequiredSeconds())
 	{
 		ProgressSeconds = GetRequiredSeconds();

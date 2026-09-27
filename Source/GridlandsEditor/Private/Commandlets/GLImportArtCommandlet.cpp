@@ -2,6 +2,8 @@
 
 #include "AssetImportTask.h"
 #include "AssetToolsModule.h"
+#include "Content/GLContent.h"
+#include "Content/GLContentDefinitions.h"
 #include "Dom/JsonObject.h"
 #include "Engine/StaticMesh.h"
 #include "Factories/FbxFactory.h"
@@ -462,6 +464,95 @@ namespace GLArt
 	}
 }
 
+namespace GLArt
+{
+	/** The LOD budget the data declares for a mesh (visual.*.lod; VIS-5 keeps every visual of one mesh identical). */
+	const FGLVisualLodDef* LodBudget(const FString& MeshName)
+	{
+		const FGLVisualLodDef* Found = nullptr;
+		GLContent::Get().ForEachEntry([&](const FGLContentEntry& Entry)
+		{
+			const FGLVisualDef* Visual = Entry.Definition.GetPtr<FGLVisualDef>();
+			if (!Found && Visual && Visual->Mesh == MeshName && Visual->Lod.MaxTriangles.Num() > 0)
+			{
+				Found = &Visual->Lod;
+			}
+		});
+		return Found;
+	}
+
+	/**
+	 * P8: builds the mesh's LODs to its data budget with the engine's reduction (it keeps the painted
+	 * vertex colours, baked AO and material slots), then checks every LOD against the budget. Reduction
+	 * that lands over budget is retried harder; what still does not fit is a problem.
+	 */
+	void BuildLods(UStaticMesh* Mesh, const FString& Name, TArray<FString>& Problems, TArray<TSharedPtr<FJsonValue>>& OutLods)
+	{
+		const FGLVisualLodDef* Budget = LodBudget(Name);
+		if (!Budget || Budget->MaxTriangles.Num() != Budget->ScreenSize.Num())
+		{
+			Problems.Add(TEXT("no visual declares a well-formed LOD budget for this mesh (visual.*.lod)"));
+			return;
+		}
+		const int32 Levels = Budget->MaxTriangles.Num();
+		const int32 Base = FMath::Max(1, Mesh->GetNumTriangles(0));
+		TArray<float> Fraction;
+		for (int32 L = 0; L < Levels; ++L)
+		{
+			Fraction.Add(L == 0 ? 1.f : FMath::Clamp(0.92f * Budget->MaxTriangles[L] / Base, 0.005f, 1.f));
+		}
+		for (int32 Attempt = 0; Attempt < 6; ++Attempt)
+		{
+			Mesh->SetNumSourceModels(Levels);
+			Mesh->SetAutoComputeLODScreenSize(false);
+			for (int32 L = 0; L < Levels; ++L)
+			{
+				FStaticMeshSourceModel& Model = Mesh->GetSourceModel(L);
+				Model.ScreenSize.Default = static_cast<float>(Budget->ScreenSize[L]);
+				if (L > 0)
+				{
+					Model.BuildSettings = Mesh->GetSourceModel(0).BuildSettings;
+					Model.ReductionSettings.TerminationCriterion = EStaticMeshReductionTerimationCriterion::Triangles;
+					Model.ReductionSettings.PercentTriangles = Fraction[L];
+				}
+			}
+			Mesh->Build(true);
+			Mesh->PostEditChange();
+			bool bOver = false;
+			for (int32 L = 1; L < Levels && L < Mesh->GetNumLODs(); ++L)
+			{
+				if (Mesh->GetNumTriangles(L) > Budget->MaxTriangles[L])
+				{
+					Fraction[L] *= 0.8f; // harder next time
+					bOver = true;
+				}
+			}
+			if (!bOver)
+			{
+				break;
+			}
+		}
+		if (Mesh->GetNumLODs() != Levels)
+		{
+			Problems.Add(FString::Printf(TEXT("%d LODs built, budget declares %d"), Mesh->GetNumLODs(), Levels));
+		}
+		for (int32 L = 0; L < FMath::Min(Levels, Mesh->GetNumLODs()); ++L)
+		{
+			const int32 Triangles = Mesh->GetNumTriangles(L);
+			if (Triangles > Budget->MaxTriangles[L])
+			{
+				Problems.Add(FString::Printf(TEXT("LOD%d has %d triangles, budget %d"), L, Triangles, Budget->MaxTriangles[L]));
+			}
+			TSharedRef<FJsonObject> Lod = MakeShared<FJsonObject>();
+			Lod->SetNumberField(TEXT("lod"), L);
+			Lod->SetNumberField(TEXT("triangles"), Triangles);
+			Lod->SetNumberField(TEXT("budget"), Budget->MaxTriangles[L]);
+			Lod->SetNumberField(TEXT("screenSize"), Budget->ScreenSize[L]);
+			OutLods.Add(MakeShared<FJsonValueObject>(Lod));
+		}
+	}
+}
+
 int32 UGLImportArtCommandlet::Main(const FString& Params)
 {
 	using namespace GLArt;
@@ -525,6 +616,8 @@ int32 UGLImportArtCommandlet::Main(const FString& Params)
 			}
 			Mesh->SetLightMapResolution(4);
 			Mesh->PostEditChange();
+			TArray<TSharedPtr<FJsonValue>> Lods;
+			BuildLods(Mesh, Name, Problems, Lods);
 			// Validate against what Blender wrote (metres -> cm).
 			const FBox Bounds = Mesh->GetBoundingBox();
 			const TArray<TSharedPtr<FJsonValue>>& Min = Asset->GetArrayField(TEXT("boundsMin"));
@@ -572,6 +665,7 @@ int32 UGLImportArtCommandlet::Main(const FString& Params)
 			TSharedRef<FJsonObject> Row = MakeShared<FJsonObject>();
 			Row->SetStringField(TEXT("name"), Name);
 			Row->SetNumberField(TEXT("triangles"), Triangles);
+			Row->SetArrayField(TEXT("lods"), Lods);
 			Row->SetStringField(TEXT("bounds"), FString::Printf(TEXT("%s..%s"), *Bounds.Min.ToCompactString(), *Bounds.Max.ToCompactString()));
 			TArray<TSharedPtr<FJsonValue>> ProblemValues;
 			for (const FString& P : Problems)

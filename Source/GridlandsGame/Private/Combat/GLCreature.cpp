@@ -1,5 +1,7 @@
 #include "Combat/GLCreature.h"
 
+#include "World/GLPlacementSubsystem.h"
+
 #include "AIController.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "Noise/GLNoiseSubsystem.h"
@@ -249,12 +251,30 @@ void AGLCreature::HandleDied(AActor* Killer)
 		}
 	}
 	Emit(TEXT("Event.Creature.Defeated"));
+	// P8: the placement's model records it (saves read the model, not this actor).
+	if (UGLPlacementSubsystem* Placements = GetWorld() ? GetWorld()->GetSubsystem<UGLPlacementSubsystem>() : nullptr)
+	{
+		Placements->MarkDefeated(PlacementId);
+	}
 	// Gameplay: defeated now (no collision, no behaviour). Presentation: it de-rezzes, then is hidden.
 	State = EGLCreatureState::Defeated;
 	Health->Restore(0.0);
 	SetActorEnableCollision(false);
 	SetActorTickEnabled(false);
 	Derez->Start(1.2f);
+}
+
+void AGLCreature::Retire()
+{
+	RestoreDefeated(); // inert for combat, noise and structure impacts (all skip the defeated), hidden, no tick
+	if (AAIController* Brain = Cast<AAIController>(GetController()))
+	{
+		Brain->StopMovement();
+	}
+	if (NavInvoker)
+	{
+		NavInvoker->Deactivate(); // no navigation is built around it any more
+	}
 }
 
 void AGLCreature::RestoreDefeated()

@@ -1,5 +1,17 @@
 {
   "schemaVersion": 1,
   "id": "visual.kittimber.roof",
-  "mesh": "SM_KT_Roof"
+  "mesh": "SM_KT_Roof",
+  "lod": {
+    "maxTriangles": [
+      700,
+      280,
+      100
+    ],
+    "screenSize": [
+      1.0,
+      0.35,
+      0.12
+    ]
+  }
 }

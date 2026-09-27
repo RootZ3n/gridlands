@@ -1,5 +1,17 @@
 {
   "schemaVersion": 1,
   "id": "visual.kit50.awning",
-  "mesh": "SM_K50_Awning"
+  "mesh": "SM_K50_Awning",
+  "lod": {
+    "maxTriangles": [
+      2800,
+      1120,
+      420
+    ],
+    "screenSize": [
+      1.0,
+      0.35,
+      0.12
+    ]
+  }
 }

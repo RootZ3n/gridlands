@@ -97,6 +97,16 @@ void UGLSalvageableComponent::RestoreSalvaged()
 	}
 }
 
+void UGLSalvageableComponent::Retire()
+{
+	bSalvaged = true; // refuses Interact; nothing is paid and no event fires
+	if (AActor* Owner = GetOwner())
+	{
+		Owner->SetActorHiddenInGame(true);
+		Owner->SetActorEnableCollision(false);
+	}
+}
+
 void UGLSalvageableComponent::Complete(AActor* Interactor)
 {
 	const FGLSalvageDef* Def = GLContent::Get().Find<FGLSalvageDef>(SalvageId);

@@ -47,6 +47,10 @@ void UGLPlacementSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 	{
 		AddDenseProof();
 	}
+	if (FParse::Param(FCommandLine::Get(), TEXT("GLTownBlock")))
+	{
+		AddTownBlock();
+	}
 #endif
 	// The cell whose definition names this world's map.
 	const FString MapPackage = InWorld.GetOutermost()->GetName();
@@ -145,18 +149,31 @@ bool UGLPlacementSubsystem::SpawnPlacement(FName CellId, FName Id, const FGLPlac
 		Location = CellCentre + FVector(Placement.Transform.Location[0], Placement.Transform.Location[1], Placement.Transform.Location[2]);
 		Yaw = Placement.Transform.Yaw;
 	}
-	if (Placement.Kind == TEXT("spawn"))
+	if (Placement.Kind == TEXT("spawn") || Placement.Kind == TEXT("salvage_node"))
 	{
-		// The only place creatures come from (ADR-0014: threat from place; architecture rule).
-		AGLCreature* Creature = World->SpawnActor<AGLCreature>(Location + FVector(0, 0, 70), FRotator(0.0, Yaw, 0.0));
-		if (!Creature || !Creature->Setup(Placement.Definition, Id))
+		// P8: the model now (what saves read and restore); the actor is presentation made from it.
+		// Creatures come only from here (ADR-0014: threat from place; architecture rule).
+		const bool bCreature = Placement.Kind == TEXT("spawn");
+		if (bCreature ? !Content.Find<FGLCreatureDef>(Placement.Definition) : !Content.Find<FGLSalvageDef>(Placement.Definition))
 		{
-			UE_LOG(LogGridlands, Error, TEXT("%s: could not spawn creature %s"), *Id.ToString(), *Placement.Definition.ToString());
+			UE_LOG(LogGridlands, Error, TEXT("%s: unknown %s %s"), *Id.ToString(), bCreature ? TEXT("creature") : TEXT("salvage"), *Placement.Definition.ToString());
 			return false;
 		}
-		Creatures.Add(Id, Creature);
-		Owned.Add(Creature);
-		return true;
+		FGLActorPlacement& Model = ActorModels.Add(Id);
+		Model.Placement = Id;
+		Model.Kind = Placement.Kind;
+		Model.Definition = Placement.Definition;
+		Model.Cell = CellId;
+		Model.Location = Location;
+		Model.Yaw = Yaw;
+		Model.LinkedVisual = Visual;
+		const FGLPendingActor Unit{ CellId, Id, Placement.Kind, Location };
+		if (bDeferPresentation)
+		{
+			PendingActors.Add(Unit);
+			return true;
+		}
+		return MakeActor(Unit);
 	}
 	if (Placement.Kind == TEXT("structure"))
 	{
@@ -191,28 +208,159 @@ bool UGLPlacementSubsystem::SpawnPlacement(FName CellId, FName Id, const FGLPlac
 		Owned.Add(Site);
 		return true;
 	}
-	if (Placement.Kind == TEXT("glitch"))
+	// Glitch (P8): its authoritative record in the glitch subsystem now; its actor made from it.
+	if (!World->GetSubsystem<UGLGlitchSubsystem>()->AddRecord(Id, Placement.Definition, CellId, Location, Yaw, Placement.Bindings))
 	{
-		AGLGlitch* Glitch = World->SpawnActor<AGLGlitch>(Location, FRotator(0.0, Yaw, 0.0));
-		if (!Glitch || !Glitch->GetGlitch()->Setup(Placement.Definition, Id, Placement.Bindings))
-		{
-			UE_LOG(LogGridlands, Error, TEXT("%s: could not spawn glitch %s"), *Id.ToString(), *Placement.Definition.ToString());
-			return false;
-		}
-		World->GetSubsystem<UGLGlitchSubsystem>()->Register(Glitch);
-		Owned.Add(Glitch);
-		return true;
-	}
-	AGLSalvageNode* Node = World->SpawnActor<AGLSalvageNode>(Location, FRotator(0.0, Yaw, 0.0));
-	if (!Node || !Node->GetSalvageable()->Setup(Placement.Definition, Visual))
-	{
-		UE_LOG(LogGridlands, Error, TEXT("%s: could not spawn salvage node for %s"), *Id.ToString(), *Placement.Definition.ToString());
+		UE_LOG(LogGridlands, Error, TEXT("%s: could not record glitch %s"), *Id.ToString(), *Placement.Definition.ToString());
 		return false;
 	}
-	Node->PlacementId = Id;
-	SalvageNodes.Add(Id, Node);
-	Owned.Add(Node);
+	const FGLPendingActor Unit{ CellId, Id, Placement.Kind, Location };
+	if (bDeferPresentation)
+	{
+		PendingActors.Add(Unit);
+		return true;
+	}
+	return MakeActor(Unit);
+}
+
+bool UGLPlacementSubsystem::MakeActor(const FGLPendingActor& Pending)
+{
+	UWorld* World = GetWorld();
+	if (Pending.Kind == TEXT("glitch"))
+	{
+		AGLGlitch* Glitch = World->GetSubsystem<UGLGlitchSubsystem>()->Present(Pending.Placement);
+		if (Glitch)
+		{
+			CellActors.FindOrAdd(Pending.Cell).Add(Glitch);
+		}
+		return Glitch != nullptr;
+	}
+	FGLActorPlacement* Model = ActorModels.Find(Pending.Placement);
+	if (!Model || Model->Actor.IsValid() || Model->bSalvaged || Model->bDefeated)
+	{
+		return false; // gone, already made, or never made: a salvaged node or defeated creature has no presentation
+	}
+	const FRotator Rotation(0.0, Model->Yaw, 0.0);
+	if (Model->Kind == TEXT("spawn"))
+	{
+		AGLCreature* Creature = World->SpawnActor<AGLCreature>(Model->Location + FVector(0, 0, 70), Rotation);
+		if (!Creature || !Creature->Setup(Model->Definition, Model->Placement))
+		{
+			UE_LOG(LogGridlands, Error, TEXT("%s: could not present creature %s"), *Model->Placement.ToString(), *Model->Definition.ToString());
+			if (Creature)
+			{
+				Creature->Destroy();
+			}
+			return false;
+		}
+		Model->Actor = Creature;
+		CellActors.FindOrAdd(Model->Cell).Add(Creature);
+		return true;
+	}
+	AGLSalvageNode* Node = World->SpawnActor<AGLSalvageNode>(Model->Location, Rotation);
+	if (!Node || !Node->GetSalvageable()->Setup(Model->Definition, Model->LinkedVisual.Get()))
+	{
+		UE_LOG(LogGridlands, Error, TEXT("%s: could not present salvage node for %s"), *Model->Placement.ToString(), *Model->Definition.ToString());
+		if (Node)
+		{
+			Node->Destroy();
+		}
+		return false;
+	}
+	Node->PlacementId = Model->Placement;
+	// The model follows the node: salvaged is a fact of the placement, whatever becomes of the actor.
+	Node->GetSalvageable()->OnSalvaged.AddWeakLambda(this, [this, Placement = Model->Placement](AActor*)
+	{
+		if (FGLActorPlacement* Salvaged = ActorModels.Find(Placement))
+		{
+			Salvaged->bSalvaged = true;
+		}
+	});
+	Model->Actor = Node;
+	CellActors.FindOrAdd(Model->Cell).Add(Node);
 	return true;
+}
+
+void UGLPlacementSubsystem::Retire(AActor* Actor)
+{
+	if (AGLCreature* Creature = Cast<AGLCreature>(Actor))
+	{
+		Creature->Retire();
+	}
+	else if (AGLSalvageNode* Node = Cast<AGLSalvageNode>(Actor))
+	{
+		Node->GetSalvageable()->OnSalvaged.RemoveAll(this);
+		Node->GetSalvageable()->Retire();
+	}
+	else
+	{
+		Actor->SetActorHiddenInGame(true);
+		Actor->SetActorEnableCollision(false);
+		Actor->SetActorTickEnabled(false);
+	}
+	RetiringActors.Add(Actor);
+}
+
+bool UGLPlacementSubsystem::PresentActor(FName PlacementId)
+{
+	const int32 Index = PendingActors.IndexOfByPredicate([PlacementId](const FGLPendingActor& P) { return P.Placement == PlacementId; });
+	if (Index == INDEX_NONE)
+	{
+		return false;
+	}
+	const FGLPendingActor Unit = PendingActors[Index];
+	PendingActors.RemoveAt(Index);
+	MakeActor(Unit);
+	return true;
+}
+
+bool UGLPlacementSubsystem::RestoreSalvaged(FName PlacementId)
+{
+	FGLActorPlacement* Model = ActorModels.Find(PlacementId);
+	if (!Model || Model->Kind != TEXT("salvage_node"))
+	{
+		return false;
+	}
+	Model->bSalvaged = true;
+	if (AGLSalvageNode* Node = Cast<AGLSalvageNode>(Model->Actor.Get()))
+	{
+		Node->GetSalvageable()->RestoreSalvaged(); // presented already: hidden, and its linked visual with it
+	}
+	else if (AActor* Linked = Model->LinkedVisual.Get())
+	{
+		Linked->SetActorHiddenInGame(true); // the authored actor it stands for is world geometry: gone now, not when presented
+		Linked->SetActorEnableCollision(false);
+	}
+	return true;
+}
+
+bool UGLPlacementSubsystem::RestoreDefeated(FName PlacementId)
+{
+	FGLActorPlacement* Model = ActorModels.Find(PlacementId);
+	if (!Model || Model->Kind != TEXT("spawn"))
+	{
+		return false;
+	}
+	Model->bDefeated = true;
+	if (AGLCreature* Creature = Cast<AGLCreature>(Model->Actor.Get()))
+	{
+		Creature->RestoreDefeated();
+	}
+	return true;
+}
+
+void UGLPlacementSubsystem::MarkDefeated(FName PlacementId)
+{
+	if (FGLActorPlacement* Model = ActorModels.Find(PlacementId))
+	{
+		Model->bDefeated = true;
+	}
+}
+
+AGLCreature* UGLPlacementSubsystem::FindCreature(FName PlacementId) const
+{
+	const FGLActorPlacement* Model = ActorModels.Find(PlacementId);
+	return Model ? Cast<AGLCreature>(Model->Actor.Get()) : nullptr;
 }
 
 bool UGLPlacementSubsystem::SpawnScatter(const FGLPendingScatter& Scatter)
@@ -235,6 +383,36 @@ int32 UGLPlacementSubsystem::PumpPresentation(const FVector& Where, double Budge
 {
 	const double Start = FPlatformTime::Seconds();
 	int32 Made = GetWorld()->GetSubsystem<UGLStructureSubsystem>()->PumpPresentation(Where, BudgetSeconds, NearCm);
+	auto HasBudget = [&]() { return BudgetSeconds >= 0.0 && (BudgetSeconds == 0.0 || FPlatformTime::Seconds() - Start < BudgetSeconds); };
+	// P8: gameplay actors of unloaded cells (already inert) go within the budget, before anything new is made.
+	while (RetiringActors.Num() > 0 && HasBudget())
+	{
+		if (AActor* Actor = RetiringActors.Pop(EAllowShrinking::No).Get())
+		{
+			Actor->Destroy();
+		}
+	}
+	// Gameplay actors (glitches, salvage nodes, creatures) from their models, nearest first: within NearCm
+	// always (what Zenny can reach is never missing), the rest within the budget.
+	while (PendingActors.Num() > 0)
+	{
+		int32 Nearest = 0;
+		for (int32 I = 1; I < PendingActors.Num(); ++I)
+		{
+			if (FVector::DistSquared2D(PendingActors[I].Location, Where) < FVector::DistSquared2D(PendingActors[Nearest].Location, Where))
+			{
+				Nearest = I;
+			}
+		}
+		const bool bNear = FVector::DistSquared2D(PendingActors[Nearest].Location, Where) <= NearCm * NearCm;
+		if (!bNear && !HasBudget())
+		{
+			break;
+		}
+		const FGLPendingActor Next = PendingActors[Nearest];
+		PendingActors.RemoveAtSwap(Nearest);
+		Made += MakeActor(Next) ? 1 : 0;
+	}
 	while (RetiringScatter.Num() > 0 && BudgetSeconds >= 0.0 && (BudgetSeconds == 0.0 || FPlatformTime::Seconds() - Start < BudgetSeconds))
 	{
 		if (AActor* Patch = RetiringScatter.Pop(EAllowShrinking::No).Get())
@@ -263,12 +441,13 @@ int32 UGLPlacementSubsystem::PumpPresentation(const FVector& Where, double Budge
 bool UGLPlacementSubsystem::IsCellPresented(FName CellId) const
 {
 	return !PendingScatter.ContainsByPredicate([CellId](const FGLPendingScatter& S) { return S.Cell == CellId; })
+		&& !PendingActors.ContainsByPredicate([CellId](const FGLPendingActor& P) { return P.Cell == CellId; })
 		&& GetWorld()->GetSubsystem<UGLStructureSubsystem>()->IsCellPresented(CellId);
 }
 
 int32 UGLPlacementSubsystem::PendingPresentation() const
 {
-	return PendingScatter.Num() + GetWorld()->GetSubsystem<UGLStructureSubsystem>()->PendingPresentation();
+	return PendingScatter.Num() + PendingActors.Num() + GetWorld()->GetSubsystem<UGLStructureSubsystem>()->PendingPresentation();
 }
 
 int32 UGLPlacementSubsystem::DespawnCell(FName CellId)
@@ -279,6 +458,16 @@ int32 UGLPlacementSubsystem::DespawnCell(FName CellId)
 	}
 	const double Start = FPlatformTime::Seconds();
 	int32 Removed = 0;
+	// The models go at once (saves have already stowed the cell from them); glitches leave every query now.
+	for (auto It = ActorModels.CreateIterator(); It; ++It)
+	{
+		if (It.Value().Cell == CellId)
+		{
+			It.RemoveCurrent();
+		}
+	}
+	GetWorld()->GetSubsystem<UGLGlitchSubsystem>()->RemoveCell(CellId);
+	PendingActors.RemoveAll([CellId](const FGLPendingActor& P) { return P.Cell == CellId; }); // cancelled presentation
 	TArray<TWeakObjectPtr<AActor>> Owned;
 	CellActors.RemoveAndCopyValue(CellId, Owned);
 	for (const TWeakObjectPtr<AActor>& Actor : Owned)
@@ -290,21 +479,20 @@ int32 UGLPlacementSubsystem::DespawnCell(FName CellId)
 				Patch->SetActorHiddenInGame(true); // pure presentation: retired now, destroyed within the budget
 				RetiringScatter.Add(Patch);
 			}
+			else if (Live->IsA<AGLPuzzleSite>())
+			{
+				Live->Destroy(); // stateless and few: leaves at once
+			}
 			else
 			{
-				Live->Destroy(); // gameplay actors (creatures, glitches, salvage nodes, sites) leave at once
+				Retire(Live); // P8: gameplay actors are inert now, destroyed within the budget
 			}
 			++Removed;
 		}
 	}
-	const FString Prefix = FString::Printf(TEXT("placement.%s."), *CellShortName(CellId));
-	auto OfCell = [&Prefix](FName Id) { return Id.ToString().StartsWith(Prefix); };
-	for (auto It = SalvageNodes.CreateIterator(); It; ++It) { if (OfCell(It.Key())) { It.RemoveCurrent(); } }
-	for (auto It = Creatures.CreateIterator(); It; ++It) { if (OfCell(It.Key())) { It.RemoveCurrent(); } }
 	Discoveries.RemoveAll([CellId](const FGLDiscoverySite& Site) { return Site.Cell == CellId; });
 	PendingScatter.RemoveAll([CellId](const FGLPendingScatter& S) { return S.Cell == CellId; }); // cancelled presentation
 	Removed += GetWorld()->GetSubsystem<UGLStructureSubsystem>()->RemoveCell(CellId);
-	GetWorld()->GetSubsystem<UGLGlitchSubsystem>()->Compact();
 	UE_LOG(LogGridlands, Log, TEXT("Placements: despawned %d for %s (%.2f ms)"), Removed, *CellId.ToString(), (FPlatformTime::Seconds() - Start) * 1000.0);
 	return Removed;
 }
@@ -334,6 +522,6 @@ bool UGLPlacementSubsystem::IsPlacementOfCell(FName PlacementId, FName CellId)
 
 AGLSalvageNode* UGLPlacementSubsystem::FindSalvageNode(FName PlacementId) const
 {
-	const TWeakObjectPtr<AGLSalvageNode>* Node = SalvageNodes.Find(PlacementId);
-	return Node ? Node->Get() : nullptr;
+	const FGLActorPlacement* Model = ActorModels.Find(PlacementId);
+	return Model ? Cast<AGLSalvageNode>(Model->Actor.Get()) : nullptr;
 }

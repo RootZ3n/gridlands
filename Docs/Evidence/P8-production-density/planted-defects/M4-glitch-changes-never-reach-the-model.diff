@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Glitch/GLGlitchComponent.cpp
++++ b/Source/GridlandsGame/Private/Glitch/GLGlitchComponent.cpp
+@@ -120,7 +120,7 @@
+ {
+ 	if (UGLGlitchSubsystem* Glitches = GetWorld() ? GetWorld()->GetSubsystem<UGLGlitchSubsystem>() : nullptr)
+ 	{
+-		Glitches->SyncFromComponent(*this);
++		// DEFECT: the actor keeps its state to itself
+ 	}
+ }
+ 

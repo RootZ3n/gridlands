@@ -1,5 +1,17 @@
 {
   "schemaVersion": 1,
   "id": "visual.nature.boulder_b",
-  "mesh": "SM_Boulder_B"
+  "mesh": "SM_Boulder_B",
+  "lod": {
+    "maxTriangles": [
+      2000,
+      800,
+      300
+    ],
+    "screenSize": [
+      1.0,
+      0.35,
+      0.12
+    ]
+  }
 }

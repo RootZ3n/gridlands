@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
+@@ -321,6 +321,7 @@
+ 	{
+ 		return false;
+ 	}
++	if (!Model->Actor.IsValid()) { return true; } // DEFECT: saved state waits for the actor
+ 	Model->bSalvaged = true;
+ 	if (AGLSalvageNode* Node = Cast<AGLSalvageNode>(Model->Actor.Get()))
+ 	{

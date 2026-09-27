@@ -1,5 +1,17 @@
 {
   "schemaVersion": 1,
   "id": "visual.prop.rotary_phone",
-  "mesh": "SM_RotaryPhone"
+  "mesh": "SM_RotaryPhone",
+  "lod": {
+    "maxTriangles": [
+      1600,
+      640,
+      240
+    ],
+    "screenSize": [
+      1.0,
+      0.35,
+      0.12
+    ]
+  }
 }
