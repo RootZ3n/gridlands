@@ -1,0 +1,33 @@
+{
+	"mode": "environmental",
+	"seconds": 46.947551157791167,
+	"wardenOutcome": "Neutralized",
+	"wardenNeutralizedHow": "Neutralize.Contained",
+	"wardenActorPresent": true,
+	"wardenActorInert": true,
+	"wardenHealth": 240,
+	"cageState": "dropped",
+	"cageLift": 0,
+	"zennyDamageTaken": 432,
+	"wardenDamageTaken": 0,
+	"navActiveTilesPeak": 225,
+	"navPendingTasksPeak": 0,
+	"navStaleTiles": 0,
+	"navSweptTiles": 0,
+	"residue": 5,
+	"events":
+	{
+		"Event.World.InterferenceTierChanged": 1,
+		"Event.Creature.Spotted": 3,
+		"Event.Player.Hurt": 37,
+		"Dev.ZennyHealed": 5,
+		"Event.Creature.Searching": 2,
+		"Event.Creature.Heard": 1,
+		"Event.Pehlichi.CommandAccepted": 1,
+		"Event.Creature.Lost": 2,
+		"Event.Creature.Neutralized": 1,
+		"Event.Item.Acquired": 1,
+		"Event.Encounter.Resolved": 1,
+		"Event.Mechanism.Switched": 1
+	}
+}

@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
++++ b/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
+@@ -128,6 +128,7 @@
+ 	M.NeutralizedBy = Saved.NeutralizedBy;
+ 	M.HeldAt = Saved.HeldAt;
+ 	M.HeldYaw = Saved.HeldYaw;
++	if (M.Outcome == EGLCreatureOutcome::Neutralized) { Announce(this, TEXT("Event.Creature.Neutralized"), Model->Definition, nullptr, [](FGLGameplayEvent&) {}); } // DEFECT
+ 	if (AGLCreature* Creature = Cast<AGLCreature>(Model->Actor.Get()))
+ 	{
+ 		if (M.Outcome == EGLCreatureOutcome::Defeated)
