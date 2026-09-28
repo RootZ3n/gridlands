@@ -119,3 +119,103 @@ circle covers the room too.
   - **town and towndense: 557 → 271–273.** The town's idle creatures no longer pay for navigation, and the
     sweep leaves no stale tiles.
   - resume: 162.
+
+## Tests
+- **Full gate** (`Saved/gate.sh`): **143/143 tests, 46 requirements met.** The one warning is the engine's own
+  connectivity ping timing out, which is environmental.
+- **New tests:**
+  - `Gridlands.Core.Combat` +3: patrol loops, the neutralized rules and the navigation rule, masked hearing.
+  - `Gridlands.Game.Encounter` 11:
+    - the proof room stands, and its models come first;
+    - wounded stays wounded;
+    - chase and search survive streaming and restart;
+    - an unpresented creature hears;
+    - masking is general (steps, lures, listener versus source, duty cycle, a switched-off fan);
+    - the direct route;
+    - the environmental route;
+    - the decision moment (outside the box, not susceptible, retroactive);
+    - contained after streaming and restart, with nothing replayed;
+    - navigation scales with the region;
+    - idle creatures add no navigation.
+  - `Gridlands.Game.Navigation`: now asserts that no built tile lies outside the active set.
+- **Data:** `Tools/selftest.sh` PASS; `Tools/data.sh validate`: 232 entities, with the new rules PRF-1,
+  PLC-4, MEC-1, MEC-2 and NAV-1.
+
+## Planted defects
+### The P9 suite
+`Tools/planted-defects/p9_encounter.py`: **22/22 caught on the first run.** Each defect is built and tested on
+its own; there were no dead runs and no build failures. See [`planted-defects/summary.txt`](planted-defects/summary.txt).
+
+**The operator's list:**
+- N1: containment while the target is outside the volume;
+- N2: retroactive neutralization after the decision;
+- N3: reload replays the neutralization event;
+- N4: reload grants the encounter reward again;
+- N5: a neutralized actor resumes hostile behaviour when remade;
+- N6: a wounded creature restores at full health;
+- N7: save/reload in Alerted or Search returns to Calm;
+- N8: Pehlichi's lure bypasses masking.
+
+**The proposal's list:**
+- N9: health not written through;
+- N10: streaming ignores the time away;
+- N11: position not restored;
+- N12: an unpresented model cannot hear;
+- N13: neutralized recorded as defeated;
+- N14: neutralization through a fake damage event (ADR-0017);
+- N15: susceptibility ignored;
+- N16: mechanism state not saved;
+- N17: mask judged at the source;
+- N18: duty cycle ignored;
+- N19: an idle creature keeps its invoker;
+- N20: creatures in a region keep their invokers;
+- N21: the sweep disabled;
+- N22: a mechanism restore replays its effects.
+
+### A test gap closed before the run
+Mask-at-the-source (N17) would have survived the first masking test, where source and listener were both
+under the fan. A listener-versus-source case was added before the suite ran.
+
+### The earlier suites (regression)
+P9 changed code the P8 suite anchors on (`bDefeated` became the outcome), so its runner was updated and
+**re-run in full**, with the terrain suite too: see [`regression-planted/`](regression-planted/).
+**Result: P8 19/19, terrain 27/27, all caught.**
+
+## Fresh clone
+`Tools/verify-fresh-clone.sh` of **ef9b34e** passed. It used tracked inputs and the pinned engine, and ran
+**143/143 tests, 46 requirements**. Only README lines were committed after it.
+
+## Defects found and fixed during P9
+1. **Stale navigation tiles, the real root cause of ADR-0029's accepted "column".**
+   - A Recast build task finishing after its tile was removed puts the tile back, outside every invoker,
+     and nothing removed it.
+   - This P9 run measured 16–17 such tiles after a 300 m walk.
+   - Fixed by a sweep (removes 15–19 per run). A test now asserts none remain.
+   - Real-game effect: local nav peak 301 → 227.
+2. **Creature health was never saved.** A wounded creature came back at full health after streaming or
+   reload. It is now part of the model (N6, N9).
+3. **Noise reached only creature actors,** so a creature waiting for presentation could not hear. It is now
+   delivered to models (N12).
+4. **The test harness skipped every creature.** It relied on actor ticks, and a bare test world registers
+   none. Tests now step creatures directly.
+5. **Real-game proof harness defects** (the harness only; no gameplay code):
+   - Zenny teleported before the ground existed, fell, died and respawned outside the room.
+   - Zenny walked into walls on the direct route.
+   - The zone's north edge left the attacking warden outside the box. The rule then correctly neutralized
+     nobody.
+   - All fixed and re-run.
+
+## Remaining debt
+- **Operate progress is not persisted.** An interrupted or reloaded operation must be commanded again (by
+  design; recorded).
+- **Pehlichi reaches controls by his existing straight-line positioning.** It ignores walls, which is the
+  "vent" in the proof room. Real vent traversal is future work.
+- **The cage presentation is collision-free** (presentation only). Containment is the authoritative outcome,
+  not a physics box.
+- **The real-game environmental script cannot hide from patrols the way a player would.** Detection is
+  proven to change state (spotted, searching, lost), but the script tanks the hits (Dev.ZennyHealed 5). A
+  hiding behaviour for scripted proofs would make the stealth half of the route measurable end to end.
+- **Proof-room scale is small (5 creatures, 1 region).** A multi-region dungeon, and regions crossing cell
+  boundaries, are not exercised yet.
+- **The environmental route's P10 half is still open:** structural collapse as neutralization, and the
+  mid-fall debt.

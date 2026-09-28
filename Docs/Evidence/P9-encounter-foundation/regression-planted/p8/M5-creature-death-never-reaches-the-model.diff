@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Combat/GLCreature.cpp
++++ b/Source/GridlandsGame/Private/Combat/GLCreature.cpp
+@@ -342,7 +342,7 @@
+ 	// P8: the placement's model records it (saves read the model, not this actor).
+ 	if (UGLPlacementSubsystem* Placements = GetWorld() ? GetWorld()->GetSubsystem<UGLPlacementSubsystem>() : nullptr)
+ 	{
+-		Placements->MarkDefeated(PlacementId);
++		// DEFECT: only the actor knows it died
+ 	}
+ 	// Gameplay: defeated now (no collision, no behaviour). Presentation: it de-rezzes, then is hidden.
+ 	State = EGLCreatureState::Defeated;

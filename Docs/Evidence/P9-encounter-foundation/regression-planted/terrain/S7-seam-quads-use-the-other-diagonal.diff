@@ -1,0 +1,10 @@
+--- a/Source/GridlandsCore/Private/Terrain/GLHeightfield.cpp
++++ b/Source/GridlandsCore/Private/Terrain/GLHeightfield.cpp
+@@ -46,6 +46,7 @@
+ 	const int32 Y0 = FMath::Min(FMath::FloorToInt(FY), VertsY - 2);
+ 	// Until 2026-09-27 this interpolated bilinearly, which differed from the drawn, colliding triangles by up
+ 	// to ~72 cm inside steep edited quads (found during ADR-0035; closed by using the one surface).
++	if (X0 % 64 == 63) { return GLTerrainSurface::Height(VertexHeight(X0 + 1, Y0), VertexHeight(X0, Y0), VertexHeight(X0 + 1, Y0 + 1), VertexHeight(X0, Y0 + 1), 1.0 - (FX - X0), FY - Y0); } // DEFECT: seam quads split B-C
+ 	return GLTerrainSurface::Height(VertexHeight(X0, Y0), VertexHeight(X0 + 1, Y0), VertexHeight(X0, Y0 + 1), VertexHeight(X0 + 1, Y0 + 1), FX - X0, FY - Y0);
+ }
+ 

@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Presentation/GLScatterPatch.cpp
++++ b/Source/GridlandsGame/Private/Presentation/GLScatterPatch.cpp
+@@ -44,7 +44,7 @@
+ 	Instances->SetCastShadow(Def->CastShadow);
+ 	GLVisuals::SetOutlined(Instances, Def->Outline);
+ 	// P8: instanced vegetation fades out by distance (VIS-4 makes a scatter visual declare it). LODs come with the mesh.
+-	const int32 CullCm = FMath::RoundToInt(Def->CullDistance * 100.0);
++	const int32 CullCm = FMath::RoundToInt(Def->CullDistance); // DEFECT: metres as cm
+ 	Instances->SetCullDistances(FMath::RoundToInt(CullCm * 0.75), CullCm);
+ 	if (UGLEventSubsystem* Bus = GetWorld()->GetSubsystem<UGLEventSubsystem>())
+ 	{
