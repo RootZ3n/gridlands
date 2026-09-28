@@ -361,6 +361,12 @@ bool FGLMaskingIsGeneral::RunTest(const FString& Parameters)
 	Lure.bDistraction = true;
 	Lure.InvestigateSeconds = 6.0;
 	TestFalse(TEXT("the lure is masked too (min(40 m, hearing 16 m) x 0.2 = 3.2 m < 4 m)"), Guard->HearNoise(Lure));
+	// Masking is judged at the LISTENER: a 10 m salvage noise under the fan (2.5 m from it) reaches a guard 9.5 m away
+	// that stands outside the fan's radius (12 m from it): heard.
+	AGLCreature* Outside = S.Creature(GLEncounterTests::ENFirstGremlin);
+	S.Place(Outside, -900, -50, 90.0);
+	TestEqual(TEXT("no mask at the outside guard"), Noise->MaskAt(Outside->GetActorLocation()), 0.0, 1e-6);
+	TestTrue(TEXT("a masked source is still heard by an unmasked listener"), Outside->HearNoise(Noise->Make(TEXT("Noise.Salvage.Hit"), S.Room(-900, 900), S.Zenny)));
 	// In the fan's quiet window (t = 9 s) both carry again.
 	S.Test.World->TimeSeconds = 9.0;
 	TestFalse(TEXT("the fan is quiet at t = 9 s"), UGLMechanismSubsystem::IsAmbientOn(*Fan, 9.0));

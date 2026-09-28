@@ -59,6 +59,7 @@ bool UGLNavRegionSubsystem::AddRegion(FName Placement, FName Definition, FName C
 	Region.Cell = Cell;
 	Region.Bounds = FBox::BuildAABB(Centre, FVector(Def->Extent[0], Def->Extent[1], Def->Extent[2]) * 100.0);
 	Region.RelevanceCm = (Def->RelevanceMargin > 0.0 ? Def->RelevanceMargin : 32.0) * 100.0;
+	UE_LOG(LogGridlands, Log, TEXT("NavRegion: %s added, bounds %s"), *Placement.ToString(), *Region.Bounds.ToString());
 	return true;
 }
 
@@ -84,7 +85,7 @@ void UGLNavRegionSubsystem::Update(const FVector& Zenny)
 	for (TPair<FName, FGLNavRegion>& Entry : Regions)
 	{
 		FGLNavRegion& Region = Entry.Value;
-		const bool bRelevant = Region.Bounds.ExpandBy(Region.RelevanceCm).IsInsideXY(Zenny) || Now < Region.DemandedUntil;
+		const bool bRelevant = !bDevWithholdRegions && (Region.Bounds.ExpandBy(Region.RelevanceCm).IsInsideXY(Zenny) || Now < Region.DemandedUntil);
 		AGLNavRegionInvoker* Invoker = Region.Invoker.Get();
 		if (bRelevant && !Invoker)
 		{
@@ -98,6 +99,10 @@ void UGLNavRegionSubsystem::Update(const FVector& Zenny)
 		}
 		if (Invoker)
 		{
+			if (Invoker->IsProviding() != bRelevant)
+			{
+				UE_LOG(LogGridlands, Log, TEXT("NavRegion: %s %s (Zenny %s)"), *Entry.Key.ToString(), bRelevant ? TEXT("providing") : TEXT("stopped"), *Zenny.ToCompactString());
+			}
 			Invoker->SetProviding(bRelevant);
 		}
 	}
@@ -182,6 +187,10 @@ int32 UGLNavRegionSubsystem::CountStaleTiles(const FVector& Around, int32 Radius
 bool UGLNavRegionSubsystem::ProvideFor(const FVector& At) const
 {
 	const double Now = GetWorld() ? GetWorld()->GetTimeSeconds() : 0.0;
+	if (bDevWithholdRegions)
+	{
+		return false;
+	}
 	for (TPair<FName, FGLNavRegion>& Entry : Regions)
 	{
 		if (Entry.Value.Bounds.IsInside(At))

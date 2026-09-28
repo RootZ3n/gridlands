@@ -64,6 +64,8 @@ public:
 	 * leaves nothing behind). Scans tile columns within RadiusTiles of the origin tile of Around.
 	 */
 	int32 CountStaleTiles(const FVector& Around, int32 RadiusTiles) const;
+	/** DEV ONLY (measurement contrast): regions provide nothing, so every active creature carries its own invoker. */
+	bool bDevWithholdRegions = false;
 	/** Tiles the sweep removed so far (evidence). */
 	int32 GetSweptTiles() const { return Swept; }
 	const TMap<FName, FGLNavRegion>& GetRegions() const { return Regions; }
