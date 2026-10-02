@@ -627,8 +627,11 @@ bool FGLSRFinal::RunTest(const FString& Parameters)
 	TestTrue(TEXT("saves"), S.Save());
 	FSRScene R(TEXT("SRFinalRestartWorld"), true);
 	TArray<FString> Problems;
+	// The second carport was this test's own, not a placement: the restarted world rightly reports its four saved parts.
+	AddExpectedMessagePlain(TEXT("saved structure part placement.diner_lots.test_carport_b/"), ELogVerbosity::Warning, EAutomationExpectedMessageFlags::Contains, 4);
 	TestTrue(TEXT("restart loads"), R.Load(Problems));
 	R.GoTo(R.Salvager());
+	TestEqual(TEXT("no other load problem (the 4 carport warnings come when the lots stream in, counted exactly above)"), Problems.Num(), 0);
 	TestTrue(TEXT("after restart: Neutralized, Pinned"), R.Placements->IsCreatureNeutralized(SRId(SRWarden)) && R.Model(SRWarden)->Creature.NeutralizedHow == FName(TEXT("Neutralize.Pinned")));
 	const AGLCreature* W = R.Creature(SRWarden);
 	TestTrue(TEXT("  presented inert where it was pinned"), W && !W->IsActorTickEnabled() && FVector::Dist2D(W->GetActorLocation(), Feet) < 1.0);

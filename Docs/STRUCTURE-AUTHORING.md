@@ -55,7 +55,8 @@ The visual mesh may overhang `size` for trim. The data boxes stay authoritative.
 
 **3. Placement (`placement` of kind `structure`):**
 - a cell-local transform;
-- yaw in quarter turns (STR-3).
+- yaw in quarter turns (STR-3);
+- a collapse reach inside its cell (STR-4: each part's footprint grown by its height and the impact margin).
 
 **4. Floor support for interiors and dungeons** (operator decision, ADR-0030):
 - **Exported floor-support data** is the authoritative ground for structures on authored geometry.
