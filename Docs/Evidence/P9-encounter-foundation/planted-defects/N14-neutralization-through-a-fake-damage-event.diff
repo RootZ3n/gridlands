@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
++++ b/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
+@@ -152,6 +152,7 @@
+ 		return false; // unknown, already out of the encounter, or not susceptible to this outcome
+ 	}
+ 	FGLCreatureModel& M = Model->Creature;
++	if (AGLCreature* Hit = Cast<AGLCreature>(Model->Actor.Get())) { Hit->GetHealth()->ApplyDamage(1.0, Hit); } // DEFECT
+ 	M.Outcome = EGLCreatureOutcome::Neutralized;
+ 	M.State = EGLCreatureState::Neutralized;
+ 	M.NeutralizedHow = How;

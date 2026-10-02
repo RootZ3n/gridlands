@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Combat/GLCreature.cpp
++++ b/Source/GridlandsGame/Private/Combat/GLCreature.cpp
+@@ -179,7 +179,7 @@
+ 	const FGLCreatureDef* Def = GLContent::Get().Find<FGLCreatureDef>(DefId);
+ 	// P9: the ambient mask at this listener lowers what it can hear, lures included (one rule, no exemption).
+ 	const UGLNoiseSubsystem* NoiseWorld = GetWorld() ? GetWorld()->GetSubsystem<UGLNoiseSubsystem>() : nullptr;
+-	const double Mask = NoiseWorld ? NoiseWorld->MaskAt(GetActorLocation()) : 0.0;
++	const double Mask = NoiseWorld ? NoiseWorld->MaskAt(Heard.Location) : 0.0; // DEFECT
+ 	if (!Def || !IsActiveHostile() || !GLCreatureRules::Hears(*Def, GetActorLocation(), Heard.Location, Heard.RadiusCm, Mask))
+ 	{
+ 		return false;

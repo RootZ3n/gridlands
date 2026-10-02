@@ -1,7 +1,11 @@
 #include "World/GLPlacementSubsystem.h"
+#include "Mechanism/GLMechanism.h"
+#include "Mechanism/GLMechanismSubsystem.h"
+#include "World/GLNavRegionSubsystem.h"
 
 #include "Presentation/GLScatterPatch.h"
 #include "Structure/GLStructureSubsystem.h"
+#include "Terrain/GLTerrainSubsystem.h"
 
 #include "Content/GLContent.h"
 #include "Content/GLContentDefinitions.h"
@@ -50,6 +54,10 @@ void UGLPlacementSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 	if (FParse::Param(FCommandLine::Get(), TEXT("GLTownBlock")))
 	{
 		AddTownBlock();
+	}
+	if (FParse::Param(FCommandLine::Get(), TEXT("GLDungeonProof")))
+	{
+		AddDungeonProof();
 	}
 #endif
 	// The cell whose definition names this world's map.
@@ -117,7 +125,8 @@ bool UGLPlacementSubsystem::SpawnPlacement(FName CellId, FName Id, const FGLPlac
 	UWorld* World = GetWorld();
 	const FGLContentRegistry& Content = GLContent::Get();
 	if (Placement.Kind != TEXT("salvage_node") && Placement.Kind != TEXT("glitch") && Placement.Kind != TEXT("puzzle_site")
-		&& Placement.Kind != TEXT("spawn") && Placement.Kind != TEXT("discovery") && Placement.Kind != TEXT("structure") && Placement.Kind != TEXT("scatter"))
+		&& Placement.Kind != TEXT("spawn") && Placement.Kind != TEXT("discovery") && Placement.Kind != TEXT("structure") && Placement.Kind != TEXT("scatter")
+		&& Placement.Kind != TEXT("mechanism") && Placement.Kind != TEXT("nav_region"))
 	{
 		return false;
 	}
@@ -167,6 +176,26 @@ bool UGLPlacementSubsystem::SpawnPlacement(FName CellId, FName Id, const FGLPlac
 		Model.Location = Location;
 		Model.Yaw = Yaw;
 		Model.LinkedVisual = Visual;
+		if (bCreature)
+		{
+			// P9: its gameplay facts start at its home, calm, full health; patrol points are cell-local like its transform.
+			Model.Creature.Home = Location;
+			Model.Creature.Yaw = Yaw;
+			Model.Creature.StampWorldSeconds = World->GetTimeSeconds();
+			const UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>();
+			for (const FGLPlacementPointDef& Point : Placement.Patrol)
+			{
+				if (Point.Location.Num() == 3)
+				{
+					FVector At = CellCentre + FVector(Point.Location[0], Point.Location[1], Point.Location[2]);
+					if (Terrain && Terrain->HasGround())
+					{
+						At.Z = Terrain->HeightAt(FVector2D(At));
+					}
+					Model.Creature.Patrol.Add(At);
+				}
+			}
+		}
 		const FGLPendingActor Unit{ CellId, Id, Placement.Kind, Location };
 		if (bDeferPresentation)
 		{
@@ -191,6 +220,27 @@ bool UGLPlacementSubsystem::SpawnPlacement(FName CellId, FName Id, const FGLPlac
 			return true;
 		}
 		return SpawnScatter({ CellId, Id, Placement.Definition, Location, Placement.Radius * 100.0, Placement.Count });
+	}
+	if (Placement.Kind == TEXT("mechanism"))
+	{
+		// P9 (ADR-0037): its authoritative record now; its actor is presentation made from it.
+		if (!World->GetSubsystem<UGLMechanismSubsystem>()->AddRecord(Id, Placement.Definition, CellId, Location, Yaw))
+		{
+			UE_LOG(LogGridlands, Error, TEXT("%s: unknown mechanism %s"), *Id.ToString(), *Placement.Definition.ToString());
+			return false;
+		}
+		const FGLPendingActor Unit{ CellId, Id, Placement.Kind, Location };
+		if (bDeferPresentation)
+		{
+			PendingActors.Add(Unit);
+			return true;
+		}
+		return MakeActor(Unit);
+	}
+	if (Placement.Kind == TEXT("nav_region"))
+	{
+		// P9 (ADR-0029 as amended): data only; its invoker exists only while gameplay needs it.
+		return World->GetSubsystem<UGLNavRegionSubsystem>()->AddRegion(Id, Placement.Definition, CellId, Location);
 	}
 	if (Placement.Kind == TEXT("discovery"))
 	{
@@ -226,6 +276,15 @@ bool UGLPlacementSubsystem::SpawnPlacement(FName CellId, FName Id, const FGLPlac
 bool UGLPlacementSubsystem::MakeActor(const FGLPendingActor& Pending)
 {
 	UWorld* World = GetWorld();
+	if (Pending.Kind == TEXT("mechanism"))
+	{
+		AGLMechanism* Mechanism = World->GetSubsystem<UGLMechanismSubsystem>()->Present(Pending.Placement);
+		if (Mechanism)
+		{
+			CellActors.FindOrAdd(Pending.Cell).Add(Mechanism);
+		}
+		return Mechanism != nullptr;
+	}
 	if (Pending.Kind == TEXT("glitch"))
 	{
 		AGLGlitch* Glitch = World->GetSubsystem<UGLGlitchSubsystem>()->Present(Pending.Placement);
@@ -236,7 +295,7 @@ bool UGLPlacementSubsystem::MakeActor(const FGLPendingActor& Pending)
 		return Glitch != nullptr;
 	}
 	FGLActorPlacement* Model = ActorModels.Find(Pending.Placement);
-	if (!Model || Model->Actor.IsValid() || Model->bSalvaged || Model->bDefeated)
+	if (!Model || Model->Actor.IsValid() || Model->bSalvaged || Model->Creature.Outcome == EGLCreatureOutcome::Defeated)
 	{
 		return false; // gone, already made, or never made: a salvaged node or defeated creature has no presentation
 	}
@@ -255,6 +314,8 @@ bool UGLPlacementSubsystem::MakeActor(const FGLPendingActor& Pending)
 		}
 		Model->Actor = Creature;
 		CellActors.FindOrAdd(Model->Cell).Add(Creature);
+		// P9: made from its model as it is now (a neutralized one is presented held, inert).
+		Creature->RestoreFromModel(Model->Creature, World->GetTimeSeconds());
 		return true;
 	}
 	AGLSalvageNode* Node = World->SpawnActor<AGLSalvageNode>(Model->Location, Rotation);
@@ -341,20 +402,13 @@ bool UGLPlacementSubsystem::RestoreDefeated(FName PlacementId)
 	{
 		return false;
 	}
-	Model->bDefeated = true;
+	Model->Creature.Outcome = EGLCreatureOutcome::Defeated; // silently: a restore never resolves an encounter again
+	Model->Creature.State = EGLCreatureState::Defeated;
 	if (AGLCreature* Creature = Cast<AGLCreature>(Model->Actor.Get()))
 	{
 		Creature->RestoreDefeated();
 	}
 	return true;
-}
-
-void UGLPlacementSubsystem::MarkDefeated(FName PlacementId)
-{
-	if (FGLActorPlacement* Model = ActorModels.Find(PlacementId))
-	{
-		Model->bDefeated = true;
-	}
 }
 
 AGLCreature* UGLPlacementSubsystem::FindCreature(FName PlacementId) const
@@ -467,6 +521,8 @@ int32 UGLPlacementSubsystem::DespawnCell(FName CellId)
 		}
 	}
 	GetWorld()->GetSubsystem<UGLGlitchSubsystem>()->RemoveCell(CellId);
+	GetWorld()->GetSubsystem<UGLMechanismSubsystem>()->RemoveCell(CellId); // P9: records go now; actors retire below
+	GetWorld()->GetSubsystem<UGLNavRegionSubsystem>()->RemoveCell(CellId);
 	PendingActors.RemoveAll([CellId](const FGLPendingActor& P) { return P.Cell == CellId; }); // cancelled presentation
 	TArray<TWeakObjectPtr<AActor>> Owned;
 	CellActors.RemoveAndCopyValue(CellId, Owned);

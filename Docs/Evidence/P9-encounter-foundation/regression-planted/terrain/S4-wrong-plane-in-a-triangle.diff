@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Public/Terrain/GLHeightfield.h
++++ b/Source/GridlandsCore/Public/Terrain/GLHeightfield.h
+@@ -25,7 +25,7 @@
+ 	inline double Height(double HA, double HB, double HC, double HD, double FX, double FY)
+ 	{
+ 		return FY >= FX ? HA + FX * (HD - HC) + FY * (HC - HA)   // triangle (A, C, D)
+-		                : HA + FX * (HB - HA) + FY * (HD - HB);  // triangle (A, D, B)
++		                : HA + FX * (HB - HA) + FY * (HD - HA);  // DEFECT: wrong barycentric term
+ 	}
+ 
+ 	/** The quad's two triangles as vertex indices, upward-facing in UE's left-handed space: (A, C, D), (A, D, B). */

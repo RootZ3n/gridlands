@@ -54,6 +54,8 @@ private:
 	void HandleGlitchRepaired(const struct FGLGameplayEvent& Event);
 	void HandleWorldEdited(const struct FGLGameplayEvent& Event);
 	FTimerHandle DebouncedSave;
+	/** P9: a record's timers brought to Now (the time since it was captured), as a file keeps them. */
+	static void AgeToNow(FGLSavedCell& Record, double Now);
 	/** State of cells that are not loaded (from the save file, or captured when they streamed out). */
 	TMap<FName, FGLSavedCell> Dormant;
 	class AGLPehlichi* FindPehlichi() const;

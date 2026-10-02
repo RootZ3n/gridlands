@@ -1,4 +1,5 @@
 #include "World/GLGridSubsystem.h"
+#include "World/GLNavRegionSubsystem.h"
 
 #include "Building/GLBuildingSubsystem.h"
 #include "Content/GLContent.h"
@@ -38,6 +39,8 @@ void UGLGridSubsystem::Advance(const FVector& Where, double BudgetSeconds)
 	// Safety first: the ground under Zenny exists, with collision, whatever else is in flight.
 	Terrain->EnsureReadyAt(FVector2D(Where));
 	Terrain->Pump(FVector2D(Where), BudgetSeconds);
+	// P9 (ADR-0029 as amended): authored navigation regions follow Zenny's relevance and their creatures' demand.
+	GetWorld()->GetSubsystem<UGLNavRegionSubsystem>()->Update(Where);
 	const double T2 = FPlatformTime::Seconds();
 	UGLPlacementSubsystem* Placements = GetWorld()->GetSubsystem<UGLPlacementSubsystem>();
 	LastAuthoritativeSeconds = 0.0;

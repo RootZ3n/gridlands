@@ -15,6 +15,7 @@ enum class EGLCommandRejection : uint8
 	RequirementsUnmet,
 	AlreadyRepaired,
 	OutOfRange,
+	NothingToOperate, // P9: no operable mechanism control nearby
 };
 
 /**
@@ -34,6 +35,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Gridlands") float RepairSearchRadius = 2000.f;
 	/** Seconds between distractions (provisional). */
 	UPROPERTY(EditAnywhere, Category = "Gridlands") float DistractCooldownSeconds = 10.f;
+	/** P9: how far from the commander Pehlichi looks for a control to operate. */
+	UPROPERTY(EditAnywhere, Category = "Gridlands") float OperateSearchRadius = 2500.f;
 
 private:
 	double DistractReadyAt = -1e9;

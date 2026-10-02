@@ -2,7 +2,7 @@
 
 double UGLHealthComponent::ApplyDamage(double Amount, AActor* Instigator)
 {
-	if (Health.IsDead())
+	if (Health.IsDead() || bIgnoresDamage)
 	{
 		return 0.0;
 	}

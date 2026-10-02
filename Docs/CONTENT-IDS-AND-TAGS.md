@@ -62,6 +62,8 @@ Rules:
 | `terraform` | one heightfield tool stroke (ADR-0022) | `terraform.shovel.dig` |
 | `structure` | an authored world structure: a part graph in the shared structural language (P6, ADR-0030) | `structure.modern.carport` |
 | `tuning` | provisional physical and noise tuning; exactly one (TUN-1) | `tuning.world.physical` |
+| `mechanism` | a model-first environmental mechanism: states, one operation, effects on state entry (P9, ADR-0037) | `mechanism.proof.cage` |
+| `navregion` | an authored navigation region for a bounded encounter space (P9, ADR-0029 as amended) | `navregion.proof.room` |
 
 **[V] ID-9** A new kind is added only with a typed C++ definition (ADR-0021)
 and an entry here. It's a code change, reviewed.
@@ -79,6 +81,12 @@ and an entry here. It's a code change, reviewed.
 - **[V] STR-3** A structure placement is a transform whose yaw is a multiple of 90 degrees.
 - **[V] TUN-1** There is exactly one tuning entity: `tuning.world.physical`.
 - **[V] TUN-2** Its noise radii are keyed by declared `Noise.*` tags.
+- **[V] PRF-1** Dev-proof definitions (`<kind>.proof.*`) are placed only by dev fixtures: no Data placement may
+  reference one, and they are exempt from CR-2 (P9).
+- **[V] PLC-4** Only a spawn placement has a `patrol` loop.
+- **[V] MEC-1 / MEC-2** A mechanism's state references name its own states, its operation changes the state, and an
+  ambient duty cycle's on-time fits in its period.
+- **[V] NAV-1** A navigation region's half-extents are positive.
 - **[T]** Every authored structure placement stands on its cell's ground (all parts supported):
   `Gridlands.Game.Structure.*`.
 
@@ -145,6 +153,7 @@ part      = upper *( alpha / digit )          ; PascalCase, 1..32 chars
 | `Capability` | capability categories | `Capability.Pehlichi.Scan` |
 | `Requirement` | glitch requirement kinds | `Requirement.ObjectSalvaged` |
 | `Noise` | world noise actions (P6, ADR-0031): authoritative sounds creatures hear | `Noise.Terrain.Dig` |
+| `Neutralize` | non-damage encounter outcomes (P9, ADR-0037): how a creature was taken out without dying | `Neutralize.Contained` |
 
 **[V] TAG-5** A new namespace needs a row here and a real owning system.
 

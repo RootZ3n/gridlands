@@ -31,10 +31,10 @@ PINE_SCREENS = '      1.0,\n      0.35,\n      0.12\n    ]'
 DEFECTS = [
     # --- model / presentation separation
     ('M1-salvaged-node-is-presented-anyway', [(PLACE,
-        'if (!Model || Model->Actor.IsValid() || Model->bSalvaged || Model->bDefeated)',
-        'if (!Model || Model->Actor.IsValid() || Model->bDefeated) // DEFECT: a salvaged node comes back')]),
+        'if (!Model || Model->Actor.IsValid() || Model->bSalvaged || Model->Creature.Outcome == EGLCreatureOutcome::Defeated)',
+        'if (!Model || Model->Actor.IsValid() || Model->Creature.Outcome == EGLCreatureOutcome::Defeated) // DEFECT: a salvaged node comes back')]),
     ('M2-defeated-creature-is-remade', [(PLACE,
-        'if (!Model || Model->Actor.IsValid() || Model->bSalvaged || Model->bDefeated)',
+        'if (!Model || Model->Actor.IsValid() || Model->bSalvaged || Model->Creature.Outcome == EGLCreatureOutcome::Defeated)',
         'if (!Model || Model->Actor.IsValid() || Model->bSalvaged) // DEFECT: a defeated creature comes back')]),
     ('M3-glitch-actor-starts-latent-not-from-its-model', [(GLITCHS,
         '\tGlitch->GetGlitch()->PresentFromModel(Record->State, Record->ProgressSeconds, Record->bItemsDelivered, FGLPresentAuthority());',

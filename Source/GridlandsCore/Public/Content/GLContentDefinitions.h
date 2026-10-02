@@ -623,6 +623,15 @@ struct GRIDLANDSCORE_API FGLPlacementTransformDef
 	UPROPERTY() double Yaw = 0.0;
 };
 
+/** P9: one point of a patrol loop (cell-local cm, like a transform's location). */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLPlacementPointDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() TArray<double> Location;
+};
+
 USTRUCT()
 struct GRIDLANDSCORE_API FGLPlacementDef : public FGLDefinitionBase
 {
@@ -641,6 +650,8 @@ struct GRIDLANDSCORE_API FGLPlacementDef : public FGLDefinitionBase
 	UPROPERTY() double Radius = 0.0;
 	/** scatter (P7): how many instances within Radius. */
 	UPROPERTY() int32 Count = 0;
+	/** spawn (P9): the patrol loop (2+ points; empty = the creature guards its home). */
+	UPROPERTY() TArray<FGLPlacementPointDef> Patrol;
 
 	bool IsAnchored() const { return !Anchor.IsNone(); }
 };
@@ -696,6 +707,15 @@ struct GRIDLANDSCORE_API FGLCreatureAttackDef
 	UPROPERTY() double CooldownSeconds = 0.0;
 };
 
+/** P9: what resolving an encounter target grants (once, whichever way it was resolved). */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLCreatureEncounterDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() TArray<FGLSalvageYieldDef> Rewards;
+};
+
 /** A corrupted creature (M11). Exists only through placements (ADR-0014, CR-2). Metres, seconds. */
 USTRUCT()
 struct GRIDLANDSCORE_API FGLCreatureDef : public FGLDefinitionBase
@@ -712,6 +732,91 @@ struct GRIDLANDSCORE_API FGLCreatureDef : public FGLDefinitionBase
 	UPROPERTY() TArray<FGLSalvageYieldDef> Drops;
 	/** Optional (P7): how it looks (visual.*). */
 	UPROPERTY() FName Visual;
+	/** P9: the non-damage outcomes (Neutralize.*) that can take it out of an encounter; empty = immune. */
+	UPROPERTY() TArray<FName> NeutralizableBy;
+	/** P9: an encounter target: resolving it (defeated or neutralized alike) grants these once. */
+	UPROPERTY() FGLCreatureEncounterDef Encounter;
+
+	bool IsEncounter() const { return Encounter.Rewards.Num() > 0; }
+};
+
+/** P9: how a mechanism is switched (one operation), by whom and how long it takes. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLMechanismOperateDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString From;
+	UPROPERTY() FString To;
+	UPROPERTY() FName Capability;
+	UPROPERTY() int32 MinLevel = 1;
+	UPROPERTY() double Seconds = 0.0;
+	/** Metres from the control Pehlichi must be (default 1.5). */
+	UPROPERTY() double Reach = 0.0;
+};
+
+/** P9: entering InState decides, at that moment, the outcome of every susceptible creature in the box. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLMechanismNeutralizeDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString InState;
+	UPROPERTY() FName Tag;
+	/** Placement-local metres (box centre) and half-extents. */
+	UPROPERTY() TArray<double> Offset;
+	UPROPERTY() TArray<double> Extent;
+	/** Presentation: how long the visible drop takes (the outcome is already decided). */
+	UPROPERTY() double PresentSeconds = 0.0;
+};
+
+/** P9: an ambient sound that masks other noise at listeners inside its radius (while active). */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLMechanismAmbientDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() TArray<FString> ActiveIn;
+	UPROPERTY() double Radius = 0.0;
+	UPROPERTY() double Mask = 0.0;
+	UPROPERTY() TArray<double> Offset;
+	/** Optional deterministic duty cycle on the world clock (0 = always on while active). */
+	UPROPERTY() double Period = 0.0;
+	UPROPERTY() double OnSeconds = 0.0;
+	UPROPERTY() double Phase = 0.0;
+};
+
+/** P9: a model-first environmental mechanism (ADR-0037). Narrow on purpose: states, one operation, effects. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLMechanismDef : public FGLDefinitionBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString DisplayName;
+	UPROPERTY() TArray<FString> States;
+	UPROPERTY() FString Initial;
+	UPROPERTY() FGLMechanismOperateDef Operate;
+	UPROPERTY() FGLMechanismNeutralizeDef Neutralize;
+	UPROPERTY() FGLMechanismAmbientDef Ambient;
+	/** State name -> the Noise.* action made on entering it. */
+	UPROPERTY() TMap<FString, FName> EnterNoise;
+
+	bool CanOperate() const { return !Operate.Capability.IsNone(); }
+	bool HasNeutralize() const { return !Neutralize.Tag.IsNone(); }
+	bool HasAmbient() const { return Ambient.Radius > 0.0; }
+};
+
+/** P9 (ADR-0029 as amended): an authored navigation region for a bounded encounter space. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLNavRegionDef : public FGLDefinitionBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString DisplayName;
+	/** Half-extents, metres. */
+	UPROPERTY() TArray<double> Extent;
+	/** Metres outside the region within which Zenny makes it relevant (0: 32 m). */
+	UPROPERTY() double RelevanceMargin = 0.0;
 };
 
 USTRUCT()

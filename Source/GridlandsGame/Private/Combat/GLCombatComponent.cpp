@@ -73,7 +73,7 @@ AGLCreature* UGLCombatComponent::Attack()
 		const FVector To = It->GetActorLocation() - Origin;
 		const double Distance = To.Size2D();
 		const bool bInFront = FVector2D::DotProduct(Facing, FVector2D(To).GetSafeNormal()) > 0.5; // ~60 degrees either side
-		if (!It->IsDefeated() && Distance <= BestDistance && bInFront)
+		if (It->IsActiveHostile() && Distance <= BestDistance && bInFront)
 		{
 			Best = *It;
 			BestDistance = Distance;

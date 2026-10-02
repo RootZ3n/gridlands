@@ -27,6 +27,7 @@
 #include "Content/GLContentDefinitions.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "Combat/GLCreature.h"
+#include "Mechanism/GLMechanismSubsystem.h"
 #include "Combat/GLHealthComponent.h"
 #include "Storm/GLStormSubsystem.h"
 #include "World/GLAmbientSubsystem.h"
@@ -183,6 +184,11 @@ FGLWorldSave UGLSaveSubsystem::Capture() const
 			Save.Cells.Add(Kept.Value);
 		}
 	}
+	// P9: a file holds every timer as it is now (a streamed-out cell's timers kept running since it was stowed).
+	for (FGLSavedCell& Record : Save.Cells)
+	{
+		AgeToNow(Record, World->GetTimeSeconds());
+	}
 	Save.Cells.Sort([](const FGLSavedCell& A, const FGLSavedCell& B) { return A.Cell.LexicalLess(B.Cell); });
 	Save.Cell = Zenny ? GLGridCells::CellAt(FVector2D(Zenny->GetActorLocation())) : NAME_None;
 	if (const UGLPuzzleSubsystem* Puzzles = World->GetSubsystem<UGLPuzzleSubsystem>())
@@ -249,12 +255,30 @@ FGLSavedCell UGLSaveSubsystem::CaptureCell(FName Cell) const
 			{
 				Record.SalvagedPlacements.Add(Entry.Key);
 			}
-			if (Entry.Value.bDefeated)
+			const FGLCreatureModel& Creature = Entry.Value.Creature;
+			if (Entry.Value.Kind != TEXT("spawn"))
+			{
+				continue;
+			}
+			if (Creature.Outcome == EGLCreatureOutcome::Defeated)
 			{
 				Record.DefeatedCreatures.Add(Entry.Key);
 			}
+			// P9: every creature whose facts differ from its authored start (calm at home, full health) is kept whole.
+			const bool bTouched = Creature.State != EGLCreatureState::Idle || Creature.Health >= 0.0 || Creature.Outcome != EGLCreatureOutcome::None
+				|| Creature.Patrol.Num() > 0 || Creature.SearchSeconds > 0.0 || Creature.NoiseSeconds > 0.0 || Creature.LureSeconds > 0.0
+				|| FVector::Dist2D(Entry.Value.Location, Creature.Home) > GLCreatureRules::HomeToleranceCm;
+			if (bTouched)
+			{
+				Record.Creatures.Add(Placements->CaptureCreature(Entry.Value));
+			}
 		}
 	}
+	if (const UGLMechanismSubsystem* Mechanisms = World->GetSubsystem<UGLMechanismSubsystem>())
+	{
+		Mechanisms->CaptureCell(Cell, Record.Mechanisms);
+	}
+	Record.CapturedWorldSeconds = World->GetTimeSeconds();
 	if (const UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>())
 	{
 		for (const FGLPlacedPiece& Piece : Building->PiecesOfCell(Cell))
@@ -274,6 +298,8 @@ FGLSavedCell UGLSaveSubsystem::CaptureCell(FName Cell) const
 	Record.Glitches.Sort([](const FGLSavedGlitch& A, const FGLSavedGlitch& B) { return A.Placement.LexicalLess(B.Placement); });
 	Record.SalvagedPlacements.Sort(FNameLexicalLess());
 	Record.DefeatedCreatures.Sort(FNameLexicalLess());
+	Record.Creatures.Sort([](const FGLSavedCreature& A, const FGLSavedCreature& B) { return A.Placement.LexicalLess(B.Placement); });
+	Record.Mechanisms.Sort([](const FGLSavedMechanism& A, const FGLSavedMechanism& B) { return A.Placement.LexicalLess(B.Placement); });
 	return Record;
 }
 
@@ -318,6 +344,26 @@ void UGLSaveSubsystem::ApplyCell(const FGLSavedCell& Record, TArray<FString>* Ou
 			Problem(FString::Printf(TEXT("saved defeated creature %s no longer exists"), *Id.ToString()));
 		}
 	}
+	// P9: whole creature facts (awareness, position, memory, health, outcome). Time that passed while the cell was
+	// streamed out in this session still counts; a record read from a file lost no time (save/restart is not a wipe).
+	const double Elapsed = Record.CapturedWorldSeconds >= 0.0 ? FMath::Max(0.0, World->GetTimeSeconds() - Record.CapturedWorldSeconds) : 0.0;
+	for (const FGLSavedCreature& Saved : Record.Creatures)
+	{
+		if (!Placements->RestoreCreature(Saved, Elapsed))
+		{
+			Problem(FString::Printf(TEXT("saved creature %s no longer exists"), *Saved.Placement.ToString()));
+		}
+	}
+	if (UGLMechanismSubsystem* Mechanisms = World->GetSubsystem<UGLMechanismSubsystem>())
+	{
+		for (const FGLSavedMechanism& Saved : Record.Mechanisms)
+		{
+			if (!Mechanisms->Restore(Saved))
+			{
+				Problem(FString::Printf(TEXT("saved mechanism %s no longer exists (or its state %s)"), *Saved.Placement.ToString(), *Saved.State));
+			}
+		}
+	}
 	// Ground first, then the pieces that stand on it (support is derived from both).
 	if (UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>(); Terrain && Terrain->HasCell(Record.Cell))
 	{
@@ -346,6 +392,18 @@ void UGLSaveSubsystem::ApplyCell(const FGLSavedCell& Record, TArray<FString>* Ou
 	{
 		Structures->RestoreCell(Record.Cell, Record.StructureParts, OutProblems);
 	}
+}
+
+void UGLSaveSubsystem::AgeToNow(FGLSavedCell& Record, double Now)
+{
+	const double Passed = Record.CapturedWorldSeconds >= 0.0 ? FMath::Max(0.0, Now - Record.CapturedWorldSeconds) : 0.0;
+	for (FGLSavedCreature& Creature : Record.Creatures)
+	{
+		Creature.SearchSeconds = FMath::Max(0.0, Creature.SearchSeconds - Passed);
+		Creature.NoiseSeconds = FMath::Max(0.0, Creature.NoiseSeconds - Passed);
+		Creature.LureSeconds = FMath::Max(0.0, Creature.LureSeconds - Passed);
+	}
+	Record.CapturedWorldSeconds = -1.0; // as written to a file: no time passes until it is read again
 }
 
 void UGLSaveSubsystem::StowCell(FName Cell)
@@ -422,7 +480,9 @@ void UGLSaveSubsystem::Apply(const FGLWorldSave& Save, TArray<FString>* OutProbl
 		}
 		else
 		{
-			Dormant.Add(Record.Cell, Record);
+			// P9: from the load on, time counts for it like any stowed cell.
+			FGLSavedCell& Kept = Dormant.Add(Record.Cell, Record);
+			Kept.CapturedWorldSeconds = World->GetTimeSeconds();
 			// A cell mid-load already has ground: bring it to the saved heights now.
 			if (UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>(); Terrain && Terrain->HasCell(Record.Cell))
 			{

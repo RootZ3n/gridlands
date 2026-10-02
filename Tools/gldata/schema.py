@@ -379,8 +379,9 @@ SCHEMAS: dict[str, Obj] = {
     ),
     "placement": kind(
         {
-            "kind": Enum("glitch", "salvage_node", "spawn", "patrol", "discovery", "encounter", "puzzle_site", "structure", "scatter"),
-            "definition": Ref("glitch", "salvage", "creature", "knowledge", "puzzle", "structure", "visual"),
+            "kind": Enum("glitch", "salvage_node", "spawn", "patrol", "discovery", "encounter", "puzzle_site", "structure", "scatter",
+                         "mechanism", "nav_region"),
+            "definition": Ref("glitch", "salvage", "creature", "knowledge", "puzzle", "structure", "visual", "mechanism", "navregion"),
             "anchor": Ref("anchor"),
             "offset": VEC3,
             "transform": Obj({"location": VEC3, "yaw": Num(-360, 360)}, required=("location",)),
@@ -389,6 +390,8 @@ SCHEMAS: dict[str, Obj] = {
             "radius": Num(0.5, 200),
             # scatter (P7): how many instances of the visual within the radius.
             "count": Int(1, 5000),
+            # spawn (P9): a patrol loop, cell-local cm like transform.location (PLC-4: spawn only, 2+ points).
+            "patrol": List(Obj({"location": VEC3}, required=("location",)), min_items=2),
         },
         required=("kind", "definition"),
         one_of=(("anchor", "transform"),),
@@ -413,8 +416,49 @@ SCHEMAS: dict[str, Obj] = {
                               required=("item", "count", "yieldCategory"))),
             # P7: how it looks (visual.*).
             "visual": Ref("visual"),
+            # P9: the non-damage outcomes that can take it out of an encounter (Neutralize.*); none = immune.
+            "neutralizableBy": List(Tag("Neutralize"), unique=True),
+            # P9: an encounter target (a boss): resolving it, DEFEATED or NEUTRALIZED alike, grants these once.
+            "encounter": Obj({"rewards": List(Obj({"item": Ref("item"), "count": COUNT, "yieldCategory": Ref("yield")},
+                                                  required=("item", "count", "yieldCategory")), min_items=1)},
+                             required=("rewards",)),
         },
         required=("displayName", "health", "walkSpeed", "chaseSpeed", "perception", "attack", "leashRadius"),
+    ),
+    # P9: a model-first environmental mechanism (a cage, a fan, a trapdoor). Its state is authoritative data;
+    # its actor is presentation. Deliberately narrow: named states, one operation, and effects on state entry.
+    # Metres and seconds; offsets and extents are placement-local.
+    "mechanism": kind(
+        {
+            "displayName": Str(),
+            "states": List(Str(), min_items=2, unique=True),
+            "initial": Str(),
+            # Who may switch it, from which state to which, and how long the operation takes.
+            "operate": Obj({"from": Str(), "to": Str(), "capability": Ref("capability"), "minLevel": Int(1, 10),
+                            "seconds": Num(0, 120), "reach": Num(0.5, 10)},
+                           required=("from", "to", "capability", "seconds")),
+            # Entering inState decides, at that moment, the outcome of every susceptible creature inside the box.
+            "neutralize": Obj({"inState": Str(), "tag": Tag("Neutralize"), "offset": VEC3, "extent": VEC3,
+                               "presentSeconds": Num(0, 10)},
+                              required=("inState", "tag", "extent")),
+            # An ambient sound that masks other noise at listeners within its radius while in activeIn states.
+            "ambient": Obj({"activeIn": List(Str(), min_items=1, unique=True), "radius": Num(0.5, 200), "mask": Num(0, 1),
+                            "offset": VEC3, "period": Num(0.1, 600), "onSeconds": Num(0, 600), "phase": Num(0, 600)},
+                           required=("activeIn", "radius", "mask")),
+            # A world noise made on entering a state (state name -> Noise.*).
+            "enterNoise": Map(Tag("Noise")),
+        },
+        required=("displayName", "states", "initial"),
+    ),
+    # P9 (ADR-0029 as amended): an authored navigation region for a bounded encounter space. Half-extents, metres.
+    "navregion": kind(
+        {
+            "displayName": Str(),
+            "extent": VEC3,
+            # How far outside the region Zenny still makes it relevant (default 32 m).
+            "relevanceMargin": Num(0, 200),
+        },
+        required=("displayName", "extent"),
     ),
     # M11: a bounded Glitch Storm NICE sets off (one representative event, not a weather system).
     "storm": kind(
@@ -527,4 +571,4 @@ def key_paths(spec: Spec, prefix: str = "") -> list[str]:
 
 PLACEMENT_KIND_DEFINITION = {"glitch": "glitch", "salvage_node": "salvage", "spawn": "creature", "patrol": "creature",
                              "discovery": "knowledge", "encounter": "creature", "puzzle_site": "puzzle",
-                             "structure": "structure", "scatter": "visual"}
+                             "structure": "structure", "scatter": "visual", "mechanism": "mechanism", "nav_region": "navregion"}

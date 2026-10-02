@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
++++ b/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
+@@ -152,7 +152,7 @@
+ 		return false; // unknown, already out of the encounter, or not susceptible to this outcome
+ 	}
+ 	FGLCreatureModel& M = Model->Creature;
+-	M.Outcome = EGLCreatureOutcome::Neutralized;
++	M.Outcome = EGLCreatureOutcome::Defeated; // DEFECT
+ 	M.State = EGLCreatureState::Neutralized;
+ 	M.NeutralizedHow = How;
+ 	M.NeutralizedBy = By;

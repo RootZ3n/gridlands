@@ -27,10 +27,14 @@ public:
 	double GetCurrent() const { return Health.Current; }
 	double GetMax() const { return Health.Max; }
 	bool IsDead() const { return Health.IsDead(); }
+	/** P9: a neutralized creature is out of the fight: nothing damages it (environmental killing of a held creature is P10's decision). */
+	void SetIgnoresDamage(bool bIgnore) { bIgnoresDamage = bIgnore; }
+	bool IgnoresDamage() const { return bIgnoresDamage; }
 
 	FGLOnDamaged OnDamaged;
 	FGLOnDied OnDied;
 
 private:
 	FGLHealth Health;
+	bool bIgnoresDamage = false;
 };

@@ -1,0 +1,35 @@
+// P9 dev proof room (-GLDungeonProof), relative to the room origin (cm; yaw quarter for structures).
+// Kind, definition, x, y, ground z at the generated origin (actors stand on it; structures ground themselves), yaw quarter, patrol "x,y;x,y;..." (spawns only). Walls: structure.proof.wall_8m, whose
+// wall face is 1 m off its origin (local +y), so a wall on line L sits at L - 100 (or x = L + 100 turned a quarter).
+// Room x -2000..2000, y -1500..1500. Hall x < -400 (entrance: west wall gap y 0..800); arena x > -400 (main door:
+// divider gap y -800..0); north corridor y 800..1500 in the hall's part, open to the arena through the divider's
+// north gap. The corridor's grate strip is the one noisy floor, and the fan beside it masks noise while it sounds.
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), -1600, 1400, 175, 0, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), -800, 1400, 213, 0, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), 0, 1400, 252, 0, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), 800, 1400, 234, 0, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), 1600, 1400, 209, 0, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), -1600, -1600, 185, 0, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), -800, -1600, 198, 0, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), 0, -1600, 213, 0, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), 800, -1600, 192, 0, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), 1600, -1600, 116, 0, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), -1900, -1200, 187, 1, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), -1900, -400, 199, 1, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), -1900, 1200, 171, 1, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), 2100, -1200, 71, 1, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), 2100, -400, 125, 1, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), 2100, 400, 143, 1, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), 2100, 1200, 162, 1, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), -300, -1200, 220, 1, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), -300, 400, 200, 1, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.wall_8m"), -800, 700, 183, 0, TEXT("") },
+{ TEXT("structure"), TEXT("structure.proof.grate_strip"), -900, 1150, 195, 0, TEXT("") },
+{ TEXT("spawn"), TEXT("creature.drain.static_gremlin"), -1500, -1000, 183, 0, TEXT("-1500,-1000;-700,-1000") },
+{ TEXT("spawn"), TEXT("creature.drain.static_gremlin"), -700, 300, 192, 0, TEXT("-700,300;-1500,300") },
+{ TEXT("spawn"), TEXT("creature.drain.static_gremlin"), -1100, -1300, 176, 0, TEXT("-1100,-1300;-1100,-100") },
+{ TEXT("spawn"), TEXT("creature.drain.static_gremlin"), 100, 1150, 242, 0, TEXT("100,1150;900,1150") },
+{ TEXT("spawn"), TEXT("creature.proof.warden"), 1000, -300, 214, 0, TEXT("") },
+{ TEXT("mechanism"), TEXT("mechanism.proof.cage"), 2300, -800, 66, 0, TEXT("") },
+{ TEXT("mechanism"), TEXT("mechanism.proof.fan"), -900, 1150, 195, 0, TEXT("") },
+{ TEXT("nav_region"), TEXT("navregion.proof.room"), 0, 0, 216, 0, TEXT("") },
