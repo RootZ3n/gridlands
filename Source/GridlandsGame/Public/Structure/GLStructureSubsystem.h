@@ -52,6 +52,8 @@ struct GRIDLANDSGAME_API FGLActiveCollapse
 	/** Who physically removed the support, and who receives gameplay attribution (kills, drops): identities, not actors, so a save keeps them. */
 	FName Cause;
 	FName Credit;
+	/** The credited actor while this session lasts (any pawn); after a reload, Credit's identity finds it again. */
+	TWeakObjectPtr<AActor> CreditActor;
 };
 
 /** What one impact did (tests and evidence read it). */

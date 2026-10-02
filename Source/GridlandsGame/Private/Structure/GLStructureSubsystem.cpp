@@ -400,6 +400,7 @@ void UGLStructureSubsystem::Collapse(FGLStructureRuntime& Structure, AActor* By,
 		// removed the support (P6's rule); attribution through Pehlichi is a future operator decision (ADR-0038).
 		Entry.Cause = IdentityOf(By);
 		Entry.Credit = Entry.Cause;
+		Entry.CreditActor = By;
 	}
 	UE_LOG(LogGridlands, Log, TEXT("Structures: %s lost support: %d part(s) collapse (decided in %.3f ms)"), *Structure.Placement.ToString(), Plan.Outcomes.Num(), (FPlatformTime::Seconds() - Began) * 1000.0);
 	if (!bSilent)
@@ -455,7 +456,7 @@ void UGLStructureSubsystem::Land(FGLActiveCollapse& Collapse)
 	// Copies: presenting a creature below can grow the actor arrays, never this collapse's facts.
 	const FGLCollapseOutcome Outcome = Collapse.Outcome;
 	const FName Placement = Collapse.Placement, PartName = Collapse.Part, Material = Collapse.Material, Cause = Collapse.Cause;
-	AActor* Credit = ActorOf(Collapse.Credit);
+	AActor* Credit = Collapse.CreditActor.IsValid() ? Collapse.CreditActor.Get() : ActorOf(Collapse.Credit);
 	// P10 (ADR-0038): the impact decides from the world as it is NOW. A creature model (presented or not) touching the
 	// volume gets ONE outcome: pinned (Neutralize.Pinned: no damage, no death, no kill) when the impact is severe
 	// enough and it is susceptible, else the ordinary damage path, which may defeat it through its health.
@@ -510,7 +511,7 @@ void UGLStructureSubsystem::Land(FGLActiveCollapse& Collapse)
 	}
 	UE_LOG(LogGridlands, Log, TEXT("Structures: %s/%s hit (%.0f damage, severity %.2f, %d hit, %d pinned, %d damaged creatures; impact resolved in %.3f ms)"), *Placement.ToString(), *PartName.ToString(),
 		Record.Damage, Record.Severity, Record.Hit.Num(), Record.Pinned.Num(), Record.Damaged.Num(), (FPlatformTime::Seconds() - Began) * 1000.0);
-	UGLNoiseSubsystem::EmitAction(this, TEXT("Noise.Structure.Collapse"), Outcome.Impact.Centre, ActorOf(Cause), Material);
+	UGLNoiseSubsystem::EmitAction(this, TEXT("Noise.Structure.Collapse"), Outcome.Impact.Centre, Cause == Collapse.Credit && Credit ? Credit : ActorOf(Cause), Material);
 	FGLGameplayEvent Impact;
 	Impact.Tag = UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Structure.Impact"));
 	Impact.Subject = Placement;
