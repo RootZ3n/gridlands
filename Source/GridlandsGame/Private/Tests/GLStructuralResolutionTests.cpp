@@ -594,7 +594,11 @@ bool FGLSRFinal::RunTest(const FString& Parameters)
 		S.Advance(SRDt);
 	}
 	TestTrue(TEXT("pinned"), S.Placements->IsCreatureNeutralized(SRId(SRWarden)));
-	// A second, ordinary structure collapses on it (P9 finality: a neutralized creature takes no further damage).
+	// A defeated gremlin lies beside it (the direct route's kind of outcome).
+	S.Put(SRGremlin, S.EastDeck(60, 50));
+	S.Placements->DamageCreature(SRId(SRGremlin), 60.0, S.Zenny);
+	TestTrue(TEXT("a defeated gremlin beside it"), S.Placements->IsCreatureDefeated(SRId(SRGremlin)));
+	// A second, ordinary structure collapses on both (P9 finality: a neutralized creature takes no further damage).
 	const FName Second(TEXT("placement.diner_lots.test_carport_b"));
 	const FVector2D Origin(Feet.X - 200.0, Feet.Y); // its east deck over the pinned warden
 	TestTrue(TEXT("a second carport stands over it"), S.Structures->SpawnStructure(Second, TEXT("structure.modern.carport"), SRLots, FVector(Origin, 0.0), 0));
@@ -612,11 +616,13 @@ bool FGLSRFinal::RunTest(const FString& Parameters)
 	}
 	const FGLImpactRecord* Hit = S.Structures->GetImpacts().FindByPredicate([Second](const FGLImpactRecord& I) { return I.Placement == Second && I.Part == SRDeckEast; });
 	TestTrue(TEXT("the second impact landed"), Hit != nullptr);
-	TestTrue(TEXT("  and neither pinned nor damaged it again"), Hit && Hit->Pinned.Num() == 0 && Hit->Damaged.Num() == 0);
+	TestTrue(TEXT("  and neither pinned nor damaged anything"), Hit && Hit->Pinned.Num() == 0 && Hit->Damaged.Num() == 0);
+	TestTrue(TEXT("  the neutralized and the defeated are not even considered (skipped, not merely immune)"), Hit
+		&& !Hit->Hit.ContainsByPredicate([&S](const TWeakObjectPtr<AActor>& A) { return A.Get() && (A.Get() == S.Creature(SRWarden) || A.Get() == S.Creature(SRGremlin)); }));
 	TestEqual(TEXT("still full health"), S.Model(SRWarden)->Creature.Health, -1.0);
 	TestEqual(TEXT("still Pinned"), S.Model(SRWarden)->Creature.NeutralizedHow, FName(TEXT("Neutralize.Pinned")));
 	TestEqual(TEXT("one neutralization, one resolution"), S.Count(TEXT("Event.Creature.Neutralized")) * 10 + S.Count(TEXT("Event.Encounter.Resolved")), 11);
-	TestEqual(TEXT("no death"), S.Count(TEXT("Event.Creature.Defeated")), 0);
+	TestEqual(TEXT("one death (the gremlin's, before the second collapse), none after"), S.Count(TEXT("Event.Creature.Defeated")), 1);
 	// Restart: still pinned, inert, nothing replays.
 	TestTrue(TEXT("saves"), S.Save());
 	FSRScene R(TEXT("SRFinalRestartWorld"), true);
@@ -627,7 +633,7 @@ bool FGLSRFinal::RunTest(const FString& Parameters)
 	const AGLCreature* W = R.Creature(SRWarden);
 	TestTrue(TEXT("  presented inert where it was pinned"), W && !W->IsActorTickEnabled() && FVector::Dist2D(W->GetActorLocation(), Feet) < 1.0);
 	TestEqual(TEXT("  no event at all replays"), R.Events.Num(), 0);
-	TestEqual(TEXT("  the reward is not paid again"), R.Residue(), 5);
+	TestEqual(TEXT("  the reward is not paid again (5, and the gremlin's 2 drops)"), R.Residue(), 7);
 	IFileManager::Get().Delete(*UGLSaveSubsystem::SlotPath(SRSlot));
 	return true;
 }
@@ -665,6 +671,50 @@ bool FGLSRModels::RunTest(const FString& Parameters)
 	TestEqual(TEXT("  its death event, like any defeat"), S.Count(TEXT("Event.Creature.Defeated")), 1);
 	TestEqual(TEXT("  its drops credited to the instigator"), S.Residue(), Before + 2);
 	TestFalse(TEXT("a defeated creature is not damaged again"), S.Placements->DamageCreature(SRId(SRGremlin), 60.0, S.Zenny));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLSRNoReplan, "Gridlands.Game.Structural.ARestoredFallIsTheDecidedFallNotAReplan", GLTestUtils::Flags)
+bool FGLSRNoReplan::RunTest(const FString& Parameters)
+{
+	using namespace GLStructuralTests;
+	const FGLCollapseOutcome Decided = SRPlan(*this);
+	FSRScene S(TEXT("SRNoReplanWorld"));
+	S.Put(SRWarden, S.EastDeck(300, 0)); // 1.7 m clear of the decided volume, inside a 2 m-margin re-plan's
+	S.Salvage(TEXT("post_north"));
+	S.Salvage(TEXT("post_south"));
+	for (int32 I = 0; I < 20; ++I)
+	{
+		S.Advance(SRDt);
+	}
+	TestTrue(TEXT("saves mid-fall"), S.Save());
+	// The world the fall resumes in is not the world it was decided in: other physics, other damage.
+	FGLCollapseTuningDef& Tuning = const_cast<FGLCollapseTuningDef&>(GLContent::Tuning().Collapse);
+	const FGLCollapseTuningDef Kept = Tuning;
+	Tuning.Gravity = 2.0;
+	Tuning.StartDelaySeconds = 2.0;
+	Tuning.DamageBase = 90.0;
+	Tuning.ImpactMarginMetres = 2.0;
+	{
+		FSRScene R(TEXT("SRNoReplanRestartWorld"), true);
+		TArray<FString> Problems;
+		TestTrue(TEXT("restart loads"), R.Load(Problems));
+		R.GoTo(R.Salvager());
+		const FGLActiveCollapse* F = R.Falling();
+		TestTrue(TEXT("the resumed fall is the decided one (impact time, damage, volume, rest)"), F && F->Outcome.ImpactSeconds == Decided.ImpactSeconds
+			&& F->Outcome.Damage == Decided.Damage && F->Outcome.Impact.HalfExtent == Decided.Impact.HalfExtent && F->Outcome.Rest.Equals(Decided.Rest, 0.0));
+		for (int32 I = 0; I < 120; ++I)
+		{
+			R.Advance(SRDt);
+		}
+		const FGLImpactRecord* East = R.Structures->GetImpacts().FindByPredicate([](const FGLImpactRecord& I) { return I.Part == SRDeckEast; });
+		TestTrue(TEXT("it hit with the decided damage, once"), East && East->Damage == Decided.Damage && R.Count(TEXT("Event.Structure.Impact")) == 2);
+		AGLStructurePart* Deck = R.Structures->FindPart(SRId(SRCarport), SRDeckEast);
+		TestTrue(TEXT("and rests where it was decided"), Deck && Deck->GetActorLocation().Equals(Decided.Rest.GetLocation(), 0.01));
+		TestFalse(TEXT("the warden, outside the decided volume, is untouched (a 2 m margin re-plan would have caught it)"), R.Placements->IsEncounterResolved(SRId(SRWarden)));
+	}
+	Tuning = Kept;
+	IFileManager::Get().Delete(*UGLSaveSubsystem::SlotPath(SRSlot));
 	return true;
 }
 
