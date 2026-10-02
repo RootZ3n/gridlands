@@ -31,7 +31,7 @@ AGLCreature::AGLCreature()
 	PrimaryActorTick.bCanEverTick = true;
 	AIControllerClass = AAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-	GetCapsuleComponent()->InitCapsuleSize(40.f, 60.f);
+	GetCapsuleComponent()->InitCapsuleSize(static_cast<float>(GLCreatureRules::CapsuleRadiusCm), static_cast<float>(GLCreatureRules::CapsuleHalfHeightCm)); // P10: shared with model impacts
 	Health = CreateDefaultSubobject<UGLHealthComponent>(TEXT("Health"));
 	Derez = CreateDefaultSubobject<UGLDerezComponent>(TEXT("Derez"));
 	// A creature carries its own navigation (ADR-0029), so it paths wherever it is, player or not.

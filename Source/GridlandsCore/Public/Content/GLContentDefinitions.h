@@ -396,6 +396,11 @@ struct GRIDLANDSCORE_API FGLCollapseTuningDef
 	UPROPERTY() double DamageMax = 0.0;
 	/** Starting tilt of a topple (a perfectly upright piece would never start). */
 	UPROPERTY() double ToppleStartDegrees = 5.0;
+	/**
+	 * P10 (ADR-0038): the physical severity (metres fallen x the material's impactScale) at which an impact pins a
+	 * creature whose definition lists Neutralize.Pinned. Gameplay tuning, not an architectural constant.
+	 */
+	UPROPERTY() double PinMinSeverity = 0.0;
 };
 
 /** Provisional noise tuning (P6): one authoritative world-noise model. */

@@ -4,6 +4,8 @@
 // Room x -2000..2000, y -1500..1500. Hall x < -400 (entrance: west wall gap y 0..800); arena x > -400 (main door:
 // divider gap y -800..0); north corridor y 800..1500 in the hall's part, open to the arena through the divider's
 // north gap. The corridor's grate strip is the one noisy floor, and the fan beside it masks noise while it sounds.
+// P10 (29): the ordinary P6 carport in the arena's north half (posts at x 600, y 400/600; deck_west x 600..800,
+// deck_east x 800..1000, y 400..600, 2.5 m up), clear of both P9 routes and the cage zone. Unchanged structure data.
 { TEXT("structure"), TEXT("structure.proof.wall_8m"), -1600, 1400, 175, 0, TEXT("") },
 { TEXT("structure"), TEXT("structure.proof.wall_8m"), -800, 1400, 213, 0, TEXT("") },
 { TEXT("structure"), TEXT("structure.proof.wall_8m"), 0, 1400, 252, 0, TEXT("") },
@@ -33,3 +35,4 @@
 { TEXT("mechanism"), TEXT("mechanism.proof.cage"), 2300, -800, 66, 0, TEXT("") },
 { TEXT("mechanism"), TEXT("mechanism.proof.fan"), -900, 1150, 195, 0, TEXT("") },
 { TEXT("nav_region"), TEXT("navregion.proof.room"), 0, 0, 216, 0, TEXT("") },
+{ TEXT("structure"), TEXT("structure.modern.carport"), 700, 500, 230, 0, TEXT("") },
