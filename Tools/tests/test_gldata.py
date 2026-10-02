@@ -103,6 +103,12 @@ class RuleTests(unittest.TestCase):
         rules = self.box.rules()
         self.assertIn(rule, rules, f"expected {rule}, got {sorted(rules)}")
 
+    def test_str4_structure_reach_inside_its_cell(self):
+        # P10: the edge carport stands 2 m inside the origin/lots boundary; 2 m further its decks could hit across it.
+        self.assertNotIn("STR-4", self.box.rules())
+        self.box.edit("placement.origin.structure_carport_edge", lambda d: d["transform"].update(location=[50900.0, 2000.0, 0.0]))
+        self.assertRule("STR-4")
+
     def test_id1_bad_id(self):
         self.box.edit("item.material.copper_wire", lambda d: d.update(id="item.material.Copper"))
         self.assertRule("ID-1")
