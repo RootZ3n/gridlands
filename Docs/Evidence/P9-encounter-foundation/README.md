@@ -219,3 +219,8 @@ P9 changed code the P8 suite anchors on (`bDefeated` became the outcome), so its
   boundaries, are not exercised yet.
 - **The environmental route's P10 half is still open:** structural collapse as neutralization, and the
   mid-fall debt.
+
+## Closure
+**Operator-APPROVED; P9 GREEN 2026-10-02.** PR #31 merged into `master` by merge commit, and the merge
+commit is tagged `p9-encounter-foundation`. Historical tags are unchanged. P10 (structural environmental
+resolution) is proposed for operator review and NOT started.
