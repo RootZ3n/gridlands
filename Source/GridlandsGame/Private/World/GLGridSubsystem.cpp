@@ -3,6 +3,7 @@
 
 #include "Building/GLBuildingSubsystem.h"
 #include "Structure/GLStructureSubsystem.h"
+#include "World/GLWinchesterHouse.h"
 #include "Content/GLContent.h"
 #include "Content/GLContentDefinitions.h"
 #include "Engine/LevelStreamingDynamic.h"
@@ -204,10 +205,25 @@ void UGLGridSubsystem::TryFinishRuntime(FName Cell, FGLLoadedCell& Entry)
 			Record.BuildPieces.Add(Piece);
 		}
 	}
+#if !UE_BUILD_SHIPPING
+	// P11 density fixture (-GLPlayerDense, dev only): a 309-piece player-built base arrives with the lots the first time,
+	// as saved facts through the real restore path (presentation over frames, captured on unload, restored on return).
+	static bool bPlayerDenseSeeded = false;
+	if (!bPlayerDenseSeeded && Record.BuildPieces.Num() == 0 && Cell == FName(TEXT("cell.outer.diner_lots")) && FParse::Param(FCommandLine::Get(), TEXT("GLPlayerDense")))
+	{
+		bPlayerDenseSeeded = true;
+		Record.BuildPieces = FGLWinchesterHouse::DensePlayerBaseSaved(FVector(75000.0, -26000.0, 0.0), 50,
+			[Terrain](const FVector2D& At) { return Terrain->HeightAt(At); }, 900000, Cell);
+		World->GetSubsystem<UGLBuildingSubsystem>()->SetNextId(900000 + Record.BuildPieces.Num());
+		UE_LOG(LogGridlands, Log, TEXT("Grid: DEV player-built density fixture seeded (%d pieces in %s)"), Record.BuildPieces.Num(), *Cell.ToString());
+	}
+#endif
 	// Authoritative first (ADR-0033): the placements' gameplay model, then the kept state on it, in
 	// this one frame. Deferred presentation is made later from the resolved model, never before.
 	World->GetSubsystem<UGLPlacementSubsystem>()->SpawnCell(Cell, true);
+	const double ApplyStart = FPlatformTime::Seconds();
 	Saves->ApplyCell(Record);
+	UE_LOG(LogGridlands, Log, TEXT("Grid: %s kept state applied in %.3f ms (%d player pieces)"), *Cell.ToString(), (FPlatformTime::Seconds() - ApplyStart) * 1000.0, Record.BuildPieces.Num());
 	if (bShowBoundaries)
 	{
 		const FGLCellDef* Def = GLContent::Get().Find<FGLCellDef>(Cell);
@@ -235,7 +251,9 @@ bool UGLGridSubsystem::UnloadCell(FName Cell)
 	// still has its full kept record: only its ground (which may have been edited) is merged.
 	if (Entry.bRuntime)
 	{
+		const double StowStart = FPlatformTime::Seconds();
 		Saves->StowCell(Cell);
+		UE_LOG(LogGridlands, Log, TEXT("Grid: %s captured in %.3f ms"), *Cell.ToString(), (FPlatformTime::Seconds() - StowStart) * 1000.0);
 	}
 	else
 	{

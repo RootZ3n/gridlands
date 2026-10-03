@@ -64,6 +64,8 @@ int32 GLVisuals::Preload()
 		}
 	});
 	Keep(LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube")));
+	// P11: the blockout material every frame and blockout box paints with (a player structure presents hundreds of them).
+	Keep(LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial")));
 	Keep(LoadObject<UMaterialInterface>(nullptr, CorruptionMaterialPath));
 	UE_LOG(LogGridlands, Log, TEXT("Visuals: %d art objects resident (%.1f ms)"), Resident.Num(), (FPlatformTime::Seconds() - Start) * 1000.0);
 	return Resident.Num();

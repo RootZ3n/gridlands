@@ -269,39 +269,58 @@ int32 UGLStructureSubsystem::PumpPresentation(const FVector& Where, double Budge
 			Actor->Destroy();
 		}
 	}
-	auto DistanceSq = [this, &Where](const TPair<FName, FName>& Entry)
+	// P11: one pass to find every waiting part (parts indexed by name once per structure), then nearest first. The
+	// pre-P11 pump rescanned every waiting entry per part and found each part by a linear search: harmless for authored
+	// structures (a dozen parts), quadratic for a 300-piece player structure (9 ms for one unit).
+	TMap<FName, TMap<FName, FGLStructurePartRuntime*>> Index;
+	TArray<TPair<double, int32>> Order;
+	Order.Reserve(Pending.Num());
+	for (int32 I = 0; I < Pending.Num(); ++I)
 	{
-		const FGLStructureRuntime* Structure = Structures.Find(Entry.Key);
-		const FGLStructurePartRuntime* Part = Structure ? Structure->Parts.FindByPredicate([&Entry](const FGLStructurePartRuntime& P) { return P.Name == Entry.Value; }) : nullptr;
-		return Part ? FVector::DistSquared2D(Part->Piece.Location, Where) : 0.0; // stale entries go first (and are dropped)
-	};
-	while (Pending.Num() > 0)
-	{
-		int32 Nearest = 0;
-		double Best = DistanceSq(Pending[0]);
-		for (int32 I = 1; I < Pending.Num(); ++I)
+		FGLStructurePartRuntime* Part = nullptr;
+		if (FGLStructureRuntime* Structure = Structures.Find(Pending[I].Key))
 		{
-			const double D = DistanceSq(Pending[I]);
-			if (D < Best)
+			TMap<FName, FGLStructurePartRuntime*>* Parts = Index.Find(Pending[I].Key);
+			if (!Parts)
 			{
-				Best = D;
-				Nearest = I;
+				Parts = &Index.Add(Pending[I].Key);
+				for (FGLStructurePartRuntime& P : Structure->Parts)
+				{
+					Parts->Add(P.Name, &P);
+				}
 			}
+			Part = Parts->FindRef(Pending[I].Value);
 		}
-		const bool bNear = Best <= NearCm * NearCm;
+		Order.Add({ Part ? FVector::DistSquared2D(Part->Piece.Location, Where) : 0.0, I }); // stale entries go first (and are dropped)
+	}
+	Order.Sort([](const TPair<double, int32>& A, const TPair<double, int32>& B) { return A.Key != B.Key ? A.Key < B.Key : A.Value < B.Value; });
+	TArray<bool> Done;
+	Done.Init(false, Pending.Num());
+	for (const TPair<double, int32>& Next : Order)
+	{
+		const bool bNear = Next.Key <= NearCm * NearCm;
 		if (!bNear && (BudgetSeconds < 0.0 || (BudgetSeconds > 0.0 && FPlatformTime::Seconds() - Start >= BudgetSeconds)))
 		{
 			break;
 		}
-		const TPair<FName, FName> Entry = Pending[Nearest];
-		Pending.RemoveAtSwap(Nearest);
+		Done[Next.Value] = true;
+		const TPair<FName, FName>& Entry = Pending[Next.Value];
 		FGLStructureRuntime* Structure = Structures.Find(Entry.Key);
-		FGLStructurePartRuntime* Part = Structure ? Structure->Find(Entry.Value) : nullptr;
+		FGLStructurePartRuntime* Part = Structure ? Index.FindRef(Entry.Key).FindRef(Entry.Value) : nullptr;
 		if (Part && !Part->Actor.IsValid() && Present(*Structure, *Part))
 		{
 			++Made;
 		}
 	}
+	TArray<TPair<FName, FName>> Waiting;
+	for (int32 I = 0; I < Pending.Num(); ++I)
+	{
+		if (!Done[I])
+		{
+			Waiting.Add(Pending[I]);
+		}
+	}
+	Pending = MoveTemp(Waiting);
 	return Made;
 }
 

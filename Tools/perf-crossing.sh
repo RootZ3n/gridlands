@@ -8,6 +8,7 @@
 #   -w: whole-cell navigation (invokers off) instead of localized navigation (ADR-0029)
 #   -t: also run the 1 km terrain harness (gl.Perf.Terrain 1024)
 #   -d: the P7 dense authored stress fixture in the lots (-GLDenseProof, dev only); results are named dense-*
+#   -p: the P11 player-built density fixture (-GLPlayerDense, dev only, 309 pieces); results are named player-* (or <nav>player-*)
 #   -b: the P8 production-density town block on the route (-GLTownBlock, dev only); results are named town-*
 #       (with -d as well: towndense-*, the town block and the P7 strip together)
 #   "resume" launches from the save that "teleport" leaves in the second cell (quit autosaves).
@@ -15,13 +16,14 @@ set -uo pipefail
 . "$(dirname "$0")/lib/common.sh"
 resolve_engine_root
 UE_EDITOR="$ENGINE_ROOT/Engine/Binaries/Linux/UnrealEditor"
-NAV=local; EXTRA=(); TERRAIN=0; DENSE=0; TOWN=0
-while getopts "wtdb" OPT; do
+NAV=local; EXTRA=(); TERRAIN=0; DENSE=0; TOWN=0; PLAYER=0
+while getopts "wtdbp" OPT; do
 	case $OPT in
 		w) NAV=whole; EXTRA=(-ini:Engine:[/Script/NavigationSystem.NavigationSystemV1]:bGenerateNavigationOnlyAroundNavigationInvokers=False) ;;
 		t) TERRAIN=1 ;;
 		d) DENSE=1 ;;
 		b) TOWN=1 ;;
+		p) PLAYER=1 ;;
 		*) exit 2 ;;
 	esac
 done
@@ -34,6 +36,12 @@ if [ $TOWN -eq 1 ]; then
 	[ "$NAV" = local ] || [ "$NAV" = dense ] || result FAIL "-b measures the canonical (localized) navigation only"
 	[ "$NAV" = dense ] && NAV=towndense || NAV=town
 	EXTRA+=(-GLTownBlock)
+fi
+if [ $PLAYER -eq 1 ]; then
+	# P11: the 309-piece player-built density fixture in the lots (-GLPlayerDense); results are named <nav>player-*
+	[ "$NAV" = whole ] && result FAIL "-p measures the canonical (localized) navigation only"
+	[ "$NAV" = local ] && NAV=player || NAV="${NAV}player"
+	EXTRA+=(-GLPlayerDense)
 fi
 [ -n "${GRIDLANDS_PERF_ARGS:-}" ] && EXTRA+=(${GRIDLANDS_PERF_ARGS}) # e.g. the heightfield spike: -GLTerrainCollision=1
 MODES=("$@"); [ ${#MODES[@]} -eq 0 ] && MODES=(straight reversal sprint teleport resume roundtrips)

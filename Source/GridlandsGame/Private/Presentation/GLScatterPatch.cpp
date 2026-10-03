@@ -89,7 +89,7 @@ void AGLScatterPatch::Rebuild()
 		return;
 	}
 	const UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>();
-	const UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>();
+	// P11: player pieces live in the structural model, so these footprints hold them too (one pass, oriented).
 	Instances->ClearInstances();
 	// Structure footprints near the patch, once (not every part in the world per tuft).
 	TArray<FGLFootprint> Footprints;
@@ -110,7 +110,7 @@ void AGLScatterPatch::Rebuild()
 		const double Yaw = Random.FRandRange(0.0, 360.0);
 		const double Scale = Def->Scale * Random.FRandRange(0.75, 1.3);
 		const FVector2D At = Centre + FVector2D(FMath::Cos(Angle), FMath::Sin(Angle)) * Distance;
-		if (Terrain->EditedAt(At) > ExposedCm || Footprints.ContainsByPredicate([&At](const FGLFootprint& F) { return F.ContainsXY(At); }) || (Building && Building->IsUnderStructure(At)))
+		if (Terrain->EditedAt(At) > ExposedCm || Footprints.ContainsByPredicate([&At](const FGLFootprint& F) { return F.ContainsXY(At); }))
 		{
 			continue;
 		}

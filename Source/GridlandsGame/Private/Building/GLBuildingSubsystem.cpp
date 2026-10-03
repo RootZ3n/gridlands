@@ -334,7 +334,10 @@ bool UGLBuildingSubsystem::Snap(FName Def, const FVector& Aim, int32 YawStep, FG
 
 bool UGLBuildingSubsystem::IsUnderStructure(const FVector2D& World) const
 {
-	return GLStructureRules::IsUnderStructure(GLContent::Get(), GetPieces(), World);
+	// The structural model holds player pieces too: its footprints are oriented and need no copy of the piece list (the
+	// terrain asks per vertex, vegetation per tuft).
+	const UGLStructureSubsystem* Structures = GetWorld()->GetSubsystem<UGLStructureSubsystem>();
+	return Structures && Structures->IsUnderStructure(World, 50.0);
 }
 
 TMap<int32, double> UGLBuildingSubsystem::Support() const
