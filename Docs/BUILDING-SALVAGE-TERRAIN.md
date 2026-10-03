@@ -1,6 +1,7 @@
 # Building, salvage, discovery and terrain
 
-Status: design. Building v0 and terraform v0 are built (ADR-0022, ADR-0024). Structural salvage,
+Status: design. Building v0 and terraform v0 are built (ADR-0022, ADR-0024). **Building v1 is in its pre-P11 design
+gate** ([BUILDING-V1-DESIGN.md](BUILDING-V1-DESIGN.md), a proposal awaiting operator approval). Structural salvage,
 collapse and trees are built as of P6 (ADR-0030). Decision records:
 [ADR-0004](ADR/0004-snap-socket-building.md) (snap sockets),
 [ADR-0016](ADR/0016-world-settings-and-yield-categories.md) (yields),
@@ -33,8 +34,12 @@ player building (`structure.*`, parts are `buildpiece.*`).
   provisional) and becomes a log you gather through the same salvage pipeline.
 - **Every hit, break and collapse makes authoritative noise** ([ADR-0031](ADR/0031-authoritative-world-noise.md)).
 - **All numbers are provisional data** (`tuning.world.physical`, salvage yields).
-- **Player-built structures are unchanged for now** (ADR-0024). Whether they adopt physical
-  collapse is a future operator decision.
+- **Player-built structures are unchanged in the build for now** (ADR-0024).
+  - **Operator decision 2026-10-03: player-built collapse is APPROVED IN PRINCIPLE for Building v1.** Player-built
+    structures obey the same structural language as authored ones: no "authored physics versus player magic".
+  - A player structure that loses required support may collapse by the same canonical rules.
+  - **The structural preview is part of that contract:** a player must not discover an opaque support rule only
+    after finishing a large house. GREEN / YELLOW / RED derive from the same rules as the result.
 
 ## 2. Discovery and knowledge
 
@@ -65,8 +70,20 @@ with several sources:
 - **Structural support, Valheim-like:** outward and upward spans have support
   limits, and better materials allow larger structures. Support values belong
   to materials and pieces as data. Integrity propagates from grounded pieces.
-  Not built during bootstrap, but **the piece schema carries material and
-  support fields from M2** so content never needs re-authoring.
+  **Built in M10** for player pieces ([ADR-0024](ADR/0024-building-v0-structural-model.md), v0 numbers
+  provisional), and for authored structures with deterministic collapse in P6/P10
+  ([ADR-0030](ADR/0030-structural-salvage-and-deterministic-collapse.md),
+  [ADR-0038](ADR/0038-structural-environmental-resolution.md)). *(The 2026-09-24 text said "not built during
+  bootstrap"; the piece schema carried material and support fields from M2 as planned.)*
+- **Building v1 direction (operator decisions 2026-10-03; design in [BUILDING-V1-DESIGN](BUILDING-V1-DESIGN.md),
+  a proposal):**
+  - FRAME → (optional, later) ELECTRICAL → FINISH;
+  - appearance from component form + material + finish, with no era-compatibility rules;
+  - careful, destructive and collapse salvage paths with different recovery;
+  - no weight-based encumbrance (stack and slot limits);
+  - minimal shared base storage inside a recognized base;
+  - player ownership saved so regeneration can never overwrite it;
+  - open-excavation basements within one height per vertex.
 - **Repair of buildings** (Damaged -> Intact, with materials) is a player
   action and distinct from glitch repair.
 - NICE comments on build quality, mocking it or grudgingly praising it. That
@@ -82,30 +99,16 @@ Terrain manipulation is a **core desired feature**:
 
 Terrain edits are world changes and must persist (terrain deltas in the save).
 
-**The terrain technology is an open, expensive-to-reverse decision** that
-must be made before the home region is authored (before M3). Options:
+**Resolved.** Terrain is a chunked runtime heightfield ([ADR-0022](ADR/0022-terrain-chunked-heightfield.md),
+approved after spike S1), with heightfield collision ([ADR-0035](ADR/0035-terrain-heightfield-collision-spike.md))
+and one surface shared by rendering, collision and gameplay (`GLTerrainSurface`, tag `terrain-surface-agreement`).
+Cells are 1 km at 1 m resolution in 64 m chunks ([ADR-0027](ADR/0027-canonical-grid-scale.md)).
+- **One height per vertex.** Dig, raise and flatten are height edits. Caves, tunnels, overhangs and cavities under
+  intact terrain are authored geometry or need a new ADR.
+- **Basements (operator, 2026-10-03):** an open excavation with foundation, floor and retaining walls inside it is
+  supported when the dug volume stays representable as one height per vertex. Sideways excavation, overhangs and
+  true underground cavities are NOT authorized without that new ADR.
 
-| Option | Runtime deform | Streaming / 1 km cells | Authoring | Risk |
-|---|---|---|---|---|
-| UE Landscape (heightfield) with runtime modification | not supported natively for gameplay-time sculpting; edit layers are editor-oriented | good (World Partition landscape) | best-in-class tools | high: fights the engine |
-| Custom chunked heightfield (dynamic mesh / RealtimeMesh-style) | yes; Valheim-like height edits | chunks align with cells | custom tools, import heightmaps | medium: our code, bounded scope |
-| Voxel terrain (third-party voxel plugin) | yes, including caves and overhangs | plugin-dependent | plugin tools | licence, dependency and headless-test risk |
-| Landscape for the base + a deformable overlay volume only where sculpting is allowed | partial | good | good | medium: two terrain systems |
-
-**Approved (E7): a tightly time-boxed spike alongside M2**, using small
-executable prototypes, not production terrain. It compares viable approaches
-on:
-- runtime deformation (digging/lowering, raising/building);
-- persistence representation and size;
-- streaming / World Partition compatibility;
-- collision;
-- navigation/AI consequences;
-- interaction with building placement;
-- performance;
-- Linux / UE 5.8.3 support;
-- deterministic testing;
-- agent maintainability;
-- implications for the JSON placement layer (ADR-0018).
-
-It ends in an **ADR recommendation with evidence** ([ADR-0022](ADR/0022-terrain-chunked-heightfield.md), **approved: a chunked runtime heightfield**; tunnels, sewers and caves are authored geometry), and production terrain work waits for **operator approval** of
-that choice.
+*History: until S1 this section held the open terrain-technology comparison (UE Landscape, custom heightfield,
+voxel plugin, Landscape plus overlay) and the spike's criteria. They are in
+[ADR-0022](ADR/0022-terrain-chunked-heightfield.md) and [Evidence/S1-terrain](Evidence/S1-terrain/README.md).*

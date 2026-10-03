@@ -1,0 +1,27 @@
+== p10-towndense-traced start load=1.55 gpu=2 07:38:26
+  towndense-crossing-reversal.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndense-*)
+== p10-towndense-traced end load=5.43 07:41:04
+== p10-towndense-r1 start load=2.89 gpu=1 07:42:07
+  towndense-crossing-reversal.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndense-*)
+== p10-towndense-r1 end load=4.37 07:44:42
+== p10-local-r1 start load=2.57 gpu=0 07:45:25
+  local-crossing-reversal.json: done
+  1 result(s) checked against budgets.json: within budget
+RESULT: PASS crossing runs finished (Saved/Perf/local-*)
+== p10-local-r1 end load=6.92 07:48:00
+== p5-local-r1 start load=2.98 gpu=1 07:49:53
+  local-crossing-reversal.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/local-*)
+== p5-local-r1 end load=14.92 07:52:32
+== p10-local-r2 start load=2.64 gpu=0 07:55:15
+  local-crossing-reversal.json: done
+  1 result(s) checked against budgets.json: within budget
+RESULT: PASS crossing runs finished (Saved/Perf/local-*)
+== p10-local-r2 end load=11.02 07:57:54
+== p5-local-r2 start load=2.78 gpu=1 08:00:27
+  local-crossing-reversal.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/local-*)
+== p5-local-r2 end load=4.62 08:03:03
+PREP11DONE

@@ -1,0 +1,3 @@
+TimingInsights.ExportThreads <repo>/Saved/pre-p11/ins/threads.csv
+TimingInsights.ExportTimers <repo>/Saved/pre-p11/ins/timers.csv
+TimingInsights.ExportTimingEvents <repo>/Saved/pre-p11/ins/gt_ticks.csv -columns=ThreadName,TimerName,StartTime,EndTime,Duration,Depth -threads=GameThread -timers=FEngineLoop::Tick

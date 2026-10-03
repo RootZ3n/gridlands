@@ -137,12 +137,19 @@ Zenny waits.
 resolution both satisfy progression and give the major dungeon reward. Different dialogue and
 achievements are fine; environmental resolution is never a lesser victory.
 
-**Open question (for the operator, not decided):** [ADR-0017](ADR/0017-pehlichi-deals-zero-damage.md)
-says Pehlichi deals zero **direct** damage, and its enforcement test asserts that no Pehlichi action
-produces a damage event. When Pehlichi activates a mechanism that harms or neutralizes a boss,
-attribution needs a rule. For example: the environment is the instigator, or neutralization is a
-distinct non-damage outcome (contained, trapped, disabled). ADR-0017 is unchanged until the operator
-decides.
+**Attribution when Pehlichi triggers a mechanism: partly answered, the rest DEFERRED.**
+[ADR-0017](ADR/0017-pehlichi-deals-zero-damage.md) is unchanged and canonical: Pehlichi deals zero **direct**
+damage, and its enforcement test asserts that no Pehlichi action produces a damage event.
+- **Answered by P9 (ADR-0037):** neutralization is a distinct non-damage outcome (`Neutralized`, with
+  `Neutralize.Contained` or `Neutralize.Pinned`), not damage. Pehlichi operating a containment mechanism
+  neutralizes without dealing damage.
+- **Prepared by P10 (ADR-0038):** a structural impact stores its **cause** and its **credit** separately.
+- **DEFERRED (operator, 2026-10-03):** who is credited when Pehlichi's action triggers a structural failure that
+  *damages* a creature. It is decided when a real gameplay system lets Pehlichi trigger structural failure. No
+  additional rule is required now.
+
+*History: this was recorded on 2026-09-27 as an open operator question, with "the environment is the
+instigator" and "a distinct non-damage outcome" as candidate rules.*
 
 ### 1.5 Designed solutions exist; systemic solutions are legitimate
 **DESIGNED SOLUTIONS EXIST. SYSTEMIC SOLUTIONS ARE LEGITIMATE WHEN NORMAL GAME RULES PRODUCE AN
