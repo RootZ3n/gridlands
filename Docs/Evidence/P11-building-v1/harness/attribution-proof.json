@@ -1,0 +1,301 @@
+{
+	"checks": [
+		{
+			"frame": 120,
+			"engineFrame": 120,
+			"ms": 62.778949970379472,
+			"xMetres": 0,
+			"streamingMs": 0,
+			"gameThreadMs": 62.966999053955078,
+			"renderThreadMs": 3.6019999980926514,
+			"rhiThreadMs": 1.2580000162124634,
+			"garbageCollected": false,
+			"levelStreamingPending": false,
+			"attribution": "v2-same-frame",
+			"injected": "gameThreadSpin60ms",
+			"injectedAtFrame": 120,
+			"pass": true,
+			"observedLagSamples": 0
+		},
+		{
+			"frame": 200,
+			"engineFrame": 200,
+			"ms": 26.195470942184329,
+			"xMetres": 0,
+			"streamingMs": 0,
+			"gameThreadMs": 25.879999160766602,
+			"renderThreadMs": 3.1329998970031738,
+			"rhiThreadMs": 0.85799998044967651,
+			"garbageCollected": true,
+			"levelStreamingPending": false,
+			"attribution": "v2-same-frame",
+			"injected": "forcedGarbageCollection",
+			"injectedAtFrame": 200,
+			"pass": true,
+			"observedLagSamples": 0
+		},
+		{
+			"frame": 282,
+			"engineFrame": 282,
+			"ms": 62.938036862760782,
+			"xMetres": 0,
+			"streamingMs": 0,
+			"gameThreadMs": 2.5299999713897705,
+			"renderThreadMs": 62.903999328613281,
+			"rhiThreadMs": 0.70399999618530273,
+			"garbageCollected": false,
+			"levelStreamingPending": false,
+			"attribution": "v2-same-frame",
+			"injected": "renderThreadSpin60ms",
+			"injectedAtFrame": 280,
+			"pass": true,
+			"observedLagSamples": 0
+		},
+		{
+			"frame": 363,
+			"engineFrame": 363,
+			"ms": 60.78349007293582,
+			"xMetres": 0,
+			"streamingMs": 0,
+			"gameThreadMs": 1.9249999523162842,
+			"renderThreadMs": 60.037998199462891,
+			"rhiThreadMs": 60.861000061035156,
+			"garbageCollected": false,
+			"levelStreamingPending": false,
+			"attribution": "v2-same-frame",
+			"injected": "rhiThreadSpin60ms",
+			"injectedAtFrame": 360,
+			"pass": true,
+			"observedLagSamples": 0
+		}
+	],
+	"renderLag": 0,
+	"rhiLag": 0,
+	"rawSamples": [
+		{
+			"frame": 117,
+			"deltaMsAtTicker": 4.6488898806273937,
+			"gcCount": 0,
+			"gameMs": 3.8519999980926514,
+			"renderMs": 4.3010001182556152,
+			"rhiMs": 0.91100001335144043
+		},
+		{
+			"frame": 118,
+			"deltaMsAtTicker": 4.7354151029139757,
+			"gcCount": 0,
+			"gameMs": 3.5429999828338623,
+			"renderMs": 4.4819998741149902,
+			"rhiMs": 1.156999945640564
+		},
+		{
+			"frame": 119,
+			"deltaMsAtTicker": 4.4531750027090311,
+			"gcCount": 0,
+			"gameMs": 3.4000000953674316,
+			"renderMs": 4.0679998397827148,
+			"rhiMs": 1.0010000467300415
+		},
+		{
+			"frame": 120,
+			"deltaMsAtTicker": 4.2036951053887606,
+			"gcCount": 0,
+			"gameMs": 62.966999053955078,
+			"renderMs": 3.6019999980926514,
+			"rhiMs": 1.2580000162124634
+		},
+		{
+			"frame": 121,
+			"deltaMsAtTicker": 62.778949970379472,
+			"gcCount": 0,
+			"gameMs": 2.6419999599456787,
+			"renderMs": 3.9049999713897705,
+			"rhiMs": 1.2580000162124634
+		},
+		{
+			"frame": 122,
+			"deltaMsAtTicker": 2.7918559499084949,
+			"gcCount": 0,
+			"gameMs": 2.9519999027252197,
+			"renderMs": 3.6080000400543213,
+			"rhiMs": 1.0770000219345093
+		},
+		{
+			"frame": 123,
+			"deltaMsAtTicker": 3.1761059071868658,
+			"gcCount": 0,
+			"gameMs": 2.7890000343322754,
+			"renderMs": 3.75,
+			"rhiMs": 1.9769999980926514
+		},
+		{
+			"frame": 197,
+			"deltaMsAtTicker": 4.2121938895434141,
+			"gcCount": 0,
+			"gameMs": 2.4240000247955322,
+			"renderMs": 2.8020000457763672,
+			"rhiMs": 0.7850000262260437
+		},
+		{
+			"frame": 198,
+			"deltaMsAtTicker": 3.5954501945525408,
+			"gcCount": 0,
+			"gameMs": 2.2829999923706055,
+			"renderMs": 2.8429999351501465,
+			"rhiMs": 0.62999999523162842
+		},
+		{
+			"frame": 199,
+			"deltaMsAtTicker": 3.860814031213522,
+			"gcCount": 0,
+			"gameMs": 2.1779999732971191,
+			"renderMs": 2.6649999618530273,
+			"rhiMs": 0.63999998569488525
+		},
+		{
+			"frame": 200,
+			"deltaMsAtTicker": 3.6278399638831615,
+			"gcCount": 1,
+			"gameMs": 25.879999160766602,
+			"renderMs": 3.1329998970031738,
+			"rhiMs": 0.85799998044967651
+		},
+		{
+			"frame": 201,
+			"deltaMsAtTicker": 26.195470942184329,
+			"gcCount": 1,
+			"gameMs": 2.3550000190734863,
+			"renderMs": 3.1110000610351562,
+			"rhiMs": 0.85799998044967651
+		},
+		{
+			"frame": 202,
+			"deltaMsAtTicker": 2.3614959791302681,
+			"gcCount": 1,
+			"gameMs": 2.5039999485015869,
+			"renderMs": 2.9690001010894775,
+			"rhiMs": 1.0069999694824219
+		},
+		{
+			"frame": 203,
+			"deltaMsAtTicker": 2.4264301173388958,
+			"gcCount": 1,
+			"gameMs": 2.3250000476837158,
+			"renderMs": 3.0610001087188721,
+			"rhiMs": 2.0269999504089355
+		},
+		{
+			"frame": 279,
+			"deltaMsAtTicker": 3.8208907935768366,
+			"gcCount": 1,
+			"gameMs": 2.3039999008178711,
+			"renderMs": 2.6530001163482666,
+			"rhiMs": 0.73500001430511475
+		},
+		{
+			"frame": 280,
+			"deltaMsAtTicker": 3.7174681201577187,
+			"gcCount": 1,
+			"gameMs": 2.2850000858306885,
+			"renderMs": 2.6359999179840088,
+			"rhiMs": 0.83799999952316284
+		},
+		{
+			"frame": 281,
+			"deltaMsAtTicker": 3.8215420208871365,
+			"gcCount": 1,
+			"gameMs": 2.2460000514984131,
+			"renderMs": 2.7049999237060547,
+			"rhiMs": 0.6589999794960022
+		},
+		{
+			"frame": 282,
+			"deltaMsAtTicker": 3.8394699804484844,
+			"gcCount": 1,
+			"gameMs": 2.5299999713897705,
+			"renderMs": 62.903999328613281,
+			"rhiMs": 0.70399999618530273
+		},
+		{
+			"frame": 283,
+			"deltaMsAtTicker": 62.938036862760782,
+			"gcCount": 1,
+			"gameMs": 2.130000114440918,
+			"renderMs": 2.6170001029968262,
+			"rhiMs": 0.73400002717971802
+		},
+		{
+			"frame": 284,
+			"deltaMsAtTicker": 3.0672361608594656,
+			"gcCount": 1,
+			"gameMs": 2.2839999198913574,
+			"renderMs": 2.753000020980835,
+			"rhiMs": 0.68999999761581421
+		},
+		{
+			"frame": 285,
+			"deltaMsAtTicker": 5.1972828805446625,
+			"gcCount": 1,
+			"gameMs": 2.0680000782012939,
+			"renderMs": 2.6180000305175781,
+			"rhiMs": 0.67100000381469727
+		},
+		{
+			"frame": 359,
+			"deltaMsAtTicker": 3.6137029528617859,
+			"gcCount": 1,
+			"gameMs": 2.1830000877380371,
+			"renderMs": 2.7639999389648438,
+			"rhiMs": 0.64200001955032349
+		},
+		{
+			"frame": 360,
+			"deltaMsAtTicker": 3.8837229367345572,
+			"gcCount": 1,
+			"gameMs": 2.2230000495910645,
+			"renderMs": 2.5769999027252197,
+			"rhiMs": 0.75800001621246338
+		},
+		{
+			"frame": 361,
+			"deltaMsAtTicker": 3.9134151302278042,
+			"gcCount": 1,
+			"gameMs": 2.4059998989105225,
+			"renderMs": 2.6180000305175781,
+			"rhiMs": 0.73600000143051147
+		},
+		{
+			"frame": 362,
+			"deltaMsAtTicker": 3.9558019489049911,
+			"gcCount": 1,
+			"gameMs": 2.0889999866485596,
+			"renderMs": 2.997999906539917,
+			"rhiMs": 0.70200002193450928
+		},
+		{
+			"frame": 363,
+			"deltaMsAtTicker": 4.1078589856624603,
+			"gcCount": 1,
+			"gameMs": 1.9249999523162842,
+			"renderMs": 60.037998199462891,
+			"rhiMs": 60.861000061035156
+		},
+		{
+			"frame": 364,
+			"deltaMsAtTicker": 60.78349007293582,
+			"gcCount": 1,
+			"gameMs": 2.0139999389648438,
+			"renderMs": 2.5880000591278076,
+			"rhiMs": 2.4040000438690186
+		},
+		{
+			"frame": 365,
+			"deltaMsAtTicker": 5.370039027184248,
+			"gcCount": 1,
+			"gameMs": 2.0810000896453857,
+			"renderMs": 2.752000093460083,
+			"rhiMs": 0.60100001096725464
+		}
+	],
+	"pass": true
+}

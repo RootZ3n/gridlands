@@ -22,6 +22,8 @@
 #include "NavigationSystem.h"
 #include "NavMesh/RecastNavMesh.h"
 #include "RenderTimer.h"
+#include "RenderingThread.h"
+#include "RHICommandList.h"
 #include "Save/GLWorldSave.h"
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonWriter.h"
@@ -327,6 +329,82 @@ namespace GLPerf
 	 * Modes: straight (origin centre -> deep in the lots), reversal (turn back while the lots load,
 	 * then cross), sprint (straight at 3x speed). Writes Saved/Perf/crossing-<mode>.json and quits.
 	 */
+	/**
+	 * Hitch attribution by frame (pre-P11 fix). The core ticker runs after FFrameEndSync, so at ticker N
+	 * FApp::GetDeltaTime() is the duration of frame N-1 (start of N-1 to start of N), while everything frame N-1 did on
+	 * the game thread (its world tick, a GC there, its streaming step, GGameThreadTime computed in its viewport draw) was
+	 * already sampled at ticker N-1. The render and RHI threads run on their own clocks; the game thread waits for them
+	 * at FFrameEndSync before its ticker, so their times for the frame a render or RHI stall made slow are already set
+	 * at that frame's own ticker (lag 0, measured). Each sample is kept in a short ring and a frame is finalized only
+	 * when every sample it needs exists. The lags are proven by gl.Perf.AttributionProof (known stalls injected on each
+	 * thread land in the record of the frame they made slow, on their own metric).
+	 */
+	struct FFrameAttribution
+	{
+		static constexpr int32 RenderLag = 0;
+		static constexpr int32 RhiLag = 0;
+		static constexpr int32 MaxLag = 0;
+
+		struct FSample
+		{
+			int32 Frame = 0;
+			uint64 EngineFrame = 0;
+			double DeltaMs = 0.0;      // FApp delta at this ticker: the PREVIOUS frame's duration
+			int32 Gc = 0;              // GC count when this frame's ticker ran
+			double GameMs = 0.0, RenderMs = 0.0, RhiMs = 0.0, GpuMs = 0.0;
+			double StreamingMs = 0.0, XMetres = 0.0;
+			bool bStreamingPending = false;
+		};
+		/** One finalized frame: its own duration and the work that made it. */
+		struct FFrame
+		{
+			FSample Own;
+			double DurationMs = 0.0;
+			bool bGarbageCollected = false;
+			double RenderMs = 0.0, RhiMs = 0.0;
+		};
+
+		TArray<FSample> Ring;
+		int32 LastGc = 0;
+
+		/** Adds this ticker's sample; returns true with OutFrame when an earlier frame is complete. */
+		bool Push(const FSample& Sample, FFrame& OutFrame)
+		{
+			Ring.Add(Sample);
+			// Frame F needs the sample before it (GC count), its own, the next (its duration) and F + each lag.
+			if (Ring.Num() < FMath::Max(3, 2 + MaxLag))
+			{
+				return false;
+			}
+			const FSample& Prev = Ring[0];
+			const FSample& Own = Ring[1];
+			OutFrame.Own = Own;
+			OutFrame.DurationMs = Ring[2].DeltaMs;
+			OutFrame.bGarbageCollected = Own.Gc != Prev.Gc;
+			OutFrame.RenderMs = Ring[1 + RenderLag].RenderMs;
+			OutFrame.RhiMs = Ring[1 + RhiLag].RhiMs;
+			Ring.RemoveAt(0);
+			return true;
+		}
+
+		static TSharedRef<FJsonObject> Json(const FFrame& F)
+		{
+			TSharedRef<FJsonObject> Hitch = MakeShared<FJsonObject>();
+			Hitch->SetNumberField(TEXT("frame"), F.Own.Frame);
+			Hitch->SetNumberField(TEXT("engineFrame"), static_cast<double>(F.Own.EngineFrame));
+			Hitch->SetNumberField(TEXT("ms"), F.DurationMs);
+			Hitch->SetNumberField(TEXT("xMetres"), F.Own.XMetres);
+			Hitch->SetNumberField(TEXT("streamingMs"), F.Own.StreamingMs);
+			Hitch->SetNumberField(TEXT("gameThreadMs"), F.Own.GameMs);
+			Hitch->SetNumberField(TEXT("renderThreadMs"), F.RenderMs);
+			Hitch->SetNumberField(TEXT("rhiThreadMs"), F.RhiMs);
+			Hitch->SetBoolField(TEXT("garbageCollected"), F.bGarbageCollected);
+			Hitch->SetBoolField(TEXT("levelStreamingPending"), F.Own.bStreamingPending);
+			Hitch->SetStringField(TEXT("attribution"), TEXT("v2-same-frame"));
+			return Hitch;
+		}
+	};
+
 	struct FCrossing
 	{
 		FString Mode;
@@ -347,7 +425,7 @@ namespace GLPerf
 		bool bArrivalLogged = false;
 		TArray<TSharedPtr<FJsonValue>> Hitches;
 		int32 GcCount = 0;
-		int32 GcSeen = 0;
+		FFrameAttribution Attribution;
 		/** P7 multi-frame presentation: per-frame presentation work, the authoritative layer's frames, and the queue. */
 		TArray<double> PresentMs;
 		TArray<double> AuthoritativeMs;
@@ -382,22 +460,25 @@ namespace GLPerf
 			Crossing.EmergencyAtStart = Terrain->GetStats().EmergencyChunks;
 		}
 		++Crossing.Frames;
-		if (Crossing.Frames > 5 && FApp::GetDeltaTime() * 1000.0 > 16.7 && Crossing.Hitches.Num() < 60)
 		{
-			// What was going on in a frame slower than 60 fps (the previous frame's work shows in this delta).
-			TSharedRef<FJsonObject> Hitch = MakeShared<FJsonObject>();
-			Hitch->SetNumberField(TEXT("frame"), Crossing.Frames);
-			Hitch->SetNumberField(TEXT("engineFrame"), static_cast<double>(GFrameCounter));
-			Hitch->SetNumberField(TEXT("ms"), FApp::GetDeltaTime() * 1000.0);
-			Hitch->SetNumberField(TEXT("xMetres"), Crossing.X / 100.0);
-			Hitch->SetNumberField(TEXT("streamingMs"), Grid->GetLastAdvanceSeconds() * 1000.0);
-			Hitch->SetNumberField(TEXT("gameThreadMs"), FPlatformTime::ToMilliseconds(GGameThreadTime));
-			Hitch->SetNumberField(TEXT("renderThreadMs"), FPlatformTime::ToMilliseconds(GRenderThreadTime));
-			Hitch->SetBoolField(TEXT("garbageCollected"), Crossing.GcCount != Crossing.GcSeen);
-			Hitch->SetBoolField(TEXT("levelStreamingPending"), World->HasStreamingLevelsToConsider());
-			Crossing.Hitches.Add(MakeShared<FJsonValueObject>(Hitch));
+			// A slow frame (below 60 fps) with the work that made it, all of the same frame (FFrameAttribution).
+			FFrameAttribution::FSample Sample;
+			Sample.Frame = Crossing.Frames;
+			Sample.EngineFrame = GFrameCounter;
+			Sample.DeltaMs = FApp::GetDeltaTime() * 1000.0;
+			Sample.Gc = Crossing.GcCount;
+			Sample.GameMs = FPlatformTime::ToMilliseconds(GGameThreadTime);
+			Sample.RenderMs = FPlatformTime::ToMilliseconds(GRenderThreadTime);
+			Sample.RhiMs = FPlatformTime::ToMilliseconds(GRHIThreadTime);
+			Sample.StreamingMs = Grid->GetLastAdvanceSeconds() * 1000.0;
+			Sample.XMetres = Crossing.X / 100.0;
+			Sample.bStreamingPending = World->HasStreamingLevelsToConsider();
+			FFrameAttribution::FFrame Done;
+			if (Crossing.Attribution.Push(Sample, Done) && Done.Own.Frame > 5 && Done.DurationMs > 16.7 && Crossing.Hitches.Num() < 60)
+			{
+				Crossing.Hitches.Add(MakeShared<FJsonValueObject>(FFrameAttribution::Json(Done)));
+			}
 		}
-		Crossing.GcSeen = Crossing.GcCount;
 		if (Crossing.Frames > 5)
 		{
 			Crossing.FrameMs.Add(FApp::GetDeltaTime() * 1000.0);
@@ -1071,6 +1152,169 @@ namespace GLPerf
 				FFileHelper::SaveStringToFile(Text, *(FPaths::ProjectSavedDir() / TEXT("Perf") / TEXT("heightat.json")));
 				GEngine->DeferredCommands.Add(TEXT("quit"));
 			}), 8.0f, false);
+		}));
+
+	/**
+	 * gl.Perf.AttributionProof (pre-P11): injects one known 60 ms stall on each thread at known frames (a game-thread
+	 * spin inside the world tick, a forced GC inside the world tick, a render-thread spin, an RHI-thread spin), records
+	 * every frame through FFrameAttribution, and checks that each stall lands in the record of the frame it made slow, on
+	 * the right metric only. Writes Saved/Perf/attribution-proof.json and quits. Spins, not sleeps: a sleep is idle
+	 * time, which the engine excludes from thread times.
+	 */
+	struct FAttributionProof
+	{
+		static constexpr int32 GameAt = 120, GcAt = 200, RenderAt = 280, RhiAt = 360, End = 440;
+		int32 Frame = 0;
+		int32 GcCount = 0;
+		FFrameAttribution Attribution;
+		TArray<FFrameAttribution::FSample> Raw;
+		TArray<FFrameAttribution::FFrame> Frames;
+		FTSTicker::FDelegateHandle Ticker;
+		FDelegateHandle WorldTick, Gc;
+	};
+	FAttributionProof Proof;
+
+	void Spin(double Seconds)
+	{
+		const double Until = FPlatformTime::Seconds() + Seconds;
+		while (FPlatformTime::Seconds() < Until) {}
+	}
+
+	bool ProofTick(float)
+	{
+		++Proof.Frame;
+		FFrameAttribution::FSample Sample;
+		Sample.Frame = Proof.Frame;
+		Sample.EngineFrame = GFrameCounter;
+		Sample.DeltaMs = FApp::GetDeltaTime() * 1000.0;
+		Sample.Gc = Proof.GcCount;
+		Sample.GameMs = FPlatformTime::ToMilliseconds(GGameThreadTime);
+		Sample.RenderMs = FPlatformTime::ToMilliseconds(GRenderThreadTime);
+		Sample.RhiMs = FPlatformTime::ToMilliseconds(GRHIThreadTime);
+		Proof.Raw.Add(Sample);
+		FFrameAttribution::FFrame Done;
+		if (Proof.Attribution.Push(Sample, Done))
+		{
+			Proof.Frames.Add(Done);
+		}
+		// Render-side stalls are enqueued during game-thread frame N, so they run in the render frame overlapping N+1.
+		if (Proof.Frame == FAttributionProof::RenderAt)
+		{
+			ENQUEUE_RENDER_COMMAND(GLAttributionRender)([](FRHICommandListImmediate&) { Spin(0.06); });
+		}
+		if (Proof.Frame == FAttributionProof::RhiAt)
+		{
+			ENQUEUE_RENDER_COMMAND(GLAttributionRhi)([](FRHICommandListImmediate& RHICmdList) { RHICmdList.EnqueueLambda([](FRHICommandListImmediate&) { Spin(0.06); }); });
+		}
+		if (Proof.Frame < FAttributionProof::End)
+		{
+			return true;
+		}
+		FWorldDelegates::OnWorldTickStart.Remove(Proof.WorldTick);
+		FCoreUObjectDelegates::GetPreGarbageCollectDelegate().Remove(Proof.Gc);
+		auto FrameRecord = [](int32 F) -> const FFrameAttribution::FFrame* { return Proof.Frames.FindByPredicate([F](const FFrameAttribution::FFrame& R) { return R.Own.Frame == F; }); };
+		// The slow frame after an injection: the longest within four frames.
+		auto Slowest = [&FrameRecord](int32 From) -> const FFrameAttribution::FFrame*
+		{
+			const FFrameAttribution::FFrame* Best = nullptr;
+			for (int32 F = From; F <= From + 4; ++F)
+			{
+				const FFrameAttribution::FFrame* R = FrameRecord(F);
+				if (R && (!Best || R->DurationMs > Best->DurationMs)) { Best = R; }
+			}
+			return Best;
+		};
+		// The raw sample offset at which a thread's 60 ms first shows, relative to the slow frame (documents the lag).
+		auto ObservedLag = [](int32 SlowFrame, TFunctionRef<double(const FFrameAttribution::FSample&)> Metric)
+		{
+			for (int32 Offset = -1; Offset <= 4; ++Offset)
+			{
+				const FFrameAttribution::FSample* S = Proof.Raw.FindByPredicate([F = SlowFrame + Offset](const FFrameAttribution::FSample& X) { return X.Frame == F; });
+				if (S && Metric(*S) >= 50.0) { return Offset; }
+			}
+			return -99;
+		};
+		TSharedRef<FJsonObject> O = MakeShared<FJsonObject>();
+		TArray<TSharedPtr<FJsonValue>> Checks;
+		bool bAll = true;
+		auto Check = [&](const TCHAR* Name, int32 At, const FFrameAttribution::FFrame* R, bool bPass, int32 Lag)
+		{
+			TSharedRef<FJsonObject> C = R ? FFrameAttribution::Json(*R) : MakeShared<FJsonObject>();
+			C->SetStringField(TEXT("injected"), Name);
+			C->SetNumberField(TEXT("injectedAtFrame"), At);
+			C->SetBoolField(TEXT("pass"), bPass);
+			C->SetNumberField(TEXT("observedLagSamples"), Lag);
+			Checks.Add(MakeShared<FJsonValueObject>(C));
+			bAll &= bPass;
+			UE_LOG(LogGridlands, Display, TEXT("gl.Perf.AttributionProof: %s at frame %d -> record frame %d: %.1f ms, GT %.1f, RT %.1f, RHI %.1f, GC %s, lag %d: %s"), Name, At, R ? R->Own.Frame : -1,
+				R ? R->DurationMs : 0.0, R ? R->Own.GameMs : 0.0, R ? R->RenderMs : 0.0, R ? R->RhiMs : 0.0, R && R->bGarbageCollected ? TEXT("yes") : TEXT("no"), Lag, bPass ? TEXT("PASS") : TEXT("FAIL"));
+		};
+		{
+			const FFrameAttribution::FFrame* R = FrameRecord(FAttributionProof::GameAt);
+			Check(TEXT("gameThreadSpin60ms"), FAttributionProof::GameAt, R, R && R->DurationMs >= 50.0 && R->Own.GameMs >= 50.0 && R->RenderMs < 30.0 && R->RhiMs < 30.0 && !R->bGarbageCollected,
+				R ? ObservedLag(R->Own.Frame, [](const FFrameAttribution::FSample& S) { return S.GameMs; }) : -99);
+		}
+		{
+			const FFrameAttribution::FFrame* R = FrameRecord(FAttributionProof::GcAt);
+			const bool bOnlyThere = !Proof.Frames.ContainsByPredicate([](const FFrameAttribution::FFrame& X) { return X.bGarbageCollected && X.Own.Frame != FAttributionProof::GcAt && FMath::Abs(X.Own.Frame - FAttributionProof::GcAt) <= 4; });
+			Check(TEXT("forcedGarbageCollection"), FAttributionProof::GcAt, R, R && R->bGarbageCollected && bOnlyThere, 0);
+		}
+		{
+			const FFrameAttribution::FFrame* R = Slowest(FAttributionProof::RenderAt);
+			Check(TEXT("renderThreadSpin60ms"), FAttributionProof::RenderAt, R, R && R->DurationMs >= 50.0 && R->RenderMs >= 50.0 && R->Own.GameMs < 30.0 && !R->bGarbageCollected,
+				R ? ObservedLag(R->Own.Frame, [](const FFrameAttribution::FSample& S) { return S.RenderMs; }) : -99);
+		}
+		{
+			const FFrameAttribution::FFrame* R = Slowest(FAttributionProof::RhiAt);
+			Check(TEXT("rhiThreadSpin60ms"), FAttributionProof::RhiAt, R, R && R->DurationMs >= 50.0 && R->RhiMs >= 50.0 && R->Own.GameMs < 30.0 && !R->bGarbageCollected,
+				R ? ObservedLag(R->Own.Frame, [](const FFrameAttribution::FSample& S) { return S.RhiMs; }) : -99);
+		}
+		O->SetArrayField(TEXT("checks"), Checks);
+		O->SetNumberField(TEXT("renderLag"), FFrameAttribution::RenderLag);
+		O->SetNumberField(TEXT("rhiLag"), FFrameAttribution::RhiLag);
+		TArray<TSharedPtr<FJsonValue>> Table;
+		for (const FFrameAttribution::FSample& S : Proof.Raw)
+		{
+			const bool bNear = FMath::Abs(S.Frame - FAttributionProof::GameAt) <= 3 || FMath::Abs(S.Frame - FAttributionProof::GcAt) <= 3
+				|| FMath::Abs(S.Frame - FAttributionProof::RenderAt - 2) <= 3 || FMath::Abs(S.Frame - FAttributionProof::RhiAt - 2) <= 3;
+			if (bNear)
+			{
+				TSharedRef<FJsonObject> Row = MakeShared<FJsonObject>();
+				Row->SetNumberField(TEXT("frame"), S.Frame);
+				Row->SetNumberField(TEXT("deltaMsAtTicker"), S.DeltaMs);
+				Row->SetNumberField(TEXT("gcCount"), S.Gc);
+				Row->SetNumberField(TEXT("gameMs"), S.GameMs);
+				Row->SetNumberField(TEXT("renderMs"), S.RenderMs);
+				Row->SetNumberField(TEXT("rhiMs"), S.RhiMs);
+				Table.Add(MakeShared<FJsonValueObject>(Row));
+			}
+		}
+		O->SetArrayField(TEXT("rawSamples"), Table);
+		O->SetBoolField(TEXT("pass"), bAll);
+		FString Text;
+		FJsonSerializer::Serialize(O, TJsonWriterFactory<>::Create(&Text));
+		FFileHelper::SaveStringToFile(Text, *(FPaths::ProjectSavedDir() / TEXT("Perf") / TEXT("attribution-proof.json")));
+		UE_LOG(LogGridlands, Display, TEXT("gl.Perf.AttributionProof: %s"), bAll ? TEXT("PASS") : TEXT("FAIL"));
+		GEngine->DeferredCommands.Add(TEXT("quit"));
+		return false;
+	}
+
+	FAutoConsoleCommandWithWorldAndArgs AttributionProofCommand(
+		TEXT("gl.Perf.AttributionProof"),
+		TEXT("DEV ONLY: injects a known stall on each thread and proves the hitch record attributes it to the right frame and metric; writes Saved/Perf/attribution-proof.json and quits."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic([](const TArray<FString>&, UWorld* World)
+		{
+			Proof = FAttributionProof();
+			Proof.Gc = FCoreUObjectDelegates::GetPreGarbageCollectDelegate().AddLambda([] { ++Proof.GcCount; });
+			// The game-thread stalls happen inside the world tick of their frame, where a real GC or gameplay hitch would.
+			Proof.WorldTick = FWorldDelegates::OnWorldTickStart.AddLambda([World](UWorld* Ticking, ELevelTick, float)
+			{
+				if (Ticking != World) { return; }
+				const int32 Next = Proof.Frame + 1; // this world tick belongs to the frame whose ticker comes next
+				if (Next == FAttributionProof::GameAt) { Spin(0.06); }
+				if (Next == FAttributionProof::GcAt) { CollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS); }
+			});
+			Proof.Ticker = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateStatic(&ProofTick));
 		}));
 
 	FAutoConsoleCommandWithWorldAndArgs CrossingCommand(
