@@ -1,6 +1,8 @@
 # ADR-0038: Structural environmental resolution: the impact decides, a fall in flight is a durable fact
 
-- Status: **Proposed for operator review** (P10 built 2026-10-02 under the operator's approved proposal and decisions 1–5).
+- Status: **Accepted** (operator, 2026-10-03: "P10 is APPROVED as GREEN"). Built 2026-10-02 under the approved
+  proposal and decisions 1–5. `collapse.pinMinSeverity = 2.0` stays PROVISIONAL tuning (the architecture is accepted,
+  the number is not locked balance).
 - Date: 2026-10-02
 - Builds on:
   - [ADR-0030](0030-structural-salvage-and-deterministic-collapse.md): deterministic collapse. **Amended here:** an
@@ -128,7 +130,8 @@ Both are identities (Zenny, Pehlichi, a creature's placement), not actor pointer
 session lasts the live credited actor is kept too, so a generic pawn keeps its credit.
 
 **Today credit = cause**, P6's rule. In P10, Zenny removes the support. **Pehlichi-triggered structural failure, and
-its attribution, are deliberately not decided.** No mechanism-to-support link exists. Whether such a collapse may damage,
+its attribution, are deliberately not decided** (operator, 2026-10-03: DEFERRED until a real gameplay system lets
+Pehlichi trigger structural failure; no additional rule now). No mechanism-to-support link exists. Whether such a collapse may damage,
 and to whom it is attributed, is a recorded future operator decision. ADR-0017 is unchanged.
 
 ## Consequences
@@ -142,8 +145,9 @@ and to whom it is attributed, is a recorded future operator decision. ADR-0017 i
 - **Gameplay must not assume a creature's actor** at impact time. It asks the model.
 
 ## Not changed / not built
-- **P9's Neutralized finality, unchanged:** a Neutralized creature is immune to later damage and is never re-scored.
-  Future operator questions (not needed by P10):
+- **P9's Neutralized finality, unchanged and canonical (operator, 2026-10-03):** Neutralized is final, and a Neutralized
+  creature ignores later damage. These are deliberate FUTURE DESIGN QUESTIONS, not defects; the outcome state machine
+  changes only when a real gameplay requirement justifies it:
   - Can a pinned creature later be killed?
   - Can a contained creature be released?
   - Can another hazard change a Neutralized outcome?

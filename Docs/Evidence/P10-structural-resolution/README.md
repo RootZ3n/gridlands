@@ -1,7 +1,7 @@
 # P10: structural environmental resolution
 
-**Built 2026-10-02 under the operator-approved proposal and decisions 1–5. READY FOR OPERATOR REVIEW: not merged,
-not tagged.**
+**P10 GREEN (operator-approved 2026-10-03; tag `p10-structural-resolution`).** Built 2026-10-02 under the
+operator-approved proposal and decisions 1–5. See [Closure](#closure).
 - Decision record: [ADR-0038](../../ADR/0038-structural-environmental-resolution.md). It amends
   [ADR-0030](../../ADR/0030-structural-salvage-and-deterministic-collapse.md); ADR-0033 and ADR-0037 carry notes.
 - This is system work, not content. The fixture is the ordinary P6 carport (`structure.modern.carport`, structure data
@@ -190,3 +190,48 @@ review item.**
 - **Mid-fall saves from builds before P10** carry no in-flight record. They load as before: debris at rest, impact lost.
 - **The real-game script cannot hide** (as in P9). It is detected 5 times on the way in.
 - **`pinMinSeverity` (2.0) and every collapse number are provisional.**
+
+## Closure
+**Operator-APPROVED as GREEN, 2026-10-03.** PR #32 is merged into `master` by merge commit, and the merge commit is
+tagged `p10-structural-resolution`.
+
+### What P10 proved (canonical)
+**An ordinary Gridlands structure that predates the encounter system can become part of an encounter through ordinary
+systemic rules.** No boss-specific structural rule is involved. The chain:
+1. an ordinary structure (the P6 carport, its data unchanged);
+2. ordinary support redundancy (the first post comes out and it stands);
+3. legitimate support removal (Zenny's salvage);
+4. normal support failure and a deterministic structural collapse;
+5. the target stays free during the fall;
+6. an authoritative impact-time evaluation;
+7. a susceptible target may become Neutralized / Pinned;
+8. a non-susceptible target receives ordinary environmental damage;
+9. that damage may produce normal Defeated, death, drop and credit behaviour.
+
+**SUPPORT FAILURE ≠ IMPACT.** Who is affected is determined at impact, not when support fails:
+- escaping before impact works;
+- entering after failure but before impact works;
+- being outside at impact means no effect;
+- save/restart and streaming preserve those results.
+
+**The P6 mid-fall persistence debt is CLOSED** for the architecture proven here.
+
+### Operator decisions at closure
+- **`collapse.pinMinSeverity = 2.0` stays PROVISIONAL tuning.** The architecture is accepted; the number is not locked
+  game balance and will be tuned from gameplay evidence.
+- **Pehlichi collapse attribution: DEFERRED.** Cause and credit are stored separately. It will be decided when a real
+  gameplay system lets Pehlichi trigger structural failure. ADR-0017 (Pehlichi deals no direct damage) is canonical.
+- **Neutralized finality is canonical for now:** Neutralized is final and ignores later damage.
+  - Not implemented, and recorded as deliberate future design questions, not defects:
+    - killing a Pinned creature later;
+    - releasing a Contained creature;
+    - another hazard changing a Neutralized outcome;
+    - re-scoring or re-resolving an encounter.
+
+### OPEN PERFORMANCE DEBT: inherited baseline drift (not a P10 regression)
+- **What breached:** the 40 ms reversal worst-frame budget in town (40.2 ms) and towndense (41.6 ms).
+- **Why it is inherited:** the alternating fresh-clone A/B ([`perf/ab/`](perf/ab/), raw results preserved) shows the
+  unchanged P9 master build breaching it the same way (42.4 ms), and P10 adds no measurable cost.
+- **The budget is preserved:** not weakened, not re-baselined.
+- **Next:** investigate before production-density or content work makes attribution harder (the post-P10 roadmap
+  review).
