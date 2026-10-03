@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
+@@ -398,6 +398,7 @@
+ void UGLSaveSubsystem::AgeToNow(FGLSavedCell& Record, double Now)
+ {
+ 	const double Passed = Record.CapturedWorldSeconds >= 0.0 ? FMath::Max(0.0, Now - Record.CapturedWorldSeconds) : 0.0;
++	Record.Collapses.Reset(); // DEFECT
+ 	for (FGLSavedCreature& Creature : Record.Creatures)
+ 	{
+ 		Creature.SearchSeconds = FMath::Max(0.0, Creature.SearchSeconds - Passed);

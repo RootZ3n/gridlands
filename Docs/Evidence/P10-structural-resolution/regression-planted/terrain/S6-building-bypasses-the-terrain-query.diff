@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -17,7 +17,7 @@
+ double UGLBuildingSubsystem::GroundAt(const FVector2D& At) const
+ {
+ 	const UGLTerrainSubsystem* Terrain = GetWorld()->GetSubsystem<UGLTerrainSubsystem>();
+-	return Terrain && Terrain->HasGround() ? Terrain->HeightAt(At) : 0.0;
++	return Terrain && Terrain->HasGround() ? Terrain->HeightAt(FVector2D(FMath::RoundToDouble(At.X / 100.0) * 100.0, FMath::RoundToDouble(At.Y / 100.0) * 100.0)) : 0.0; // DEFECT: its own (nearest-vertex) ground
+ }
+ 
+ FGLBuildCheck UGLBuildingSubsystem::Check(const AActor* Builder, const FGLPlacedPiece& Candidate) const

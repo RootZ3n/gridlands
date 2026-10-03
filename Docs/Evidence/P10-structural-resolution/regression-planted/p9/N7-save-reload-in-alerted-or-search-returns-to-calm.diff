@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Combat/GLCreature.cpp
++++ b/Source/GridlandsGame/Private/Combat/GLCreature.cpp
+@@ -105,7 +105,7 @@
+ 	Lure = Model.Lure;
+ 	LureLeft = FMath::Max(0.0, Model.LureSeconds - Passed);
+ 	// Attack is re-derived from range every step; it resumes as the chase it was.
+-	State = Model.State == EGLCreatureState::Attack ? EGLCreatureState::Chase : Model.State;
++	State = Model.Outcome == EGLCreatureOutcome::None ? EGLCreatureState::Idle : Model.State; // DEFECT: memory wiped
+ 	if (Model.Outcome == EGLCreatureOutcome::Neutralized)
+ 	{
+ 		PresentNeutralized(Model.HeldAt, Model.HeldYaw);

@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLCollapseRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLCollapseRules.cpp
+@@ -235,7 +235,7 @@
+ 			Surfaces.Add(Landed);
+ 		}
+ 		Out.Damage = DamageFor(Out.FallMetres, Request.DamageScale, Tuning);
+-		Out.Severity = Out.FallMetres * 100.0 < NoFallCm ? 0.0 : Out.FallMetres * Request.DamageScale;
++		Out.Severity = Out.FallMetres * 100.0 < NoFallCm ? 0.0 : Out.FallMetres; // DEFECT: the material ignored
+ 		Plan.Outcomes.Add(MoveTemp(Out));
+ 	}
+ 	return Plan;

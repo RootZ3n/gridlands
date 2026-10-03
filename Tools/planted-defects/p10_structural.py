@@ -6,12 +6,14 @@ creatures can move; nothing replays.
 
 A permanent gate. Same method as p9_encounter.py: each defect is written into a backup-protected copy of the source,
 built and tested on its own, and restored (never with git checkout). Stricter than the earlier suites: a defect is
-CAUGHT only when a test ASSERTION fails (an error entry located in a test source file). A run that dies, does not
+CAUGHT only when a test ASSERTION fails (an automation check's own failure message, or an error located in a test
+source file). A run that dies, does not
 build, or fails only through engine errors is reported as such and is not a catch.
 
 Usage: Tools/planted-defects/p10_structural.py [--evidence DIR] [NAME ...]
+       Tools/planted-defects/p10_structural.py [--evidence DIR] --summarize   (re-derive every verdict from DIR's reports)
 """
-import difflib, glob, json, os, shutil, subprocess, sys
+import difflib, glob, json, os, re, shutil, subprocess, sys
 
 R = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 STRUCT = 'Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp'
@@ -51,7 +53,7 @@ DEFECTS = [
     ('S7-severity-threshold-ignored', [(RULES, '\treturn Tuning.PinMinSeverity > 0.0 && Outcome.Severity >= Tuning.PinMinSeverity;',
         '\treturn Outcome.Severity > 0.0; // DEFECT')]),
     ('S8-neutralizable-target-damaged-and-neutralized', [(STRUCT, '\t\t\tif (bPins && Placements->TryNeutralize(',
-        '\t\t\tif (Placements->DamageCreature(Creature, Outcome.Damage, Credit), bPins && Placements->TryNeutralize( // DEFECT: damage first, then pin')]),
+        '\t\t\tPlacements->DamageCreature(Creature, Outcome.Damage, Credit); // DEFECT: damage first, then pin\n\t\t\tif (bPins && Placements->TryNeutralize(')]),
     ('S9-defeated-and-neutralized-still-considered', [(MODELS, CANDIDATES,
         'if (Entry.Value.Kind != TEXT("spawn") || !CreatureLocation(Entry.Key, Feet)) // DEFECT')]),
     ('S10-neutralized-target-takes-later-collapse-damage', [(MODELS, CANDIDATES,
@@ -105,6 +107,19 @@ DEFECTS = [
 ]
 
 
+ASSERTION_TEXT = re.compile(r"^Expected '|The two values are not equal|to be (true|false|null|not null|valid)\b|^Expected .* to be ")
+
+
+def is_assertion(entry):
+    """A test's own check failing, as opposed to an engine error, a crash or an unexpected log line. UE records the
+    location of templated checks (TestEqual on enums, TestTrue) inside its own headers, so the message decides; an
+    entry located in a test source file also counts. Engine log errors arrive as 'LogXxx: ...' and never match."""
+    message = entry['event'].get('message', '')
+    if message.startswith('Log') or 'Unexpected' in message:
+        return False
+    return bool(ASSERTION_TEXT.search(message)) or ('/Tests/' in (entry.get('filename') or '') and (entry.get('lineNumber') or 0) > 0)
+
+
 def assertion_failures(index_path):
     """Failing tests and the assertion messages located in test sources (an engine error alone is not a catch)."""
     report = json.load(open(index_path, encoding='utf-8-sig'))
@@ -112,10 +127,34 @@ def assertion_failures(index_path):
     for test in report.get('tests', []):
         if test.get('state') == 'Success':
             continue
-        asserts = [e['event']['message'] for e in test.get('entries', [])
-                   if e['event']['type'] == 'Error' and '/Tests/' in (e.get('filename') or '') and (e.get('lineNumber') or 0) > 0]
+        asserts = [e['event']['message'] for e in test.get('entries', []) if e['event']['type'] == 'Error' and is_assertion(e)]
         found.append((test['fullTestPath'], asserts))
     return found
+
+
+def summarize(evidence):
+    """Re-derives every verdict from the reports already in DIR (no build, no run): the gate's state after reruns."""
+    lines, caught = [], 0
+    for name, edits in DEFECTS:
+        index, tooling = os.path.join(evidence, name + '.index.json'), os.path.join(evidence, name + '.selftest.txt')
+        if all(f.endswith('.py') for f, *_ in edits) and os.path.exists(tooling):
+            failed = [l.strip() for l in open(tooling).read().splitlines() if l.strip().startswith('FAIL:')]
+            verdict, detail = ('CAUGHT (tooling assertion)', failed) if failed else ('SURVIVED', [])
+        elif os.path.exists(index):
+            failures = assertion_failures(index)
+            asserting = [(t, a) for t, a in failures if a]
+            detail = [f'{t}: {a[0]}' for t, a in asserting]
+            verdict = f'CAUGHT ({len(asserting)} test(s) by assertion)' if asserting else ('FAILED WITHOUT AN ASSERTION: not a catch' if failures else 'SURVIVED')
+        else:
+            verdict, detail = 'NO REPORT (did not build, or the run died): not a catch', []
+        caught += verdict.startswith('CAUGHT')
+        lines.append(f'{name}: {verdict}')
+        lines.extend(f'    {x[:300]}'.replace('\n', ' ') for x in detail[:3])
+    summary = '\n'.join(lines) + f'\n{caught}/{len(DEFECTS)} caught by assertion\n'
+    open(os.path.join(evidence, 'summary.txt'), 'w').write(summary)
+    print(summary)
+    print(f'RESULT: {"PASS" if caught == len(DEFECTS) else "FAIL"} {caught}/{len(DEFECTS)} planted defects caught by assertion')
+    sys.exit(0 if caught == len(DEFECTS) else 1)
 
 
 def main():
@@ -124,6 +163,8 @@ def main():
     if args[:1] == ['--evidence']:
         evidence, args = os.path.abspath(args[1]), args[2:]
     os.makedirs(evidence, exist_ok=True)
+    if args[:1] == ['--summarize']:
+        return summarize(evidence)
     chosen = [d for d in DEFECTS if not args or d[0] in args]
     results = []
     for name, edits in chosen:

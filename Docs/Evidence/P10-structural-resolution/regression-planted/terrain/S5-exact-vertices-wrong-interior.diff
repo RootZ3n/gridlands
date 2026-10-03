@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Terrain/GLHeightfield.cpp
++++ b/Source/GridlandsCore/Private/Terrain/GLHeightfield.cpp
+@@ -46,7 +46,7 @@
+ 	const int32 Y0 = FMath::Min(FMath::FloorToInt(FY), VertsY - 2);
+ 	// Until 2026-09-27 this interpolated bilinearly, which differed from the drawn, colliding triangles by up
+ 	// to ~72 cm inside steep edited quads (found during ADR-0035; closed by using the one surface).
+-	return GLTerrainSurface::Height(VertexHeight(X0, Y0), VertexHeight(X0 + 1, Y0), VertexHeight(X0, Y0 + 1), VertexHeight(X0 + 1, Y0 + 1), FX - X0, FY - Y0);
++	return GLTerrainSurface::Height(VertexHeight(X0, Y0), VertexHeight(X0 + 1, Y0), VertexHeight(X0, Y0 + 1), VertexHeight(X0 + 1, Y0 + 1), FMath::SmoothStep(0.0, 1.0, FX - X0), FMath::SmoothStep(0.0, 1.0, FY - Y0)); // DEFECT: exact at vertices only
+ }
+ 
+ FGLTerrainEditResult FGLHeightfield::Apply(const FGLTerrainEdit& Edit, TFunctionRef<bool(const FVector2D& World)> IsProtected, bool bDryRun)

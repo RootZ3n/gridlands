@@ -509,6 +509,10 @@ bool FGLSRStreams::RunTest(const FString& Parameters)
 	{
 		S.Advance(SRDt);
 	}
+	if (!TestNotNull(TEXT("half a second in, the east deck is still in flight"), S.Falling()) || !TestNotNull(TEXT("  and presented"), S.Structures->FindPart(SRId(SRCarport), SRDeckEast)))
+	{
+		return false;
+	}
 	const double Before = S.Falling()->Elapsed;
 	const FTransform PoseBefore = S.Structures->FindPart(SRId(SRCarport), SRDeckEast)->GetActorTransform();
 	S.GoTo(SRFarAway);
@@ -541,6 +545,10 @@ bool FGLSRHold::RunTest(const FString& Parameters)
 	for (int32 I = 0; I < 30; ++I)
 	{
 		S.Advance(SRDt);
+	}
+	if (!TestNotNull(TEXT("half a second in, the east deck is still in flight"), S.Falling()))
+	{
+		return false;
 	}
 	const double Elapsed = S.Falling()->Elapsed;
 	TestTrue(TEXT("saves mid-fall"), S.Save());

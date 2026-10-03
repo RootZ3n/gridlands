@@ -1,0 +1,1168 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A0FED348757447BAB751B26C4D76F6",
+			"instanceName": "Pehverse-800947",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.10.02-22.56.47",
+	"succeeded": 25,
+	"succeededWithWarnings": 2,
+	"failed": 5,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 138.368408203125,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "APendingCollapseIsNeverReplanned",
+			"fullTestPath": "Gridlands.Core.Structure.APendingCollapseIsNeverReplanned",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 0.0083632543683052063,
+			"dateTime": "2026.10.02-22.54.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "APendingCollapseRebuildsBitIdenticallyThroughTheSaveFormat",
+			"fullTestPath": "Gridlands.Core.Structure.APendingCollapseRebuildsBitIdenticallyThroughTheSaveFormat",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 0.0081466073170304298,
+			"dateTime": "2026.10.02-22.54.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DropIsDeterministicAndItsImpactIsTruthful",
+			"fullTestPath": "Gridlands.Core.Structure.DropIsDeterministicAndItsImpactIsTruthful",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 0.0079734586179256439,
+			"dateTime": "2026.10.02-22.54.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ImpactSeverityIsPhysicalAndPinningIsTuning",
+			"fullTestPath": "Gridlands.Core.Structure.ImpactSeverityIsPhysicalAndPinningIsTuning",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 0.0081988302990794182,
+			"dateTime": "2026.10.02-22.54.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OnlyWhatLosesSupportFallsAndItCascades",
+			"fullTestPath": "Gridlands.Core.Structure.OnlyWhatLosesSupportFallsAndItCascades",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 0.0082373674958944321,
+			"dateTime": "2026.10.02-22.54.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ToppleFollowsItsDirectionPolicy",
+			"fullTestPath": "Gridlands.Core.Structure.ToppleFollowsItsDirectionPolicy",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 0.0079006338492035866,
+			"dateTime": "2026.10.02-22.54.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AmbientMaskingAppliesToStepsAndLuresAlike",
+			"fullTestPath": "Gridlands.Game.Encounter.AmbientMaskingAppliesToStepsAndLuresAlike",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 1.238653302192688,
+			"dateTime": "2026.10.02-22.54.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AnUnpresentedCreatureHearsByTheSameRule",
+			"fullTestPath": "Gridlands.Game.Encounter.AnUnpresentedCreatureHearsByTheSameRule",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 1.1735037565231323,
+			"dateTime": "2026.10.02-22.54.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AWoundedCreatureStaysWoundedAcrossStreamingAndRestart",
+			"fullTestPath": "Gridlands.Game.Encounter.AWoundedCreatureStaysWoundedAcrossStreamingAndRestart",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 2.8093383312225342,
+			"dateTime": "2026.10.02-22.54.31",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ChaseAndSearchSurviveStreamingAndRestart",
+			"fullTestPath": "Gridlands.Game.Encounter.ChaseAndSearchSurviveStreamingAndRestart",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 2.7383325099945068,
+			"dateTime": "2026.10.02-22.54.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ContainmentReflectsTheWorldAtTheDecision",
+			"fullTestPath": "Gridlands.Game.Encounter.ContainmentReflectsTheWorldAtTheDecision",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 1.0697882175445557,
+			"dateTime": "2026.10.02-22.54.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DirectRouteDefeatsTheWardenThroughHealth",
+			"fullTestPath": "Gridlands.Game.Encounter.DirectRouteDefeatsTheWardenThroughHealth",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 2.1293718814849854,
+			"dateTime": "2026.10.02-22.54.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "EnvironmentalRouteNeutralizesWithoutDamage",
+			"fullTestPath": "Gridlands.Game.Encounter.EnvironmentalRouteNeutralizesWithoutDamage",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 1.0901311635971069,
+			"dateTime": "2026.10.02-22.54.40",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "the cage dropped after 13.8 s; Zenny took 90 damage meanwhile",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.02-22.54.41"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "IdleCreaturesAddNoNavigation",
+			"fullTestPath": "Gridlands.Game.Encounter.IdleCreaturesAddNoNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 1.2969436645507812,
+			"dateTime": "2026.10.02-22.54.41",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "tiles in the town with its idle creatures: 250",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.02-22.54.42"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NavigationScalesWithTheRegionNotTheCreatures",
+			"fullTestPath": "Gridlands.Game.Encounter.NavigationScalesWithTheRegionNotTheCreatures",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 1.3144506216049194,
+			"dateTime": "2026.10.02-22.54.43",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "tiles: region with the room's 5 creatures 164; with 16 more active ones 164 (16 active, 0 with their own navigation)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.02-22.54.44"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NeutralizedStaysContainedAndNothingReplays",
+			"fullTestPath": "Gridlands.Game.Encounter.NeutralizedStaysContainedAndNothingReplays",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 2.6834864616394043,
+			"dateTime": "2026.10.02-22.54.44",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ProofRoomStandsAndSpawnsModelsFirst",
+			"fullTestPath": "Gridlands.Game.Encounter.ProofRoomStandsAndSpawnsModelsFirst",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 1.0772780179977417,
+			"dateTime": "2026.10.02-22.54.47",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AFallWaitsUntilTheCellsCreaturesCanMove",
+			"fullTestPath": "Gridlands.Game.Structural.AFallWaitsUntilTheCellsCreaturesCanMove",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 2.1662940979003906,
+			"dateTime": "2026.10.02-22.54.48",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the fall waited: still in flight' to be not null.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.54.49"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  not a moment older' to be 0.500000, but it was -1.000000 and outside tolerance 0.000100.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructuralResolutionTests.cpp",
+					"lineNumber": 159,
+					"timestamp": "2026.10.02-22.54.49"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'then it resumed and hit, once per deck' to be 2, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructuralResolutionTests.cpp",
+					"lineNumber": 586,
+					"timestamp": "2026.10.02-22.54.50"
+				}
+			],
+			"warnings": 0,
+			"errors": 3,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ANonSusceptibleTargetTakesOrdinaryDamageAndCanBeDefeated",
+			"fullTestPath": "Gridlands.Game.Structural.ANonSusceptibleTargetTakesOrdinaryDamageAndCanBeDefeated",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 4.3135156631469727,
+			"dateTime": "2026.10.02-22.54.50",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "outcome 0 None, health 0.8, damage 59.2, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 0, resolved 0, collapse noise 2",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.02-22.54.52"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.02-22.54.53"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "outcome 1 None, health 0.0, damage 60.0, Zenny 100, residue 2; collapsed 1, impacts 2, neutralized 0, defeated 1, resolved 0, collapse noise 2",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.02-22.54.53"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "impact deck_west: hit 0, pinned [], damaged []",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.02-22.54.54"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "impact deck_east: hit 2, pinned [placement.diner_lots.proof_dungeon_025], damaged [placement.diner_lots.proof_dungeon_021]",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.02-22.54.54"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "APinnedCreatureStaysPinnedImmuneAndResolvedOnce",
+			"fullTestPath": "Gridlands.Game.Structural.APinnedCreatureStaysPinnedImmuneAndResolvedOnce",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 2.1406159400939941,
+			"dateTime": "2026.10.02-22.54.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ARestoredFallIsTheDecidedFallNotAReplan",
+			"fullTestPath": "Gridlands.Game.Structural.ARestoredFallIsTheDecidedFallNotAReplan",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 3.1489145755767822,
+			"dateTime": "2026.10.02-22.54.56",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the resumed fall is the decided one (impact time, damage, volume, rest)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructuralResolutionTests.cpp",
+					"lineNumber": 715,
+					"timestamp": "2026.10.02-22.54.59"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'it hit with the decided damage, once' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructuralResolutionTests.cpp",
+					"lineNumber": 723,
+					"timestamp": "2026.10.02-22.54.59"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ASusceptibleTargetUnderTheImpactIsPinnedNotDamaged",
+			"fullTestPath": "Gridlands.Game.Structural.ASusceptibleTargetUnderTheImpactIsPinnedNotDamaged",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 1.0615807771682739,
+			"dateTime": "2026.10.02-22.54.59",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zenny 100, residue 5; collapsed 1, impacts 2, neutralized 1, defeated 0, resolved 1, collapse noise 2",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.02-22.55.01"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ImpactsQueryCreatureModelsAndDamageThroughTheOneHealthPath",
+			"fullTestPath": "Gridlands.Game.Structural.ImpactsQueryCreatureModelsAndDamageThroughTheOneHealthPath",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 1.1737909317016602,
+			"dateTime": "2026.10.02-22.55.01",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SaveRestartAtAnyMomentNeverChangesTheOutcome",
+			"fullTestPath": "Gridlands.Game.Structural.SaveRestartAtAnyMomentNeverChangesTheOutcome",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 67.864593505859375,
+			"dateTime": "2026.10.02-22.55.02",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Pinned: save/restart at 0.000 s gives the same outcome as no break\n    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zenny 100, residue 5; collapsed 1, impacts 2, neutralized 1, defeated 0, resolved 1, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.55.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Pinned: save/restart at 0.500 s gives the same outcome as no break\n    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zenny 100, residue 5; collapsed 1, impacts 2, neutralized 1, defeated 0, resolved 1, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.55.12"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Pinned: save/restart at 1.007 s gives the same outcome as no break\n    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zenny 100, residue 5; collapsed 1, impacts 2, neutralized 1, defeated 0, resolved 1, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 1, neutralized 0, defeated 0, resolved 0, collapse noise 1' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.55.16"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Escape: save/restart at 0.000 s gives the same outcome as no break\n    straight: outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 0, resolved 0, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.55.22"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Escape: save/restart at 0.300 s gives the same outcome as no break\n    straight: outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 0, resolved 0, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.55.25"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Escape: save/restart at 0.700 s gives the same outcome as no break\n    straight: outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 0, resolved 0, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.55.28"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Escape: save/restart at 1.007 s gives the same outcome as no break\n    straight: outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 0, resolved 0, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 1, neutralized 0, defeated 0, resolved 0, collapse noise 1' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.55.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Late: save/restart at 0.000 s gives the same outcome as no break\n    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zenny 100, residue 5; collapsed 1, impacts 2, neutralized 1, defeated 0, resolved 1, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.55.35"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Late: save/restart at 0.300 s gives the same outcome as no break\n    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zenny 100, residue 5; collapsed 1, impacts 2, neutralized 1, defeated 0, resolved 1, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.55.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Late: save/restart at 0.700 s gives the same outcome as no break\n    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zenny 100, residue 5; collapsed 1, impacts 2, neutralized 1, defeated 0, resolved 1, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.55.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Late: save/restart at 1.007 s gives the same outcome as no break\n    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zenny 100, residue 5; collapsed 1, impacts 2, neutralized 1, defeated 0, resolved 1, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 1, neutralized 0, defeated 0, resolved 0, collapse noise 1' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.55.44"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Outside: save/restart at 0.500 s gives the same outcome as no break\n    straight: outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 0, resolved 0, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.55.47"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Outside: save/restart at 1.007 s gives the same outcome as no break\n    straight: outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 0, resolved 0, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 1, neutralized 0, defeated 0, resolved 0, collapse noise 1' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.55.50"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Control: save/restart at 0.500 s gives the same outcome as no break\n    straight: outcome 1 None, health 0.0, damage 60.0, Zenny 100, residue 2; collapsed 1, impacts 2, neutralized 0, defeated 1, resolved 0, collapse noise 2\n    broken:   outcome 0 None, health 40.0, damage 20.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.55.57"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Control: save/restart at 1.007 s gives the same outcome as no break\n    straight: outcome 1 None, health 0.0, damage 60.0, Zenny 100, residue 2; collapsed 1, impacts 2, neutralized 0, defeated 1, resolved 0, collapse noise 2\n    broken:   outcome 0 None, health 40.0, damage 20.0, Zenny 100, residue 0; collapsed 1, impacts 1, neutralized 0, defeated 0, resolved 0, collapse noise 1' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.56.00"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'ControlWounds: save/restart at 0.500 s gives the same outcome as no break\n    straight: outcome 0 None, health 0.8, damage 59.2, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 0, resolved 0, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.56.06"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'ControlWounds: save/restart at 1.007 s gives the same outcome as no break\n    straight: outcome 0 None, health 0.8, damage 59.2, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 0, resolved 0, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 1, neutralized 0, defeated 0, resolved 0, collapse noise 1' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.56.10"
+				}
+			],
+			"warnings": 0,
+			"errors": 17,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TheImpactDecidesFromWhereTargetsAreAtImpact",
+			"fullTestPath": "Gridlands.Game.Structural.TheImpactDecidesFromWhereTargetsAreAtImpact",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 4.2506794929504395,
+			"dateTime": "2026.10.02-22.56.10",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.02-22.56.13"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TheOrdinaryCarportStandsFailsAndFallsByItsOwnRules",
+			"fullTestPath": "Gridlands.Game.Structural.TheOrdinaryCarportStandsFailsAndFallsByItsOwnRules",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 1.0550919771194458,
+			"dateTime": "2026.10.02-22.56.14",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UnloadingMidFallFreezesTheFallAndNeverChangesTheOutcome",
+			"fullTestPath": "Gridlands.Game.Structural.UnloadingMidFallFreezesTheFallAndNeverChangesTheOutcome",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 24.191003799438477,
+			"dateTime": "2026.10.02-22.56.15",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'UnloadPinned: unload at 0.000 s gives the same outcome as no break\n    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zenny 100, residue 5; collapsed 1, impacts 2, neutralized 1, defeated 0, resolved 1, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.56.19"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'UnloadPinned: unload at 0.500 s gives the same outcome as no break\n    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zenny 100, residue 5; collapsed 1, impacts 2, neutralized 1, defeated 0, resolved 1, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.56.21"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'UnloadPinned: unload at 1.007 s gives the same outcome as no break\n    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zenny 100, residue 5; collapsed 1, impacts 2, neutralized 1, defeated 0, resolved 1, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 1, neutralized 0, defeated 0, resolved 0, collapse noise 1' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.56.24"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'UnloadEscape: unload at 0.300 s gives the same outcome as no break\n    straight: outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 0, resolved 0, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.56.27"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'UnloadEscape: unload at 0.700 s gives the same outcome as no break\n    straight: outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 0, resolved 0, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.56.29"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'UnloadLate: unload at 0.300 s gives the same outcome as no break\n    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zenny 100, residue 5; collapsed 1, impacts 2, neutralized 1, defeated 0, resolved 1, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.56.32"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'UnloadLate: unload at 0.700 s gives the same outcome as no break\n    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zenny 100, residue 5; collapsed 1, impacts 2, neutralized 1, defeated 0, resolved 1, collapse noise 2\n    broken:   outcome 0 None, health -1.0, damage 0.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.56.35"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'UnloadControl: unload at 0.500 s gives the same outcome as no break\n    straight: outcome 1 None, health 0.0, damage 60.0, Zenny 100, residue 2; collapsed 1, impacts 2, neutralized 0, defeated 1, resolved 0, collapse noise 2\n    broken:   outcome 0 None, health 40.0, damage 20.0, Zenny 100, residue 0; collapsed 1, impacts 0, neutralized 0, defeated 0, resolved 0, collapse noise 0' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.56.37"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the two falls wait in the lots' record' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructuralResolutionTests.cpp",
+					"lineNumber": 520,
+					"timestamp": "2026.10.02-22.56.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  frozen there (elapsed unchanged)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructuralResolutionTests.cpp",
+					"lineNumber": 88,
+					"timestamp": "2026.10.02-22.56.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'back: still in flight' to be not null.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.56.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  from exactly where it stopped' to be 0.500000, but it was -1.000000 and outside tolerance 0.000100.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructuralResolutionTests.cpp",
+					"lineNumber": 529,
+					"timestamp": "2026.10.02-22.56.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  at the same pose (before 57300.000000,26500.000000,491.380000|0.000000,0.000000,-0.000000|1.000000,1.000000,1.000000, after 57300.000000,26500.000000,265.000000|0.000000,0.000000,-0.000000|1.000000,1.000000,1.000000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.02-22.56.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  not solid while it falls' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructuralResolutionTests.cpp",
+					"lineNumber": 159,
+					"timestamp": "2026.10.02-22.56.39"
+				}
+			],
+			"warnings": 0,
+			"errors": 14,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CollapseDamagesCreaturesThroughTheSameModel",
+			"fullTestPath": "Gridlands.Game.Structure.CollapseDamagesCreaturesThroughTheSameModel",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 0.47696393728256226,
+			"dateTime": "2026.10.02-22.56.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CollapsePersistsThroughStreamingSavesAndRestart",
+			"fullTestPath": "Gridlands.Game.Structure.CollapsePersistsThroughStreamingSavesAndRestart",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 3.9025065898895264,
+			"dateTime": "2026.10.02-22.56.40",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'P10: kept, frozen, in the cell's record (the P6 mid-fall debt is closed)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 250,
+					"timestamp": "2026.10.02-22.56.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'P10: the resumed impacts landed exactly once (two decks)' to be 2, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 258,
+					"timestamp": "2026.10.02-22.56.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'no impact repeated (no duplicate damage)' to be 2, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 72,
+					"timestamp": "2026.10.02-22.56.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'P10: the resumed impacts landed exactly once (two decks)' to be 2, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 258,
+					"timestamp": "2026.10.02-22.56.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'no impact repeated (no duplicate damage)' to be 2, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 72,
+					"timestamp": "2026.10.02-22.56.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'P10: the resumed impacts landed exactly once (two decks)' to be 2, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 258,
+					"timestamp": "2026.10.02-22.56.42"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'no impact repeated (no duplicate damage)' to be 2, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLStructureTests.cpp",
+					"lineNumber": 72,
+					"timestamp": "2026.10.02-22.56.42"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "east deck rested at V(X=49200.00, Y=2000.00)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.02-22.56.43"
+				}
+			],
+			"warnings": 0,
+			"errors": 7,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "EveryAuthoredStructureStandsOnItsGround",
+			"fullTestPath": "Gridlands.Game.Structure.EveryAuthoredStructureStandsOnItsGround",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 1.0146781206130981,
+			"dateTime": "2026.10.02-22.56.43",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TreeFellsThroughTheStructuralPipelineAndPersists",
+			"fullTestPath": "Gridlands.Game.Structure.TreeFellsThroughTheStructuralPipelineAndPersists",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 1.9712975025177002,
+			"dateTime": "2026.10.02-22.56.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WrongSupportCollapsesAndHurtsZenny",
+			"fullTestPath": "Gridlands.Game.Structure.WrongSupportCollapsesAndHurtsZenny",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A0FED348757447BAB751B26C4D76F6"
+			],
+			"duration": 0.96677863597869873,
+			"dateTime": "2026.10.02-22.56.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

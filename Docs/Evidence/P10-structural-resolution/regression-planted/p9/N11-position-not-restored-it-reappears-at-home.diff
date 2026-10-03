@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
++++ b/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
+@@ -157,7 +157,7 @@
+ 	}
+ 	FGLCreatureModel& M = Model->Creature;
+ 	const double Elapsed = FMath::Max(0.0, ElapsedSeconds);
+-	Model->Location = Saved.Location;
++	// DEFECT: back home
+ 	M.State = static_cast<EGLCreatureState>(Saved.State);
+ 	M.Yaw = Saved.Yaw;
+ 	M.Health = Saved.Health;

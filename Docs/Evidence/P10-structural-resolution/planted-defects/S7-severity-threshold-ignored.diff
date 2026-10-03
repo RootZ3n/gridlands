@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLCollapseRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLCollapseRules.cpp
+@@ -266,7 +266,7 @@
+ 
+ bool GLCollapseRules::Pins(const FGLCollapseOutcome& Outcome, const FGLCollapseTuningDef& Tuning)
+ {
+-	return Tuning.PinMinSeverity > 0.0 && Outcome.Severity >= Tuning.PinMinSeverity;
++	return Outcome.Severity > 0.0; // DEFECT
+ }
+ 
+ FTransform GLCollapseRules::Motion(const FGLCollapseOutcome& Outcome, double Seconds)

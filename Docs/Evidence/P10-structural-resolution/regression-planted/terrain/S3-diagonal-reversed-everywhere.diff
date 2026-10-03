@@ -1,0 +1,21 @@
+--- a/Source/GridlandsCore/Public/Terrain/GLHeightfield.h
++++ b/Source/GridlandsCore/Public/Terrain/GLHeightfield.h
+@@ -24,15 +24,14 @@
+ 	/** The surface height inside a quad from its corner heights (A, B, C, D as above). */
+ 	inline double Height(double HA, double HB, double HC, double HD, double FX, double FY)
+ 	{
+-		return FY >= FX ? HA + FX * (HD - HC) + FY * (HC - HA)   // triangle (A, C, D)
+-		                : HA + FX * (HB - HA) + FY * (HD - HB);  // triangle (A, D, B)
++		return FX + FY <= 1.0 ? HA + FX * (HB - HA) + FY * (HC - HA) : HD + (1.0 - FX) * (HC - HD) + (1.0 - FY) * (HB - HD); // DEFECT: B-C split
+ 	}
+ 
+ 	/** The quad's two triangles as vertex indices, upward-facing in UE's left-handed space: (A, C, D), (A, D, B). */
+ 	inline void Triangles(int32 A, int32 B, int32 C, int32 D, int32 Out[6])
+ 	{
+-		Out[0] = A; Out[1] = C; Out[2] = D;
+-		Out[3] = A; Out[4] = D; Out[5] = B;
++		Out[0] = A; Out[1] = C; Out[2] = B; // DEFECT: B-C split
++		Out[3] = B; Out[4] = C; Out[5] = D;
+ 	}
+ }
+ 

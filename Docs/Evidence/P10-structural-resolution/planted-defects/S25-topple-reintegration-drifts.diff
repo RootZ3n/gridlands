@@ -1,0 +1,10 @@
+--- a/Source/GridlandsCore/Private/Building/GLPendingCollapse.cpp
++++ b/Source/GridlandsCore/Private/Building/GLPendingCollapse.cpp
+@@ -87,6 +87,7 @@
+ 	if (Out.Motion == EGLCollapseMotion::Topple)
+ 	{
+ 		const double Seconds = GLCollapseRules::IntegrateTopple(S.ToppleHeightCm, S.ToppleGravityCmS2, S.ToppleStartRadians, Out.ToppleAngles);
++		for (double& A : Out.ToppleAngles) { A += 1e-12; } // DEFECT
+ 		// The plan computed ImpactSeconds as StartSeconds + the same integration: anything else is not that plan.
+ 		if (!SameBits(Out.StartSeconds + Seconds, Out.ImpactSeconds))
+ 		{
