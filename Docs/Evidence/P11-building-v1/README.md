@@ -253,3 +253,4 @@ a FAIL in the tooling self-tests that `Tools/test.sh` runs first.
 - **Pipeline:** the gate pipeline (fresh clone, six perf suites, A/B, five planted suites) ran at `a040a29`. The changes
   after it touch only tests, the planted harness, restore's validation of the saved origin, one evidence log line and docs.
   The planted re-runs, the unload timing run and the final fresh clone are at the candidate head.
+- **Final fresh clone:** PASS at `55809fb` (178/178 from tracked inputs and the pinned engine). Only this docs line follows it.
