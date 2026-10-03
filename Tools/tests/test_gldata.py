@@ -202,6 +202,58 @@ class RuleTests(unittest.TestCase):
         self.box.edit("puzzle.home.map_riddle", lambda d: d["answer"].update(mode="CONSTRUCT"))
         self.assertRule("SCHEMA")
 
+    # --- P11 (ADR-0039) Building v1 rules
+    def test_ph1_layers_in_canonical_order(self):
+        self.box.edit("buildpiece.modern.timber_wall", lambda d: d.__setitem__("layers", ["phase.construction.finish", "phase.construction.electrical"]))
+        self.assertIn("PH-1", self.box.rules())
+
+    def test_ph2_no_content_for_an_unimplemented_phase(self):
+        self.box.edit("finish.victorian.clapboard", lambda d: d.__setitem__("phase", "phase.construction.electrical"))
+        self.assertIn("PH-2", self.box.rules())
+
+    def test_fin1_a_finish_must_fit_some_form(self):
+        self.box.edit("finish.victorian.clapboard", lambda d: d.__setitem__("fitsRoles", ["beam"]))
+        self.assertIn("FIN-1", self.box.rules())
+
+    def test_svq1_collapse_never_returns_the_careful_kit(self):
+        def same(d):
+            d["yieldsByPath"]["collapse"] = d["yieldsByPath"]["careful"]
+        self.box.edit("salvage.build.stud_wall", same)
+        self.assertIn("SV-Q1", self.box.rules())
+
+    def test_svq1_violence_never_recovers_more(self):
+        def better(d):
+            d["yieldsByPath"]["destructive"] = [{"item": "item.component.stud", "count": 9, "yieldCategory": "yield.common.salvage"}]
+        self.box.edit("salvage.build.stud_wall", better)
+        self.assertIn("SV-Q1", self.box.rules())
+
+    def test_svq1_buildable_piece_needs_paths(self):
+        self.box.edit("salvage.build.stud_wall", lambda d: d.pop("yieldsByPath"))
+        self.assertIn("SV-Q1", self.box.rules())
+
+    def test_yaw1_structure_yaw_in_whole_steps(self):
+        def odd(d):
+            d["parts"][0]["yaw"] = 37.3
+        self.box.edit("structure.fifties.storefront", odd)
+        self.assertIn("YAW-1", self.box.rules())
+
+    def test_sock1_facing_in_whole_steps(self):
+        def odd(d):
+            d["sockets"][-1]["facing"] = 44.0
+        self.box.edit("buildpiece.modern.angle_post_l45", odd)
+        self.assertIn("SOCK-1", self.box.rules())
+
+    def test_mig1_legacy_layers_must_fit(self):
+        self.box.edit("buildpiece.modern.timber_wall", lambda d: d.__setitem__("legacyLayers", ["finish.modern.shingles"]))
+        self.assertIn("MIG-1", self.box.rules())
+
+    def test_str3_structure_yaw_in_whole_steps(self):
+        found = [p for p in self.box.root.joinpath("Data", "placement").rglob("*.json") if json.loads(p.read_text()).get("kind") == "structure"]
+        data = json.loads(found[0].read_text())
+        data["transform"]["yaw"] = 37.3
+        found[0].write_text(json.dumps(data))
+        self.assertIn("STR-3", self.box.rules())
+
     def test_bld1_piece_material_must_be_structural(self):
         self.box.edit("material.timber.pine", lambda d: d.pop("support"))
         self.assertRule("BLD-1")

@@ -21,7 +21,7 @@ Gridlands.Core.Inventory 1
 Gridlands.Core.Economy 1
 Gridlands.Core.Salvage 1
 Gridlands.Game.Salvage 3
-Gridlands.Game.Inventory 1
+Gridlands.Game.Inventory 2
 Gridlands.Game.Placement 1
 
 # M5: dialogue selection (ADR-0015 D-2, D-3, D-5) and the director on real gameplay events.
@@ -50,7 +50,7 @@ Gridlands.Game.Puzzle 3
 # M10: heightfield terrain, building v0, and the navigation hard gate (ADR-0022 proof 1, ADR-0024).
 Gridlands.Core.Terrain 4
 Gridlands.Core.Building 5
-Gridlands.Game.Building 4
+Gridlands.Game.Building 5
 Gridlands.Game.Terrain 4
 
 # M11 vertical slice: creature (fight, avoid, distract), storm, discoveries/silence, persistence.
@@ -60,7 +60,7 @@ Gridlands.Game.Storm 1
 Gridlands.Game.World 1
 
 # P3: Grid cells and streaming (ADR-0026): no loss, duplication or replay; save in the second cell; per-cell static/depth.
-Gridlands.Game.Grid 5
+Gridlands.Game.Grid 6
 
 # P4 presentation: subtitle layer (speaker styling, director timing, interruption, voice hook, accessibility).
 Gridlands.Game.Presentation 6
@@ -89,3 +89,7 @@ Gridlands.Game.Encounter 11
 # P10: structural environmental resolution (ADR-0038; Gridlands.Core.Structure above also holds its 3 pending-collapse tests): a pending collapse rebuilt bit-identically and never re-planned;
 # impact-time authority over creature models (pinned XOR damaged); save/restart and unload never change an outcome.
 Gridlands.Game.Structural 10
+# P11 (ADR-0039) Building v1: fine yaw, oriented geometry, facings, preview, phases, salvage paths, material pools,
+# claims, plans, save v3; the WINCHESTER fixture, base storage, basements, renewal gate, density.
+Gridlands.Core.BuildingV1 12
+Gridlands.Game.BuildingV1 5

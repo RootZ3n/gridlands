@@ -122,6 +122,22 @@ bool FGLInventoryFull::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLInventoryRestore, "Gridlands.Game.Inventory.RestoreNeverDiscardsOverflow", GLTestUtils::Flags)
+bool FGLInventoryRestore::RunTest(const FString& Parameters)
+{
+	// P11: a save is never truncated. Restoring more than the slots hold keeps everything (adds are refused until space is freed).
+	FTestWorld Test;
+	UGLInventoryComponent* Inventory = SpawnSalvager(Test.World);
+	const int32 Stack = GLContent::Get().Find<FGLItemDef>(TEXT("item.material.cut_stone"))->StackSize;
+	const int32 Slots = Inventory->GetInventory().GetMaxSlots();
+	const int32 Saved = Stack * Slots + Stack / 2 + 3;
+	Inventory->RestoreContents({ { TEXT("item.material.cut_stone"), Saved }, { TEXT("item.material.soil"), 7 } });
+	TestEqual(TEXT("every stone restored"), Inventory->CountOf(TEXT("item.material.cut_stone")), Saved);
+	TestEqual(TEXT("and every bit of soil"), Inventory->CountOf(TEXT("item.material.soil")), 7);
+	TestEqual(TEXT("over capacity, a new pickup is refused"), Inventory->AddItem(TEXT("item.material.timber_plank"), 1), 0);
+	return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLPlacementsSpawn, "Gridlands.Game.Placement.SpawnsSalvageNodesFromData", GLTestUtils::Flags)
 bool FGLPlacementsSpawn::RunTest(const FString& Parameters)
 {

@@ -212,6 +212,42 @@ bool FGLBuildDemolish::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLBuildPreviewTruth, "Gridlands.Game.Building.PreviewColoursAndRemovalPredictionsAreTheCommitsOwn", GLTestUtils::Flags)
+bool FGLBuildPreviewTruth::RunTest(const FString& Parameters)
+{
+	// PREVIEW == REALITY (operator, 2026-10-03): the ghost's colour and the removal preview come from the very rules the
+	// commit uses. A wall stack shows GREEN, GREEN, YELLOW (at pine's limit), then RED; removing the floor predicts every
+	// wall above it (transitively), and exactly those collapse.
+	FBuildScene Scene(TEXT("GLBuildPreviewTruth"));
+	Scene.Inventory->AddItem(Plank, 2);
+	Scene.Inventory->AddItem(Stud, 30);
+	TestTrue(TEXT("a floor"), Scene.Building->Place(Scene.Zenny, Scene.P(Floor, FVector(0, 0, 0))).IsAllowed());
+	const EGLPreview Expected[] = { EGLPreview::Green, EGLPreview::Green, EGLPreview::Yellow, EGLPreview::Red };
+	TArray<int32> Walls;
+	for (int32 Storey = 0; Storey < 4; ++Storey)
+	{
+		const FGLPlacedPiece Candidate = Scene.P(Wall, FVector(0, -100, 30 + 250 * Storey));
+		const FGLBuildCheck Preview = Scene.Building->Check(Scene.Zenny, Candidate);
+		TestEqual(FString::Printf(TEXT("storey %d previews as expected"), Storey + 1), Preview.Preview, Expected[Storey]);
+		const FGLBuildCheck Placed = Scene.Building->Place(Scene.Zenny, Candidate);
+		const int32 Id = Placed.IsAllowed() ? Scene.IdAt(Wall, Candidate.Location) : 0;
+		FGLBuildCheck Committed = Placed;
+		Committed.Support = Id ? Scene.Building->Support().FindRef(Id) : 0.0;
+		TestEqual(FString::Printf(TEXT("storey %d: the committed piece has the previewed colour"), Storey + 1), Id ? GLStructureRules::PreviewOf(Committed) : EGLPreview::Red, Preview.Preview);
+		if (Id)
+		{
+			Walls.Add(Id);
+		}
+	}
+	TestEqual(TEXT("three walls stand"), Walls.Num(), 3);
+	const int32 FloorId = Scene.IdAt(Floor, FVector(0, 0, 0));
+	const TArray<int32> Predicted = Scene.Building->PreviewRemoval(FloorId);
+	TestEqual(TEXT("removing the floor predicts every wall above it, transitively"), Predicted, Walls);
+	const FGLDemolishResult Result = Scene.Building->Dismantle(Scene.Zenny, FloorId);
+	TestEqual(TEXT("and exactly those collapse"), Result.Collapsed, Predicted);
+	return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLTerraformPlay, "Gridlands.Game.Terrain.TerraformConservesProtectsAndPersists", GLTestUtils::Flags)
 bool FGLTerraformPlay::RunTest(const FString& Parameters)
 {
