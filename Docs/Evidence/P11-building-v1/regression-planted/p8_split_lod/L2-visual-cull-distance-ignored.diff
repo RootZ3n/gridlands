@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Presentation/GLVisuals.cpp
++++ b/Source/GridlandsGame/Private/Presentation/GLVisuals.cpp
+@@ -98,7 +98,7 @@
+ 	Main->SetCastShadow(Def->CastShadow);
+ 	if (Def->CullDistance > 0.0)
+ 	{
+-		Main->SetCullDistance(Def->CullDistance * 100.0); // presentation only (P8): the mesh stops drawing, nothing else changes
++		// DEFECT // presentation only (P8): the mesh stops drawing, nothing else changes
+ 	}
+ 	if (Def->Tint.Num() >= 3 && !(Def->Tint[0] == 1.0 && Def->Tint[1] == 1.0 && Def->Tint[2] == 1.0))
+ 	{

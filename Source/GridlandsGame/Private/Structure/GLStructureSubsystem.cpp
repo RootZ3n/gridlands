@@ -614,6 +614,7 @@ int32 UGLStructureSubsystem::RemoveCell(FName Cell)
 		{
 			continue;
 		}
+		const double RetireStart = FPlatformTime::Seconds();
 		for (FGLStructurePartRuntime& Part : It.Value().Parts)
 		{
 			if (AGLStructurePart* Actor = Part.Actor.Get())
@@ -633,6 +634,8 @@ int32 UGLStructureSubsystem::RemoveCell(FName Cell)
 			{
 				PlayerPieceCells.Remove(Part.Piece.Id);
 			}
+			// Evidence (P11 density): making a player structure inert is synchronous in the unload frame.
+			UE_LOG(LogGridlands, Log, TEXT("Structures: %s retired %d player parts in %.2f ms"), *It.Key().ToString(), It.Value().Parts.Num(), (FPlatformTime::Seconds() - RetireStart) * 1000.0);
 		}
 		const FName Placement = It.Key();
 		// P10: the cell's record captured its collapses in flight (StowCell runs first); they wait there, frozen.
@@ -1076,7 +1079,13 @@ void UGLStructureSubsystem::RestorePlayerCell(FName Cell, const TArray<FGLSavedP
 		Piece.Location = Entry.Location;
 		Piece.YawStep = GLStructureRules::NormalizeYawStep(Entry.YawStep);
 		Piece.Cell = Cell;
-		Piece.Origin = Entry.Origin == static_cast<uint8>(EGLPieceOrigin::Authored) ? EGLPieceOrigin::Authored : EGLPieceOrigin::Player;
+		// A player cell's record holds player construction only (AddPlayerPiece owns that): a different saved origin is a
+		// damaged record, reported, and the piece is still kept as the player's (player construction is never discarded).
+		if (Entry.Origin != static_cast<uint8>(EGLPieceOrigin::Player))
+		{
+			Problem(FString::Printf(TEXT("saved player piece %d has origin %d, not player-built: kept as the player's"), Entry.Id, Entry.Origin));
+		}
+		Piece.Origin = EGLPieceOrigin::Player;
 		Piece.Layers = Entry.Layers;
 		AddPlayerPiece(Piece, true); // the pump presents it within the frame budget (P8 synchronous-restore debt)
 		FGLStructurePartRuntime* Part = FindPlayerPieceMutable(Entry.Id);

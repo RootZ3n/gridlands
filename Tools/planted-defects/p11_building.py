@@ -90,7 +90,10 @@ DEFECTS = [
         '\tcase EGLSalvagePath::Destructive: return Salvage.YieldsByPath.Careful.Num() ? Salvage.YieldsByPath.Careful : Salvage.Yields; // DEFECT')]),
     ('B22-salvage-overflow-silently-lost', [(SALVAGE, '\t\tif (!Sources.Pool().CanDeliver(GLContent::Get(), CompletionYield()))',
         '\t\tif (false && !Sources.Pool().CanDeliver(GLContent::Get(), CompletionYield())) // DEFECT')]),
-    ('B23-removal-return-overflow-silently-lost', [(BUILDING, '\tif (!Pool.CanDeliver(GLContent::Get(), Result.Recovered))', '\tif (false && !Pool.CanDeliver(GLContent::Get(), Result.Recovered)) // DEFECT')]),
+    # The realistic lossy bug: no room check, and the delivery's result ignored (the piece goes, the return is dropped). Only
+    # disabling the check is not one: the production verify() then crashes the run, which is not a catch.
+    ('B23-removal-return-overflow-silently-lost', [(BUILDING, '\tif (!Pool.CanDeliver(GLContent::Get(), Result.Recovered))', '\tif (false && !Pool.CanDeliver(GLContent::Get(), Result.Recovered)) // DEFECT'),
+        (BUILDING, '\tverify(Pool.Deliver(GLContent::Get(), Result.Recovered));', '\tPool.Deliver(GLContent::Get(), Result.Recovered); // DEFECT: the result ignored')]),
     # --- inventory
     ('B24-stack-limit-bypassed', [(INVENTORY, '\t\tconst int32 Moved = FMath::Min(Remaining, Def->StackSize);\n\t\tStacks.Add({ Item, Moved });',
         '\t\tconst int32 Moved = Remaining; // DEFECT: one unlimited stack\n\t\tStacks.Add({ Item, Moved });')]),
@@ -160,7 +163,7 @@ def summarize(evidence):
     lines, caught = [], 0
     for name, edits in DEFECTS:
         index, tooling = os.path.join(evidence, name + '.index.json'), os.path.join(evidence, name + '.selftest.txt')
-        if all(f.endswith('.py') for f, *_ in edits) and os.path.exists(tooling):
+        if os.path.exists(tooling) and not os.path.exists(index):
             failed = [l.strip() for l in open(tooling).read().splitlines() if l.strip().startswith('FAIL:')]
             verdict, detail = ('CAUGHT (tooling assertion)', failed) if failed else ('SURVIVED', [])
         elif os.path.exists(index):
@@ -222,9 +225,17 @@ def main():
                     verdict = 'BUILD FAILED (not a catch)'
                 else:
                     before = set(glob.glob(os.path.join(R, '.test-reports', '*/')))
-                    subprocess.run([os.path.join(R, 'Tools', 'test.sh'), '--no-build', TESTS], capture_output=True, text=True)
+                    ran = subprocess.run([os.path.join(R, 'Tools', 'test.sh'), '--no-build', TESTS], capture_output=True, text=True)
                     fresh = [d for d in glob.glob(os.path.join(R, '.test-reports', '*/')) if d not in before and os.path.exists(d + 'index.json')]
-                    if not fresh:
+                    selftest_log = os.path.join(R, '.test-reports', 'selftest.log')
+                    if not fresh and 'tooling self-tests failed' in ran.stdout + ran.stderr and os.path.exists(selftest_log):
+                        # test.sh stops at its tooling self-tests (before any automation run) when a data defect breaks
+                        # one: that log was written by this run, and its FAIL lines are assertions.
+                        text = open(selftest_log).read()
+                        open(os.path.join(evidence, name + '.selftest.txt'), 'w').write(text)
+                        detail = [l.strip() for l in text.splitlines() if l.strip().startswith('FAIL:')]
+                        verdict = f'CAUGHT (tooling assertion: {detail[0]})' if detail else 'RUN DIED (self-tests errored without an assertion): not a catch'
+                    elif not fresh:
                         verdict = 'RUN DIED (no new test report): not a catch'
                     else:
                         index = max(fresh, key=os.path.getmtime) + 'index.json'

@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Glitch/GLGlitchSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Glitch/GLGlitchSubsystem.cpp
+@@ -63,7 +63,7 @@
+ 		return nullptr;
+ 	}
+ 	Record->Actor = Glitch;
+-	Glitch->GetGlitch()->PresentFromModel(Record->State, Record->ProgressSeconds, Record->bItemsDelivered, FGLPresentAuthority());
++	// DEFECT: presented in its default state, not the model's
+ 	Register(Glitch);
+ 	return Glitch;
+ }

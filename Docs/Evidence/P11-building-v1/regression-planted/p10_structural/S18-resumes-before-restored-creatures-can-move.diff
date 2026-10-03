@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -492,7 +492,7 @@
+ 		FGLActiveCollapse& Collapse = Active[I];
+ 		// P10: a creature waiting for presentation is frozen (ADR-0037), so the fall waits with it: the race between
+ 		// the structure and whoever might escape it is run on one clock, or not at all.
+-		if (Placements && Placements->HasPendingCreatures(Collapse.Cell))
++		if (false && Placements && Placements->HasPendingCreatures(Collapse.Cell)) // DEFECT
+ 		{
+ 			continue;
+ 		}

@@ -1,0 +1,30 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+@@ -887,8 +887,7 @@
+ 		return false;
+ 	}
+ 	// Rebuild only the chunks whose heights actually changed (P2: a full rebuild cost 2.8 s at 1 km).
+-	const FGLHeightfield Old = MoveTemp(Ground->Field);
+-	Ground->Field = MoveTemp(Fresh);
++	const FGLHeightfield Old = Ground->Field; // DEFECT: gameplay keeps the pre-restore ground
+ 	for (FGLChunkSlot& Slot : Ground->Slots)
+ 	{
+ 		bool bChanged = false;
+@@ -896,7 +895,7 @@
+ 		{
+ 			for (int32 X = Slot.First.X; X < Slot.First.X + Ground->VertsPerChunk && !bChanged; ++X)
+ 			{
+-				bChanged = Old.VertexHeight(X, Y) != Ground->Field.VertexHeight(X, Y);
++				bChanged = Old.VertexHeight(X, Y) != Fresh.VertexHeight(X, Y);
+ 			}
+ 		}
+ 		if (bChanged)
+@@ -904,7 +903,7 @@
+ 			++Slot.Version;
+ 			if (Slot.Actor && Slot.Actor->IsBuilt())
+ 			{
+-				Slot.Actor->Rebuild(Ground->Field, true);
++				Slot.Actor->Rebuild(Fresh, true);
+ 				Slot.BuiltVersion = Slot.Version;
+ 			}
+ 		}

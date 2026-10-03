@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainSubsystem.cpp
+@@ -256,7 +256,7 @@
+ 	}
+ 	Chunk->Setup(Slot.First, Ground.VertsPerChunk);
+ 	Chunk->State = EGLChunkState::Live;
+-	Chunk->OwnerCell = Ground.Cell;
++
+ 	return Chunk;
+ }
+ 

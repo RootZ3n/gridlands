@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -679,7 +679,7 @@
+ {
+ 	for (const FGLActiveCollapse& Collapse : Active)
+ 	{
+-		if (Collapse.Cell == Cell && !Collapse.bImpacted)
++		if (Collapse.Cell == Cell && !Collapse.bImpacted && !Collapse.Placement.ToString().StartsWith(TEXT("player:"))) // DEFECT
+ 		{
+ 			Out.Add(GLPendingCollapse::Capture(Collapse.Placement, Collapse.Part, Collapse.Outcome, Collapse.Elapsed, Collapse.Material, Collapse.Cause, Collapse.Credit));
+ 		}

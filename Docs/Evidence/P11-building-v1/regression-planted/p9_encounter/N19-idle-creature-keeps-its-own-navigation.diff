@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Combat/GLCreatureRules.cpp
++++ b/Source/GridlandsCore/Private/Combat/GLCreatureRules.cpp
+@@ -130,7 +130,7 @@
+ 
+ bool GLCreatureRules::NeedsNavigation(EGLCreatureState State)
+ {
+-	return State != EGLCreatureState::Idle && IsActiveHostile(State);
++	return IsActiveHostile(State); // DEFECT
+ }
+ 
+ bool GLCreatureRules::IsActiveHostile(EGLCreatureState State)

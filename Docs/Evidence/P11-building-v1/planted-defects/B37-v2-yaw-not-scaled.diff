@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Save/GLWorldSave.cpp
++++ b/Source/GridlandsCore/Private/Save/GLWorldSave.cpp
+@@ -32,7 +32,7 @@
+ 			int32 Quarter = 0;
+ 			Piece->TryGetNumberField(TEXT("yawQuarter"), Quarter);
+ 			Piece->RemoveField(TEXT("yawQuarter"));
+-			Piece->SetNumberField(TEXT("yawStep"), ((Quarter % 4 + 4) % 4) * 36);
++			Piece->SetNumberField(TEXT("yawStep"), (Quarter % 4 + 4) % 4); // DEFECT
+ 			Piece->SetNumberField(TEXT("origin"), 1); // every v2 build piece was player-built
+ 			TArray<TSharedPtr<FJsonValue>> Layers;
+ 			FString Def;

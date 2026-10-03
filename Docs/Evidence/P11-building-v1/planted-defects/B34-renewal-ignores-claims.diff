@@ -1,0 +1,9 @@
+--- a/Source/GridlandsCore/Private/Building/GLClaimRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLClaimRules.cpp
+@@ -60,5 +60,5 @@
+ 	{
+ 		return false;
+ 	}
+-	return ClaimAt(Claims, Location) == nullptr;
++	return true; // DEFECT
+ }

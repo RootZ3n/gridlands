@@ -90,9 +90,11 @@ model; terraforming under player structures still refused.
   one keeps its contents in its debris (lootable, never lost, never duplicated); it leaves the sources at support failure.
 
 ### 8. Ownership: renewal never touches player construction
-- `Origin` is explicit in every saved piece. `GLClaimRules::MayRenew(Origin, Location, Claims)` is false for player-built
-  construction anywhere and for anything inside a claim. `UGLStructureSubsystem::Renew` (the one renewal primitive, for
-  authored structures) asks it for every part.
+- `Origin` is explicit in every saved piece. A player cell's record holds player construction only, so a restored piece is
+  always the player's; a different saved origin is a damaged record and is reported as a load problem (never discarded).
+- `GLClaimRules::MayRenew(Origin, Location, Claims)` is false for player-built construction anywhere and for anything
+  inside a claim. `UGLStructureSubsystem::Renew` (the one renewal primitive, for authored structures) asks it for every
+  part.
 
 ### 9. Plans (P12 compatibility)
 - A plan is ordinary pieces relative to an anchor (`GLPlanRules`); instantiating it gives ordinary placed pieces.

@@ -1,0 +1,22 @@
+--- a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+@@ -522,7 +522,7 @@
+ 	for (const FGLPlacedPiece& Piece : Pieces)
+ 	{
+ 		const FGLBuildPieceDef* Def = Content.Find<FGLBuildPieceDef>(Piece.Def);
+-		if (Def && Def->Grounded && Footprint(*Def, Piece).ContainsXY(World, MarginCm))
++		if (Def && Def->Grounded && Bounds(*Def, Piece).ExpandBy(FVector(MarginCm, MarginCm, 0.0)).IsInsideOrOnXY(FVector(World, 0.0))) // DEFECT
+ 		{
+ 			return true;
+ 		}
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -817,7 +817,7 @@
+ 			{
+ 				continue;
+ 			}
+-			FGLFootprint Footprint = PartFootprint(Part);
++			FGLFootprint Footprint = FGLFootprint::FromBox(PartFootprint(Part).Enclosing()); // DEFECT: the enclosing box
+ 			Footprint.Half += FVector2D(MarginCm, MarginCm);
+ 			const FBox Enclosing = Footprint.Enclosing();
+ 			if (FBox2D(FVector2D(Enclosing.Min), FVector2D(Enclosing.Max)).Intersect(Area))

@@ -1,0 +1,13 @@
+--- a/Source/GridlandsCore/Private/Building/GLCollapseRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLCollapseRules.cpp
+@@ -189,8 +189,8 @@
+ 			Out.FallMetres = Fall / 100.0;
+ 			// What is under it when it lands is hit: its footprint (on its own axes), from where it lands up to where it was.
+ 			Out.Impact.Centre = FVector(Print.Centre.X, Print.Centre.Y, (Landing + Box.Max.Z) * 0.5);
+-			Out.Impact.Axis[0] = FVector(Print.AxisX, 0.0);
+-			Out.Impact.Axis[1] = FVector(Print.AxisY, 0.0);
++			Out.Impact.Axis[0] = FVector::ForwardVector; // DEFECT
++			Out.Impact.Axis[1] = FVector::RightVector;
+ 			Out.Impact.Axis[2] = FVector::UpVector;
+ 			Out.Impact.HalfExtent = FVector(Print.Half.X + Margin, Print.Half.Y + Margin, FMath::Max(1.0, (Box.Max.Z - Landing) * 0.5));
+ 			FGLFootprint Fallen = Print;

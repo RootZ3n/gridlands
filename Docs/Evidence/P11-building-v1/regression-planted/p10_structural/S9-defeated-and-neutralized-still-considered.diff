@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
++++ b/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
+@@ -82,7 +82,7 @@
+ 	for (const TPair<FName, FGLActorPlacement>& Entry : ActorModels)
+ 	{
+ 		FVector Feet;
+-		if (Entry.Value.Kind != TEXT("spawn") || !Entry.Value.Creature.IsActiveHostile() || !CreatureLocation(Entry.Key, Feet))
++		if (Entry.Value.Kind != TEXT("spawn") || !CreatureLocation(Entry.Key, Feet)) // DEFECT
+ 		{
+ 			continue;
+ 		}

@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -736,7 +736,7 @@
+ 			Resumed.Elapsed = Flight->ElapsedSeconds;
+ 			Resumed.Material = Flight->Material;
+ 			Resumed.Cause = Flight->Cause;
+-			Resumed.Credit = Flight->Credit;
++			Resumed.Credit = NAME_None; // DEFECT
+ 			if (AGLStructurePart* Actor = Part->Actor.Get())
+ 			{
+ 				Actor->SetSolid(false);

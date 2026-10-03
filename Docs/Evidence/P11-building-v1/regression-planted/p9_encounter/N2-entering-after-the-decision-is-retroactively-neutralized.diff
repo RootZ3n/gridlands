@@ -1,0 +1,18 @@
+--- a/Source/GridlandsGame/Private/Combat/GLCreature.cpp
++++ b/Source/GridlandsGame/Private/Combat/GLCreature.cpp
+@@ -1,6 +1,7 @@
+ #include "Combat/GLCreature.h"
+ 
+ #include "World/GLNavRegionSubsystem.h"
++#include "Mechanism/GLMechanismSubsystem.h"
+ #include "World/GLPlacementSubsystem.h"
+ 
+ #include "AIController.h"
+@@ -155,6 +156,7 @@
+ 	if (UGLPlacementSubsystem* Placements = GetWorld() ? GetWorld()->GetSubsystem<UGLPlacementSubsystem>() : nullptr)
+ 	{
+ 		Placements->SyncCreatureFromActor(*this);
++		if (UGLMechanismSubsystem* Mechs = GetWorld()->GetSubsystem<UGLMechanismSubsystem>()) { for (const TPair<FName, FGLMechanismRecord>& R : Mechs->GetRecords()) { const FGLMechanismDef* D = UGLMechanismSubsystem::DefOf(R.Value); if (D && D->HasNeutralize() && R.Value.State == D->Neutralize.InState && UGLMechanismSubsystem::NeutralizeBox(R.Value).IsInsideOrOn(GetActorLocation() - FVector(0, 0, 60))) { Placements->TryNeutralize(PlacementId, D->Neutralize.Tag, R.Key, GetActorLocation(), 0.0); } } } // DEFECT: a standing trigger
+ 	}
+ }
+ 

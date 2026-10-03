@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -733,7 +733,7 @@
+ 			Resumed.Part = Name;
+ 			Resumed.Cell = Structure->Cell;
+ 			Resumed.Outcome = MoveTemp(Outcome);
+-			Resumed.Elapsed = Flight->ElapsedSeconds;
++			Resumed.Elapsed = 0.0; // DEFECT
+ 			Resumed.Material = Flight->Material;
+ 			Resumed.Cause = Flight->Cause;
+ 			Resumed.Credit = Flight->Credit;

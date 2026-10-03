@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
+@@ -296,7 +296,7 @@
+ 		return Glitch != nullptr;
+ 	}
+ 	FGLActorPlacement* Model = ActorModels.Find(Pending.Placement);
+-	if (!Model || Model->Actor.IsValid() || Model->bSalvaged || Model->Creature.Outcome == EGLCreatureOutcome::Defeated)
++	if (!Model || Model->Actor.IsValid() || Model->Creature.Outcome == EGLCreatureOutcome::Defeated) // DEFECT: a salvaged node comes back
+ 	{
+ 		return false; // gone, already made, or never made: a salvaged node or defeated creature has no presentation
+ 	}

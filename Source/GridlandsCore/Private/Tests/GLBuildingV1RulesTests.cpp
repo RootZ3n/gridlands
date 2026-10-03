@@ -300,7 +300,10 @@ bool FGLV1Claims::RunTest(const FString& Parameters)
 	FGLPlacedPiece Core{ 7, TEXT("buildpiece.modern.base_core"), FVector(1000, 1000, 0), 0, TEXT("cell.test"), EGLPieceOrigin::Player };
 	FGLPlacedPiece Shed{ 8, V1Floor, FVector(1200, 1000, 0), 0, TEXT("cell.test"), EGLPieceOrigin::Player };
 	const TArray<FGLClaim> Claims = GLClaimRules::ClaimsFrom(Content, { Core, Shed }, 3200.0);
-	TestEqual(TEXT("one base core: one claim"), Claims.Num(), 1);
+	if (!TestEqual(TEXT("one base core: one claim"), Claims.Num(), 1))
+	{
+		return false;
+	}
 	TestTrue(TEXT("its area holds the shed"), Claims[0].Contains(FVector2D(1200, 1000)));
 	TestFalse(TEXT("not far away"), Claims[0].Contains(FVector2D(10000, 1000)));
 	FGLPlacedPiece Authored = Core;
@@ -312,8 +315,8 @@ bool FGLV1Claims::RunTest(const FString& Parameters)
 	FGLPlacedPiece Neighbour = Core;
 	Neighbour.Id = 9;
 	Neighbour.Location = FVector(4000, 1000, 0);
-	TestTrue(TEXT("two cores 30 m apart overlap at 32 m (P11 refuses that placement)"),
-		GLClaimRules::ClaimsFrom(Content, { Core, Neighbour }, 3200.0)[0].Overlaps(GLClaimRules::ClaimsFrom(Content, { Core, Neighbour }, 3200.0)[1]));
+	const TArray<FGLClaim> Two = GLClaimRules::ClaimsFrom(Content, { Core, Neighbour }, 3200.0);
+	TestTrue(TEXT("two cores 30 m apart overlap at 32 m (P11 refuses that placement)"), Two.Num() == 2 && Two[0].Overlaps(Two[1]));
 	FGLClaim Estate = Claims[0];
 	Estate.Areas.Add({ FVector2D(7000, 1000), 3200.0, 99 });
 	TestTrue(TEXT("a claim is a set of areas (room for expansion, estates): it holds both"), Estate.Contains(FVector2D(1000, 1000)) && Estate.Contains(FVector2D(9000, 1000)));
@@ -332,7 +335,10 @@ bool FGLV1Plan::RunTest(const FString& Parameters)
 	Octagon.Add({ 101, V1StudWall, FVector(-400, -500, 30) });
 	const FGLPlan Plan = GLPlanRules::Capture(Octagon, FVector(0, 0, 0), 0);
 	const TArray<FGLPlacedPiece> Rebuilt = GLPlanRules::Instantiate(Plan, FVector(50000, -20000, 0), 18, 1, EGLPieceOrigin::Player);
-	TestEqual(TEXT("every piece"), Rebuilt.Num(), Octagon.Num());
+	if (!TestEqual(TEXT("every piece"), Rebuilt.Num(), Octagon.Num()))
+	{
+		return false;
+	}
 	for (int32 A = 0; A < Octagon.Num(); ++A)
 	{
 		TestEqual(TEXT("the same piece"), Rebuilt[A].Def, Octagon[A].Def);
@@ -364,7 +370,10 @@ bool FGLV1CollapseAtAngle::RunTest(const FString& Parameters)
 	const FGLCollapseTuningDef Tuning = Content.Find<FGLTuningDef>(TEXT("tuning.world.physical"))->Collapse;
 	const FGLPlacedPiece Roof{ 1, TEXT("buildpiece.modern.porch_roof"), FVector(0, 0, 280), 18 };
 	const FGLCollapsePlan Plan = GLCollapseRules::Plan(Content, { { Roof, EGLCollapseMotion::Drop } }, {}, V1Flat, FVector(0, -1000, 0), Tuning);
-	TestEqual(TEXT("one outcome"), Plan.Outcomes.Num(), 1);
+	if (!TestEqual(TEXT("one outcome"), Plan.Outcomes.Num(), 1))
+	{
+		return false;
+	}
 	const FGLImpactVolume& Impact = Plan.Outcomes[0].Impact;
 	TestTrue(TEXT("the drop's impact volume is on the piece's 45 degree axes"), Impact.Axis[0].Equals(FVector(FVector2D(0.7071068, 0.7071068), 0.0), 1e-5));
 	const FVector Corner(GLStructureRules::RotateXY(FVector2D(95, 95), 18), 50.0);
@@ -398,7 +407,10 @@ bool FGLV1SaveMigration::RunTest(const FString& Parameters)
 	{
 		return false;
 	}
-	TestEqual(TEXT("every piece kept"), Cell->BuildPieces.Num(), 3);
+	if (!TestEqual(TEXT("every piece kept"), Cell->BuildPieces.Num(), 3))
+	{
+		return false;
+	}
 	TestEqual(TEXT("yawQuarter 1 -> yawStep 36"), Cell->BuildPieces[1].YawStep, 36);
 	TestEqual(TEXT("yawQuarter 3 -> yawStep 108"), Cell->BuildPieces[2].YawStep, 108);
 	TestEqual(TEXT("every v2 piece was player-built"), Cell->BuildPieces[0].Origin, static_cast<uint8>(EGLPieceOrigin::Player));

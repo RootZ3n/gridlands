@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -467,6 +467,7 @@
+ 		Entry.Part = Part->Name;
+ 		Entry.Cell = Structure.Cell;
+ 		Entry.Outcome = Outcome;
++		Entry.Outcome.ImpactSeconds = 0.0; // DEFECT: resolved the moment support fails
+ 		Entry.Material = MaterialOf(Part->Piece);
+ 		// P10: what physically caused it and who is credited are separate facts. Today the credit is the one who
+ 		// removed the support (P6's rule); attribution through Pehlichi is a future operator decision (ADR-0038).

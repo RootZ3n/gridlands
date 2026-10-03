@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
+@@ -524,7 +524,7 @@
+ 	GetWorld()->GetSubsystem<UGLGlitchSubsystem>()->RemoveCell(CellId);
+ 	GetWorld()->GetSubsystem<UGLMechanismSubsystem>()->RemoveCell(CellId); // P9: records go now; actors retire below
+ 	GetWorld()->GetSubsystem<UGLNavRegionSubsystem>()->RemoveCell(CellId);
+-	PendingActors.RemoveAll([CellId](const FGLPendingActor& P) { return P.Cell == CellId; }); // cancelled presentation
++	// DEFECT: presentation of an unloaded cell is not cancelled
+ 	TArray<TWeakObjectPtr<AActor>> Owned;
+ 	CellActors.RemoveAndCopyValue(CellId, Owned);
+ 	for (const TWeakObjectPtr<AActor>& Actor : Owned)

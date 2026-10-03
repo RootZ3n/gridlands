@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLPendingCollapse.cpp
++++ b/Source/GridlandsCore/Private/Building/GLPendingCollapse.cpp
+@@ -67,7 +67,7 @@
+ 	Out = FGLCollapseOutcome();
+ 	Out.Motion = static_cast<EGLCollapseMotion>(S.Motion);
+ 	Out.Start = FTransform(S.StartRotation, S.StartLocation);
+-	Out.Rest = FTransform(S.RestRotation, S.RestLocation);
++	Out.Rest = FTransform(S.RestRotation.Rotator(), S.RestLocation); // DEFECT: through a rotator
+ 	Out.StartSeconds = S.StartSeconds;
+ 	Out.ImpactSeconds = S.ImpactSeconds;
+ 	Out.Impact.Centre = S.ImpactCentre;

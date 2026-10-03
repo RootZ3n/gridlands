@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
++++ b/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
+@@ -193,7 +193,7 @@
+ {
+ 	FGLActorPlacement* Model = ActorModels.Find(PlacementId);
+ 	const FGLCreatureDef* Def = Model && Model->Kind == TEXT("spawn") ? GLContent::Get().Find<FGLCreatureDef>(Model->Definition) : nullptr;
+-	if (!Def || !Model->Creature.IsActiveHostile() || !Def->NeutralizableBy.Contains(How))
++	if (!Def || !Model->Creature.IsActiveHostile()) // DEFECT
+ 	{
+ 		return false; // unknown, already out of the encounter, or not susceptible to this outcome
+ 	}

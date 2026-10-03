@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+@@ -347,7 +347,7 @@
+ 	{
+ 		return EGLPreview::Red;
+ 	}
+-	return Check.Support <= Check.VerticalStep + 1e-9 ? EGLPreview::Yellow : EGLPreview::Green;
++	return Check.Support < Check.VerticalStep - 1e-9 ? EGLPreview::Yellow : EGLPreview::Green; // DEFECT
+ }
+ 
+ FGLBuildCheck GLStructureRules::CheckPlacement(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing,

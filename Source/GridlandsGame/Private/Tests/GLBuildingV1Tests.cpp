@@ -105,15 +105,23 @@ bool FGLV1Winchester::RunTest(const FString& Parameters)
 	FString Before;
 	{
 		FV1Scene S(TEXT("GLV1Winchester"));
-		TestTrue(TEXT("pad"), House.PreparePad(S.Test.World));
-		TestTrue(TEXT("base established"), House.EstablishBase(S.Test.World, S.Zenny));
-		TestTrue(TEXT("framed (with the 45 degree bay)"), House.Frame(S.Test.World, S.Zenny));
-		TestTrue(TEXT("a log sawn into studs"), House.Saw(S.Test.World, S.Zenny));
-		TestTrue(TEXT("finished"), House.Finish(S.Test.World, S.Zenny));
+		// Each step builds on the last: a failed step ends the test here, by its assertion (never by indexing a house that
+		// was not built).
+		if (!TestTrue(TEXT("pad"), House.PreparePad(S.Test.World))
+			|| !TestTrue(TEXT("base established"), House.EstablishBase(S.Test.World, S.Zenny))
+			|| !TestTrue(TEXT("framed (with the 45 degree bay)"), House.Frame(S.Test.World, S.Zenny))
+			|| !TestTrue(TEXT("a log sawn into studs"), House.Saw(S.Test.World, S.Zenny))
+			|| !TestTrue(TEXT("finished"), House.Finish(S.Test.World, S.Zenny)))
+		{
+			return false;
+		}
 		TestEqual(TEXT("PREVIEW == REALITY for every placement"), House.PreviewMismatches, 0);
 		// The bay at 45 degrees protects its oriented footprint from terraforming, not its enclosing box.
-		const FGLStructurePartRuntime* Post = S.Structures->FindPlayerPiece(House.BayIds[2]);
-		TestTrue(TEXT("a bay post's ground is protected"), Post && S.Building->IsUnderStructure(FVector2D(Post->Piece.Location)));
+		const FGLStructurePartRuntime* Post = House.BayIds.IsValidIndex(2) ? S.Structures->FindPlayerPiece(House.BayIds[2]) : nullptr;
+		if (!TestTrue(TEXT("a bay post's ground is protected"), Post && S.Building->IsUnderStructure(FVector2D(Post->Piece.Location))))
+		{
+			return false;
+		}
 		// A point 75 cm out along a world diagonal (away from the house): outside the post's rotated footprint grown by the
 		// 50 cm margin (|local| 106 > 60), inside that grown footprint's enclosing box (85): only an oriented test frees it.
 		const FVector2D Corner = FVector2D(Post->Piece.Location) + FVector2D(75.0, -75.0);
@@ -130,11 +138,27 @@ bool FGLV1Winchester::RunTest(const FString& Parameters)
 		TestEqual(TEXT("no load problems"), FString::Join(Problems, TEXT("; ")), FString());
 		R.PresentAll();
 		TestEqual(TEXT("every piece, yaw, layer, content and owner is back exactly"), House.Fingerprint(R.Test.World), Before);
-		const AGLBuildPiece* BayWall = R.Building->FindActor(House.BayIds[1]);
+		const AGLBuildPiece* BayWall = House.BayIds.IsValidIndex(1) ? R.Building->FindActor(House.BayIds[1]) : nullptr;
 		TestEqual(TEXT("the bay wall is presented finished"), BayWall ? BayWall->ShownPhase() : FName(), FName(TEXT("finish")));
 		TestEqual(TEXT("one claim again (derived from the core)"), R.Building->Claims().Num(), 1);
+		// Ownership is read back from the file, not inferred: every restored piece is player-built, and renewal (the one
+		// permission rule) still refuses each of them after the restart.
+		const TArray<FGLPlacedPiece> Restored = R.Building->GetPieces();
+		const TArray<FGLClaim> RestoredClaims = R.Building->Claims();
+		int32 NotPlayer = 0, Renewable = 0;
+		for (const FGLPlacedPiece& Piece : Restored)
+		{
+			NotPlayer += Piece.Origin != EGLPieceOrigin::Player;
+			Renewable += GLClaimRules::MayRenew(Piece.Origin, FVector2D(Piece.Location), RestoredClaims);
+		}
+		TestTrue(TEXT("the house came back"), Restored.Num() > 40);
+		TestEqual(TEXT("every restored piece is player-built (origin saved, not assumed)"), NotPlayer, 0);
+		TestEqual(TEXT("and renewal refuses every one of them after the restart"), Renewable, 0);
 		// Structural manipulation: the porch.
-		TestTrue(TEXT("porch post out, then the Roman column: the predicted roof falls"), House.PorchCollapse(R.Test.World, R.Zenny));
+		if (!TestTrue(TEXT("porch post out, then the Roman column: the predicted roof falls"), House.PorchCollapse(R.Test.World, R.Zenny)))
+		{
+			return false;
+		}
 		TestEqual(TEXT("its fall is in flight"), R.Structures->ActiveCollapses(), 1);
 		TestTrue(TEXT("saved mid-fall"), R.Test.World->GetSubsystem<UGLSaveSubsystem>()->SaveToSlot(V1Slot));
 	}
@@ -151,7 +175,8 @@ bool FGLV1Winchester::RunTest(const FString& Parameters)
 	const int32 PorchRoofId = House.Ids.FindRef(TEXT("porch_roof"));
 	AGLBuildPiece* Debris = M.Building->FindActor(PorchRoofId);
 	AGLStructurePart* DebrisPart = Cast<AGLStructurePart>(Debris);
-	TestTrue(TEXT("the porch roof lies as debris"), DebrisPart && M.Structures->FindPlayerPiece(PorchRoofId)->State == EGLStructurePartState::Debris);
+	const FGLStructurePartRuntime* RoofPart = M.Structures->FindPlayerPiece(PorchRoofId);
+	TestTrue(TEXT("the porch roof lies as debris"), DebrisPart && RoofPart && RoofPart->State == EGLStructurePartState::Debris);
 	const int32 StudsBefore = M.Inventory->CountOf(V1GStud), ScrapBefore = M.Inventory->CountOf(V1GScrap), PlanksBefore = M.Inventory->CountOf(V1GPlank);
 	M.Zenny->SetActorLocation(DebrisPart ? DebrisPart->GetActorLocation() + FVector(0, 300, 0) : FVector::ZeroVector);
 	int32 Hits = 0;
@@ -413,6 +438,48 @@ bool FGLV1StoreTake::RunTest(const FString& Parameters)
 	TestTrue(TEXT("one slot's worth came out"), Out > 0);
 	TestEqual(TEXT("nothing lost or duplicated"), Out + Kept, 40 + Planks);
 	TestTrue(TEXT("the rest stayed in the crate, and NICE noticed"), Kept > 0 && S.Events.Contains(FName(TEXT("Event.Player.InventoryFull"))));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLV1StoreTakePartial, "Gridlands.Game.BuildingV1.StoringAndTakingMoveOnlyWhatFits", GLTestUtils::Flags)
+bool FGLV1StoreTakePartial::RunTest(const FString& Parameters)
+{
+	// The partial cases: one item only partly fits. Storing 150 studs into a crate with one free slot moves one stack (the
+	// other 50 stay with Zenny); taking 100 studs into one partial stack of 50 moves 50 (the other 50 stay in the crate).
+	FV1Scene S(TEXT("GLV1StoreTakePartial"));
+	S.Inventory->AddItem(V1GPlank, 12);
+	S.Zenny->SetActorLocation(FVector(-300, 0, 100));
+	S.Place(V1GFloor, FVector(400, 0, 0));
+	const int32 Crate = S.Place(V1GCrate, FVector(400, 0, 30));
+	AGLStructurePart* Part = Cast<AGLStructurePart>(S.Building->FindActor(Crate));
+	FGLInventory* Box = S.Building->StorageOf(Crate);
+	if (!TestTrue(TEXT("a crate"), Part != nullptr && Box != nullptr))
+	{
+		return false;
+	}
+	const FName ScrapMetal(TEXT("item.material.scrap_metal"));
+	while (Box->GetStacks().Num() < Box->GetMaxSlots() - 1)
+	{
+		Box->Add(GLContent::Get(), ScrapMetal, 100);
+	}
+	const int32 ScrapInCrate = Box->CountOf(ScrapMetal);
+	const int32 PlanksLeft = S.Inventory->CountOf(V1GPlank);
+	S.Inventory->AddItem(V1GStud, 150);
+	TestEqual(TEXT("Zenny carries 150 studs"), S.Inventory->CountOf(V1GStud), 150);
+	TestTrue(TEXT("store"), Part->Interact(S.Zenny, GLTestUtils::Tag(TEXT("Interact.Store"))));
+	TestEqual(TEXT("one stack went into the last free slot"), Box->CountOf(V1GStud), 100);
+	TestEqual(TEXT("what did not fit stayed with Zenny"), S.Inventory->CountOf(V1GStud), 50);
+	TestEqual(TEXT("planks that did not fit stayed too"), S.Inventory->CountOf(V1GPlank) + Box->CountOf(V1GPlank), PlanksLeft);
+	// Zenny's pockets: the 50-stud stack plus tools in every other slot.
+	for (int32 Guard = 0; S.Inventory->GetInventory().GetStacks().Num() < S.Inventory->GetInventory().GetMaxSlots() && Guard < 64; ++Guard)
+	{
+		S.Inventory->AddItem(TEXT("item.tool.shovel"), 1);
+	}
+	TestTrue(TEXT("take"), Part->Interact(S.Zenny, GLTestUtils::Tag(TEXT("Interact.Take"))));
+	TestEqual(TEXT("the partial stack topped up to 100"), S.Inventory->CountOf(V1GStud), 100);
+	TestEqual(TEXT("the other 50 stayed in the crate"), Box->CountOf(V1GStud), 50);
+	TestEqual(TEXT("the scrap had no room and stayed whole"), Box->CountOf(ScrapMetal), ScrapInCrate);
+	TestEqual(TEXT("nothing lost or duplicated"), S.Inventory->CountOf(V1GStud) + Box->CountOf(V1GStud), 150);
 	return true;
 }
 

@@ -1,0 +1,11 @@
+--- a/Tools/gldata/validate.py
++++ b/Tools/gldata/validate.py
+@@ -477,7 +477,7 @@
+             elif not whole_yaw_step(float(transform.get("yaw", 0))):
+                 ds.problem("STR-3", rel, ".transform.yaw", f"a structure's yaw must be a whole number of {YAW_STEP} degree steps (ADR-0039)")
+             else:
+-                check_structure_reach(ds, entity, transform, cells_by_short, margin_cm)
++                pass  # DEFECT
+     tunings = [e for e in ds.entities.values() if e.kind == "tuning"]
+     if [e.id for e in tunings] != [TUNING_ID]:
+         ds.problem("TUN-1", "Data/tuning", "", f"exactly one tuning entity, {TUNING_ID}, is required (found {sorted(e.id for e in tunings)})")

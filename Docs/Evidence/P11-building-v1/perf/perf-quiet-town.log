@@ -1,0 +1,18 @@
+  town-crossing-straight.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/town-*)
+group=[straight] attempt=1 load start=2.99 end=4.36 gpu-before=0
+  town-crossing-reversal.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/town-*)
+group=[reversal] attempt=1 load start=2.82 end=4.59 gpu-before=0
+  town-crossing-sprint.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/town-*)
+group=[sprint] attempt=1 load start=2.62 end=4.36 gpu-before=0
+  town-crossing-teleport.json: done
+  town-crossing-resume.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/town-*)
+group=[teleport resume] attempt=1 load start=2.53 end=4.93 gpu-before=0
+  town-roundtrips.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/town-*)
+group=[roundtrips] attempt=1 load start=2.55 end=4.67 gpu-before=0
+  6 result(s) checked against budgets.json: within budget
+QUIETDONE PASS
