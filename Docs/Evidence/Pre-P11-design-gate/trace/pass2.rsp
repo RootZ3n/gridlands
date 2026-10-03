@@ -1,0 +1,2 @@
+TimingInsights.ExportTimingEvents <repo>/Saved/pre-p11/ins/win_b.csv -columns=ThreadName,TimerName,StartTime,EndTime,Duration,Depth -threads=GameThread,RenderThread 0,RHIThread,RHISubmissionThread,RHIInterruptThread,GPU0-Graphics0,GPU0-Compute0 -startTime=75.70 -endTime=75.83
+TimingInsights.ExportTimingEvents <repo>/Saved/pre-p11/ins/win_a.csv -columns=ThreadName,TimerName,StartTime,EndTime,Duration,Depth -threads=GameThread,RenderThread 0,RHIThread,RHISubmissionThread,RHIInterruptThread,GPU0-Graphics0,GPU0-Compute0 -startTime=44.88 -endTime=44.98

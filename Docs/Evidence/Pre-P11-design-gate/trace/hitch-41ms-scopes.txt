@@ -1,0 +1,74 @@
+Light trace p10-towndense-light.utrace, hitch frame at trace time 75.7660 s (41.2 ms; 2 frames after the 2nd lots unload).
+Times are ms from the frame start. Scopes >= 0.5 ms, depth <= 6 (GameThread) / <= 2 (others).
+
+--- GameThread
+FEngineLoop::Tick                                                        -0.02 + 41.21
+  Frame                                                                    -0.01 + 41.21
+    Tick_Engine                                                               0.05 + 40.09
+      UWorld_Tick                                                               0.09 + 39.59
+        TickCompletionEvents                                                      6.80 +  2.36
+          ProcessUntilTasksComplete                                                 6.80 +  2.36
+            WaitForTasks                                                              6.80 +  1.57
+        ConditionalCollectGarbage                                                11.55 + 28.12
+          BroadcastPreGarbageCollect                                               11.56 +  5.89
+            PyUtil::CollectGarbage                                                   11.58 +  5.74
+          FRealtimeGC_PerformReachabilityAnalysis                                  17.45 + 11.88
+            CollectGarbageFull                                                       17.45 + 11.88
+          GatherUnreachableObjects                                                 29.34 +  0.97
+            NotifyUnreachableObjects                                                 29.53 +  0.78
+          UnhashUnreachableObjects                                                 30.35 +  4.76
+            ConditionalBeginDestroy                                                  30.37 +  4.74
+          IncrementalPurgeGarbage                                                  35.11 +  3.08
+            IncrementalDestroyGarbage                                                35.11 +  3.08
+          FMemory::Trim                                                            38.68 +  0.94
+    Slate::Tick (Time and Widgets)                                           40.22 +  0.62
+      Slate::DrawWindows                                                       40.22 +  0.61
+FEngineLoop::Tick                                                        41.19 +  5.91
+  Frame                                                                    41.20 +  5.90
+    Tick_Engine                                                              41.28 +  5.37
+      UWorld_Tick                                                              41.39 +  4.47
+        TickCompletionEvents                                                     42.13 +  1.16
+          ProcessUntilTasksComplete                                                42.13 +  1.15
+            WaitForTasks                                                             42.13 +  1.00
+      FViewport_Draw                                                           45.91 +  0.68
+FEngineLoop::Tick                                                        47.10 +  7.12
+  Frame                                                                    47.11 +  7.11
+    Tick_Engine                                                              47.19 +  6.68
+--- RenderThread 0
+Frame                                                                   -11.35 + 16.06
+  SceneRender                                                              -0.59 +  5.02
+    FDeferredShadingSceneRenderer_Render                                     -0.58 +  4.48
+Frame                                                                     4.72 + 38.52
+  WorldTick                                                                 4.73 + 34.96
+    WaitForTasks                                                              4.77 +  5.19
+    WaitForTasks                                                             11.57 +  5.87
+    WaitForTasks                                                             17.47 +  6.28
+    WaitForTasks                                                             23.76 +  6.31
+    WaitForTasks                                                             36.47 +  3.21
+  SceneRender                                                              39.92 +  2.89
+    FDeferredShadingSceneRenderer_Render                                     39.93 +  2.29
+    RenderGraphExecute                                                       42.22 +  0.57
+Frame                                                                    43.24 +  7.39
+  WorldTick                                                                43.25 +  2.62
+    WaitForTasks                                                             43.26 +  1.00
+  SceneRender                                                              46.43 +  3.88
+    FDeferredShadingSceneRenderer_Render                                     46.44 +  2.52
+--- RHIThread
+WaitForTasks                                                             -0.46 +  2.36
+WaitForTasks                                                              2.56 +  0.70
+RHI_SubmitClose                                                           5.54 +  1.01
+  DeleteRHIResources                                                        5.54 +  1.00
+WaitForTasks                                                              6.90 +  4.68
+WaitForTasks                                                             11.61 + 18.80
+RHI_SubmitClose                                                          30.49 +  0.85
+  DeleteRHIResources                                                       30.49 +  0.85
+WaitForTasks                                                             31.35 +  8.55
+WaitForTasks                                                             40.82 +  0.68
+WaitForTasks                                                             44.38 +  1.49
+WaitForTasks                                                             45.89 +  0.50
+--- GPU0-Graphics0
+Frame                                                                    -0.35 +  9.66
+  SceneRender                                                               2.03 +  7.22
+Frame                                                                    30.66 + 19.53
+  WorldTick                                                                30.66 +  9.45
+  SceneRender                                                              40.46 +  9.62

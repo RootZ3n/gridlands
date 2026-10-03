@@ -74,7 +74,12 @@ record. Overview: [DESIGN-BIBLE.md](DESIGN-BIBLE.md).
     tier.
 
 12. **Building, salvage and terraforming are first-class gameplay**, not
-    side activities.
+    side activities. **Gridlands is architecture-first** (LOCKED DESIGN INTENT, operator, 2026-09-27;
+    [ARCHITECTURAL-NORTH-STAR](ARCHITECTURAL-NORTH-STAR.md)): an architecture enthusiast should be able to
+    spend enormous amounts of time designing buildings without engaging heavily in combat. A skilled player
+    should eventually reproduce a recognizable real building (the REAL HOUSE, HILLSIDE and WINCHESTER tests),
+    mixing historical styles freely. Understanding structures also pays off outside the base: P10 proved that
+    an ordinary structure can resolve an encounter through ordinary structural rules.
 
 13. **Player time is respected. (firm,
     [ADR-0016](ADR/0016-world-settings-and-yield-categories.md))** Resource
@@ -95,6 +100,8 @@ record. Overview: [DESIGN-BIBLE.md](DESIGN-BIBLE.md).
   boundaries, in scans, around glitches, in corruption and in NICE's
   phenomena. See [VISUAL-DIRECTION.md](VISUAL-DIRECTION.md).
 - **Organic building.** Construction snaps via sockets (Valheim-like), not a
-  strict grid ([ADR-0004](ADR/0004-snap-socket-building.md)).
+  strict grid ([ADR-0004](ADR/0004-snap-socket-building.md)). Building v0 also constrains rotation to quarter
+  turns; whether that survives the architecture-first goals (angled wings, bays, octagons, round towers) is under
+  investigation in the pre-P11 design gate ([BUILDING-V1-DESIGN](BUILDING-V1-DESIGN.md)).
 - **Travel is physical early.** On foot, with no early flying mounts; the world
   must be crossed to be reached.

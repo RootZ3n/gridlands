@@ -170,14 +170,14 @@ Infrastructure must not make the above impossible:
 - **Claimed or player-owned construction** must be distinguishable in saved state, so regeneration
   can never touch it.
 
-## Known conflicts with the current build (future changes, NOT made in P8)
+## Known conflicts with the current build (future changes, NOT made in P8; decisions of 2026-10-03 noted per row)
 These are recorded, not resolved. Each needs the future milestone and, where it changes canonical
 architecture, the operator.
 
 | Current build | North star | Note |
 |---|---|---|
-| Inventory has carried weight and overencumbrance: M4, `UGLInventoryComponent` (`OverencumberedSpeedFactor`), `Event.Player.Overencumbered` and its NICE exchanges | no ordinary weight/encumbrance; capacity and stack limits instead | changes inventory rules, a saved-state shape, and dialogue content |
+| Inventory has carried weight and overencumbrance: M4, `UGLInventoryComponent` (`OverencumberedSpeedFactor`), `Event.Player.Overencumbered` and its NICE exchanges | no ordinary weight/encumbrance; capacity and stack limits instead | changes inventory rules, a saved-state shape, and dialogue content **Decided 2026-10-03 (operator): remove weight-based encumbrance; slots and stack limits are the limit. Building v1 makes the change.** |
 | Building v0 pieces are finished "era + material" pieces unlocked by style knowledge (`buildpiece.modern.timber_wall`, `knowledge.style.*`) | construction from components through STRUCTURE / ELECTRICAL / FINISH; appearance from technique, material and finish | v0 is a prototype set; the part-graph model can carry phases and components |
 | Salvage yields are per piece (`salvage.*`), with no intact-vs-scrap quality | careful vs destructive vs collapse recovery quality | needs yield data per path |
-| Player-built physical collapse is deferred (ADR-0024; authored structures collapse, ADR-0030) | reckless removal of support may cascade | already a pending operator decision |
-| No shared base storage | nearby owned storage feeds workbenches and building | new system |
+| Player-built physical collapse is deferred (ADR-0024; authored structures collapse, ADR-0030) | reckless removal of support may cascade | already a pending operator decision **Approved in principle 2026-10-03 (operator) for Building v1, with the structural preview as part of the fairness contract.** |
+| No shared base storage | nearby owned storage feeds workbenches and building | new system **Approved 2026-10-03 (operator) as a minimal Building v1 capability.** |

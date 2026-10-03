@@ -60,8 +60,18 @@ Bosses are optional. Their rewards are valuable and unique, and never required.
   projects.
 - **Underground**: rats, snakes, later alligators or corrupted equivalents.
 - Behaviour dispositions remain data: `Passive`, `Territorial`, `Guarding`,
-  `Hunting`, plus a **patrol** route option and a **non-lethal outcome**
-  (disabled, pacified, fled) alongside death.
+  `Hunting`, plus a **patrol** route option and a **non-lethal outcome** alongside death.
+- **Outcome vocabulary (built in P9/P10; [ADR-0037](ADR/0037-dual-route-encounter-foundation.md),
+  [ADR-0038](ADR/0038-structural-environmental-resolution.md)):**
+  - **Defeated**: taken out by damage (health reaches zero), with the normal death, drop and credit behaviour.
+  - **Neutralized**: a legitimate non-damage outcome. The creature is alive and inert, ignores further damage,
+    and is still presented. A `Neutralize.*` tag says how: `Contained` (P9) and `Pinned` (P10) are built;
+    `Disabled` and `Shutdown` are declared vocabulary only.
+  - **Neutralized is final** (operator, 2026-10-03). Killing a Pinned creature later, releasing a Contained one,
+    another hazard changing a Neutralized outcome, and re-scoring an encounter are deliberate future design
+    questions, not defects.
+  - *Earlier wording* listed "disabled, pacified, fled". "Pacified" and "fled" are not outcomes in the build; if
+    they are wanted, they become new `Neutralize.*` tags or behaviours by design decision.
 - **Drops are bonuses or alternate sources**, never mandatory critical-path
   resources.
 

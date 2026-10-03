@@ -48,7 +48,8 @@ director is therefore built right after the first salvage/inventory loop
 Lines arise from play:
 
 - exploration and discoveries;
-- player behaviour: salvage, building, deaths, overencumbrance;
+- player behaviour: salvage, building, deaths, a full inventory (*was "overencumbrance"; weight-based
+  encumbrance was removed from the design on 2026-10-03*);
 - combat and avoidance;
 - glitch repair;
 - past-life/memory discoveries (era fragments);
@@ -62,7 +63,9 @@ Lines arise from play:
 These establish tone. **They must not become constantly repeated lines.**
 
 - After Zenny strips wire, NICE jokes about people who strip wire: "Where's your bike?"
-- Zenny overencumbered: NICE suggests push-ups.
+- Zenny overencumbered: NICE suggests push-ups. *(M5 example, kept as history: encumbrance was removed from the
+  design on 2026-10-03. The two overencumbrance exchanges are to be retargeted, for example at a full
+  inventory or a refused pickup, rather than deleted; see [BUILDING-V1-DESIGN](BUILDING-V1-DESIGN.md).)*
 - A mob kills Zenny: "I bet you won't do that again. ... Yeah, you will."
 - Out of nowhere: "Don't you have something better to do?"
 - On Zenny being the silent type.
@@ -103,7 +106,8 @@ gameplay systems --(tagged events)--> Dialogue Director --(chosen exchange)--> p
 ```
 
 **Events.** Systems emit **gameplay event tags**
-(`Event.Salvage.WireStripped`, `Event.Player.Died`, `Event.Player.Overencumbered`,
+(`Event.Salvage.WireStripped`, `Event.Player.Died`, `Event.Player.Overencumbered` (M4; retired with encumbrance
+in Building v1),
 `Event.Glitch.Repaired`, `Event.Storm.Started`, ...) with a small payload.
 Emitting systems do not know dialogue exists.
 

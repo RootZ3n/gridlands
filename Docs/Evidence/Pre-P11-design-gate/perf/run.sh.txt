@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Pre-P11 bounded perf attribution: strictly sequential, quiet-gated (load<3 + GPU idle) runs.
+OUT=<repo>/Saved/pre-p11; P5=<repo>/.test-reports/fresh-clones/20261003-073556.p5ctl/gridlands; P10=<repo>/.test-reports/fresh-clones/20261003-064024.sXAf/gridlands
+LOG=$OUT/run.log; : > $LOG
+load1() { cut -d' ' -f1 /proc/loadavg; }
+gpu() { cat /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | sort -n | tail -1; }
+quiet() { for i in $(seq 1 240); do
+  if awk -v l="$(load1)" 'BEGIN{exit !(l<3)}'; then ok=1; for k in 1 2 3; do [ "$(gpu)" -lt 10 ] || ok=0; sleep 1; done; [ $ok -eq 1 ] && return 0; fi
+  sleep 10; done; echo "WARN: never quiet" >> $LOG; return 0; }
+one() { # name repo flags perfargs
+  name=$1; repo=$2; flags=$3; pargs=$4
+  quiet; s=$(load1); echo "== $name start load=$s gpu=$(gpu) $(date +%T)" >> $LOG
+  ( cd $repo && GRIDLANDS_PERF_ARGS="$pargs" Tools/perf-crossing.sh $flags reversal ) >> $LOG 2>&1
+  e=$(load1); echo "== $name end load=$e $(date +%T)" >> $LOG
+  f=$(ls -t $repo/Saved/Perf/*-crossing-reversal.json | head -1); cp $f $OUT/$name.json; cp $f.log.txt $OUT/$name.log.txt
+  cp $repo/Saved/Logs/Gridlands.log $OUT/$name.Gridlands.log
+}
+one p10-towndense-traced $P10 "-b -d" "-trace=default,gpu,rhicommands,rendercommands,task -statnamedevents -tracefile=$OUT/p10-towndense.utrace"
+one p10-towndense-r1 $P10 "-b -d" ""
+one p10-local-r1 $P10 "" ""
+one p5-local-r1 $P5 "" ""
+one p10-local-r2 $P10 "" ""
+one p5-local-r2 $P5 "" ""
+echo PREP11DONE >> $LOG

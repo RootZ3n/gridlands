@@ -147,7 +147,7 @@ part      = upper *( alpha / digit )          ; PascalCase, 1..32 chars
 | `Material` | building, salvage | `Material.Metal`, `Material.Timber` |
 | `Source` | acquisition (NC-2 checks) | `Source.Salvage`, `Source.Fabricate`, `Source.GlitchReward`, `Source.CreatureDrop`, `Source.Boss`, `Source.Trader`, `Source.Scan` |
 | `Yield` | economy (ADR-0016) | `Yield.Common.Salvage`, `Yield.Rare.Material`, `Yield.Reward.Glitch` |
-| `Event` | gameplay event bus | `Event.Salvage.WireStripped`, `Event.Player.Overencumbered` |
+| `Event` | gameplay event bus | `Event.Salvage.WireStripped`, `Event.Player.Died` (`Event.Player.Overencumbered` exists in the M4 build and is retired with encumbrance in Building v1) |
 | `Knowledge` | knowledge categories | `Knowledge.MaterialUse`, `Knowledge.BuildingStyle` |
 | `Interact` | interaction verbs | `Interact.Salvage` |
 | `Tool` | tool classes | `Tool.Pry` |

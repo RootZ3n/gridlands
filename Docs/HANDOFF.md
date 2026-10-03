@@ -1,11 +1,20 @@
 # Handoff: inheriting Gridlands as an autonomous coding agent
 
-Read in this order: `CLAUDE.md` (repo root), `Docs/DESIGN-BIBLE.md`,
-`Docs/GLOSSARY.md`, `Docs/ARCHITECTURE.md`, `Docs/GLITCH-AND-PEHLICHI.md`,
-`Docs/DESIGN-PILLARS.md`, the topic docs (`WORLD-AND-PROGRESSION`,
-`STORY-AND-DIALOGUE`, `SURVIVAL-AND-THREAT`, `BUILDING-SALVAGE-TERRAIN`),
-`Docs/ADR/`,
-`Docs/MILESTONES.md`.
+Read in this order:
+1. `CLAUDE.md` (repo root), `Docs/DESIGN-BIBLE.md`, `Docs/GLOSSARY.md`.
+2. `Docs/DESIGN-PILLARS.md` and `Docs/ARCHITECTURAL-NORTH-STAR.md` (LOCKED design intent: Gridlands is
+   architecture-first).
+3. `Docs/ARCHITECTURE.md`, `Docs/GLITCH-AND-PEHLICHI.md`.
+4. The topic docs: `WORLD-AND-PROGRESSION`, `STORY-AND-DIALOGUE`, `SURVIVAL-AND-THREAT`,
+   `BUILDING-SALVAGE-TERRAIN`, `KNOWLEDGE-AND-DISCOVERY`, `DUNGEONS-AND-LEGENDARIES`.
+5. Presentation and content pipeline: `VISUAL-DIRECTION`, `ART-PIPELINE`, `STRUCTURE-AUTHORING`,
+   `CONTENT-IDS-AND-TAGS`.
+6. `Docs/ADR/` (0001–0038; the later ADRs carry the streaming, navigation, structural and encounter decisions).
+7. `Docs/MILESTONES.md` and the newest milestone's `Docs/Evidence/<milestone>/README.md` (its "Remaining debt"
+   section is the live debt list).
+8. Work in progress: `Docs/BUILDING-V1-DESIGN.md` (pre-P11 design gate, a proposal until the operator approves it).
+
+`DESIGN-RECONCILIATION.md` and `LEGACY-GODOT.md` are history: read them for why, not for what is current.
 
 ## Roles (Pehverse lab)
 
@@ -134,4 +143,6 @@ The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
 - Ikbi's game-studio module validates Godot only; it needs an Unreal validator
   that calls `Tools/test.sh`.
 - First compiles are long; budget agent turns and timeouts accordingly.
-- Any agent campaign on this repo obeys the lab's DeepSeek cost window.
+- *Retired:* this list used to say "any agent campaign on this repo obeys the lab's DeepSeek cost window". The
+  lab retired that nightly window on 2026-09-24, on the record. The lab's provider policy (cost-aware routing, the
+  prohibited-model gate) still applies to agent campaigns; it is lab policy, not a rule of this repository.

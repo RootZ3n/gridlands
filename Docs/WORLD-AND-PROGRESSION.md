@@ -211,8 +211,8 @@ guard a larger share of glitches but must keep NC-3 true.
 
 ## 13. The opening area (operator decision E8)
 
-The first playable area is a **~250 m prototype of recognizable modern-day
-suburbia**, the dominant environment, containing:
+The first playable area began as a **~250 m prototype of recognizable modern-day
+suburbia** (the M3–M11 slice), the dominant environment, containing:
 - **one conspicuous 1950s memory fragment**;
 - **one smaller Roman fragment**;
 - **one storm-drain / sewer entrance**.
@@ -220,6 +220,12 @@ suburbia**, the dominant environment, containing:
 It establishes the opening-world grammar: **recognizable modern reality, with
 impossible fragments from Pehlichi's and Zenny's worlds bleeding into it.** The
 opening is not a 1950s biome.
+
+**Scale (updated 2026-10-03).** Grid cells are canonically **1 km × 1 km** (1024 m, 1 m terrain, 64 m chunks;
+[ADR-0027](ADR/0027-canonical-grid-scale.md)). The ~250 m figure describes the size of the authored slice
+*inside* the home cell (`cell.home.origin`), not the cell. The rest of the home cell, and how densely it is
+authored, is open content work. The opening grammar above applies to the whole home cell. The town block on the
+crossing route into `cell.outer.diner_lots` is a dev density fixture (P8), not authored opening content.
 
 ## 14. Home and settlement
 
