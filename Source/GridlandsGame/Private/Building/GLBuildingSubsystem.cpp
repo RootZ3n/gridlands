@@ -38,6 +38,11 @@ void FGLMaterialSources::AnnounceAcquired(AActor* Who, const TMap<FName, int32>&
 	}
 }
 
+UGLStructureSubsystem* UGLBuildingSubsystem::Structures() const
+{
+	return GetWorld()->GetSubsystem<UGLStructureSubsystem>();
+}
+
 double UGLBuildingSubsystem::GroundAt(const FVector2D& At) const
 {
 	const UGLTerrainSubsystem* Terrain = GetWorld()->GetSubsystem<UGLTerrainSubsystem>();
@@ -117,6 +122,85 @@ FGLMaterialSources UGLBuildingSubsystem::SourcesFor(const AActor* Who, const FVe
 		Sources.DeliverOrder.Add(I);
 	}
 	return Sources;
+}
+
+int32 UGLBuildingSubsystem::Store(AActor* Who, int32 PieceId)
+{
+	FGLInventory* Crate = StorageOf(PieceId);
+	UGLInventoryComponent* Carrier = Who ? Who->FindComponentByClass<UGLInventoryComponent>() : nullptr;
+	if (!Crate || !Carrier)
+	{
+		return 0;
+	}
+	TMap<FName, int32> Carried;
+	for (const FGLInventoryStack& Stack : Carrier->GetInventory().GetStacks())
+	{
+		const FGLItemDef* Def = GLContent::Get().Find<FGLItemDef>(Stack.Item);
+		if (Def && !Def->IsTool() && Def->Weapon.Damage <= 0.0) // tools and weapons stay in hand
+		{
+			Carried.FindOrAdd(Stack.Item) += Stack.Count;
+		}
+	}
+	TArray<FName> Items;
+	Carried.GetKeys(Items);
+	Items.Sort(FNameLexicalLess());
+	int32 Moved = 0;
+	for (const FName& Item : Items)
+	{
+		const int32 Fits = Crate->Add(GLContent::Get(), Item, Carried[Item]); // only what fits leaves Zenny
+		if (Fits > 0)
+		{
+			verify(Carrier->GetMutableInventory().Remove(Item, Fits));
+			Moved += Fits;
+		}
+	}
+	if (Moved > 0)
+	{
+		Emit(TEXT("Event.Storage.Changed"), Structures()->FindPlayerPiece(PieceId)->Piece.Def, Who, { { TEXT("stored"), static_cast<double>(Moved) } });
+	}
+	return Moved;
+}
+
+int32 UGLBuildingSubsystem::Take(AActor* Who, int32 PieceId)
+{
+	FGLInventory* Crate = StorageOf(PieceId);
+	UGLInventoryComponent* Carrier = Who ? Who->FindComponentByClass<UGLInventoryComponent>() : nullptr;
+	if (!Crate || !Carrier)
+	{
+		return 0;
+	}
+	TMap<FName, int32> Held;
+	for (const FGLInventoryStack& Stack : Crate->GetStacks())
+	{
+		Held.FindOrAdd(Stack.Item) += Stack.Count;
+	}
+	TArray<FName> Items;
+	Held.GetKeys(Items);
+	Items.Sort(FNameLexicalLess());
+	int32 Moved = 0;
+	bool bLeft = false;
+	TMap<FName, int32> Delivered;
+	for (const FName& Item : Items)
+	{
+		const int32 Fits = Carrier->GetMutableInventory().Add(GLContent::Get(), Item, Held[Item]); // the rest stays in the crate
+		if (Fits > 0)
+		{
+			verify(Crate->Remove(Item, Fits));
+			Delivered.Add(Item, Fits);
+			Moved += Fits;
+		}
+		bLeft |= Fits < Held[Item];
+	}
+	FGLMaterialSources().AnnounceAcquired(Who, Delivered);
+	if (bLeft)
+	{
+		Carrier->AnnounceFull(Structures()->FindPlayerPiece(PieceId)->Piece.Def);
+	}
+	if (Moved > 0)
+	{
+		Emit(TEXT("Event.Storage.Changed"), Structures()->FindPlayerPiece(PieceId)->Piece.Def, Who, { { TEXT("taken"), static_cast<double>(Moved) } });
+	}
+	return Moved;
 }
 
 TArray<FName> UGLBuildingSubsystem::StationsNear(const FVector& At, double ReachCm) const

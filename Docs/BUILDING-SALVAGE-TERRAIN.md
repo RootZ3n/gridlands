@@ -75,8 +75,8 @@ with several sources:
   ([ADR-0030](ADR/0030-structural-salvage-and-deterministic-collapse.md),
   [ADR-0038](ADR/0038-structural-environmental-resolution.md)). *(The 2026-09-24 text said "not built during
   bootstrap"; the piece schema carried material and support fields from M2 as planned.)*
-- **Building v1 direction (operator decisions 2026-10-03; design in [BUILDING-V1-DESIGN](BUILDING-V1-DESIGN.md),
-  a proposal):**
+- **Building v1 (operator decisions 2026-10-03; built as the P11 candidate,
+  [ADR-0039](ADR/0039-building-v1-canonical-structural-model.md); design in [BUILDING-V1-DESIGN](BUILDING-V1-DESIGN.md)):**
   - FRAME → (optional, later) ELECTRICAL → FINISH;
   - appearance from component form + material + finish, with no era-compatibility rules;
   - careful, destructive and collapse salvage paths with different recovery;

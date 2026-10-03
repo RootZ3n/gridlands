@@ -85,6 +85,13 @@ public:
 	/** A storage piece's contents (null when it is not an intact player storage piece). */
 	FGLInventory* StorageOf(int32 PieceId);
 	const FGLInventory* StorageOf(int32 PieceId) const { return const_cast<UGLBuildingSubsystem*>(this)->StorageOf(PieceId); }
+	/**
+	 * P11: moves every carried material (not tools) from Who into an intact player storage piece, as much as fits; what
+	 * does not fit stays with Who. Returns the number of items moved. Never loses or duplicates anything.
+	 */
+	int32 Store(AActor* Who, int32 PieceId);
+	/** P11: moves a storage piece's contents to Who, as much as fits; the rest stays in the piece (InventoryFull). */
+	int32 Take(AActor* Who, int32 PieceId);
 	/** Player-built station tags within reach of a point (a sawhorse provides Station.Saw). */
 	TArray<FName> StationsNear(const FVector& At, double ReachCm = 300.0) const;
 
@@ -109,6 +116,7 @@ public:
 
 private:
 	double GroundAt(const FVector2D& At) const;
+	class UGLStructureSubsystem* Structures() const;
 	void Emit(const TCHAR* Tag, FName Subject, AActor* Instigator, const TMap<FName, double>& Numbers = {});
 	TMap<FName, int32> ScaledYield(const FGLPlacedPiece& Piece, EGLSalvagePath Path) const;
 

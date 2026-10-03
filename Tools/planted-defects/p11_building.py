@@ -110,6 +110,9 @@ DEFECTS = [
         '\t\tfor (const FGLPlacedPiece& Piece : GetPieces())\n\t\t{\n\t\t\tconst FGLBuildPieceDef* Def = GLContent::Get().Find<FGLBuildPieceDef>(Piece.Def);\n\t\t\tif (Def && Def->Storage.Slots > 0',
         '\t\tfor (const FGLPlacedPiece& Piece : Structures->PlayerPieces(NAME_None, true)) // DEFECT: debris too\n\t\t{\n\t\t\tconst FGLBuildPieceDef* Def = GLContent::Get().Find<FGLBuildPieceDef>(Piece.Def);\n\t\t\tif (Def && Def->Storage.Slots > 0')]),
     ('B32-overlapping-claims-allowed', [(BUILDING, '\t\t\tif (New.Num() && New[0].Overlaps(Existing))', '\t\t\tif (false && New.Num() && New[0].Overlaps(Existing)) // DEFECT')]),
+    ('B40-storing-removes-what-did-not-fit', [(BUILDING, '\t\t\tverify(Carrier->GetMutableInventory().Remove(Item, Fits));',
+        '\t\t\tverify(Carrier->GetMutableInventory().Remove(Item, Carried[Item])); // DEFECT: all of it leaves Zenny')]),
+    ('B41-taking-leaves-nothing-behind', [(BUILDING, '\t\t\tverify(Crate->Remove(Item, Fits));', '\t\t\tverify(Crate->Remove(Item, Held[Item])); // DEFECT: the rest vanishes')]),
     # --- ownership, plans, migration
     ('B33-renewal-ignores-player-ownership', [(CLAIMS, '\tif (Origin == EGLPieceOrigin::Player)\n\t{\n\t\treturn false;\n\t}', '\t// DEFECT: ownership ignored')]),
     ('B34-renewal-ignores-claims', [(CLAIMS, '\treturn ClaimAt(Claims, Location) == nullptr;', '\treturn true; // DEFECT')]),

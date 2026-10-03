@@ -1,0 +1,98 @@
+{
+	"fingerprintAtEnd": "47 pieces (0 debris, 21 layers, 47 player-owned) crc 3d27a73c",
+	"mode": "resume",
+	"checks": [
+		{
+			"check": "the fall resumes after the restart",
+			"pass": true,
+			"detail": "1 in flight"
+		},
+		{
+			"check": "it lands exactly once",
+			"pass": true,
+			"detail": "1 impact(s)"
+		},
+		{
+			"check": "collapse debris salvages into scrap, not pristine components",
+			"pass": true,
+			"detail": "scrap +5, studs +0"
+		},
+		{
+			"check": "careful dismantle of the interior wall: intact studs (and its clapboard back as boards)",
+			"pass": true,
+			"detail": "stud 5, scrap_timber 2, timber_plank 2"
+		},
+		{
+			"check": "smashing a bay wall: fewer studs, more scrap",
+			"pass": true,
+			"detail": "stud 1, scrap_timber 4, timber_plank 1"
+		}
+	],
+	"pass": true,
+	"placements": 0,
+	"previewMismatches": 0,
+	"ids":
+	{
+		"core": 1,
+		"crate_floor_a": 2,
+		"crate_floor_b": 3,
+		"crate_a": 4,
+		"crate_b": 5,
+		"sawhorse": 6,
+		"a_f1": 7,
+		"a_f2": 8,
+		"a_f3": 9,
+		"a_f4": 10,
+		"a_f5": 11,
+		"a_f6": 12,
+		"b_f1": 13,
+		"b_f2": 14,
+		"b_f3": 15,
+		"b_f4": 16,
+		"a_n1": 17,
+		"a_n2": 18,
+		"a_n3": 19,
+		"a_s1": 20,
+		"a_door": 21,
+		"a_s3": 22,
+		"a_w1": 23,
+		"a_w2": 24,
+		"ab_door": 25,
+		"ab_wall": 26,
+		"b_n1": 27,
+		"b_n2": 28,
+		"b_s1": 29,
+		"b_s2": 30,
+		"b_e1": 31,
+		"b_e2": 32,
+		"a_r1": 33,
+		"a_r2": 34,
+		"a_r3": 35,
+		"a_r4": 36,
+		"a_r5": 37,
+		"a_r6": 38,
+		"b_r1": 39,
+		"b_r2": 40,
+		"b_r3": 41,
+		"b_r4": 42,
+		"column": 43,
+		"porch_post": 44,
+		"porch_roof": 45,
+		"bay_p1": 46,
+		"bay_2": 47,
+		"bay_3": 48,
+		"bay_4": 49,
+		"bay_5": 50,
+		"bay_6": 51,
+		"bay_7": 52
+	},
+	"bay": [
+		46,
+		47,
+		48,
+		49,
+		50,
+		51,
+		52
+	]
+}

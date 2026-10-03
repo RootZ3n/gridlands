@@ -163,7 +163,7 @@ editor.
 | Salvage | `UGLSalvageableComponent`: integrity, yields, tool gating | `UGLSalvageDefinition` |
 | Inventory | `UGLInventoryComponent` over Core stack math (`FGLInventoryStack {Item, Count}`) | `UGLItemDefinition` |
 | Fabrication | `UGLFabricationSubsystem`: Core `CanCraft`/`Craft` + station proximity | `UGLRecipeDefinition` |
-| Building/repair | `AGLBuildPiece` with snap sockets; states Intact / Damaged / Ghost | `UGLBuildPieceDefinition` |
+| Building/repair | P11 (ADR-0039): player pieces are facts in `UGLStructureSubsystem` (one player structure per cell, the same collapse and persistence as authored structures); `UGLBuildingSubsystem` holds the verbs (place, finish, dismantle, smash) and the material sources (shared base storage); `AGLStructurePart` presents a frame or its finish | `buildpiece.*`, `finish.*`, `phase.*`, per-path `salvage.*` |
 | **Glitches** | `AGLGlitch` + `UGLGlitchComponent`, `UGLGlitchSubsystem`, requirement objects | `UGLGlitchDefinition` |
 | **Pehlichi** | `AGLPehlichi` + command, positioning, scan, capability and **repair** components | `UGLCompanionCapabilityDefinition` |
 | Creatures | `AGLCreature` + StateTree; disposition is data | `UGLCreatureDefinition` (`Passive/Territorial/Guarding/Hunting`) |
@@ -294,6 +294,11 @@ performing.
 | E-1..2 | Every yield passes through its category's world setting; progression rewards are never scaled | ADR-0016 |
 | G-1 | Grid lines define regions, not surfaces | ADR-0010 |
 | I-1 | No model, API or lab calls from game code (Pehlichi, NICE, dialogue) | ADR-0006 |
+| BV-1 | Player and authored construction share one structural model: removing a support collapses what it held by the canonical rules, impact at impact time (P11 candidate) | ADR-0039, ADR-0030, ADR-0038 |
+| BV-2 | PREVIEW == REALITY: the placement colour (GREEN / YELLOW / RED) and the removal preview come from the commit's own rules, never a parallel estimate | ADR-0039 |
+| BV-3 | A finish layer never changes support; electrical is registered, never given content until built | ADR-0039 |
+| BV-4 | World renewal never deletes or replaces player-built construction, nor anything inside a claim (`GLClaimRules::MayRenew`) | ADR-0039 |
+| BV-5 | Nothing is silently destroyed: a salvage, removal or craft whose whole result would not fit is refused; a restore keeps everything; storage consumption is all-or-nothing | ADR-0039 |
 
 *If a player can only advance by killing something, the non-combat path has failed.*
 

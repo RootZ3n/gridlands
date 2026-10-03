@@ -19,18 +19,21 @@ The game loads `Saved/SaveGames/Gridlands/world.json` if it exists. To start a n
 | Key | What it does |
 |---|---|
 | WASD, mouse, Space | move, look, jump |
-| E | use what you're looking at (salvage, pick up, place something) |
+| E | use what you're looking at (salvage, pick up, place something; on your storage crate: store every material you carry, tools stay in hand) |
+| L | take everything out of the storage crate you're looking at (what doesn't fit stays in the crate) |
 | F | fabricate |
 | Q | ask Pehlichi to scan (reveals glitches in range) |
 | R | ask Pehlichi to repair the revealed glitch nearby |
 | G | Pehlichi follows / stays |
 | H | ask Pehlichi for a hint on NICE's current puzzle (escalating; capped by his Analysis) |
 | F5 / F9 | quick save / quick load |
-| B | build mode on/off (a ghost shows where the piece would go, green if it fits and red if not; the line at the bottom of the screen says why) |
-| mouse wheel | choose a piece (floor, wall, doorway, roof, Roman wall) |
-| Z | rotate the piece a quarter turn |
+| B | build mode on/off. The ghost is GREEN (fits, with margin), YELLOW (fits, but at its material's limit: nothing more of that material can stand on it) or RED (won't stand, or something is in the way); the bottom line says why. Aiming at one of your pieces highlights in red everything that would fall if you took it out |
+| mouse wheel | choose a piece (floors, stud walls and doorways, roof frames, log walls, Roman columns and walls, posts, porch roofs, angle posts and bay walls, storage crates, base core, sawhorse) |
+| Z / C | rotate the piece a quarter turn / by 15 degrees (an angled wall snapped to an angle post takes its angle from the post) |
 | left mouse | place the piece (build mode) or use the shovel (terraform mode) |
-| X | demolish the piece you're aiming at; anything it held up falls, and you get everything back |
+| X | dismantle the piece you're aiming at, carefully: you get its components back intact (studs). Anything it held up collapses for real and lies as debris (salvage that for scrap). A crate with something in it refuses: empty it first |
+| N | smash the piece instead: quicker, but fewer studs and more scrap |
+| Y | finish the frame you're aiming at (clapboard, boards, shingles): it stops looking like framing. Finishes never change what holds up |
 | T | terraform mode: dig, then raise, then flatten, then off (needs a shovel) |
 | left mouse (no tool out) | swing at a creature in front of you (best weapon you carry: pry bar > shovel > fists) |
 | V | Pehlichi makes a glitchy noise where he is; creatures nearby go and look (he never hurts anything) |
@@ -40,13 +43,17 @@ Building and terraforming bindings are provisional; tell me what feels wrong.
 Zenny never talks. Pehlichi is the only one who repairs anything; you make repairs possible.
 
 ## Building a shelter
+(P11 candidate, Building v1. Numbers are provisional.)
 1. Learn timber framing. Salvage a backyard fence panel, or let Pehlichi fix the dead transformer.
-2. Gather planks: 4 fence panels (3 each) and 2 garden sheds behind the houses (12 each). A 4 m
-   shelter takes 32: 4 floors, 7 walls, 1 doorway and 4 roof slopes, at 2 planks each.
-3. Put floors down on level ground. On a slope the bottom line says "not on firm, level ground",
+2. Floors cost planks; walls, doorways and roof frames are framed from **studs**. Fell a pine for logs and saw them into
+   studs at a sawhorse (F), or dismantle framing carefully to get studs back. Finishes (clapboard, boards, shingles) cost planks.
+3. **A base:** place a base core. Within 32 m of it your storage crates (they stand on a floor) supply building and
+   crafting while you are there, before your own pockets; what you take apart goes to your pockets first, then the crates.
+   There is no carrying weight: only slots and stacks (100 of most building materials per stack).
+4. Put floors down on level ground. On a slope the bottom line says "not on firm, level ground",
    so flatten it with the shovel first. Walls snap to floor edges and roof slopes snap to wall
    tops. Rotate with Z.
-4. Support weakens as you build up and out. Timber stands a floor plus three walls high, and a
+5. Support weakens as you build up and out. Timber stands a floor plus three walls high, and a
    floor can hang one piece out over a drop.
 
 Shovel: press F with 2 scrap metal and a plank (F makes a tool you don't already have).

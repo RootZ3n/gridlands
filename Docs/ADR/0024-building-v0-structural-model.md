@@ -105,3 +105,14 @@ structures deliberately keep this ADR's behaviour for now:
 
 **Whether player structures adopt the physical-collapse model is an open operator decision.** It
 will be evaluated later with gameplay and economy evidence. P6's scope is not a permanent answer.
+
+## Amended by ADR-0039 (P11, 2026-10-03; candidate)
+- **Yaw** is an integer in 2.5 degree steps (`YawStep`, 90 = 36) with **oriented bounds** for every shape question;
+  quarter turns stay bit-exact. Socket facings let angled pieces snap with their yaw from data. Not freeform geometry.
+- **Demolition no longer refunds everything.** Removing a piece is a careful dismantle (careful yields) or a smash
+  (destructive yields); whatever loses support collapses by the canonical rules (ADR-0030/0038) and lies as debris
+  (collapse yields). The operator's future decision point below was taken: **player-built collapse, approved in
+  principle**, with the GREEN / YELLOW / RED and removal previews as its fairness contract.
+- **Pieces are frames; finishes are layers** (FRAME -> ELECTRICAL (registered) -> FINISH); v0 pieces migrate to
+  frame + finish. Costs come from components (studs) and finishing materials.
+- Digging under a player structure **stays refused** in P11 (operator).

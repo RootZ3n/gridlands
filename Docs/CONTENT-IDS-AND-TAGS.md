@@ -64,9 +64,24 @@ Rules:
 | `tuning` | provisional physical and noise tuning; exactly one (TUN-1) | `tuning.world.physical` |
 | `mechanism` | a model-first environmental mechanism: states, one operation, effects on state entry (P9, ADR-0037) | `mechanism.proof.cage` |
 | `navregion` | an authored navigation region for a bounded encounter space (P9, ADR-0029 as amended) | `navregion.proof.room` |
+| `phase` | a construction phase after FRAME, in canonical order (FRAME -> ELECTRICAL -> FINISH); an unimplemented phase is registered, never given content (P11, ADR-0039) | `phase.construction.finish` |
+| `finish` | a finish layer: real finishing material installed on a compatible frame; changes appearance and salvage, never support (P11, ADR-0039) | `finish.victorian.clapboard` |
 
 **[V] ID-9** A new kind is added only with a typed C++ definition (ADR-0021)
 and an entry here. It's a code change, reviewed.
+
+## 2a. Building v1 rules (P11, ADR-0039)
+
+- **[V] PH-1** A build piece's `layers` are registered phases, in canonical order.
+- **[V] PH-2** No content for an unimplemented phase (electrical is registered for the future, not built).
+- **[V] FIN-1** Every role a finish fits has a form that accepts the finish's phase.
+- **[V] SV-Q1** A buildable piece's salvage (and every finish's) has `careful`, `destructive` and `collapse` yields;
+  reusable (non-scrap) recovery never improves with violence (careful >= destructive >= collapse), and collapse never
+  returns the careful kit.
+- **[V] YAW-1 / STR-3** Structure part yaws and structure placement yaws are whole 2.5 degree steps.
+- **[V] SOCK-1** A socket facing is a whole 2.5 degree step.
+- **[V] MIG-1** A build piece's `legacyLayers` (the v2 -> v3 save migration) are finishes it accepts.
+- **[V] CLM-1** Base cores, storage and stations are player construction (buildable).
 
 ## 2b. Content rules beyond the grammar
 

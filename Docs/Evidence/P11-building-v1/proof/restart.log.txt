@@ -1,0 +1,15 @@
+LogGridlands: Load: 1 cell records (0 loaded now, the rest when they stream in): 5 glitches, 0 salvaged placements, 52 build pieces, 0 edited ground vertices from ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json
+LogGridlands: gl.Building.Proof: PASS after a restart the house is back exactly (pieces, yaw, layers, contents, owners): 52 pieces (0 debris, 24 layers, 52 player-owned) crc 270c530a
+LogGridlands: gl.Building.Proof: restart phase 1: streaming away
+LogGridlands: gl.Building.Proof: PASS streamed away: the home cell (and the house) unloaded
+LogGridlands: gl.Building.Proof: restart phase 2: coming back
+LogGridlands: gl.Building.Proof: PASS streamed back: still exactly the same house: 52 pieces (0 debris, 24 layers, 52 player-owned) crc 270c530a
+LogGridlands: gl.Building.Proof: restart screenshot 0 porch-before-collapse
+LogGridlands: gl.Building.Proof: restart phase 3: porch
+LogGridlands: gl.Building.Proof: PASS porch post out: predicted to stand, and it stands: predicted 0 falling, 0 fell
+LogGridlands: Structures: player:cell.home.origin lost support: 1 part(s) collapse (decided in 0.398 ms)
+LogGridlands: gl.Building.Proof: PASS Roman column out: the predicted roof falls, by the canonical collapse: predicted [45], collapsed [45]
+LogGridlands: gl.Building.Proof: restart screenshot 1 porch-mid-fall
+LogGridlands: gl.Building.Proof: PASS quitting mid-fall: 1 in flight
+LogGridlands: gl.Building.Proof: restart RESULT PASS (6 checks)
+LogGridlands: Save: wrote ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json

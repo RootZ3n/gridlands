@@ -374,4 +374,46 @@ bool FGLV1Density::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLV1StoreTake, "Gridlands.Game.BuildingV1.StoringAndTakingNeverLosesAnything", GLTestUtils::Flags)
+bool FGLV1StoreTake::RunTest(const FString& Parameters)
+{
+	// The player's own verbs on a crate (E: store materials, L: take everything): tools stay in hand, what does not fit
+	// stays where it was, nothing is lost or duplicated.
+	FV1Scene S(TEXT("GLV1StoreTake"));
+	S.Inventory->AddItem(V1GPlank, 12);
+	S.Zenny->SetActorLocation(FVector(-300, 0, 100));
+	S.Place(V1GFloor, FVector(400, 0, 0));
+	const int32 Crate = S.Place(V1GCrate, FVector(400, 0, 30));
+	AGLStructurePart* Part = Cast<AGLStructurePart>(S.Building->FindActor(Crate));
+	TestTrue(TEXT("a crate"), Part != nullptr);
+	if (!Part)
+	{
+		return false;
+	}
+	S.Inventory->AddItem(V1GStud, 40);
+	S.Inventory->AddItem(TEXT("item.tool.pry_bar"), 1);
+	TArray<FGLInteractionOption> Options;
+	Part->GetInteractionOptions(S.Zenny, Options);
+	TestTrue(TEXT("the crate offers Store materials first"), Options.Num() >= 2 && Options[0].Verb == GLTestUtils::Tag(TEXT("Interact.Store")) && Options[0].bEnabled);
+	const int32 Planks = S.Inventory->CountOf(V1GPlank);
+	TestTrue(TEXT("store"), Part->Interact(S.Zenny, GLTestUtils::Tag(TEXT("Interact.Store"))));
+	TestEqual(TEXT("every stud in the crate"), S.Building->StorageOf(Crate)->CountOf(V1GStud), 40);
+	TestEqual(TEXT("and every plank"), S.Building->StorageOf(Crate)->CountOf(V1GPlank), Planks);
+	TestEqual(TEXT("Zenny keeps his tools"), S.Inventory->CountOf(TEXT("item.tool.pry_bar")), 1);
+	TestEqual(TEXT("and carries no materials"), S.Inventory->CountOf(V1GStud) + S.Inventory->CountOf(V1GPlank), 0);
+	TestTrue(TEXT("an event the autosave hears"), S.Events.Contains(FName(TEXT("Event.Storage.Changed"))));
+	// Take with almost no room: what fits comes out, the rest stays in the crate.
+	for (int32 Slot = 0; S.Inventory->GetInventory().GetStacks().Num() < S.Inventory->GetInventory().GetMaxSlots() - 1 && Slot < 64; ++Slot)
+	{
+		S.Inventory->AddItem(TEXT("item.tool.shovel"), 1);
+	}
+	TestTrue(TEXT("take"), Part->Interact(S.Zenny, GLTestUtils::Tag(TEXT("Interact.Take"))));
+	const int32 Out = S.Inventory->CountOf(V1GStud) + S.Inventory->CountOf(V1GPlank);
+	const int32 Kept = S.Building->StorageOf(Crate)->CountOf(V1GStud) + S.Building->StorageOf(Crate)->CountOf(V1GPlank);
+	TestTrue(TEXT("one slot's worth came out"), Out > 0);
+	TestEqual(TEXT("nothing lost or duplicated"), Out + Kept, 40 + Planks);
+	TestTrue(TEXT("the rest stayed in the crate, and NICE noticed"), Kept > 0 && S.Events.Contains(FName(TEXT("Event.Player.InventoryFull"))));
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

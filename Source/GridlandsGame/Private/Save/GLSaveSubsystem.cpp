@@ -66,7 +66,8 @@ void UGLSaveSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 		Bus->Subscribe(UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Glitch.Repaired")),
 			FGLGameplayEventDelegate::CreateUObject(this, &UGLSaveSubsystem::HandleGlitchRepaired));
 		// Building and terraforming are world changes too: save them soon after, not only on quit.
-		for (const TCHAR* Tag : { TEXT("Event.Building.Placed"), TEXT("Event.Building.Demolished"), TEXT("Event.Terrain.Edited") })
+		for (const TCHAR* Tag : { TEXT("Event.Building.Placed"), TEXT("Event.Building.Demolished"), TEXT("Event.Terrain.Edited"),
+			TEXT("Event.Building.Smashed"), TEXT("Event.Building.FinishInstalled"), TEXT("Event.Storage.Changed") }) // P11
 		{
 			Bus->Subscribe(UGameplayTagsManager::Get().RequestGameplayTag(Tag),
 				FGLGameplayEventDelegate::CreateUObject(this, &UGLSaveSubsystem::HandleWorldEdited));
