@@ -1,0 +1,18 @@
+--- a/Source/GridlandsCore/Private/Inventory/GLMaterialPool.cpp
++++ b/Source/GridlandsCore/Private/Inventory/GLMaterialPool.cpp
+@@ -131,12 +131,9 @@
+ {
+ 	Taken.Reset();
+ 	Taken.SetNum(Sources.Num());
+-	if (!CanConsume(Cost))
+-	{
+-		return false;
+-	}
+-	verify(ConsumeInto(Sources, Cost, &Taken));
+-	return true;
++	const bool bAll = CanConsume(Cost);
++	for (const FGLItemStackDef& Stack : Cost) { int32 Left = Stack.Count; for (FGLInventory* S : Sources) { const int32 Here = S ? FMath::Min(Left, S->CountOf(Stack.Item)) : 0; if (Here) { S->Remove(Stack.Item, Here); Left -= Here; } } } // DEFECT: takes what there is
++	return bAll;
+ }
+ 
+ bool FGLMaterialPool::CanDeliver(const FGLContentRegistry& Content, const TMap<FName, int32>& Items) const

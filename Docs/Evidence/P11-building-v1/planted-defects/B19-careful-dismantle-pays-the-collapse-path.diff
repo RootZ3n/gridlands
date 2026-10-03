@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -338,7 +338,7 @@
+ 		return Result;
+ 	}
+ 	const FGLPlacedPiece Piece = Part->Piece;
+-	Result.Recovered = ScaledYield(Piece, Path);
++	Result.Recovered = ScaledYield(Piece, EGLSalvagePath::Collapse); // DEFECT
+ 	FGLMaterialSources Sources = SourcesFor(Builder, Piece.Location);
+ 	FGLMaterialPool Pool = Sources.Pool();
+ 	if (!Pool.CanDeliver(GLContent::Get(), Result.Recovered))

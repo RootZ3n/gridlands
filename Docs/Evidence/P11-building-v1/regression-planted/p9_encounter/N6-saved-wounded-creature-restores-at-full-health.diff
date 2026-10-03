@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Combat/GLCreature.cpp
++++ b/Source/GridlandsGame/Private/Combat/GLCreature.cpp
+@@ -96,7 +96,7 @@
+ 	SetActorRotation(FRotator(0.0, Model.Yaw, 0.0));
+ 	if (Model.Health >= 0.0)
+ 	{
+-		Health->Restore(Model.Health); // P9: a wounded creature stays wounded
++		; // DEFECT
+ 	}
+ 	LastKnown = Model.LastKnown;
+ 	SearchLeft = FMath::Max(0.0, Model.SearchSeconds - Passed);

@@ -1,0 +1,10 @@
+--- a/Data/phase/construction/electrical.json
++++ b/Data/phase/construction/electrical.json
+@@ -4,6 +4,6 @@
+   "displayName": "Electrical",
+   "order": 1,
+   "optional": true,
+-  "implemented": false,
++  "implemented": true,
+   "notes": "P11: registered so the canonical order FRAME -> ELECTRICAL -> FINISH never needs a schema change; not implemented (PH-2 refuses its content)."
+ }

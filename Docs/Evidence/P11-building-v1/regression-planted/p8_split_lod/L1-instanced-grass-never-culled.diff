@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Presentation/GLScatterPatch.cpp
++++ b/Source/GridlandsGame/Private/Presentation/GLScatterPatch.cpp
+@@ -45,7 +45,7 @@
+ 	GLVisuals::SetOutlined(Instances, Def->Outline);
+ 	// P8: instanced vegetation fades out by distance (VIS-4 makes a scatter visual declare it). LODs come with the mesh.
+ 	const int32 CullCm = FMath::RoundToInt(Def->CullDistance * 100.0);
+-	Instances->SetCullDistances(FMath::RoundToInt(CullCm * 0.75), CullCm);
++	// DEFECT: grass draws at any distance
+ 	if (UGLEventSubsystem* Bus = GetWorld()->GetSubsystem<UGLEventSubsystem>())
+ 	{
+ 		for (const TCHAR* Tag : { TEXT("Event.Terrain.Edited"), TEXT("Event.Structure.Collapsed"), TEXT("Event.Building.Placed"), TEXT("Event.Building.Demolished") })

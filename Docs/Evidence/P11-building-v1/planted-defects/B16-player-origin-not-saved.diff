@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -1007,7 +1007,7 @@
+ 		Saved.Def = Part.Piece.Def;
+ 		Saved.Location = Part.Piece.Location;
+ 		Saved.YawStep = Part.Piece.YawStep;
+-		Saved.Origin = static_cast<uint8>(Part.Piece.Origin);
++		Saved.Origin = 0; // DEFECT
+ 		Saved.Layers = Part.Piece.Layers;
+ 		TMap<FName, int32> Held;
+ 		for (const FGLInventoryStack& Stack : Part.Contents.GetStacks())

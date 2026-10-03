@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -114,7 +114,7 @@
+ 	const int32 Storage = Sources.Inventories.Num();
+ 	if (Sources.Personal)
+ 	{
+-		Sources.Inventories.Add(&Sources.Personal->GetMutableInventory());
++		Sources.Inventories.Insert(&Sources.Personal->GetMutableInventory(), 0); // DEFECT: Zenny first
+ 		Sources.DeliverOrder.Add(Storage);
+ 	}
+ 	for (int32 I = 0; I < Storage; ++I)

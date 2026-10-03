@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "salvage.build.log_wall",
+  "displayName": "Log wall",
+  "integrity": 40.0,
+  "material": "material.timber.pine",
+  "yields": [
+    {
+      "item": "item.material.timber_log",
+      "count": 3,
+      "yieldCategory": "yield.common.salvage"
+    }
+  ],
+  "yieldsByPath": {
+    "careful": [
+      {
+        "item": "item.material.timber_log",
+        "count": 3,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ],
+    "destructive": [
+      {
+        "item": "item.material.timber_log",
+        "count": 1,
+        "yieldCategory": "yield.common.salvage"
+      },
+      {
+        "item": "item.material.scrap_timber",
+        "count": 2,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ],
+    "collapse": [
+      {
+        "item": "item.material.scrap_timber",
+        "count": 4,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ]
+  },
+  "notes": "P11 provisional yields (economy untuned)."
+}

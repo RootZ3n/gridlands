@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "finish.modern.timber_board_wall",
+  "displayName": "Timber boards (wall)",
+  "era": "era.memory.modern_day",
+  "phase": "phase.construction.finish",
+  "fitsRoles": [
+    "wall"
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 2
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "salvage": "salvage.finish.timber_board",
+  "visual": "visual.kittimber.wall",
+  "notes": "P11: the M10 timber wall's look, now a finish on a stud frame (v0 walls migrate to frame + this)."
+}

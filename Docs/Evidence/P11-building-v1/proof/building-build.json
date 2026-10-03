@@ -1,0 +1,128 @@
+{
+	"fingerprintAtEnd": "52 pieces (0 debris, 24 layers, 52 player-owned) crc 270c530a",
+	"mode": "build",
+	"checks": [
+		{
+			"check": "pad levelled by ordinary flatten strokes",
+			"pass": true,
+			"detail": "worst 0.00 cm from 0 cm"
+		},
+		{
+			"check": "a base core establishes one claim",
+			"pass": true,
+			"detail": "1 claim(s), radius 32 m"
+		},
+		{
+			"check": "materials placed primarily in shared storage",
+			"pass": true,
+			"detail": "crates hold stud 103, cut_stone 3, timber_log 26, timber_plank 83; Zenny carries 12 studs"
+		},
+		{
+			"check": "45 degree bay snapped from socket data",
+			"pass": true,
+			"detail": "yaw steps 0 126 126 0 0 18 18"
+		},
+		{
+			"check": "FRAME first: stud walls, doorways and rafters visibly framed",
+			"pass": true,
+			"detail": "24 showing framing, 28 complete as built"
+		},
+		{
+			"check": "every frame placed, PREVIEW == REALITY",
+			"pass": true,
+			"detail": "52 placements so far, 0 mismatches (GREEN 52, YELLOW 0, RED 0)"
+		},
+		{
+			"check": "storage supplied the construction (before Zenny's own)",
+			"pass": true,
+			"detail": "studs from storage 103, from Zenny 12"
+		},
+		{
+			"check": "raw log -> sawing at the sawhorse -> studs (the log from base storage)",
+			"pass": true,
+			"detail": "studs 0 -> 4, Zenny's logs 0 -> 0"
+		},
+		{
+			"check": "FINISH applied afterwards (clapboard, shingles)",
+			"pass": true,
+			"detail": "24/24 installed; 24 finished, 0 still framed"
+		},
+		{
+			"check": "finishing changed no support",
+			"pass": true,
+			"detail": ""
+		},
+		{
+			"check": "architectural vocabularies mixed on purpose",
+			"pass": true,
+			"detail": "eras era.memory.modern_day era.memory.victorian era.memory.roman; log wing yes; Roman column yes"
+		}
+	],
+	"pass": true,
+	"placements": 52,
+	"previewMismatches": 0,
+	"ids":
+	{
+		"core": 1,
+		"crate_floor_a": 2,
+		"crate_floor_b": 3,
+		"crate_a": 4,
+		"crate_b": 5,
+		"sawhorse": 6,
+		"a_f1": 7,
+		"a_f2": 8,
+		"a_f3": 9,
+		"a_f4": 10,
+		"a_f5": 11,
+		"a_f6": 12,
+		"b_f1": 13,
+		"b_f2": 14,
+		"b_f3": 15,
+		"b_f4": 16,
+		"a_n1": 17,
+		"a_n2": 18,
+		"a_n3": 19,
+		"a_s1": 20,
+		"a_door": 21,
+		"a_s3": 22,
+		"a_w1": 23,
+		"a_w2": 24,
+		"ab_door": 25,
+		"ab_wall": 26,
+		"b_n1": 27,
+		"b_n2": 28,
+		"b_s1": 29,
+		"b_s2": 30,
+		"b_e1": 31,
+		"b_e2": 32,
+		"a_r1": 33,
+		"a_r2": 34,
+		"a_r3": 35,
+		"a_r4": 36,
+		"a_r5": 37,
+		"a_r6": 38,
+		"b_r1": 39,
+		"b_r2": 40,
+		"b_r3": 41,
+		"b_r4": 42,
+		"column": 43,
+		"porch_post": 44,
+		"porch_roof": 45,
+		"bay_p1": 46,
+		"bay_2": 47,
+		"bay_3": 48,
+		"bay_4": 49,
+		"bay_5": 50,
+		"bay_6": 51,
+		"bay_7": 52
+	},
+	"bay": [
+		46,
+		47,
+		48,
+		49,
+		50,
+		51,
+		52
+	]
+}

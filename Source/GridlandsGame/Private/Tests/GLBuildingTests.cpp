@@ -7,6 +7,7 @@
 #include "Inventory/GLInventoryComponent.h"
 #include "Knowledge/GLKnowledgeSubsystem.h"
 #include "Save/GLSaveSubsystem.h"
+#include "Structure/GLStructureSubsystem.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "Tests/GLTestUtils.h"
 
@@ -19,6 +20,11 @@ namespace GLBuildingTests
 	const FName Door(TEXT("buildpiece.modern.timber_doorway"));
 	const FName Roof(TEXT("buildpiece.modern.timber_roof"));
 	const FName Plank(TEXT("item.material.timber_plank"));
+	const FName Stud(TEXT("item.component.stud"));
+	const FName Scrap(TEXT("item.material.scrap_timber"));
+	/** The shelter's cost (P11: frames are built from studs; floors from planks). */
+	constexpr int32 ShelterStuds = 7 * 6 + 5 + 4 * 4;
+	constexpr int32 ShelterPlanks = 4 * 2;
 	const FName Soil(TEXT("item.material.soil"));
 	const FString BuildSlot = TEXT("automation-test-building");
 
@@ -53,7 +59,19 @@ namespace GLBuildingTests
 				FGLGameplayEventDelegate::CreateLambda([this](const FGLGameplayEvent& Event) { Events.Add(Event.Tag.GetTagName()); }));
 		}
 
-		FGLPlacedPiece P(FName Def, FVector At, int32 Yaw = 0) const { return { 0, Def, At, Yaw }; }
+		FGLPlacedPiece P(FName Def, FVector At, int32 Quarter = 0) const { return { 0, Def, At, Quarter * GLStructureRules::QuarterTurnSteps }; }
+
+		void GiveShelterMaterials() const
+		{
+			Inventory->AddItem(Stud, ShelterStuds);
+			Inventory->AddItem(Plank, ShelterPlanks);
+		}
+
+		/** Deferred presentation (restore) made now: a bare test world has no Grid pump. */
+		void PresentAll() const
+		{
+			Test.World->GetSubsystem<UGLStructureSubsystem>()->PumpPresentation(FVector::ZeroVector, 0.0);
+		}
 
 		/** The same 4 m shelter as the Core test, placed through the real transaction. */
 		TArray<FGLPlacedPiece> ShelterPlan() const
@@ -68,7 +86,8 @@ namespace GLBuildingTests
 
 		int32 IdAt(FName Def, FVector At) const
 		{
-			const FGLPlacedPiece* Found = Building->GetPieces().FindByPredicate([&](const FGLPlacedPiece& Piece) { return Piece.Def == Def && Piece.Location.Equals(At, 1.0); });
+			const TArray<FGLPlacedPiece> Pieces = Building->GetPieces(); // by value: never point into a temporary
+			const FGLPlacedPiece* Found = Pieces.FindByPredicate([&](const FGLPlacedPiece& Piece) { return Piece.Def == Def && Piece.Location.Equals(At, 1.0); });
 			return Found ? Found->Id : 0;
 		}
 
@@ -90,15 +109,19 @@ bool FGLBuildShelter::RunTest(const FString& Parameters)
 	TMap<int32, double> SupportBefore;
 	{
 		FBuildScene Scene(TEXT("GLBuildShelter"));
-		Scene.Inventory->AddItem(Plank, 30);
-		Scene.Inventory->AddItem(Plank, 2); // 32 = 16 pieces x 2
+		Scene.GiveShelterMaterials();
 		for (const FGLPlacedPiece& Piece : Scene.ShelterPlan())
 		{
 			const FGLBuildCheck Result = Scene.Building->Place(Scene.Zenny, Piece);
 			TestTrue(FString::Printf(TEXT("%s at %s placed (%s)"), *Piece.Def.ToString(), *Piece.Location.ToCompactString(), *Result.Reason), Result.IsAllowed());
 		}
 		TestEqual(TEXT("16 pieces stand"), Scene.Building->GetPieces().Num(), 16);
-		TestEqual(TEXT("exactly 32 planks were spent, none duplicated or lost"), Scene.Inventory->CountOf(Plank), 0);
+		TestEqual(TEXT("exactly the studs were spent, none duplicated or lost"), Scene.Inventory->CountOf(Stud), 0);
+		TestEqual(TEXT("and the planks"), Scene.Inventory->CountOf(Plank), 0);
+		const int32 AWall = Scene.IdAt(Wall, FVector(-100, 200, 30));
+		TestEqual(TEXT("P11: a wall is placed as its FRAME and shows its framing"), Scene.Building->FindActor(AWall) ? Scene.Building->FindActor(AWall)->ShownPhase() : FName(), FName(TEXT("frame")));
+		const AGLBuildPiece* AFloor = Scene.Building->FindActor(Scene.IdAt(Floor, FVector(-100, -100, 0)));
+		TestEqual(TEXT("a floor is complete as built"), AFloor ? AFloor->ShownPhase() : FName(), FName(TEXT("complete")));
 		double RoofZ = 0.0;
 		TestTrue(TEXT("the roof is solid: a trace from the sky stops on it"), Scene.Trace(FVector2D(-100, -150), RoofZ) && RoofZ > 280.0);
 		TestTrue(TEXT("Event.Building.Placed per piece"), Scene.Events.FilterByPredicate([](FName E) { return E == TEXT("Event.Building.Placed"); }).Num() == 16);
@@ -111,6 +134,8 @@ bool FGLBuildShelter::RunTest(const FString& Parameters)
 	TestTrue(TEXT("loaded"), Reloaded.Test.World->GetSubsystem<UGLSaveSubsystem>()->LoadFromSlot(BuildSlot, &Problems));
 	TestEqual(TEXT("no problems"), Problems.Num(), 0);
 	TestEqual(TEXT("all 16 pieces are back"), Reloaded.Building->GetPieces().Num(), 16);
+	TestEqual(TEXT("P11: restored pieces are presented over frames, not synchronously"), Reloaded.Building->GetPieces().FilterByPredicate([&](const FGLPlacedPiece& Piece) { return Reloaded.Building->FindActor(Piece.Id) != nullptr; }).Num(), 0);
+	Reloaded.PresentAll();
 	TestEqual(TEXT("each with its actor"), Reloaded.Building->GetPieces().FilterByPredicate([&](const FGLPlacedPiece& Piece) { return Reloaded.Building->FindActor(Piece.Id) != nullptr; }).Num(), 16);
 	TestTrue(TEXT("support is recomputed identically (derived, not saved)"), Reloaded.Building->Support().OrderIndependentCompareEqual(SupportBefore));
 	double RoofZ = 0.0;
@@ -125,41 +150,53 @@ bool FGLBuildRefusals::RunTest(const FString& Parameters)
 {
 	FBuildScene Unknown(TEXT("GLBuildUnknown"), false);
 	Unknown.Inventory->AddItem(Plank, 10);
+	Unknown.Inventory->AddItem(Stud, 10);
 	TestEqual(TEXT("without the style: refused"), Unknown.Building->Place(Unknown.Zenny, Unknown.P(Floor, FVector(0, 0, 0))).Refusal, EGLBuildRefusal::NotKnown);
 	TestEqual(TEXT("planks untouched"), Unknown.Inventory->CountOf(Plank), 10);
 
 	FBuildScene Scene(TEXT("GLBuildRefusals"));
 	TestEqual(TEXT("no planks: refused"), Scene.Building->Place(Scene.Zenny, Scene.P(Floor, FVector(0, 0, 0))).Refusal, EGLBuildRefusal::MissingItems);
 	Scene.Inventory->AddItem(Plank, 10);
-	TestEqual(TEXT("a wall on nothing: refused"), Scene.Building->Place(Scene.Zenny, Scene.P(Wall, FVector(0, 0, 30))).Refusal, EGLBuildRefusal::Unsupported);
-	TestEqual(TEXT("and it cost nothing"), Scene.Inventory->CountOf(Plank), 10);
+	Scene.Inventory->AddItem(Stud, 10);
+	const FGLBuildCheck OnNothing = Scene.Building->Place(Scene.Zenny, Scene.P(Wall, FVector(0, 0, 30)));
+	TestEqual(TEXT("a wall on nothing: refused"), OnNothing.Refusal, EGLBuildRefusal::Unsupported);
+	TestEqual(TEXT("and previewed RED"), OnNothing.Preview, EGLPreview::Red);
+	TestEqual(TEXT("and it cost nothing"), Scene.Inventory->CountOf(Stud), 10);
 	TestEqual(TEXT("no piece exists"), Scene.Building->GetPieces().Num(), 0);
 	TestTrue(TEXT("a refusal is an event (dialogue can react to failed building)"), Scene.Events.Contains(FName(TEXT("Event.Building.Refused"))));
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLBuildDemolish, "Gridlands.Game.Building.DemolitionRefundsEverythingThatFalls", GLTestUtils::Flags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLBuildDemolish, "Gridlands.Game.Building.RemovalCollapsesByTheCanonicalRulesAsPredicted", GLTestUtils::Flags)
 bool FGLBuildDemolish::RunTest(const FString& Parameters)
 {
+	// P11 (operator: player-built collapse approved in principle): removing a support collapses what it held by the SAME
+	// rules as authored structures (debris, impact at impact time). v0's full-refund demolition no longer exists.
 	FBuildScene Scene(TEXT("GLBuildDemolish"));
-	Scene.Inventory->AddItem(Plank, 30);
-	Scene.Inventory->AddItem(Plank, 2);
+	Scene.GiveShelterMaterials();
 	for (const FGLPlacedPiece& Piece : Scene.ShelterPlan())
 	{
 		Scene.Building->Place(Scene.Zenny, Piece);
 	}
-	TestEqual(TEXT("all planks used"), Scene.Inventory->CountOf(Plank), 0);
+	UGLStructureSubsystem* Structures = Scene.Test.World->GetSubsystem<UGLStructureSubsystem>();
 	const int32 WallUnderRoof = Scene.IdAt(Wall, FVector(-100, -200, 30));
 	const int32 RoofAbove = Scene.IdAt(Roof, FVector(-100, -100, 280));
-	const FGLDemolishResult Result = Scene.Building->Demolish(Scene.Zenny, WallUnderRoof);
-	TestTrue(TEXT("demolished"), Result.IsDone());
-	TestEqual(TEXT("the wall and the roof slope it held"), Result.Removed, TArray<int32>{ WallUnderRoof, RoofAbove });
-	TestEqual(TEXT("both refunded in full"), Scene.Inventory->CountOf(Plank), 4);
-	TestNull(TEXT("the roof's actor is gone"), Scene.Building->FindActor(RoofAbove));
+	const TArray<int32> Predicted = Scene.Building->PreviewRemoval(WallUnderRoof);
+	TestEqual(TEXT("the removal preview: the roof slope it holds will fall"), Predicted, TArray<int32>{ RoofAbove });
+	const FGLDemolishResult Result = Scene.Building->Dismantle(Scene.Zenny, WallUnderRoof);
+	TestTrue(TEXT("dismantled"), Result.IsDone());
+	TestEqual(TEXT("PREVIEW == REALITY: exactly the predicted pieces collapsed"), Result.Collapsed, Predicted);
+	TestEqual(TEXT("careful dismantling recovers intact studs"), Scene.Inventory->CountOf(Stud), 5);
+	TestEqual(TEXT("and a little scrap"), Scene.Inventory->CountOf(Scrap), 1);
+	const FGLStructurePartRuntime* Fallen = Structures->FindPlayerPiece(RoofAbove);
+	TestTrue(TEXT("the roof is debris (a collapse, not a refund)"), Fallen && Fallen->State == EGLStructurePartState::Debris);
+	TestEqual(TEXT("its fall is in flight (impact still to come)"), Structures->ActiveCollapses(), 1);
 	TestTrue(TEXT("the collapse is announced"), Scene.Events.Contains(FName(TEXT("Event.Building.Collapsed"))));
-	TestEqual(TEXT("14 pieces remain"), Scene.Building->GetPieces().Num(), 14);
+	TestEqual(TEXT("14 intact pieces remain"), Scene.Building->GetPieces().Num(), 14);
+	Structures->Advance(5.0);
+	TestEqual(TEXT("it landed once"), Structures->ImpactCount(), 1);
 
-	// No room for the refund: nothing happens (no silent loss).
+	// No room for what it gives back: nothing happens (no silent loss).
 	FBuildScene Full(TEXT("GLBuildDemolishFull"));
 	Full.Inventory->AddItem(Plank, 2);
 	Full.Building->Place(Full.Zenny, Full.P(Floor, FVector(0, 0, 0)));
@@ -167,10 +204,47 @@ bool FGLBuildDemolish::RunTest(const FString& Parameters)
 	{
 		Full.Inventory->AddItem(TEXT("item.tool.pry_bar"), 1); // stack size 1: one slot each
 	}
-	const int32 FloorId = Full.Building->GetPieces()[0].Id;
-	TestEqual(TEXT("refused when the planks would not fit"), Full.Building->Demolish(Full.Zenny, FloorId).Refusal, EGLDemolishRefusal::NoRoomForRefund);
+	const int32 FloorId = Full.Building->GetPieces().Num() ? Full.Building->GetPieces()[0].Id : 0;
+	TestTrue(TEXT("the floor stands"), FloorId != 0);
+	TestEqual(TEXT("refused when the planks would not fit"), Full.Building->Dismantle(Full.Zenny, FloorId).Refusal, EGLDemolishRefusal::NoRoomForRefund);
 	TestEqual(TEXT("the floor still stands"), Full.Building->GetPieces().Num(), 1);
 	TestNotNull(TEXT("with its actor"), Full.Building->FindActor(FloorId));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLBuildPreviewTruth, "Gridlands.Game.Building.PreviewColoursAndRemovalPredictionsAreTheCommitsOwn", GLTestUtils::Flags)
+bool FGLBuildPreviewTruth::RunTest(const FString& Parameters)
+{
+	// PREVIEW == REALITY (operator, 2026-10-03): the ghost's colour and the removal preview come from the very rules the
+	// commit uses. A wall stack shows GREEN, GREEN, YELLOW (at pine's limit), then RED; removing the floor predicts every
+	// wall above it (transitively), and exactly those collapse.
+	FBuildScene Scene(TEXT("GLBuildPreviewTruth"));
+	Scene.Inventory->AddItem(Plank, 2);
+	Scene.Inventory->AddItem(Stud, 30);
+	TestTrue(TEXT("a floor"), Scene.Building->Place(Scene.Zenny, Scene.P(Floor, FVector(0, 0, 0))).IsAllowed());
+	const EGLPreview Expected[] = { EGLPreview::Green, EGLPreview::Green, EGLPreview::Yellow, EGLPreview::Red };
+	TArray<int32> Walls;
+	for (int32 Storey = 0; Storey < 4; ++Storey)
+	{
+		const FGLPlacedPiece Candidate = Scene.P(Wall, FVector(0, -100, 30 + 250 * Storey));
+		const FGLBuildCheck Preview = Scene.Building->Check(Scene.Zenny, Candidate);
+		TestEqual(FString::Printf(TEXT("storey %d previews as expected"), Storey + 1), Preview.Preview, Expected[Storey]);
+		const FGLBuildCheck Placed = Scene.Building->Place(Scene.Zenny, Candidate);
+		const int32 Id = Placed.IsAllowed() ? Scene.IdAt(Wall, Candidate.Location) : 0;
+		FGLBuildCheck Committed = Placed;
+		Committed.Support = Id ? Scene.Building->Support().FindRef(Id) : 0.0;
+		TestEqual(FString::Printf(TEXT("storey %d: the committed piece has the previewed colour"), Storey + 1), Id ? GLStructureRules::PreviewOf(Committed) : EGLPreview::Red, Preview.Preview);
+		if (Id)
+		{
+			Walls.Add(Id);
+		}
+	}
+	TestEqual(TEXT("three walls stand"), Walls.Num(), 3);
+	const int32 FloorId = Scene.IdAt(Floor, FVector(0, 0, 0));
+	const TArray<int32> Predicted = Scene.Building->PreviewRemoval(FloorId);
+	TestEqual(TEXT("removing the floor predicts every wall above it, transitively"), Predicted, Walls);
+	const FGLDemolishResult Result = Scene.Building->Dismantle(Scene.Zenny, FloorId);
+	TestEqual(TEXT("and exactly those collapse"), Result.Collapsed, Predicted);
 	return true;
 }
 

@@ -50,7 +50,7 @@ bool FGLSaveCodec::RunTest(const FString& Parameters)
 	TestTrue(TEXT("transform"), Back.Zenny.Location.Equals(FVector(1, 2, 3)) && Back.Zenny.Yaw == 90.0);
 	TestEqual(TEXT("encoding is stable"), GLSaveCodec::ToJson(Back), Json);
 
-	TestFalse(TEXT("a newer save is refused"), GLSaveCodec::FromJson(Json.Replace(TEXT("\"schemaVersion\": 2"), TEXT("\"schemaVersion\": 99")), Back, Problem));
+	TestFalse(TEXT("a newer save is refused"), GLSaveCodec::FromJson(Json.Replace(TEXT("\"schemaVersion\": 3"), TEXT("\"schemaVersion\": 99")), Back, Problem));
 	TestTrue(TEXT("and says why"), Problem.Contains(TEXT("newer")));
 	TestFalse(TEXT("a save without a version is refused"), GLSaveCodec::FromJson(TEXT("{\"cell\":\"cell.home.origin\"}"), Back, Problem));
 	TestFalse(TEXT("garbage is refused"), GLSaveCodec::FromJson(TEXT("{not json"), Back, Problem));

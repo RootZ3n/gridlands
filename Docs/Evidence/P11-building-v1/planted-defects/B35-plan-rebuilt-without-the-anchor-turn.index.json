@@ -1,0 +1,1335 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A102D0EF2F71A3BA40EAE35FA53B67",
+			"instanceName": "Pehverse-1964312",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.10.03-17.30.26",
+	"succeeded": 33,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 3.0765979290008545,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "GroundDecidesWhereFloorsGo",
+			"fullTestPath": "Gridlands.Core.Building.GroundDecidesWhereFloorsGo",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.01027953252196312,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "KnowledgeItemsAndSnapping",
+			"fullTestPath": "Gridlands.Core.Building.KnowledgeItemsAndSnapping",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0079402150586247444,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemovingASupportCollapsesWhatItHeld",
+			"fullTestPath": "Gridlands.Core.Building.RemovingASupportCollapsesWhatItHeld",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0085235610604286194,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShelterStandsAndEveryPlacementIsValid",
+			"fullTestPath": "Gridlands.Core.Building.ShelterStandsAndEveryPlacementIsValid",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0073470589704811573,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SupportWeakensUpAndOut",
+			"fullTestPath": "Gridlands.Core.Building.SupportWeakensUpAndOut",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0082108993083238602,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ACollapseAtAngleUsesThePiecesOwnAxes",
+			"fullTestPath": "Gridlands.Core.BuildingV1.ACollapseAtAngleUsesThePiecesOwnAxes",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.017593726515769958,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AngledPolygonsCloseBySnappingAlone",
+			"fullTestPath": "Gridlands.Core.BuildingV1.AngledPolygonsCloseBySnappingAlone",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.013083770871162415,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "APlanRebuiltAt45DegreesIsTheSameBuilding",
+			"fullTestPath": "Gridlands.Core.BuildingV1.APlanRebuiltAt45DegreesIsTheSameBuilding",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0082335043698549271,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 18, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 36, but it was 18.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 36, but it was 18.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 54, but it was 36.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 54, but it was 36.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 72, but it was 54.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 72, but it was 54.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 90, but it was 72.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 90, but it was 72.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 108, but it was 90.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 108, but it was 90.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 126, but it was 108.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 126, but it was 108.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 0, but it was 126.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 0, but it was 126.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 18, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 18, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'turned by exactly 45 degrees' to be 18, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 9, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'piece 1: the same support (2.4249 / 0.0000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 8, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 9, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'piece 3: the same support (2.4249 / 0.0000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 8, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 9, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'piece 5: the same support (2.4249 / 0.0000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 8, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 9, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'piece 7: the same support (2.4249 / 0.0000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 8, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 9, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'piece 9: the same support (2.4249 / 0.0000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 8, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 9, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'piece 11: the same support (2.4249 / 0.0000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 8, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 9, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'piece 13: the same support (2.4249 / 0.0000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 8, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 9, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'piece 15: the same support (2.4249 / 0.0000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 8, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 9, but it was 1.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'piece 17: the same support (2.2500 / 0.0000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.03-17.30.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same socket relationships (removing it drops the same pieces)' to be 8, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.10.03-17.30.23"
+				}
+			],
+			"warnings": 0,
+			"errors": 45,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CarefulBeatsDestructiveBeatsCollapse",
+			"fullTestPath": "Gridlands.Core.BuildingV1.CarefulBeatsDestructiveBeatsCollapse",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0077126310206949711,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClaimsAreDerivedAndRenewalNeverTouchesPlayerConstruction",
+			"fullTestPath": "Gridlands.Core.BuildingV1.ClaimsAreDerivedAndRenewalNeverTouchesPlayerConstruction",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0085497582331299782,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FacingSocketsLinkOnlyWhenTheyFaceEachOther",
+			"fullTestPath": "Gridlands.Core.BuildingV1.FacingSocketsLinkOnlyWhenTheyFaceEachOther",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0086229536682367325,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FrameThenFinishAndElectricalIsRegisteredNotBuilt",
+			"fullTestPath": "Gridlands.Core.BuildingV1.FrameThenFinishAndElectricalIsRegisteredNotBuilt",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0078921709209680557,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MaterialPoolIsOrderedAndAllOrNothing",
+			"fullTestPath": "Gridlands.Core.BuildingV1.MaterialPoolIsOrderedAndAllOrNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0082127051427960396,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OverlapAndFootprintsAreOriented",
+			"fullTestPath": "Gridlands.Core.BuildingV1.OverlapAndFootprintsAreOriented",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.008025401271879673,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PreviewIsTheCommitsOwnRule",
+			"fullTestPath": "Gridlands.Core.BuildingV1.PreviewIsTheCommitsOwnRule",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0085264137014746666,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Version2SavesMigrateToVersion3Deterministically",
+			"fullTestPath": "Gridlands.Core.BuildingV1.Version2SavesMigrateToVersion3Deterministically",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0085285976529121399,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "YawIsAnIntegerIn2p5DegreeSteps",
+			"fullTestPath": "Gridlands.Core.BuildingV1.YawIsAnIntegerIn2p5DegreeSteps",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0082307802513241768,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StacksAndCapacity",
+			"fullTestPath": "Gridlands.Core.Inventory.StacksAndCapacity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0097512649372220039,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CodecRoundTripAndVersions",
+			"fullTestPath": "Gridlands.Core.Save.CodecRoundTripAndVersions",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0082980068400502205,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Version1MigratesToCellRecords",
+			"fullTestPath": "Gridlands.Core.Save.Version1MigratesToCellRecords",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.0082927485927939415,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PiecesBlockNavigation",
+			"fullTestPath": "Gridlands.Game.Building.PiecesBlockNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.15084336698055267,
+			"dateTime": "2026.10.03-17.30.23",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "wall line with a gap: path crosses the wall line x = 65 m at y = 5047",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PreviewColoursAndRemovalPredictionsAreTheCommitsOwn",
+			"fullTestPath": "Gridlands.Game.Building.PreviewColoursAndRemovalPredictionsAreTheCommitsOwn",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.032502185553312302,
+			"dateTime": "2026.10.03-17.30.24",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RefusalsChangeNothing",
+			"fullTestPath": "Gridlands.Game.Building.RefusalsChangeNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.05200248584151268,
+			"dateTime": "2026.10.03-17.30.24",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemovalCollapsesByTheCanonicalRulesAsPredicted",
+			"fullTestPath": "Gridlands.Game.Building.RemovalCollapsesByTheCanonicalRulesAsPredicted",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.067031726241111755,
+			"dateTime": "2026.10.03-17.30.24",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShelterFromInventoryPersistsAcrossReload",
+			"fullTestPath": "Gridlands.Game.Building.ShelterFromInventoryPersistsAcrossReload",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.073397740721702576,
+			"dateTime": "2026.10.03-17.30.24",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ABasementIsAnOpenPitThenAStructure",
+			"fullTestPath": "Gridlands.Game.BuildingV1.ABasementIsAnOpenPitThenAStructure",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.10146848112344742,
+			"dateTime": "2026.10.03-17.30.24",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BaseStorageClaimsAndContainersNeverLoseAnything",
+			"fullTestPath": "Gridlands.Game.BuildingV1.BaseStorageClaimsAndContainersNeverLoseAnything",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.063442252576351166,
+			"dateTime": "2026.10.03-17.30.24",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StoringAndTakingNeverLosesAnything",
+			"fullTestPath": "Gridlands.Game.BuildingV1.StoringAndTakingNeverLosesAnything",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.029531149193644524,
+			"dateTime": "2026.10.03-17.30.24",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ThreeHundredPiecesScaleLinearly",
+			"fullTestPath": "Gridlands.Game.BuildingV1.ThreeHundredPiecesScaleLinearly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.069271713495254517,
+			"dateTime": "2026.10.03-17.30.24",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "supportMs: 309 pieces 1.104 ms, 617 pieces 2.155 ms (x1.95)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "previewMs: 309 pieces 1.096 ms, 617 pieces 2.418 ms (x2.21)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "removalPredictionMs: 309 pieces 1.062 ms, 617 pieces 2.282 ms (x2.15)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "captureMs: 309 pieces 0.022 ms, 617 pieces 0.063 ms (x2.89)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "restoreMs: 309 pieces 0.452 ms, 617 pieces 0.924 ms (x2.05)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WinchesterHouseFrameFinishCollapseAndPersistence",
+			"fullTestPath": "Gridlands.Game.BuildingV1.WinchesterHouseFrameFinishCollapseAndPersistence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.14306977391242981,
+			"dateTime": "2026.10.03-17.30.24",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS pad levelled by ordinary flatten strokes: worst 0.00 cm from 0 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS a base core establishes one claim: 1 claim(s), radius 32 m",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS materials placed primarily in shared storage: crates hold stud 103, cut_stone 3, timber_log 26, timber_plank 83; Zenny carries 12 studs",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS 45 degree bay snapped from socket data: yaw steps 0 126 126 0 0 18 18",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS FRAME first: stud walls, doorways and rafters visibly framed: 24 showing framing, 28 complete as built",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS every frame placed, PREVIEW == REALITY: 52 placements so far, 0 mismatches (GREEN 52, YELLOW 0, RED 0)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS storage supplied the construction (before Zenny's own): studs from storage 103, from Zenny 12",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS raw log -> sawing at the sawhorse -> studs (the log from base storage): studs 0 -> 4, Zenny's logs 0 -> 0",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS FINISH applied afterwards (clapboard, shingles): 24/24 installed; 24 finished, 0 still framed",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS finishing changed no support: ",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS architectural vocabularies mixed on purpose: eras era.memory.modern_day era.memory.victorian era.memory.roman; log wing yes; Roman column yes",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS porch post out: predicted to stand, and it stands: predicted 0 falling, 0 fell",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS Roman column out: the predicted roof falls, by the canonical collapse: predicted [45], collapsed [45]",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS careful dismantle of the interior wall: intact studs (and its clapboard back as boards): stud 5, scrap_timber 2, timber_plank 2",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS smashing a bay wall: fewer studs, more scrap: stud 1, scrap_timber 4, timber_plank 1",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-17.30.24"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldRenewalNeverTouchesPlayerConstruction",
+			"fullTestPath": "Gridlands.Game.BuildingV1.WorldRenewalNeverTouchesPlayerConstruction",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.026678461581468582,
+			"dateTime": "2026.10.03-17.30.24",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PlayerConstructionStreamsWholeAndAFallResumes",
+			"fullTestPath": "Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 2.0302343368530273,
+			"dateTime": "2026.10.03-17.30.24",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InventoryFullIsAnnouncedNotWeight",
+			"fullTestPath": "Gridlands.Game.Inventory.InventoryFullIsAnnouncedNotWeight",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.027815310284495354,
+			"dateTime": "2026.10.03-17.30.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RestoreNeverDiscardsOverflow",
+			"fullTestPath": "Gridlands.Game.Inventory.RestoreNeverDiscardsOverflow",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A102D0EF2F71A3BA40EAE35FA53B67"
+			],
+			"duration": 0.02745307981967926,
+			"dateTime": "2026.10.03-17.30.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

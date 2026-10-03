@@ -1,0 +1,20 @@
+  towndenseplayer-crossing-straight.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndenseplayer-*)
+group=[straight] attempt=1 load start=2.91 end=5.63 gpu-before=0
+  towndenseplayer-crossing-reversal.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndenseplayer-*)
+group=[reversal] attempt=1 load start=2.84 end=4.40 gpu-before=0
+  towndenseplayer-crossing-sprint.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndenseplayer-*)
+group=[sprint] attempt=1 load start=2.58 end=4.21 gpu-before=0
+  towndenseplayer-crossing-teleport.json: done
+  towndenseplayer-crossing-resume.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndenseplayer-*)
+group=[teleport resume] attempt=1 load start=2.34 end=4.09 gpu-before=0
+  towndenseplayer-roundtrips.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndenseplayer-*)
+group=[roundtrips] attempt=1 load start=2.69 end=2.71 gpu-before=0
+  BUDGET BREACH towndenseplayer-crossing-reversal.json: worstFrameMs = 45.042957877740264, budget 40.0
+  BUDGET BREACH towndenseplayer-crossing-reversal.json: streamingGameThreadMsWorst = 12.837882153689861, budget 12.0
+  6 result(s) checked against budgets.json: 2 breach(es)
+QUIETDONE FAIL

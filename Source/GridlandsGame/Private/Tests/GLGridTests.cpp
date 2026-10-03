@@ -28,6 +28,9 @@
 #include "Terrain/GLTerrainSubsystem.h"
 #include "Terrain/GLTerrainChunk.h"
 #include "Tests/GLTestUtils.h"
+#include "World/GLWinchesterHouse.h"
+#include "Fabrication/GLFabricatorComponent.h"
+#include "Structure/GLStructureSubsystem.h"
 #include "World/GLGridSubsystem.h"
 #include "World/GLPlacementSubsystem.h"
 #include "World/GLStabilitySubsystem.h"
@@ -163,6 +166,7 @@ bool FGLGridTorture::RunTest(const FString& Parameters)
 	S.GoTo(GAtBoundary);
 	TestTrue(TEXT("boundary: both cells loaded"), S.Grid->IsLoaded(GOrigin) && S.Grid->IsLoaded(GLots));
 	S.Inventory->AddItem(TEXT("item.material.timber_plank"), 10);
+	S.Inventory->AddItem(TEXT("item.component.stud"), 12); // P11: walls are framed from studs
 	const FVector PieceAt(50900, 600, S.Terrain->HeightAt(FVector2D(50900, 600)));
 	TestTrue(TEXT("A: a floor 2 m from the boundary"), S.Building->Place(S.Zenny, GPiece(TEXT("buildpiece.modern.timber_foundation"), PieceAt)).IsAllowed());
 	TestTrue(TEXT("A: and a wall on it"), S.Building->Place(S.Zenny, GPiece(TEXT("buildpiece.modern.timber_wall"), PieceAt + FVector(0, 100, 30))).IsAllowed());
@@ -474,6 +478,47 @@ bool FGLGridStale::RunTest(const FString& Parameters)
 	TestTrue(FString::Printf(TEXT("pooled chunk actors were reused (%d)"), S.Terrain->GetStats().ChunksReused), S.Terrain->GetStats().ChunksReused > 0);
 	AddInfo(FString::Printf(TEXT("stale results dropped: %d, emergency chunks: %d, emergency fields: %d"),
 		S.Terrain->GetStats().StaleDropped, S.Terrain->GetStats().EmergencyChunks, S.Terrain->GetStats().EmergencyFields));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLGridPlayerStructureStreams, "Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes", GLTestUtils::Flags)
+bool FGLGridPlayerStructureStreams::RunTest(const FString& Parameters)
+{
+	// P11 (ADR-0039): the WINCHESTER house in the origin cell, its porch roof mid-fall, streamed out and back: every piece,
+	// 2.5 degree yaw, finish layer, stored item and owner returns exactly once, presented over frames, and the fall
+	// resumes where it froze (SUPPORT FAILURE != IMPACT across streaming, for player construction too).
+	FGridScene S(TEXT("GLGridPlayerStreams"));
+	UGLStructureSubsystem* Structures = S.Test.World->GetSubsystem<UGLStructureSubsystem>();
+	FGLWinchesterHouse House;
+	House.Anchor = FVector(18000, 18000, 0);
+	S.GoTo(House.Anchor + FVector(0, 0, 100));
+	NewObject<UGLFabricatorComponent>(S.Zenny)->RegisterComponent();
+	TestTrue(TEXT("pad"), House.PreparePad(S.Test.World));
+	TestTrue(TEXT("base"), House.EstablishBase(S.Test.World, S.Zenny));
+	TestTrue(TEXT("frame"), House.Frame(S.Test.World, S.Zenny));
+	TestTrue(TEXT("finish"), House.Finish(S.Test.World, S.Zenny));
+	TestTrue(TEXT("porch collapse decided"), House.PorchCollapse(S.Test.World, S.Zenny));
+	TestTrue(TEXT("every WINCHESTER check so far holds"), House.AllPassed());
+	const FString Before = House.Fingerprint(S.Test.World);
+	TestEqual(TEXT("the porch roof is in flight"), Structures->ActiveCollapses(), 1);
+	const int32 ImpactsBefore = Structures->ImpactCount();
+	S.GoTo(GDeepInLots);
+	TestFalse(TEXT("away: the origin cell is unloaded"), S.Grid->IsLoaded(GOrigin));
+	TestEqual(TEXT("its player construction left with it"), S.Building->PiecesOfCell(GOrigin).Num(), 0);
+	TestEqual(TEXT("the fall is frozen with its cell"), Structures->ActiveCollapses(), 0);
+	Structures->Advance(10.0);
+	TestEqual(TEXT("nothing lands while dormant"), Structures->ImpactCount(), ImpactsBefore);
+	S.GoTo(House.Anchor + FVector(-500, 0, 100));
+	Structures->PumpPresentation(House.Anchor, 0.0);
+	TestEqual(TEXT("back: every piece, yaw, layer, content and owner exactly as left"), House.Fingerprint(S.Test.World), Before);
+	TestEqual(TEXT("the fall resumes"), Structures->ActiveCollapses(), 1);
+	Structures->Advance(6.0);
+	TestEqual(TEXT("it lands exactly once"), Structures->ImpactCount(), ImpactsBefore + 1);
+	S.GoTo(GDeepInLots);
+	S.GoTo(House.Anchor + FVector(-500, 0, 100));
+	Structures->PumpPresentation(House.Anchor, 0.0);
+	TestEqual(TEXT("a second round trip replays nothing"), Structures->ImpactCount(), ImpactsBefore + 1);
+	TestEqual(TEXT("no piece duplicated"), S.Building->PiecesOfCell(GOrigin).Num(), S.Building->GetPieces().Num());
 	return true;
 }
 

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "phase.construction.electrical",
+  "displayName": "Electrical",
+  "order": 1,
+  "optional": true,
+  "implemented": false,
+  "notes": "P11: registered so the canonical order FRAME -> ELECTRICAL -> FINISH never needs a schema change; not implemented (PH-2 refuses its content)."
+}

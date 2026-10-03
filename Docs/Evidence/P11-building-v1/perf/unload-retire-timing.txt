@@ -1,0 +1,9 @@
+# One quiet-gated towndenseplayer reversal at the P11 candidate head (load start 1.69). Making the cell's 309 player parts inert is synchronous in the unload frame:
+LogGridlands: Structures: player:cell.outer.diner_lots retired 309 player parts in 2.29 ms
+LogGridlands: Placements: despawned 211 for cell.outer.diner_lots (8.35 ms)
+LogGridlands: Grid: unloaded cell.outer.diner_lots at frame 8869 (epoch 2, was ready)
+LogGridlands: Grid: slow streaming frame 12.34 ms: load/unload 11.84, ground 0.50 [finish 0.00, apply 0.00 (0, worst 0.00 = mesh 0.00 + collision 0.00 + nav 0.00), launch 0.00, retire 0.50 (16)], authoritative 0.00, presentation 0.00 (0 units)
+LogGridlands: Structures: player:cell.outer.diner_lots retired 309 player parts in 2.77 ms
+LogGridlands: Placements: despawned 211 for cell.outer.diner_lots (8.21 ms)
+LogGridlands: Grid: unloaded cell.outer.diner_lots at frame 16967 (epoch 3, was ready)
+LogGridlands: Grid: slow streaming frame 11.66 ms: load/unload 11.19, ground 0.46 [finish 0.00, apply 0.00 (0, worst 0.00 = mesh 0.00 + collision 0.00 + nav 0.00), launch 0.00, retire 0.46 (16)], authoritative 0.00, presentation 0.00 (0 units)

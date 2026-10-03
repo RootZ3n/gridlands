@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
++++ b/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
+@@ -86,7 +86,7 @@
+ 		{
+ 			continue;
+ 		}
+-		const FVector Centre = Feet + FVector(0.0, 0.0, GLCreatureRules::CapsuleHalfHeightCm);
++		const FVector Centre = Feet + FVector(0.0, 0.0, GLCreatureRules::CapsuleHalfHeightCm - 20.0); // DEFECT: a second, different capsule
+ 		if (Volume.TouchesCapsule(Centre, GLCreatureRules::CapsuleRadiusCm, GLCreatureRules::CapsuleHalfHeightCm))
+ 		{
+ 			Out.Add(Entry.Key);

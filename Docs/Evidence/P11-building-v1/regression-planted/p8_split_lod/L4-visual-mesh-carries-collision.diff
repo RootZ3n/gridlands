@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Presentation/GLVisuals.cpp
++++ b/Source/GridlandsGame/Private/Presentation/GLVisuals.cpp
+@@ -24,7 +24,7 @@
+ 		Component->ComponentTags.Add(GLVisuals::VisualTag);
+ 		Component->SetStaticMesh(Mesh);
+ 		Component->SetupAttachment(Parent);
+-		Component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
++		Component->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics); // DEFECT: gameplay would see the mesh
+ 		Component->SetCanEverAffectNavigation(false);
+ 		Component->SetGenerateOverlapEvents(false);
+ 		return Component;

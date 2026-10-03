@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
+@@ -344,7 +344,7 @@
+ 	}
+ 	// P9: whole creature facts (awareness, position, memory, health, outcome). Time that passed while the cell was
+ 	// streamed out in this session still counts; a record read from a file lost no time (save/restart is not a wipe).
+-	const double Elapsed = Record.CapturedWorldSeconds >= 0.0 ? FMath::Max(0.0, World->GetTimeSeconds() - Record.CapturedWorldSeconds) : 0.0;
++	const double Elapsed = 0.0; // DEFECT
+ 	for (const FGLSavedCreature& Saved : Record.Creatures)
+ 	{
+ 		if (!Placements->RestoreCreature(Saved, Elapsed))

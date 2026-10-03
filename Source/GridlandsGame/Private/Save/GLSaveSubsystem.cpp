@@ -66,7 +66,8 @@ void UGLSaveSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 		Bus->Subscribe(UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Glitch.Repaired")),
 			FGLGameplayEventDelegate::CreateUObject(this, &UGLSaveSubsystem::HandleGlitchRepaired));
 		// Building and terraforming are world changes too: save them soon after, not only on quit.
-		for (const TCHAR* Tag : { TEXT("Event.Building.Placed"), TEXT("Event.Building.Demolished"), TEXT("Event.Terrain.Edited") })
+		for (const TCHAR* Tag : { TEXT("Event.Building.Placed"), TEXT("Event.Building.Demolished"), TEXT("Event.Terrain.Edited"),
+			TEXT("Event.Building.Smashed"), TEXT("Event.Building.FinishInstalled"), TEXT("Event.Storage.Changed") }) // P11
 		{
 			Bus->Subscribe(UGameplayTagsManager::Get().RequestGameplayTag(Tag),
 				FGLGameplayEventDelegate::CreateUObject(this, &UGLSaveSubsystem::HandleWorldEdited));
@@ -279,13 +280,9 @@ FGLSavedCell UGLSaveSubsystem::CaptureCell(FName Cell) const
 		Mechanisms->CaptureCell(Cell, Record.Mechanisms);
 	}
 	Record.CapturedWorldSeconds = World->GetTimeSeconds();
-	if (const UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>())
+	if (const UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>())
 	{
-		for (const FGLPlacedPiece& Piece : Building->PiecesOfCell(Cell))
-		{
-			Record.BuildPieces.Add({ Piece.Id, Piece.Def, Piece.Location, Piece.YawQuarter });
-		}
-		Record.BuildPieces.Sort([](const FGLSavedPiece& A, const FGLSavedPiece& B) { return A.Id < B.Id; });
+		Structures->CapturePlayerCell(Cell, Record.BuildPieces); // P11: whole facts (yaw step, origin, layers, contents, debris)
 	}
 	if (const UGLTerrainSubsystem* Terrain = World->GetSubsystem<UGLTerrainSubsystem>())
 	{
@@ -373,25 +370,20 @@ void UGLSaveSubsystem::ApplyCell(const FGLSavedCell& Record, TArray<FString>* Ou
 			Problem(FString::Printf(TEXT("saved terrain does not fit %s's ground; ground left as authored"), *Record.Cell.ToString()));
 		}
 	}
+	// Collapses in flight belong to a player structure or to an authored one (P11: the same model, two restores).
+	TArray<FGLSavedCollapse> PlayerFlights, AuthoredFlights;
+	for (const FGLSavedCollapse& Flight : Record.Collapses)
+	{
+		(Flight.Placement.ToString().StartsWith(TEXT("player:")) ? PlayerFlights : AuthoredFlights).Add(Flight);
+	}
 	if (UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>())
 	{
-		TArray<FGLPlacedPiece> Pieces;
-		for (const FGLSavedPiece& Saved : Record.BuildPieces)
-		{
-			if (!GLContent::Get().Find<FGLBuildPieceDef>(Saved.Def))
-			{
-				Problem(FString::Printf(TEXT("saved build piece %s no longer exists"), *Saved.Def.ToString()));
-				continue;
-			}
-			Pieces.Add({ Saved.Id, Saved.Def, Saved.Location, Saved.YawQuarter, Record.Cell });
-		}
-		Building->RemoveCell(Record.Cell);
-		Building->RestoreCell(Record.Cell, Pieces);
+		Building->RestoreCell(Record.Cell, Record.BuildPieces, PlayerFlights, OutProblems);
 	}
 	// Structures after the ground (debris rests on it); silently, so no collapse replays.
 	if (UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>())
 	{
-		Structures->RestoreCell(Record.Cell, Record.StructureParts, Record.Collapses, OutProblems);
+		Structures->RestoreCell(Record.Cell, Record.StructureParts, AuthoredFlights, OutProblems);
 	}
 }
 
@@ -421,13 +413,15 @@ void UGLSaveSubsystem::StowTerrainOnly(FName Cell)
 	{
 		Terrain->CaptureCellDelta(Cell, Record.TerrainIndices, Record.TerrainDeltaCm);
 	}
-	if (const UGLBuildingSubsystem* Building = GetWorld()->GetSubsystem<UGLBuildingSubsystem>())
+	if (const UGLStructureSubsystem* Structures = GetWorld()->GetSubsystem<UGLStructureSubsystem>())
 	{
-		for (const FGLPlacedPiece& Piece : Building->PiecesOfCell(Cell))
+		TArray<FGLSavedPiece> Live;
+		Structures->CapturePlayerCell(Cell, Live);
+		for (const FGLSavedPiece& Piece : Live)
 		{
 			if (!Record.BuildPieces.ContainsByPredicate([&Piece](const FGLSavedPiece& S) { return S.Id == Piece.Id; }))
 			{
-				Record.BuildPieces.Add({ Piece.Id, Piece.Def, Piece.Location, Piece.YawQuarter });
+				Record.BuildPieces.Add(Piece);
 			}
 		}
 	}
@@ -604,7 +598,7 @@ bool UGLSaveSubsystem::LoadFromSlot(const FString& Slot, TArray<FString>* OutPro
 {
 	FString Text, Problem;
 	FGLWorldSave Save;
-	if (!FFileHelper::LoadFileToString(Text, *SlotPath(Slot)) || !GLSaveCodec::FromJson(Text, Save, Problem))
+	if (!FFileHelper::LoadFileToString(Text, *SlotPath(Slot)) || !GLSaveCodec::FromJson(Text, Save, Problem, &GLContent::Get()))
 	{
 		UE_LOG(LogGridlands, Warning, TEXT("Load: %s: %s"), *SlotPath(Slot), Problem.IsEmpty() ? TEXT("missing") : *Problem);
 		return false;

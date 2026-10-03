@@ -1,0 +1,3585 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A1036AD68A77689F148B37B3F2FE58",
+			"instanceName": "Pehverse-2695547",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.10.03-20.18.33",
+	"succeeded": 30,
+	"succeededWithWarnings": 3,
+	"failed": 2,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 3.1029202938079834,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "GroundDecidesWhereFloorsGo",
+			"fullTestPath": "Gridlands.Core.Building.GroundDecidesWhereFloorsGo",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.010082218796014786,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "KnowledgeItemsAndSnapping",
+			"fullTestPath": "Gridlands.Core.Building.KnowledgeItemsAndSnapping",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0076672118157148361,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemovingASupportCollapsesWhatItHeld",
+			"fullTestPath": "Gridlands.Core.Building.RemovingASupportCollapsesWhatItHeld",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0081002051010727882,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShelterStandsAndEveryPlacementIsValid",
+			"fullTestPath": "Gridlands.Core.Building.ShelterStandsAndEveryPlacementIsValid",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0081971278414130211,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SupportWeakensUpAndOut",
+			"fullTestPath": "Gridlands.Core.Building.SupportWeakensUpAndOut",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0081040728837251663,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ACollapseAtAngleUsesThePiecesOwnAxes",
+			"fullTestPath": "Gridlands.Core.BuildingV1.ACollapseAtAngleUsesThePiecesOwnAxes",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.010368106886744499,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AngledPolygonsCloseBySnappingAlone",
+			"fullTestPath": "Gridlands.Core.BuildingV1.AngledPolygonsCloseBySnappingAlone",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0081703495234251022,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "APlanRebuiltAt45DegreesIsTheSameBuilding",
+			"fullTestPath": "Gridlands.Core.BuildingV1.APlanRebuiltAt45DegreesIsTheSameBuilding",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0082492372021079063,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CarefulBeatsDestructiveBeatsCollapse",
+			"fullTestPath": "Gridlands.Core.BuildingV1.CarefulBeatsDestructiveBeatsCollapse",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0078094820491969585,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClaimsAreDerivedAndRenewalNeverTouchesPlayerConstruction",
+			"fullTestPath": "Gridlands.Core.BuildingV1.ClaimsAreDerivedAndRenewalNeverTouchesPlayerConstruction",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0078383320942521095,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FacingSocketsLinkOnlyWhenTheyFaceEachOther",
+			"fullTestPath": "Gridlands.Core.BuildingV1.FacingSocketsLinkOnlyWhenTheyFaceEachOther",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0083032278344035149,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FrameThenFinishAndElectricalIsRegisteredNotBuilt",
+			"fullTestPath": "Gridlands.Core.BuildingV1.FrameThenFinishAndElectricalIsRegisteredNotBuilt",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0081055965274572372,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MaterialPoolIsOrderedAndAllOrNothing",
+			"fullTestPath": "Gridlands.Core.BuildingV1.MaterialPoolIsOrderedAndAllOrNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.007836589589715004,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OverlapAndFootprintsAreOriented",
+			"fullTestPath": "Gridlands.Core.BuildingV1.OverlapAndFootprintsAreOriented",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.008356727659702301,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PreviewIsTheCommitsOwnRule",
+			"fullTestPath": "Gridlands.Core.BuildingV1.PreviewIsTheCommitsOwnRule",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.008543211966753006,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Version2SavesMigrateToVersion3Deterministically",
+			"fullTestPath": "Gridlands.Core.BuildingV1.Version2SavesMigrateToVersion3Deterministically",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0081151602789759636,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "YawIsAnIntegerIn2p5DegreeSteps",
+			"fullTestPath": "Gridlands.Core.BuildingV1.YawIsAnIntegerIn2p5DegreeSteps",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0082756010815501213,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StacksAndCapacity",
+			"fullTestPath": "Gridlands.Core.Inventory.StacksAndCapacity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0095681129023432732,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CodecRoundTripAndVersions",
+			"fullTestPath": "Gridlands.Core.Save.CodecRoundTripAndVersions",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0077962502837181091,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Version1MigratesToCellRecords",
+			"fullTestPath": "Gridlands.Core.Save.Version1MigratesToCellRecords",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.0083473268896341324,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PiecesBlockNavigation",
+			"fullTestPath": "Gridlands.Game.Building.PiecesBlockNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.15912485122680664,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "wall line with a gap: path crosses the wall line x = 65 m at y = 5047",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.30"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PreviewColoursAndRemovalPredictionsAreTheCommitsOwn",
+			"fullTestPath": "Gridlands.Game.Building.PreviewColoursAndRemovalPredictionsAreTheCommitsOwn",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.032798707485198975,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RefusalsChangeNothing",
+			"fullTestPath": "Gridlands.Game.Building.RefusalsChangeNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.052227281033992767,
+			"dateTime": "2026.10.03-20.18.30",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemovalCollapsesByTheCanonicalRulesAsPredicted",
+			"fullTestPath": "Gridlands.Game.Building.RemovalCollapsesByTheCanonicalRulesAsPredicted",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.065630726516246796,
+			"dateTime": "2026.10.03-20.18.31",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShelterFromInventoryPersistsAcrossReload",
+			"fullTestPath": "Gridlands.Game.Building.ShelterFromInventoryPersistsAcrossReload",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.06890135258436203,
+			"dateTime": "2026.10.03-20.18.31",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 1 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 2 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 3 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 4 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 5 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 6 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 7 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 8 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 9 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 10 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 11 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 12 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 13 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 14 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 15 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 16 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'no problems' to be 0, but it was 16.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingTests.cpp",
+					"lineNumber": 136,
+					"timestamp": "2026.10.03-20.18.31"
+				}
+			],
+			"warnings": 16,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ABasementIsAnOpenPitThenAStructure",
+			"fullTestPath": "Gridlands.Game.BuildingV1.ABasementIsAnOpenPitThenAStructure",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.10752366483211517,
+			"dateTime": "2026.10.03-20.18.31",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 1 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 2 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 3 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				}
+			],
+			"warnings": 3,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BaseStorageClaimsAndContainersNeverLoseAnything",
+			"fullTestPath": "Gridlands.Game.BuildingV1.BaseStorageClaimsAndContainersNeverLoseAnything",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.053357545286417007,
+			"dateTime": "2026.10.03-20.18.31",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 1 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 2 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 4 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 5 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 6 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 7 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				}
+			],
+			"warnings": 6,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StoringAndTakingMoveOnlyWhatFits",
+			"fullTestPath": "Gridlands.Game.BuildingV1.StoringAndTakingMoveOnlyWhatFits",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.030245371162891388,
+			"dateTime": "2026.10.03-20.18.31",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StoringAndTakingNeverLosesAnything",
+			"fullTestPath": "Gridlands.Game.BuildingV1.StoringAndTakingNeverLosesAnything",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.02491823211312294,
+			"dateTime": "2026.10.03-20.18.31",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ThreeHundredPiecesScaleLinearly",
+			"fullTestPath": "Gridlands.Game.BuildingV1.ThreeHundredPiecesScaleLinearly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.069817855954170227,
+			"dateTime": "2026.10.03-20.18.31",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "supportMs: 309 pieces 1.089 ms, 617 pieces 2.200 ms (x2.02)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "previewMs: 309 pieces 1.142 ms, 617 pieces 2.260 ms (x1.98)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "removalPredictionMs: 309 pieces 1.102 ms, 617 pieces 2.211 ms (x2.01)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "captureMs: 309 pieces 0.022 ms, 617 pieces 0.044 ms (x1.98)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "restoreMs: 309 pieces 0.452 ms, 617 pieces 0.959 ms (x2.12)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WinchesterHouseFrameFinishCollapseAndPersistence",
+			"fullTestPath": "Gridlands.Game.BuildingV1.WinchesterHouseFrameFinishCollapseAndPersistence",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.16412487626075745,
+			"dateTime": "2026.10.03-20.18.31",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(355): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 1 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 2 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 3 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 4 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 5 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 6 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 7 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 8 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 9 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 10 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 11 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 12 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 13 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 14 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 15 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 16 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 17 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 18 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 19 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 20 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 21 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 22 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 23 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 24 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 25 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 26 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 27 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 28 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 29 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 30 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 31 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 32 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 33 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 34 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 35 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 36 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 37 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 38 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 39 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 40 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 41 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 42 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 43 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 44 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 45 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 46 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 47 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 48 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 49 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 50 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 51 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 52 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'no load problems' to be \"\", but it was \"saved player piece 1 has origin 0, not player-built: kept as the player's; saved player piece 2 has origin 0, not player-built: kept as the player's; saved player piece 3 has origin 0, not player-built: kept as the player's; saved player piece 4 has origin 0, not player-built: kept as the player's; saved player piece 5 has origin 0, not player-built: kept as the player's; saved player piece 6 has origin 0, not player-built: kept as the player's; saved player piece 7 has origin 0, not player-built: kept as the player's; saved player piece 8 has origin 0, not player-built: kept as the player's; saved player piece 9 has origin 0, not player-built: kept as the player's; saved player piece 10 has origin 0, not player-built: kept as the player's; saved player piece 11 has origin 0, not player-built: kept as the player's; saved player piece 12 has origin 0, not player-built: kept as the player's; saved player piece 13 has origin 0, not player-built: kept as the player's; saved player piece 14 has origin 0, not player-built: kept as the player's; saved player piece 15 has origin 0, not player-built: kept as the player's; saved player piece 16 has origin 0, not player-built: kept as the player's; saved player piece 17 has origin 0, not player-built: kept as the player's; saved player piece 18 has origin 0, not player-built: kept as the player's; saved player piece 19 has origin 0, not player-built: kept as the player's; saved player piece 20 has origin 0, not player-built: kept as the player's; saved player piece 21 has origin 0, not player-built: kept as the player's; saved player piece 22 has origin 0, not player-built: kept as the player's; saved player piece 23 has origin 0, not player-built: kept as the player's; saved player piece 24 has origin 0, not player-built: kept as the player's; saved player piece 25 has origin 0, not player-built: kept as the player's; saved player piece 26 has origin 0, not player-built: kept as the player's; saved player piece 27 has origin 0, not player-built: kept as the player's; saved player piece 28 has origin 0, not player-built: kept as the player's; saved player piece 29 has origin 0, not player-built: kept as the player's; saved player piece 30 has origin 0, not player-built: kept as the player's; saved player piece 31 has origin 0, not player-built: kept as the player's; saved player piece 32 has origin 0, not player-built: kept as the player's; saved player piece 33 has origin 0, not player-built: kept as the player's; saved player piece 34 has origin 0, not player-built: kept as the player's; saved player piece 35 has origin 0, not player-built: kept as the player's; saved player piece 36 has origin 0, not player-built: kept as the player's; saved player piece 37 has origin 0, not player-built: kept as the player's; saved player piece 38 has origin 0, not player-built: kept as the player's; saved player piece 39 has origin 0, not player-built: kept as the player's; saved player piece 40 has origin 0, not player-built: kept as the player's; saved player piece 41 has origin 0, not player-built: kept as the player's; saved player piece 42 has origin 0, not player-built: kept as the player's; saved player piece 43 has origin 0, not player-built: kept as the player's; saved player piece 44 has origin 0, not player-built: kept as the player's; saved player piece 45 has origin 0, not player-built: kept as the player's; saved player piece 46 has origin 0, not player-built: kept as the player's; saved player piece 47 has origin 0, not player-built: kept as the player's; saved player piece 48 has origin 0, not player-built: kept as the player's; saved player piece 49 has origin 0, not player-built: kept as the player's; saved player piece 50 has origin 0, not player-built: kept as the player's; saved player piece 51 has origin 0, not player-built: kept as the player's; saved player piece 52 has origin 0, not player-built: kept as the player's\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Misc/AutomationTest.h",
+					"lineNumber": 1999,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 1 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 2 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 3 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 4 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 5 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 6 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 7 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 8 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 9 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 10 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 11 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 12 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 13 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 14 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 15 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 16 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 17 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 18 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 19 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 20 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 21 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 22 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 23 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 24 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 25 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 26 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 27 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 28 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 29 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 30 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 31 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 32 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 33 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 34 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 35 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 36 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 37 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 38 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 39 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 40 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 41 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 42 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 45 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 46 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 47 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 48 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 49 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 50 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 51 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 52 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'no problems' to be \"\", but it was \"saved player piece 1 has origin 0, not player-built: kept as the player's; saved player piece 2 has origin 0, not player-built: kept as the player's; saved player piece 3 has origin 0, not player-built: kept as the player's; saved player piece 4 has origin 0, not player-built: kept as the player's; saved player piece 5 has origin 0, not player-built: kept as the player's; saved player piece 6 has origin 0, not player-built: kept as the player's; saved player piece 7 has origin 0, not player-built: kept as the player's; saved player piece 8 has origin 0, not player-built: kept as the player's; saved player piece 9 has origin 0, not player-built: kept as the player's; saved player piece 10 has origin 0, not player-built: kept as the player's; saved player piece 11 has origin 0, not player-built: kept as the player's; saved player piece 12 has origin 0, not player-built: kept as the player's; saved player piece 13 has origin 0, not player-built: kept as the player's; saved player piece 14 has origin 0, not player-built: kept as the player's; saved player piece 15 has origin 0, not player-built: kept as the player's; saved player piece 16 has origin 0, not player-built: kept as the player's; saved player piece 17 has origin 0, not player-built: kept as the player's; saved player piece 18 has origin 0, not player-built: kept as the player's; saved player piece 19 has origin 0, not player-built: kept as the player's; saved player piece 20 has origin 0, not player-built: kept as the player's; saved player piece 21 has origin 0, not player-built: kept as the player's; saved player piece 22 has origin 0, not player-built: kept as the player's; saved player piece 23 has origin 0, not player-built: kept as the player's; saved player piece 24 has origin 0, not player-built: kept as the player's; saved player piece 25 has origin 0, not player-built: kept as the player's; saved player piece 26 has origin 0, not player-built: kept as the player's; saved player piece 27 has origin 0, not player-built: kept as the player's; saved player piece 28 has origin 0, not player-built: kept as the player's; saved player piece 29 has origin 0, not player-built: kept as the player's; saved player piece 30 has origin 0, not player-built: kept as the player's; saved player piece 31 has origin 0, not player-built: kept as the player's; saved player piece 32 has origin 0, not player-built: kept as the player's; saved player piece 33 has origin 0, not player-built: kept as the player's; saved player piece 34 has origin 0, not player-built: kept as the player's; saved player piece 35 has origin 0, not player-built: kept as the player's; saved player piece 36 has origin 0, not player-built: kept as the player's; saved player piece 37 has origin 0, not player-built: kept as the player's; saved player piece 38 has origin 0, not player-built: kept as the player's; saved player piece 39 has origin 0, not player-built: kept as the player's; saved player piece 40 has origin 0, not player-built: kept as the player's; saved player piece 41 has origin 0, not player-built: kept as the player's; saved player piece 42 has origin 0, not player-built: kept as the player's; saved player piece 45 has origin 0, not player-built: kept as the player's; saved player piece 46 has origin 0, not player-built: kept as the player's; saved player piece 47 has origin 0, not player-built: kept as the player's; saved player piece 48 has origin 0, not player-built: kept as the player's; saved player piece 49 has origin 0, not player-built: kept as the player's; saved player piece 50 has origin 0, not player-built: kept as the player's; saved player piece 51 has origin 0, not player-built: kept as the player's; saved player piece 52 has origin 0, not player-built: kept as the player's\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Misc/AutomationTest.h",
+					"lineNumber": 1999,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS pad levelled by ordinary flatten strokes: worst 0.00 cm from 0 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS a base core establishes one claim: 1 claim(s), radius 32 m",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS materials placed primarily in shared storage: crates hold stud 103, cut_stone 3, timber_log 26, timber_plank 83; Zenny carries 12 studs",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS 45 degree bay snapped from socket data: yaw steps 0 126 126 0 0 18 18",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS FRAME first: stud walls, doorways and rafters visibly framed: 24 showing framing, 28 complete as built",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS every frame placed, PREVIEW == REALITY: 52 placements so far, 0 mismatches (GREEN 52, YELLOW 0, RED 0)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS storage supplied the construction (before Zenny's own): studs from storage 103, from Zenny 12",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS raw log -> sawing at the sawhorse -> studs (the log from base storage): studs 0 -> 4, Zenny's logs 0 -> 0",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS FINISH applied afterwards (clapboard, shingles): 24/24 installed; 24 finished, 0 still framed",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS finishing changed no support: ",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS architectural vocabularies mixed on purpose: eras era.memory.modern_day era.memory.victorian era.memory.roman; log wing yes; Roman column yes",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS porch post out: predicted to stand, and it stands: predicted 0 falling, 0 fell",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS Roman column out: the predicted roof falls, by the canonical collapse: predicted [45], collapsed [45]",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS careful dismantle of the interior wall: intact studs (and its clapboard back as boards): stud 5, scrap_timber 2, timber_plank 2",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS smashing a bay wall: fewer studs, more scrap: stud 1, scrap_timber 4, timber_plank 1",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.31"
+				}
+			],
+			"warnings": 102,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldRenewalNeverTouchesPlayerConstruction",
+			"fullTestPath": "Gridlands.Game.BuildingV1.WorldRenewalNeverTouchesPlayerConstruction",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.026282446458935738,
+			"dateTime": "2026.10.03-20.18.31",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PlayerConstructionStreamsWholeAndAFallResumes",
+			"fullTestPath": "Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 2.0292675495147705,
+			"dateTime": "2026.10.03-20.18.31",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 1 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 2 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 3 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 4 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 5 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 6 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 7 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 8 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 9 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 10 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 11 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 12 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 13 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 14 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 15 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 16 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 17 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 18 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 19 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 20 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 21 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 22 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 23 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 24 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 25 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 26 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 27 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 28 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 29 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 30 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 31 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 32 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 33 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 34 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 35 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 36 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 37 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 38 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 39 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 40 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 41 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 42 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 45 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 46 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 47 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 48 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 49 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 50 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 51 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 52 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.32"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 1 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 2 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 3 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 4 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 5 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 6 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 7 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 8 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 9 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 10 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 11 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 12 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 13 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 14 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 15 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 16 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 17 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 18 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 19 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 20 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 21 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 22 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 23 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 24 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 25 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 26 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 27 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 28 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 29 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 30 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 31 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 32 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 33 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 34 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 35 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 36 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 37 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 38 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 39 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 40 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 41 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 42 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 45 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 46 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 47 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 48 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 49 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 50 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 51 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGridlands: Load: saved player piece 52 has origin 0, not player-built: kept as the player's",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.03-20.18.33"
+				}
+			],
+			"warnings": 100,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InventoryFullIsAnnouncedNotWeight",
+			"fullTestPath": "Gridlands.Game.Inventory.InventoryFullIsAnnouncedNotWeight",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.027608474716544151,
+			"dateTime": "2026.10.03-20.18.33",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RestoreNeverDiscardsOverflow",
+			"fullTestPath": "Gridlands.Game.Inventory.RestoreNeverDiscardsOverflow",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1036AD68A77689F148B37B3F2FE58"
+			],
+			"duration": 0.023257171735167503,
+			"dateTime": "2026.10.03-20.18.33",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

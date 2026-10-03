@@ -1,0 +1,31 @@
+--- a/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
++++ b/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
+@@ -82,7 +82,7 @@
+ 	for (const TPair<FName, FGLActorPlacement>& Entry : ActorModels)
+ 	{
+ 		FVector Feet;
+-		if (Entry.Value.Kind != TEXT("spawn") || !Entry.Value.Creature.IsActiveHostile() || !CreatureLocation(Entry.Key, Feet))
++		if (Entry.Value.Kind != TEXT("spawn") || !CreatureLocation(Entry.Key, Feet)) // DEFECT
+ 		{
+ 			continue;
+ 		}
+@@ -99,7 +99,7 @@
+ bool UGLPlacementSubsystem::DamageCreature(FName PlacementId, double Amount, AActor* Instigator)
+ {
+ 	const FGLActorPlacement* Model = ActorModels.Find(PlacementId);
+-	if (!Model || Model->Kind != TEXT("spawn") || !Model->Creature.IsActiveHostile() || Amount <= 0.0)
++	if (!Model || Model->Kind != TEXT("spawn") || Amount <= 0.0) // DEFECT
+ 	{
+ 		return false;
+ 	}
+--- a/Source/GridlandsGame/Private/Combat/GLCreature.cpp
++++ b/Source/GridlandsGame/Private/Combat/GLCreature.cpp
+@@ -124,7 +124,7 @@
+ 	GetCharacterMovement()->StopMovementImmediately();
+ 	GetCharacterMovement()->DisableMovement();
+ 	SetActorTickEnabled(false); // no behaviour, no strikes; hearing and combat skip it (not an active hostile)
+-	Health->SetIgnoresDamage(true);
++	// DEFECT: and the P9 immunity
+ 	LureLeft = NoiseLeft = SearchLeft = 0.0;
+ 	UpdateNavigationNeed();
+ }

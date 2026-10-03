@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Salvage/GLSalvageableComponent.cpp
++++ b/Source/GridlandsGame/Private/Salvage/GLSalvageableComponent.cpp
+@@ -116,7 +116,7 @@
+ 		// P11: the finishing hit is refused, not paid partly, when the whole result would not fit (nothing is destroyed).
+ 		const UGLBuildingSubsystem* Building = GetWorld() ? GetWorld()->GetSubsystem<UGLBuildingSubsystem>() : nullptr;
+ 		FGLMaterialSources Sources = Building ? Building->SourcesFor(Interactor, GetOwner() ? GetOwner()->GetActorLocation() : FVector::ZeroVector) : FGLMaterialSources();
+-		if (!Sources.Pool().CanDeliver(GLContent::Get(), CompletionYield()))
++		if (false && !Sources.Pool().CanDeliver(GLContent::Get(), CompletionYield())) // DEFECT
+ 		{
+ 			if (UGLInventoryComponent* Carrier = Interactor ? Interactor->FindComponentByClass<UGLInventoryComponent>() : nullptr)
+ 			{

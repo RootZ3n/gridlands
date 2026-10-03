@@ -7,10 +7,15 @@
   "yields": [
     {
       "item": "item.material.timber_plank",
-      "count": 6,
+      "count": 4,
+      "yieldCategory": "yield.common.gather"
+    },
+    {
+      "item": "item.material.timber_log",
+      "count": 2,
       "yieldCategory": "yield.common.gather"
     }
   ],
   "noise": "Noise.Gather.Chop",
-  "notes": "P6: a felled trunk. Provisional yields."
+  "notes": "P6: a felled trunk; P11: also raw logs (sawn into studs). Provisional yields."
 }

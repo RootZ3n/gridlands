@@ -47,7 +47,7 @@ namespace GLContentTests
 		return Registry.GetProblems().ContainsByPredicate([Rule](const FGLContentProblem& P) { return P.Rule == Rule; });
 	}
 
-	const TCHAR* FuseJson = TEXT(R"({"schemaVersion":1,"id":"item.part.fuse","displayName":"Fuse","stackSize":10,"weight":0.05,"criticalPath":true,"sources":["Source.Salvage"]})");
+	const TCHAR* FuseJson = TEXT(R"({"schemaVersion":1,"id":"item.part.fuse","displayName":"Fuse","stackSize":10,"criticalPath":true,"sources":["Source.Salvage"]})");
 }
 
 using namespace GLContentTests;
@@ -187,7 +187,7 @@ bool FGLContentRejects::RunTest(const FString& Parameters)
 	{
 		FGLContentRegistry Registry;
 		FString Json = FuseJson;
-		Json.ReplaceInline(TEXT("\"weight\":0.05"), TEXT("\"weight\":0.05,\"damage\":5"));
+		Json.ReplaceInline(TEXT("\"stackSize\":10"), TEXT("\"stackSize\":10,\"damage\":5"));
 		Registry.LoadRepository(MakeSandbox({ { TEXT("Data/item/part/fuse.json"), Json } }));
 		TestTrue(TEXT("unknown field is rejected (CXX-1)"), HasRule(Registry, TEXT("CXX-1")));
 		TestEqual(TEXT("and not loaded"), Registry.Num(), 0);

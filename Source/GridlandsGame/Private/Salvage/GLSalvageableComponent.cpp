@@ -9,7 +9,9 @@
 #include "GameFramework/Actor.h"
 #include "GameplayTagsManager.h"
 #include "GridlandsGame.h"
+#include "Building/GLBuildingSubsystem.h"
 #include "Inventory/GLInventoryComponent.h"
+#include "Inventory/GLMaterialPool.h"
 #include "Noise/GLNoiseSubsystem.h"
 #include "Salvage/GLSalvageRules.h"
 
@@ -31,7 +33,7 @@ namespace
 	}
 }
 
-bool UGLSalvageableComponent::Setup(FName InSalvageId, AActor* InLinkedVisual)
+bool UGLSalvageableComponent::Setup(FName InSalvageId, AActor* InLinkedVisual, EGLSalvagePath InPath)
 {
 	const FGLSalvageDef* Def = GLContent::Get().Find<FGLSalvageDef>(InSalvageId);
 	if (!Def)
@@ -42,7 +44,43 @@ bool UGLSalvageableComponent::Setup(FName InSalvageId, AActor* InLinkedVisual)
 	Integrity = Def->Integrity;
 	bSalvaged = false;
 	LinkedVisual = InLinkedVisual;
+	Path = InPath;
+	ExtraYield.Reset();
+	LayerSalvage.Reset();
 	return true;
+}
+
+TMap<FName, int32> UGLSalvageableComponent::CompletionYield() const
+{
+	TMap<FName, int32> Items;
+	const FGLSalvageDef* Def = GLContent::Get().Find<FGLSalvageDef>(SalvageId);
+	if (!Def)
+	{
+		return Items;
+	}
+	const UGLWorldSettingsSubsystem* Settings = GetWorld() ? GetWorld()->GetSubsystem<UGLWorldSettingsSubsystem>() : nullptr;
+	const FGLSettingsPresetDef* Preset = Settings ? Settings->GetPreset() : nullptr;
+	TArray<const FGLSalvageDef*> Defs = { Def };
+	for (const FName& Layer : LayerSalvage)
+	{
+		if (const FGLSalvageDef* LayerDef = GLContent::Get().Find<FGLSalvageDef>(Layer))
+		{
+			Defs.Add(LayerDef);
+		}
+	}
+	for (const FGLSalvageDef* Source : Defs)
+	{
+		for (const FGLSalvageYieldDef& Yield : GLConstructionRules::YieldsFor(*Source, Path))
+		{
+			const FGLYieldCategoryDef* Category = GLContent::Get().Find<FGLYieldCategoryDef>(Yield.YieldCategory);
+			Items.FindOrAdd(Yield.Item) += Category && Preset ? GLYield::Apply(Yield.Count, *Category, *Preset) : Yield.Count; // E-1
+		}
+	}
+	for (const TPair<FName, int32>& Extra : ExtraYield)
+	{
+		Items.FindOrAdd(Extra.Key) += Extra.Value; // what it held is returned as held (never scaled)
+	}
+	return Items;
 }
 
 void UGLSalvageableComponent::GetInteractionOptions(const AActor* Interactor, TArray<FGLInteractionOption>& OutOptions) const
@@ -72,7 +110,22 @@ bool UGLSalvageableComponent::Interact(AActor* Interactor, FGameplayTag Verb)
 	{
 		return false;
 	}
-	Integrity -= GLSalvageRules::DamagePerHit(*Def, GLContent::Get().Find<FGLMaterialDef>(Def->Material), Tool);
+	const double Hit = GLSalvageRules::DamagePerHit(*Def, GLContent::Get().Find<FGLMaterialDef>(Def->Material), Tool);
+	if (Integrity - Hit <= UE_KINDA_SMALL_NUMBER)
+	{
+		// P11: the finishing hit is refused, not paid partly, when the whole result would not fit (nothing is destroyed).
+		const UGLBuildingSubsystem* Building = GetWorld() ? GetWorld()->GetSubsystem<UGLBuildingSubsystem>() : nullptr;
+		FGLMaterialSources Sources = Building ? Building->SourcesFor(Interactor, GetOwner() ? GetOwner()->GetActorLocation() : FVector::ZeroVector) : FGLMaterialSources();
+		if (!Sources.Pool().CanDeliver(GLContent::Get(), CompletionYield()))
+		{
+			if (UGLInventoryComponent* Carrier = Interactor ? Interactor->FindComponentByClass<UGLInventoryComponent>() : nullptr)
+			{
+				Carrier->AnnounceFull(SalvageId);
+			}
+			return false;
+		}
+	}
+	Integrity -= Hit;
 	// Every hit is heard (P6): salvage is never silent. Chopping a tree says so in its data.
 	UGLNoiseSubsystem::EmitAction(this, Def->Noise.IsNone() ? FName(TEXT("Noise.Salvage.Hit")) : Def->Noise,
 		GetOwner() ? GetOwner()->GetActorLocation() : FVector::ZeroVector, Interactor, Def->Material);
@@ -113,19 +166,15 @@ void UGLSalvageableComponent::Complete(AActor* Interactor)
 	bSalvaged = true;
 	Integrity = 0.0;
 
-	UGLInventoryComponent* Inventory = Interactor ? Interactor->FindComponentByClass<UGLInventoryComponent>() : nullptr;
-	const UGLWorldSettingsSubsystem* Settings = GetWorld() ? GetWorld()->GetSubsystem<UGLWorldSettingsSubsystem>() : nullptr;
-	const FGLSettingsPresetDef* Preset = Settings ? Settings->GetPreset() : nullptr;
-	for (const FGLSalvageYieldDef& Yield : Def->Yields)
+	// All or nothing (proven before the finishing hit): personal inventory first, then base storage inside a claim.
+	const UGLBuildingSubsystem* Building = GetWorld() ? GetWorld()->GetSubsystem<UGLBuildingSubsystem>() : nullptr;
+	FGLMaterialSources Sources = Building ? Building->SourcesFor(Interactor, GetOwner() ? GetOwner()->GetActorLocation() : FVector::ZeroVector) : FGLMaterialSources();
+	const TMap<FName, int32> Items = CompletionYield();
+	if (!Sources.Pool().Deliver(GLContent::Get(), Items))
 	{
-		const FGLYieldCategoryDef* Category = GLContent::Get().Find<FGLYieldCategoryDef>(Yield.YieldCategory);
-		const int32 Count = Category && Preset ? GLYield::Apply(Yield.Count, *Category, *Preset) : Yield.Count;
-		const int32 Added = Inventory ? Inventory->AddItem(Yield.Item, Count) : 0;
-		if (Added < Count)
-		{
-			UE_LOG(LogGridlands, Warning, TEXT("Salvage %s: %d of %d %s did not fit"), *SalvageId.ToString(), Count - Added, Count, *Yield.Item.ToString());
-		}
+		UE_LOG(LogGridlands, Warning, TEXT("Salvage %s: the result no longer fits; nothing delivered"), *SalvageId.ToString());
 	}
+	Sources.AnnounceAcquired(Interactor, Items);
 	// Knowledge unlocks (onSalvageUnlocks) are granted by the knowledge system in M6.
 
 	EmitEvent(this, TEXT("Event.Salvage.Completed"), SalvageId, Interactor);

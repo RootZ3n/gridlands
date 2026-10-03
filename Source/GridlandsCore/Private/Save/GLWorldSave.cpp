@@ -1,9 +1,55 @@
 #include "Save/GLWorldSave.h"
 
+#include "Content/GLContentDefinitions.h"
+#include "Content/GLContentRegistry.h"
+
 #include "Dom/JsonObject.h"
 #include "JsonObjectConverter.h"
 #include "Serialization/JsonReader.h"
 #include "Serialization/JsonSerializer.h"
+
+namespace
+{
+	/**
+	 * v2 -> v3 (P11, ADR-0039), on the JSON before conversion: every saved build piece (per cell, and v1's flat list)
+	 * becomes a player-origin v3 piece. yawQuarter q -> yawStep 36 q; a v0 piece id gains its data's legacyLayers, so a
+	 * finished-looking v0 wall becomes the same wall as FRAME + FINISH. Nothing else in the file changes.
+	 */
+	void MigratePiecesToV3(const TSharedPtr<FJsonObject>& Holder, const FGLContentRegistry* Content)
+	{
+		const TArray<TSharedPtr<FJsonValue>>* Pieces = nullptr;
+		if (!Holder.IsValid() || !Holder->TryGetArrayField(TEXT("buildPieces"), Pieces))
+		{
+			return;
+		}
+		for (const TSharedPtr<FJsonValue>& Value : *Pieces)
+		{
+			const TSharedPtr<FJsonObject> Piece = Value.IsValid() ? Value->AsObject() : nullptr;
+			if (!Piece.IsValid())
+			{
+				continue;
+			}
+			int32 Quarter = 0;
+			Piece->TryGetNumberField(TEXT("yawQuarter"), Quarter);
+			Piece->RemoveField(TEXT("yawQuarter"));
+			Piece->SetNumberField(TEXT("yawStep"), ((Quarter % 4 + 4) % 4) * 36);
+			Piece->SetNumberField(TEXT("origin"), 1); // every v2 build piece was player-built
+			TArray<TSharedPtr<FJsonValue>> Layers;
+			FString Def;
+			if (Content && Piece->TryGetStringField(TEXT("def"), Def))
+			{
+				if (const FGLBuildPieceDef* Form = Content->Find<FGLBuildPieceDef>(FName(*Def)))
+				{
+					for (const FName& Layer : Form->LegacyLayers)
+					{
+						Layers.Add(MakeShared<FJsonValueString>(Layer.ToString()));
+					}
+				}
+			}
+			Piece->SetArrayField(TEXT("layers"), Layers);
+		}
+	}
+}
 
 namespace GLSaveCodec
 {
@@ -27,7 +73,7 @@ namespace GLSaveCodec
 		return Text;
 	}
 
-	bool FromJson(const FString& Text, FGLWorldSave& OutSave, FString& OutProblem)
+	bool FromJson(const FString& Text, FGLWorldSave& OutSave, FString& OutProblem, const FGLContentRegistry* Content)
 	{
 		TSharedPtr<FJsonObject> Object;
 		if (!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text), Object) || !Object.IsValid())
@@ -45,6 +91,18 @@ namespace GLSaveCodec
 		{
 			OutProblem = FString::Printf(TEXT("save version %d is newer than this build (%d)"), Version, FGLWorldSave::CurrentVersion);
 			return false;
+		}
+		if (Version <= 2)
+		{
+			MigratePiecesToV3(Object, Content);
+			const TArray<TSharedPtr<FJsonValue>>* Cells = nullptr;
+			if (Object->TryGetArrayField(TEXT("cells"), Cells))
+			{
+				for (const TSharedPtr<FJsonValue>& Cell : *Cells)
+				{
+					MigratePiecesToV3(Cell.IsValid() ? Cell->AsObject() : nullptr, Content);
+				}
+			}
 		}
 		FGLWorldSave Parsed;
 		if (!FJsonObjectConverter::JsonObjectToUStruct(Object.ToSharedRef(), &Parsed))

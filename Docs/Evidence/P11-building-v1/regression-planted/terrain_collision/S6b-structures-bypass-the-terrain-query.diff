@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -147,7 +147,7 @@
+ double UGLStructureSubsystem::GroundAt(const FVector2D& At) const
+ {
+ 	const UGLTerrainSubsystem* Terrain = GetWorld() ? GetWorld()->GetSubsystem<UGLTerrainSubsystem>() : nullptr;
+-	return Terrain ? Terrain->HeightAt(At) : 0.0;
++	return Terrain ? Terrain->HeightAt(FVector2D(FMath::RoundToDouble(At.X / 100.0) * 100.0, FMath::RoundToDouble(At.Y / 100.0) * 100.0)) : 0.0; // DEFECT: its own ground
+ }
+ 
+ bool UGLStructureSubsystem::SpawnStructure(FName Placement, FName DefId, FName Cell, const FVector& Origin, int32 YawStep, bool bDeferPresentation)

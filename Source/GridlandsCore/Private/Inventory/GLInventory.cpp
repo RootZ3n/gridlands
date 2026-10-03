@@ -6,9 +6,9 @@
 int32 FGLInventory::SpaceFor(const FGLContentRegistry& Content, FName Item) const
 {
 	const FGLItemDef* Def = Content.Find<FGLItemDef>(Item);
-	if (!Def || Def->StackSize <= 0)
+	if (!Def || Def->StackSize <= 0 || IsOverCapacity())
 	{
-		return 0;
+		return 0; // over capacity (a restored over-full save): nothing is added until space is freed
 	}
 	int32 Space = 0;
 	for (const FGLInventoryStack& Stack : Stacks)
@@ -18,13 +18,13 @@ int32 FGLInventory::SpaceFor(const FGLContentRegistry& Content, FName Item) cons
 			Space += Def->StackSize - Stack.Count;
 		}
 	}
-	return Space + (MaxSlots - Stacks.Num()) * Def->StackSize;
+	return Space + FMath::Max(0, MaxSlots - Stacks.Num()) * Def->StackSize;
 }
 
 int32 FGLInventory::Add(const FGLContentRegistry& Content, FName Item, int32 Count)
 {
 	const FGLItemDef* Def = Content.Find<FGLItemDef>(Item);
-	if (!Def || Count <= 0)
+	if (!Def || Count <= 0 || IsOverCapacity())
 	{
 		return 0;
 	}
@@ -80,15 +80,20 @@ int32 FGLInventory::CountOf(FName Item) const
 	return Total;
 }
 
-double FGLInventory::TotalWeight(const FGLContentRegistry& Content) const
+int32 FGLInventory::ForceAdd(const FGLContentRegistry& Content, FName Item, int32 Count)
 {
-	double Weight = 0.0;
-	for (const FGLInventoryStack& Stack : Stacks)
+	const FGLItemDef* Def = Content.Find<FGLItemDef>(Item);
+	if (!Def || Count <= 0)
 	{
-		if (const FGLItemDef* Def = Content.Find<FGLItemDef>(Stack.Item))
-		{
-			Weight += Def->Weight * Stack.Count;
-		}
+		return 0;
 	}
-	return Weight;
+	const int32 Stack = FMath::Max(1, Def->StackSize);
+	int32 Remaining = Count - Add(Content, Item, Count);
+	while (Remaining > 0)
+	{
+		const int32 Moved = FMath::Min(Remaining, Stack);
+		Stacks.Add({ Item, Moved }); // beyond MaxSlots: kept, never discarded
+		Remaining -= Moved;
+	}
+	return Count;
 }

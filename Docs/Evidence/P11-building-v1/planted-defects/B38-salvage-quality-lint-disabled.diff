@@ -1,0 +1,11 @@
+--- a/Tools/gldata/validate.py
++++ b/Tools/gldata/validate.py
+@@ -649,7 +649,7 @@
+         if data.get("role") in ("base_core", "storage", "station") and data.get("buildable", True) is False:
+             ds.problem("CLM-1", rel, ".buildable", f"a {data.get('role')} piece is player construction (buildable)")
+         if data.get("buildable", True):
+-            check_paths(entity, data.get("salvage"), ".salvage")
++            pass  # DEFECT
+     for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+         data, rel = entity.data, entity.file
+         if entity.kind == "finish":

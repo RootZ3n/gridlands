@@ -21,6 +21,7 @@ namespace
 	UStaticMeshComponent* NewMeshComponent(AActor* Owner, USceneComponent* Parent, UStaticMesh* Mesh)
 	{
 		UStaticMeshComponent* Component = NewObject<UStaticMeshComponent>(Owner);
+		Component->ComponentTags.Add(GLVisuals::VisualTag);
 		Component->SetStaticMesh(Mesh);
 		Component->SetupAttachment(Parent);
 		Component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -63,6 +64,8 @@ int32 GLVisuals::Preload()
 		}
 	});
 	Keep(LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube")));
+	// P11: the blockout material every frame and blockout box paints with (a player structure presents hundreds of them).
+	Keep(LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial")));
 	Keep(LoadObject<UMaterialInterface>(nullptr, CorruptionMaterialPath));
 	UE_LOG(LogGridlands, Log, TEXT("Visuals: %d art objects resident (%.1f ms)"), Resident.Num(), (FPlatformTime::Seconds() - Start) * 1000.0);
 	return Resident.Num();
@@ -131,6 +134,7 @@ UStaticMeshComponent* GLVisuals::Attach(AActor* Owner, USceneComponent* Parent, 
 	if (Def->Light.Intensity > 0.0)
 	{
 		UPointLightComponent* Light = NewObject<UPointLightComponent>(Owner);
+		Light->ComponentTags.Add(GLVisuals::VisualTag);
 		Light->SetupAttachment(Main);
 		Light->SetRelativeLocation(Vec(Def->Light.Offset) * 100.0);
 		Light->SetLightColor(FLinearColor(Vec(Def->Light.Color, FVector::OneVector)));
@@ -147,4 +151,22 @@ int32 GLVisuals::CorruptionCount(FName VisualId)
 {
 	const FGLVisualDef* Def = GLContent::Get().Find<FGLVisualDef>(VisualId);
 	return Def ? Def->Corruption.Num() : 0;
+}
+
+void GLVisuals::Detach(AActor* Owner)
+{
+	if (!Owner)
+	{
+		return;
+	}
+	TArray<UActorComponent*> Tagged = Owner->GetComponentsByTag(UActorComponent::StaticClass(), VisualTag);
+	for (UActorComponent* Component : Tagged)
+	{
+		Component->DestroyComponent();
+	}
+}
+
+bool GLVisuals::HasLook(const AActor* Owner)
+{
+	return Owner && Owner->GetComponentsByTag(UActorComponent::StaticClass(), VisualTag).Num() > 0;
 }

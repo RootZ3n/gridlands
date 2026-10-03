@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.log_wall",
+  "displayName": "Log wall",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "role": "wall",
+  "grounded": false,
+  "size": [
+    2.0,
+    0.24,
+    2.5
+  ],
+  "shapes": [
+    {
+      "size": [
+        2.0,
+        0.24,
+        0.3
+      ],
+      "offset": [
+        0,
+        0,
+        0.15
+      ]
+    },
+    {
+      "size": [
+        2.0,
+        0.24,
+        0.3
+      ],
+      "offset": [
+        0,
+        0,
+        0.44999999999999996
+      ]
+    },
+    {
+      "size": [
+        2.0,
+        0.24,
+        0.3
+      ],
+      "offset": [
+        0,
+        0,
+        0.75
+      ]
+    },
+    {
+      "size": [
+        2.0,
+        0.24,
+        0.3
+      ],
+      "offset": [
+        0,
+        0,
+        1.0499999999999998
+      ]
+    },
+    {
+      "size": [
+        2.0,
+        0.24,
+        0.3
+      ],
+      "offset": [
+        0,
+        0,
+        1.3499999999999999
+      ]
+    },
+    {
+      "size": [
+        2.0,
+        0.24,
+        0.3
+      ],
+      "offset": [
+        0,
+        0,
+        1.65
+      ]
+    },
+    {
+      "size": [
+        2.0,
+        0.24,
+        0.3
+      ],
+      "offset": [
+        0,
+        0,
+        1.9499999999999997
+      ]
+    },
+    {
+      "size": [
+        2.0,
+        0.24,
+        0.3
+      ],
+      "offset": [
+        0,
+        0,
+        2.25
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "top",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        2.5
+      ]
+    },
+    {
+      "name": "left",
+      "role": "side",
+      "offset": [
+        -1,
+        0,
+        1.25
+      ]
+    },
+    {
+      "name": "right",
+      "role": "side",
+      "offset": [
+        1,
+        0,
+        1.25
+      ]
+    }
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_log",
+      "count": 4
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "layers": [],
+  "salvage": "salvage.build.log_wall",
+  "collapse": {
+    "motion": "topple",
+    "direction": "awayFromInstigator"
+  },
+  "notes": "P11: a log-cabin wall: complete as built (stacked logs are the structure and the look)."
+}

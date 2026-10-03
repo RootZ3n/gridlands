@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.player.inventory_full_again",
+  "trigger": [
+    "Event.Player.InventoryFull"
+  ],
+  "category": "Ambient",
+  "priority": 12,
+  "cooldownSeconds": 1800,
+  "maxUses": 2,
+  "weight": 1.0,
+  "requires": [
+    {
+      "eventCount": "Event.Player.InventoryFull",
+      "min": 2
+    }
+  ],
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Carrying half my town in your pockets. Bold. Stupid, but bold."
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "He's redistributing it. Aggressively."
+    }
+  ],
+  "notes": "P11: retargeted from weight-based overencumbrance (removed 2026-10-03) to a full inventory. Was exchange.player.overencumbered_again (M5), on Event.Player.Overencumbered: NICE \"Carrying half my town on your back. Bold. Stupid, but bold.\" / Pehlichi \"He's redistributing it. Aggressively.\""
+}

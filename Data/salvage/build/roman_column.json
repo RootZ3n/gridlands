@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "salvage.build.roman_column",
+  "displayName": "Roman column",
+  "integrity": 60.0,
+  "material": "material.masonry.roman_concrete",
+  "yields": [
+    {
+      "item": "item.material.cut_stone",
+      "count": 3,
+      "yieldCategory": "yield.common.salvage"
+    }
+  ],
+  "yieldsByPath": {
+    "careful": [
+      {
+        "item": "item.material.cut_stone",
+        "count": 3,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ],
+    "destructive": [
+      {
+        "item": "item.material.cut_stone",
+        "count": 1,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ],
+    "collapse": [
+      {
+        "item": "item.material.cut_stone",
+        "count": 1,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ]
+  },
+  "notes": "P11 provisional yields (economy untuned)."
+}

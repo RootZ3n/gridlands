@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
+@@ -335,7 +335,7 @@
+ 	{
+ 		if (FGLActorPlacement* Salvaged = ActorModels.Find(Placement))
+ 		{
+-			Salvaged->bSalvaged = true;
++			// DEFECT: only the actor knows it was salvaged
+ 		}
+ 	});
+ 	Model->Actor = Node;

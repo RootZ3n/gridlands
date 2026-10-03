@@ -1,0 +1,13 @@
+--- a/Source/GridlandsCore/Private/Building/GLClaimRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLClaimRules.cpp
+@@ -56,9 +56,6 @@
+ 
+ bool GLClaimRules::MayRenew(EGLPieceOrigin Origin, const FVector2D& Location, TConstArrayView<FGLClaim> Claims)
+ {
+-	if (Origin == EGLPieceOrigin::Player)
+-	{
+-		return false;
+-	}
++	// DEFECT: ownership ignored
+ 	return ClaimAt(Claims, Location) == nullptr;
+ }

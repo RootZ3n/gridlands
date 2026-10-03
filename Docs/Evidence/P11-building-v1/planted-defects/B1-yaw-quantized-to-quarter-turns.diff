@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+@@ -201,7 +201,7 @@
+ 
+ int32 GLStructureRules::YawStepFromDegrees(double Degrees)
+ {
+-	return NormalizeYawStep(FMath::RoundToInt(Wrap360(Degrees) / YawStepDegrees));
++	return NormalizeYawStep(FMath::RoundToInt(Wrap360(Degrees) / 90.0) * QuarterTurnSteps); // DEFECT
+ }
+ 
+ double GLStructureRules::YawDegrees(int32 Step)

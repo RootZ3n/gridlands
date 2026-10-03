@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+@@ -38,7 +38,7 @@
+ 	/** Do two coinciding side sockets connect? Facings, when both declare one, must face each other. */
+ 	bool SidesConnect(const FGLWorldSocket& A, const FGLWorldSocket& B)
+ 	{
+-		return !(A.bHasFacing && B.bHasFacing) || AngleBetween(A.Facing, B.Facing + 180.0) <= GLStructureRules::FacingToleranceDegrees;
++		return true; // DEFECT
+ 	}
+ 
+ 	FIntVector SocketCell(const FVector& At)

@@ -71,6 +71,13 @@ missing, wrong version). The last line of output is always
 17. Ids and tags follow `Docs/CONTENT-IDS-AND-TAGS.md`; eras are data (ADR-0020).
 18. All progression lives in the world save (ADR-0019).
 
+19. **One structural model** for player and authored construction (ADR-0039): never add a second collapse or
+    refund path for player pieces.
+20. **PREVIEW == REALITY** (ADR-0039): a preview is computed by the function the commit uses.
+21. **A finish never changes support; electrical gets no content until it is built** (PH-2).
+22. **World renewal never touches player construction or anything inside a claim** (`GLClaimRules::MayRenew`).
+23. **Nothing is silently destroyed** (no salvage, refund or restore loses items; consumption is all-or-nothing).
+
 The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
 
 ## Recipes
@@ -128,6 +135,11 @@ The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
   `maxUses`, optional `subject` (react to one item or salvage) and `requires` (event
   history, e.g. third death). Only NICE and Pehlichi speak (DLG-1). Keep it smart-ass and
   keep it rare: set caps so no line becomes a catchphrase.
+- **Add a build piece (P11):** `Data/buildpiece/<domain>/<name>.json`: `size` (oriented with the piece's yaw),
+  collision `shapes`, `sockets` (optional `facing` in whole 2.5 degree steps for angled snapping), `layers` (phases it
+  accepts after FRAME, canonical order; empty = complete as built), `frameShapes` (its look until finished), `salvage`
+  with careful / destructive / collapse yields (SV-Q1), `cost` from components. A finish is `Data/finish/...`
+  (`phase`, `fitsRoles`, `cost`, `salvage`, a `visual` or a `tint`); it never changes support.
 - **Add a glitch to the world:** write `Data/placement/<cell>/<name>.json`
   naming a `glitch.*` definition and an anchor (see
   `Data/anchor/<cell>.generated.json`) or a cell-local transform; run the

@@ -1,0 +1,20 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -341,7 +341,7 @@
+ 	Result.Recovered = ScaledYield(Piece, Path);
+ 	FGLMaterialSources Sources = SourcesFor(Builder, Piece.Location);
+ 	FGLMaterialPool Pool = Sources.Pool();
+-	if (!Pool.CanDeliver(GLContent::Get(), Result.Recovered))
++	if (false && !Pool.CanDeliver(GLContent::Get(), Result.Recovered)) // DEFECT
+ 	{
+ 		Result.Refusal = EGLDemolishRefusal::NoRoomForRefund; // the whole return must fit, or nothing happens
+ 		if (Sources.Personal)
+@@ -351,7 +351,7 @@
+ 		return Result;
+ 	}
+ 	Result.Predicted = PreviewRemoval(PieceId);
+-	verify(Pool.Deliver(GLContent::Get(), Result.Recovered));
++	Pool.Deliver(GLContent::Get(), Result.Recovered); // DEFECT: the result ignored
+ 	Sources.AnnounceAcquired(Builder, Result.Recovered);
+ 	Result.Collapsed = Structures->RemovePlayerPiece(PieceId, Builder);
+ 	const FGLBuildPieceDef* Def = GLContent::Get().Find<FGLBuildPieceDef>(Piece.Def);

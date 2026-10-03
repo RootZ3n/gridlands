@@ -10,27 +10,23 @@ namespace
 
 	FTransform StartOf(const FGLPlacedPiece& Piece)
 	{
-		return FTransform(FRotator(0.0, 90.0 * Piece.YawQuarter, 0.0), Piece.Location);
+		return FTransform(FRotator(0.0, GLStructureRules::YawDegrees(Piece.YawStep), 0.0), Piece.Location);
 	}
 
-	bool OverlapsXY(const FBox& A, const FBox& B)
-	{
-		return A.Min.X < B.Max.X - SurfaceShrinkCm && B.Min.X < A.Max.X - SurfaceShrinkCm
-			&& A.Min.Y < B.Max.Y - SurfaceShrinkCm && B.Min.Y < A.Max.Y - SurfaceShrinkCm;
-	}
-
-	/** The highest ground under a footprint (corners, edge midpoints and centre). */
-	double GroundUnder(const FBox& Box, GLStructureRules::FGroundHeight Ground)
+	/** The highest ground under a footprint (corners, edge midpoints and centre, at its yaw). */
+	double GroundUnder(const FGLFootprint& Footprint, GLStructureRules::FGroundHeight Ground)
 	{
 		double Highest = -1e12;
-		for (double U : { 0.0, 0.5, 1.0 })
+		for (const FVector2D& Point : Footprint.SamplePoints())
 		{
-			for (double V : { 0.0, 0.5, 1.0 })
-			{
-				Highest = FMath::Max(Highest, Ground(FVector2D(FMath::Lerp(Box.Min.X, Box.Max.X, U), FMath::Lerp(Box.Min.Y, Box.Max.Y, V))));
-			}
+			Highest = FMath::Max(Highest, Ground(Point));
 		}
 		return Highest;
+	}
+
+	double GroundUnder(const FBox& Box, GLStructureRules::FGroundHeight Ground)
+	{
+		return GroundUnder(FGLFootprint::FromBox(Box), Ground);
 	}
 
 	/** World bounds of a piece's local box (bottom-centre origin) under a transform. */
@@ -63,7 +59,7 @@ namespace
 
 	FVector2D ToppleDirection(const FGLCollapseRequest& Request, const FBox& Box, const FVector& Instigator)
 	{
-		const FVector2D Forward = FVector2D(FRotator(0.0, 90.0 * Request.Piece.YawQuarter, 0.0).Vector());
+		const FVector2D Forward = GLStructureRules::RotateXY(FVector2D(1.0, 0.0), Request.Piece.YawStep);
 		switch (Request.Direction)
 		{
 		case EGLToppleDirection::PieceForward: return Forward;
@@ -138,13 +134,13 @@ FGLCollapsePlan GLCollapseRules::Plan(const FGLContentRegistry& Content, TConstA
 	const double Margin = Tuning.ImpactMarginMetres * 100.0;
 	const double Delay = FMath::Max(0.0, Tuning.StartDelaySeconds);
 
-	// Surfaces debris can land on: what stays standing, then each settled piece in turn.
-	TArray<FBox> Surfaces;
+	// Surfaces debris can land on: what stays standing, then each settled piece in turn (oriented footprints, P11).
+	TArray<FGLFootprint> Surfaces;
 	for (const FGLPlacedPiece& Piece : Standing)
 	{
 		if (const FGLBuildPieceDef* Def = Content.Find<FGLBuildPieceDef>(Piece.Def))
 		{
-			Surfaces.Add(GLStructureRules::Bounds(*Def, Piece));
+			Surfaces.Add(GLStructureRules::Footprint(*Def, Piece));
 		}
 	}
 
@@ -163,7 +159,8 @@ FGLCollapsePlan GLCollapseRules::Plan(const FGLContentRegistry& Content, TConstA
 		{
 			continue;
 		}
-		const FBox Box = GLStructureRules::Bounds(*Def, Request.Piece);
+		const FGLFootprint Print = GLStructureRules::Footprint(*Def, Request.Piece);
+		const FBox Box = Print.Enclosing();
 		FGLCollapseOutcome Out;
 		Out.PieceId = Request.Piece.Id;
 		Out.Def = Request.Piece.Def;
@@ -173,14 +170,13 @@ FGLCollapsePlan GLCollapseRules::Plan(const FGLContentRegistry& Content, TConstA
 
 		// The surface under it: the ground, or anything standing (or already fallen) beneath its centre of
 		// mass. A sliver of overlap (an awning's edge over a wall top) does not hold a falling piece.
-		double Landing = GroundUnder(Box, Ground);
-		const FVector2D Centre(Box.GetCenter());
-		for (const FBox& Surface : Surfaces)
+		double Landing = GroundUnder(Print, Ground);
+		const FVector2D Centre = Print.Centre;
+		for (const FGLFootprint& Surface : Surfaces)
 		{
-			const bool bUnderCentre = Centre.X >= Surface.Min.X && Centre.X <= Surface.Max.X && Centre.Y >= Surface.Min.Y && Centre.Y <= Surface.Max.Y;
-			if (bUnderCentre && OverlapsXY(Box, Surface) && Surface.Max.Z <= Box.Min.Z + SurfaceShrinkCm)
+			if (Surface.ContainsXY(Centre) && Print.OverlapsXY(Surface, SurfaceShrinkCm) && Surface.ZMax <= Box.Min.Z + SurfaceShrinkCm)
 			{
-				Landing = FMath::Max(Landing, Surface.Max.Z);
+				Landing = FMath::Max(Landing, Surface.ZMax);
 			}
 		}
 		Landing = FMath::Min(Landing, Box.Min.Z); // never rises
@@ -191,23 +187,29 @@ FGLCollapsePlan GLCollapseRules::Plan(const FGLContentRegistry& Content, TConstA
 			Out.Rest.AddToTranslation(FVector(0.0, 0.0, -Fall));
 			Out.ImpactSeconds = Delay + FMath::Sqrt(2.0 * Fall / G);
 			Out.FallMetres = Fall / 100.0;
-			// What is under it when it lands is hit: its footprint, from where it lands up to where it was.
-			Out.Impact.Centre = FVector(Box.GetCenter().X, Box.GetCenter().Y, (Landing + Box.Max.Z) * 0.5);
-			Out.Impact.HalfExtent = FVector(Box.GetExtent().X + Margin, Box.GetExtent().Y + Margin, FMath::Max(1.0, (Box.Max.Z - Landing) * 0.5));
-			Surfaces.Add(Box.ShiftBy(FVector(0.0, 0.0, -Fall)));
+			// What is under it when it lands is hit: its footprint (on its own axes), from where it lands up to where it was.
+			Out.Impact.Centre = FVector(Print.Centre.X, Print.Centre.Y, (Landing + Box.Max.Z) * 0.5);
+			Out.Impact.Axis[0] = FVector(Print.AxisX, 0.0);
+			Out.Impact.Axis[1] = FVector(Print.AxisY, 0.0);
+			Out.Impact.Axis[2] = FVector::UpVector;
+			Out.Impact.HalfExtent = FVector(Print.Half.X + Margin, Print.Half.Y + Margin, FMath::Max(1.0, (Box.Max.Z - Landing) * 0.5));
+			FGLFootprint Fallen = Print;
+			Fallen.ZMin -= Fall;
+			Fallen.ZMax -= Fall;
+			Surfaces.Add(Fallen);
 		}
 		else
 		{
 			const FVector2D Direction = ToppleDirection(Request, Box, Instigator);
 			const FVector D(Direction, 0.0);
 			const FVector Across(-Direction.Y, Direction.X, 0.0);
-			const FVector Extent = Box.GetExtent();
-			const double AlongHalf = FMath::Abs(Direction.X) * Extent.X + FMath::Abs(Direction.Y) * Extent.Y;
-			const double AcrossHalf = FMath::Abs(Across.X) * Extent.X + FMath::Abs(Across.Y) * Extent.Y;
+			// Extents along and across the fall, projected onto the piece's own axes (exact at any yaw).
+			const double AlongHalf = Print.ReachAlong(Direction);
+			const double AcrossHalf = Print.ReachAlong(FVector2D(Across));
 			const double Height = FMath::Max(1.0, Box.Max.Z - Box.Min.Z);
 			// It comes down onto what is beneath it (what held it is gone), then tips about its base edge there.
 			Out.ToppleDropCm = Box.Min.Z - Landing;
-			Out.Pivot = FVector(FVector2D(Box.GetCenter()) + Direction * AlongHalf, Landing);
+			Out.Pivot = FVector(Print.Centre + Direction * AlongHalf, Landing);
 			// Rotating +90 degrees about Up x D takes Up to D: the top falls toward D.
 			Out.TiltAxis = FVector::CrossProduct(FVector::UpVector, D).GetSafeNormal();
 
@@ -232,7 +234,7 @@ FGLCollapsePlan GLCollapseRules::Plan(const FGLContentRegistry& Content, TConstA
 			Out.Impact.Axis[2] = FVector::UpVector;
 			Out.Impact.HalfExtent = FVector(Height * 0.5 + Margin, AcrossHalf + Margin, ImpactHeight * 0.5);
 			Out.Impact.Centre = FVector(FVector2D(Out.Pivot) + Direction * Height * 0.5, Landed.Min.Z + ImpactHeight * 0.5);
-			Surfaces.Add(Landed);
+			Surfaces.Add(FGLFootprint::FromBox(Landed));
 		}
 		Out.Damage = DamageFor(Out.FallMetres, Request.DamageScale, Tuning);
 		Out.Severity = Out.FallMetres * 100.0 < NoFallCm ? 0.0 : Out.FallMetres * Request.DamageScale;

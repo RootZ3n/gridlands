@@ -268,9 +268,11 @@ bool FGLStructurePersists::RunTest(const FString& Parameters)
 	// Salvage one piece of debris, then save standing in the neighbouring cell.
 	S.GoTo(SAtEdge);
 	const int32 PlanksBefore = S.Inventory->CountOf(TEXT("item.material.timber_plank"));
+	const int32 ScrapBefore = S.Inventory->CountOf(TEXT("item.material.scrap_timber"));
 	TestTrue(TEXT("debris salvages"), S.Salvage(SCarportEdge, TEXT("deck_east")));
 	S.Run(0.1);
-	TestTrue(TEXT("and pays"), S.Inventory->CountOf(TEXT("item.material.timber_plank")) > PlanksBefore);
+	TestTrue(TEXT("and pays, by the collapse path (P11): scrap"), S.Inventory->CountOf(TEXT("item.material.scrap_timber")) > ScrapBefore);
+	TestEqual(TEXT("not the pristine planks careful salvage gives"), S.Inventory->CountOf(TEXT("item.material.timber_plank")), PlanksBefore);
 	S.GoTo(SDeepInLots);
 	TestTrue(TEXT("saved in the lots"), S.Test.World->GetSubsystem<UGLSaveSubsystem>()->SaveToSlot(SSlot));
 

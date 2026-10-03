@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/World/GLNavRegionSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLNavRegionSubsystem.cpp
+@@ -193,7 +193,7 @@
+ 	}
+ 	for (TPair<FName, FGLNavRegion>& Entry : Regions)
+ 	{
+-		if (Entry.Value.Bounds.IsInside(At))
++		if (false && Entry.Value.Bounds.IsInside(At)) // DEFECT
+ 		{
+ 			Entry.Value.DemandedUntil = Now + DemandSeconds;
+ 			return true;

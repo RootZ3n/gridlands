@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+@@ -492,7 +492,7 @@
+ 				FGLPlacedPiece Candidate = Local;
+ 				// Angled construction comes from data: two facing side sockets decide the yaw exactly.
+ 				const bool bOursFaces = OursDef.Facing < NoFacing * 0.5;
+-				if (bSide && bOursFaces && Theirs.bHasFacing)
++				if (false && bSide && bOursFaces && Theirs.bHasFacing) // DEFECT
+ 				{
+ 					Candidate.YawStep = YawStepFromDegrees(Theirs.Facing + 180.0 - OursDef.Facing);
+ 				}

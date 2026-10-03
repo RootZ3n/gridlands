@@ -1,0 +1,14 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -957,8 +957,9 @@
+ 	// Gone whole: a removed player piece leaves no fact behind.
+ 	Structure->Parts.RemoveAll([PieceId](const FGLStructurePartRuntime& P) { return P.Piece.Id == PieceId; });
+ 	PlayerPieceCells.Remove(PieceId);
+-	// The same canonical collapse as an authored structure losing a part (P6/P10): whatever lost support falls.
+-	return Collapse(*Structure, By, Where);
++	const TArray<int32> Fallen = Collapse(*Structure, By, Where);
++	Structure->Parts.RemoveAll([&Fallen](const FGLStructurePartRuntime& P) { return Fallen.Contains(P.Piece.Id); }); // DEFECT: v0 deletion
++	return Fallen;
+ }
+ 
+ bool UGLStructureSubsystem::SetPlayerLayers(int32 PieceId, const TArray<FName>& Layers)

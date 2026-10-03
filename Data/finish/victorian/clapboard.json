@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "finish.victorian.clapboard",
+  "displayName": "Victorian clapboard",
+  "era": "era.memory.victorian",
+  "phase": "phase.construction.finish",
+  "fitsRoles": [
+    "wall",
+    "doorway"
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 3
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "salvage": "salvage.finish.clapboard",
+  "tint": [
+    0.93,
+    0.89,
+    0.79
+  ],
+  "notes": "P11: a Victorian finish that goes on any stud frame (no era-compatibility rule). Unlocked by timber-frame knowledge for now (its own discovery is content work)."
+}
