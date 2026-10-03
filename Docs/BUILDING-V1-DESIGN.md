@@ -1,6 +1,7 @@
 # Building v1: pre-P11 design gate
 
-> **Status: PROPOSAL, awaiting operator approval (2026-10-03). Nothing on this page is implemented.**
+> **Status: APPROVED by the operator (2026-10-03) as the P11 design, with the decisions in §17 resolved as recorded
+> there. Implementation is P11 (not merged until operator review).**
 > - The operator decisions it relies on are quoted as decisions, with their date.
 > - Everything else is a recommendation.
 > - The open choices are listed in §17.
@@ -620,17 +621,25 @@ See [Evidence/Pre-P11-design-gate](Evidence/Pre-P11-design-gate/README.md).
   - MIG-1: every v0 buildpiece id is mapped.
 - **Required tests:** added for every invariant above (`Tools/required-tests.txt`).
 
-## 17. Operator decisions still required (W)
-1. **Approve the fine-yaw architecture (§11):** integer 2.5° yaw, oriented boxes and socket facings in P11.
-   - The alternative is to keep quarter turns in P11 and defer, accepting re-authoring risk later.
-   - **Recommended: approve.** The bay then joins the fixture.
-2. **YELLOW = "at its material's limit"** at placement, with redundancy shown in the removal preview (§5).
-   **Recommended**, because the alternative cannot be honest and useful under the v1 model.
-   - 2b: also YELLOW when another lateral extension by the piece's own width would be refused. This is honest
-     (the same loss formula), but it widens YELLOW. Optional.
-3. **Consumption order:** base storage first, then personal inventory (§8). **Recommended.**
-4. **Claim radius** 32 m (provisional), one base core per claim, and no overlapping claims.
-5. **The v0 piece migration table:** map v0 finished pieces to frame plus finish (recommended), or keep them as
-   legacy complete pieces.
-6. **Digging under a player structure stays refused in P11** (recommended), rather than collapsing it.
-7. **The retargeted overencumbrance lines** (§7): approve the approach; the final wording can stay provisional.
+## 17. Operator decisions (resolved 2026-10-03)
+1. **Fine yaw: APPROVED.**
+   - Yaw is an integer in 2.5° steps, with oriented bounds and socket facings. This is the canonical Building v1
+     representation.
+   - **Not** freeform geometry.
+   - REAL HOUSE-0 includes the 45° bay. The whole lifecycle must be proven at angle: placement, snapping, support,
+     preview, overlap, terrain footprint, save and restart, streaming, collapse, impact volume, salvage.
+2. **YELLOW = at the material's limit: APPROVED.**
+   - **No lateral variant in P11** unless a test shows the three states mislead without it.
+   - The removal preview is **APPROVED**, with PREVIEW == REALITY from the same rules.
+3. **Base storage before personal inventory: APPROVED.** Consumption is deterministic and all-or-nothing, and the
+   container order is documented.
+4. **Claims: one base core, a 32 m radius, no overlap — P11 BEHAVIOUR ONLY, not an invariant.**
+   - The architecture must allow later claim expansion, connected claim areas, multiple cooperating cores and
+     estate-scale building.
+   - No rule may assume that a building fits inside one 32 m circle.
+5. **v0 pieces migrate to FRAME + FINISH: APPROVED.** There is no permanent parallel legacy model. Representative v0
+   saves are proven through migration and re-save.
+6. **Terraforming under player structures stays refused in P11: APPROVED.** There is no settling, undermining or
+   terrain-caused collapse. Basements are dug first and built second.
+7. **Overencumbrance dialogue retargeted to "inventory full": APPROVED.** The original wording is kept in notes.
+8. **The perf harness attribution fix: APPROVED** before P11 measurements (tooling only).
