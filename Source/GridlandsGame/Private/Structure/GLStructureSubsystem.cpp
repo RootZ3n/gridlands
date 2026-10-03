@@ -348,6 +348,15 @@ void UGLStructureSubsystem::MakeDebris(FGLStructureRuntime& Structure, FGLStruct
 			Held.FindOrAdd(Stack.Item) += Stack.Count;
 		}
 		Actor->GetSalvageable()->SetExtraYield(Held);
+		TArray<FName> Layers; // a finished piece's finish comes back from its debris too, by the same (collapse) path
+		for (const FName& Layer : Part.Piece.Layers)
+		{
+			if (const FGLFinishDef* Finish = GLContent::Get().Find<FGLFinishDef>(Layer))
+			{
+				Layers.Add(Finish->Salvage);
+			}
+		}
+		Actor->GetSalvageable()->SetLayerSalvage(Layers);
 	}
 }
 

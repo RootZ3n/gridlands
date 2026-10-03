@@ -46,6 +46,7 @@ bool UGLSalvageableComponent::Setup(FName InSalvageId, AActor* InLinkedVisual, E
 	LinkedVisual = InLinkedVisual;
 	Path = InPath;
 	ExtraYield.Reset();
+	LayerSalvage.Reset();
 	return true;
 }
 
@@ -59,10 +60,21 @@ TMap<FName, int32> UGLSalvageableComponent::CompletionYield() const
 	}
 	const UGLWorldSettingsSubsystem* Settings = GetWorld() ? GetWorld()->GetSubsystem<UGLWorldSettingsSubsystem>() : nullptr;
 	const FGLSettingsPresetDef* Preset = Settings ? Settings->GetPreset() : nullptr;
-	for (const FGLSalvageYieldDef& Yield : GLConstructionRules::YieldsFor(*Def, Path))
+	TArray<const FGLSalvageDef*> Defs = { Def };
+	for (const FName& Layer : LayerSalvage)
 	{
-		const FGLYieldCategoryDef* Category = GLContent::Get().Find<FGLYieldCategoryDef>(Yield.YieldCategory);
-		Items.FindOrAdd(Yield.Item) += Category && Preset ? GLYield::Apply(Yield.Count, *Category, *Preset) : Yield.Count;
+		if (const FGLSalvageDef* LayerDef = GLContent::Get().Find<FGLSalvageDef>(Layer))
+		{
+			Defs.Add(LayerDef);
+		}
+	}
+	for (const FGLSalvageDef* Source : Defs)
+	{
+		for (const FGLSalvageYieldDef& Yield : GLConstructionRules::YieldsFor(*Source, Path))
+		{
+			const FGLYieldCategoryDef* Category = GLContent::Get().Find<FGLYieldCategoryDef>(Yield.YieldCategory);
+			Items.FindOrAdd(Yield.Item) += Category && Preset ? GLYield::Apply(Yield.Count, *Category, *Preset) : Yield.Count; // E-1
+		}
 	}
 	for (const TPair<FName, int32>& Extra : ExtraYield)
 	{

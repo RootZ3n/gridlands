@@ -5,7 +5,7 @@
   "era": "era.memory.modern_day",
   "material": "material.timber.pine",
   "role": "storage",
-  "grounded": true,
+  "grounded": false,
   "size": [
     1.0,
     0.8,
@@ -27,38 +27,11 @@
   ],
   "sockets": [
     {
-      "name": "g0",
+      "name": "bottom",
       "role": "bottom",
       "offset": [
-        -0.5,
-        -0.4,
-        0
-      ]
-    },
-    {
-      "name": "g1",
-      "role": "bottom",
-      "offset": [
-        0.5,
-        -0.4,
-        0
-      ]
-    },
-    {
-      "name": "g2",
-      "role": "bottom",
-      "offset": [
-        -0.5,
-        0.4,
-        0
-      ]
-    },
-    {
-      "name": "g3",
-      "role": "bottom",
-      "offset": [
-        0.5,
-        0.4,
+        0,
+        0,
         0
       ]
     }
@@ -77,5 +50,5 @@
   "storage": {
     "slots": 24
   },
-  "notes": "P11: shared base storage (inside a claim, construction and crafting draw from it)."
+  "notes": "P11: shared base storage. It stands on a floor (the floor's centre socket), so it can lose its support and collapse; its contents are never lost (lootable debris)."
 }

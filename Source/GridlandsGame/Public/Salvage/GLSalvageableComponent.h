@@ -26,6 +26,8 @@ public:
 	bool Setup(FName InSalvageId, AActor* InLinkedVisual = nullptr, EGLSalvagePath InPath = EGLSalvagePath::Careful);
 	/** P11: items delivered with the yield (a collapsed storage piece's contents). */
 	void SetExtraYield(const TMap<FName, int32>& Items) { ExtraYield = Items; }
+	/** P11: further salvage definitions recovered by the same path (a piece's finish layers), scaled like its own. */
+	void SetLayerSalvage(const TArray<FName>& SalvageIds) { LayerSalvage = SalvageIds; }
 	EGLSalvagePath GetPath() const { return Path; }
 	/** Everything completing would deliver, after world settings (ADR-0016). */
 	TMap<FName, int32> CompletionYield() const;
@@ -52,6 +54,7 @@ private:
 	UPROPERTY(VisibleAnywhere) bool bSalvaged = false;
 	EGLSalvagePath Path = EGLSalvagePath::Careful;
 	TMap<FName, int32> ExtraYield;
+	TArray<FName> LayerSalvage;
 	/** The anchored visual actor this salvage stands for (a fence, a wall); hidden when salvaged. */
 	TWeakObjectPtr<AActor> LinkedVisual;
 };
