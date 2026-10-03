@@ -1,0 +1,19 @@
+  town-crossing-straight.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/town-*)
+group=[straight] attempt=1 load start=3.09 end=6.05 gpu-before=7
+  town-crossing-reversal.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/town-*)
+group=[reversal] attempt=1 load start=2.52 end=4.54 gpu-before=5
+  town-crossing-sprint.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/town-*)
+group=[sprint] attempt=1 load start=2.62 end=4.75 gpu-before=8
+  town-crossing-teleport.json: done
+  town-crossing-resume.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/town-*)
+group=[teleport resume] attempt=1 load start=2.90 end=4.53 gpu-before=9
+  town-roundtrips.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/town-*)
+group=[roundtrips] attempt=1 load start=2.68 end=4.26 gpu-before=4
+  BUDGET BREACH town-crossing-reversal.json: worstFrameMs = 40.24935397319496, budget 40.0
+  6 result(s) checked against budgets.json: 1 breach(es)
+QUIETDONE FAIL

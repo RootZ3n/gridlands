@@ -1,0 +1,19 @@
+  towndense-crossing-straight.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndense-*)
+group=[straight] attempt=1 load start=2.60 end=5.77 gpu-before=6
+  towndense-crossing-reversal.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndense-*)
+group=[reversal] attempt=1 load start=2.74 end=4.93 gpu-before=5
+  towndense-crossing-sprint.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndense-*)
+group=[sprint] attempt=1 load start=2.71 end=4.61 gpu-before=1
+  towndense-crossing-teleport.json: done
+  towndense-crossing-resume.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndense-*)
+group=[teleport resume] attempt=1 load start=2.60 end=6.98 gpu-before=3
+  towndense-roundtrips.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndense-*)
+group=[roundtrips] attempt=1 load start=2.54 end=4.92 gpu-before=9
+  BUDGET BREACH towndense-crossing-reversal.json: worstFrameMs = 41.62051505409181, budget 40.0
+  6 result(s) checked against budgets.json: 1 breach(es)
+QUIETDONE FAIL
