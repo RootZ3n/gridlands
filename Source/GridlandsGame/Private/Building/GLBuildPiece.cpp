@@ -2,6 +2,7 @@
 
 #include "Presentation/GLVisuals.h"
 
+#include "Building/GLConstructionRules.h"
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Content/GLContent.h"
@@ -26,7 +27,23 @@ namespace
 		return FLinearColor(0.45f, 0.3f, 0.16f); // timber
 	}
 
+	/** A raw-framing colour: unfinished timber reads as framing at a glance. */
+	const FLinearColor FrameColour(0.82f, 0.66f, 0.42f);
+
 	double Axis(const TArray<double>& V, int32 I) { return V.IsValidIndex(I) ? V[I] : 0.0; }
+
+	/** The last installed finish (the visible surface), or null. */
+	const FGLFinishDef* VisibleFinish(const FGLPlacedPiece& Piece)
+	{
+		for (int32 I = Piece.Layers.Num() - 1; I >= 0; --I)
+		{
+			if (const FGLFinishDef* Finish = GLContent::Get().Find<FGLFinishDef>(Piece.Layers[I]))
+			{
+				return Finish;
+			}
+		}
+		return nullptr;
+	}
 }
 
 AGLBuildPiece::AGLBuildPiece()
@@ -49,14 +66,26 @@ bool AGLBuildPiece::Setup(const FGLPlacedPiece& InPiece, bool bGhost)
 	{
 		Box->DestroyComponent();
 	}
+	for (UStaticMeshComponent* Look : Looks)
+	{
+		Look->DestroyComponent();
+	}
 	Boxes.Reset();
-	SetActorLocationAndRotation(Piece.Location, FRotator(0.0, 90.0 * Piece.YawQuarter, 0.0));
-	// P7: an authored look replaces the blockout boxes; the boxes keep the authoritative collision.
-	// Decided first, so hidden boxes are registered hidden and unpainted (no render state built and
-	// thrown away inside a streaming frame).
-	const FGLVisualDef* Look = bGhost || Def->Visual.IsNone() ? nullptr : GLContent::Get().Find<FGLVisualDef>(Def->Visual);
+	Looks.Reset();
+	GLVisuals::Detach(this);
+	SetActorLocationAndRotation(Piece.Location, FRotator(0.0, GLStructureRules::YawDegrees(Piece.YawStep), 0.0));
+	// P11: what to show follows the fact. A frame waiting for its finish shows its frame; a finished piece its finish;
+	// a piece complete as built its own look. P7: an authored look replaces the blockout boxes; the boxes keep the
+	// authoritative collision. Decided first, so hidden boxes are registered hidden and unpainted.
+	const bool bFrame = !bGhost && GLConstructionRules::ShowsFrame(GLContent::Get(), Piece);
+	const FGLFinishDef* Finish = bGhost ? nullptr : VisibleFinish(Piece);
+	FName LookVisual = bFrame ? NAME_None : (Finish ? Finish->Visual : Def->Visual);
+	const FGLVisualDef* Look = bGhost || LookVisual.IsNone() ? nullptr : GLContent::Get().Find<FGLVisualDef>(LookVisual);
 	const bool bLooked = Look && GLVisuals::LoadMesh(Look->Mesh);
-	for (const FGLBuildShapeDef& Shape : Def->Shapes)
+	const bool bTinted = !bFrame && !bLooked && Finish && Finish->Tint.Num() >= 3;
+	Shown = bFrame ? FName(TEXT("frame")) : (Finish ? FName(TEXT("finish")) : FName(TEXT("complete")));
+	const bool bHideBoxes = bLooked || bFrame;
+	auto MakeBox = [&](const FGLBuildShapeDef& Shape, bool bCollides, bool bVisible, const FLinearColor& Colour) -> UStaticMeshComponent*
 	{
 		UStaticMeshComponent* Box = NewObject<UStaticMeshComponent>(this);
 		Box->SetStaticMesh(Cube);
@@ -65,35 +94,54 @@ bool AGLBuildPiece::Setup(const FGLPlacedPiece& InPiece, bool bGhost)
 		Box->SetRelativeScale3D(FVector(Axis(Shape.Size, 0), Axis(Shape.Size, 1), Axis(Shape.Size, 2)));
 		const FQuat Tilt(FVector::XAxisVector, FMath::DegreesToRadians(Shape.Pitch)); // positive lifts +Y
 		Box->SetRelativeLocationAndRotation(FVector(Axis(Shape.Offset, 0), Axis(Shape.Offset, 1), Axis(Shape.Offset, 2)) * 100.0, Tilt);
-		if (bGhost)
-		{
-			Box->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			Box->SetCanEverAffectNavigation(false);
-			Box->SetCastShadow(false);
-		}
-		else
+		if (bCollides && !bGhost)
 		{
 			Box->SetCollisionProfileName(TEXT("BlockAll"));
 			Box->SetCanEverAffectNavigation(true);
 		}
-		if (bLooked)
+		else
+		{
+			Box->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			Box->SetCanEverAffectNavigation(false);
+		}
+		if (bGhost)
+		{
+			Box->SetCastShadow(false);
+		}
+		if (!bVisible)
 		{
 			Box->SetVisibility(false);
 			Box->SetCastShadow(false);
 		}
 		Box->RegisterComponent();
-		if (ShapeMaterial && !bLooked)
+		if (ShapeMaterial && bVisible)
 		{
 			if (UMaterialInstanceDynamic* Paint = Box->CreateDynamicMaterialInstance(0, ShapeMaterial))
 			{
-				Paint->SetVectorParameterValue(TEXT("Color"), ColourFor(*Def));
+				Paint->SetVectorParameterValue(TEXT("Color"), Colour);
 			}
 		}
-		Boxes.Add(Box);
+		return Box;
+	};
+	const FLinearColor BodyColour = bTinted ? FLinearColor(Finish->Tint[0], Finish->Tint[1], Finish->Tint[2]) : ColourFor(*Def);
+	for (const FGLBuildShapeDef& Shape : Def->Shapes)
+	{
+		Boxes.Add(MakeBox(Shape, true, !bHideBoxes, BodyColour));
+	}
+	if (bFrame)
+	{
+		for (const FGLBuildShapeDef& Shape : Def->FrameShapes)
+		{
+			Looks.Add(MakeBox(Shape, false, true, FrameColour));
+		}
 	}
 	if (bLooked)
 	{
-		GLVisuals::Attach(this, GetRootComponent(), Def->Visual);
+		GLVisuals::Attach(this, GetRootComponent(), LookVisual);
+	}
+	if (bHighlighted)
+	{
+		SetRemovalHighlight(true);
 	}
 	return true;
 }
@@ -109,12 +157,42 @@ void AGLBuildPiece::SetSolid(bool bSolid)
 
 void AGLBuildPiece::SetGhostValid(bool bValid)
 {
-	const FLinearColor Colour = bValid ? FLinearColor(0.2f, 0.9f, 0.3f) : FLinearColor(0.95f, 0.15f, 0.1f);
+	SetGhostPreview(bValid ? EGLPreview::Green : EGLPreview::Red);
+}
+
+void AGLBuildPiece::SetGhostPreview(EGLPreview Preview)
+{
+	const FLinearColor Colour = Preview == EGLPreview::Green ? FLinearColor(0.2f, 0.9f, 0.3f)
+		: Preview == EGLPreview::Yellow ? FLinearColor(0.98f, 0.82f, 0.1f) : FLinearColor(0.95f, 0.15f, 0.1f);
 	for (UStaticMeshComponent* Box : Boxes)
 	{
 		if (UMaterialInstanceDynamic* Paint = Cast<UMaterialInstanceDynamic>(Box->GetMaterial(0)))
 		{
 			Paint->SetVectorParameterValue(TEXT("Color"), Colour);
 		}
+	}
+}
+
+void AGLBuildPiece::SetRemovalHighlight(bool bOn)
+{
+	bHighlighted = bOn;
+	UMaterialInterface* ShapeMaterial = LoadObject<UMaterialInterface>(nullptr, ShapeMaterialPath);
+	for (UStaticMeshComponent* Box : Boxes)
+	{
+		// The collision envelope, shown red over whatever look the piece has while it is predicted to fall.
+		Box->SetVisibility(bOn || (Shown == FName(TEXT("complete")) && !GLVisuals::HasLook(this)) || (Shown == FName(TEXT("finish")) && !GLVisuals::HasLook(this)));
+		if (bOn && ShapeMaterial)
+		{
+			UMaterialInstanceDynamic* Paint = Cast<UMaterialInstanceDynamic>(Box->GetMaterial(0));
+			Paint = Paint ? Paint : Box->CreateDynamicMaterialInstance(0, ShapeMaterial);
+			if (Paint)
+			{
+				Paint->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.95f, 0.1f, 0.08f));
+			}
+		}
+	}
+	if (!bOn)
+	{
+		Setup(Piece, bIsGhost); // repaint from the fact
 	}
 }

@@ -11,5 +11,33 @@
       "yieldCategory": "yield.common.salvage"
     }
   ],
-  "notes": "P6: a load-bearing post. Provisional yields (economy untuned)."
+  "notes": "P6: a load-bearing post. Provisional yields (economy untuned). P11: by recovery path; debris (collapse) is mostly scrap.",
+  "yieldsByPath": {
+    "careful": [
+      {
+        "item": "item.material.timber_plank",
+        "count": 2,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ],
+    "destructive": [
+      {
+        "item": "item.material.timber_plank",
+        "count": 1,
+        "yieldCategory": "yield.common.salvage"
+      },
+      {
+        "item": "item.material.scrap_timber",
+        "count": 1,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ],
+    "collapse": [
+      {
+        "item": "item.material.scrap_timber",
+        "count": 2,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ]
+  }
 }

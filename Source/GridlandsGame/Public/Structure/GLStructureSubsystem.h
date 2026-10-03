@@ -1,7 +1,10 @@
 #pragma once
 
+#include "Building/GLClaimRules.h"
 #include "Building/GLCollapseRules.h"
+#include "Building/GLConstructionRules.h"
 #include "CoreMinimal.h"
+#include "Inventory/GLInventory.h"
 #include "Save/GLWorldSave.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "GLStructureSubsystem.generated.h"
@@ -20,7 +23,11 @@ struct GRIDLANDSGAME_API FGLStructurePartRuntime
 	EGLStructurePartState State = EGLStructurePartState::Intact;
 	/** Debris: its authoritative rest transform. */
 	FTransform Rest;
+	/** P11: a storage piece's contents (kept with the piece, intact or as debris; never lost, never duplicated). */
+	FGLInventory Contents = FGLInventory(0);
 	TWeakObjectPtr<AGLStructurePart> Actor;
+
+	bool IsPlayer() const { return Piece.Origin == EGLPieceOrigin::Player; }
 };
 
 struct GRIDLANDSGAME_API FGLStructureRuntime
@@ -28,6 +35,8 @@ struct GRIDLANDSGAME_API FGLStructureRuntime
 	FName Placement;
 	FName Def;
 	FName Cell;
+	/** P11: a cell's player construction is one structure in the same model (key PlayerKey(Cell)); its pieces are facts, not data. */
+	bool bPlayer = false;
 	TArray<FGLStructurePartRuntime> Parts;
 
 	FGLStructurePartRuntime* Find(FName Part) { return Parts.FindByPredicate([Part](const FGLStructurePartRuntime& P) { return P.Name == Part; }); }
@@ -95,7 +104,36 @@ public:
 	 * bDeferPresentation (P7): only the authoritative model is made; part actors are instantiated by
 	 * PumpPresentation later, each in the state the model holds THEN (saved state is resolved first).
 	 */
-	bool SpawnStructure(FName Placement, FName Def, FName Cell, const FVector& Origin, int32 YawQuarter, bool bDeferPresentation = false);
+	bool SpawnStructure(FName Placement, FName Def, FName Cell, const FVector& Origin, int32 YawStep, bool bDeferPresentation = false);
+
+	// ---- P11 (ADR-0039): player-built structures in the canonical structural model ----
+	/** The structure key of a cell's player construction. */
+	static FName PlayerKey(FName Cell);
+	static FName PlayerPartName(int32 PieceId);
+	/** Adds a player piece (intact) to its cell's player structure. bDeferPresentation: made later by the pump (restore). */
+	bool AddPlayerPiece(const FGLPlacedPiece& Piece, bool bDeferPresentation);
+	/** Player pieces (all loaded cells, or one cell); intact only unless bIncludeDebris. Sorted by id. */
+	TArray<FGLPlacedPiece> PlayerPieces(FName Cell = NAME_None, bool bIncludeDebris = false) const;
+	const FGLStructurePartRuntime* FindPlayerPiece(int32 PieceId) const;
+	FGLStructurePartRuntime* FindPlayerPieceMutable(int32 PieceId);
+	/** The intact pieces of the same player structure as PieceId (what its support is computed over). */
+	TArray<FGLPlacedPiece> PlayerStructureOf(int32 PieceId) const;
+	/**
+	 * Removes an intact player piece and collapses what loses support by the canonical rules (the same as authored
+	 * structures: debris, impact at impact time, persistence). Returns the ids that collapsed (sorted), or -1 entries none.
+	 */
+	TArray<int32> RemovePlayerPiece(int32 PieceId, AActor* By);
+	/** Replaces an intact player piece's layers (a finish installed) and re-presents it. Support is unchanged by layers. */
+	bool SetPlayerLayers(int32 PieceId, const TArray<FName>& Layers);
+	TSet<FName> CellsWithPlayerPieces() const;
+	/** Save: a cell's player pieces (intact and debris, with layers and contents), sorted by id. */
+	void CapturePlayerCell(FName Cell, TArray<FGLSavedPiece>& Out) const;
+	/** Load/stream-in: a cell's saved player pieces, silently (presentation deferred); collapses in flight resume. */
+	void RestorePlayerCell(FName Cell, const TArray<FGLSavedPiece>& Saved, const TArray<FGLSavedCollapse>& InFlight, TArray<FString>* OutProblems = nullptr);
+	/** World renewal of an authored structure (all parts intact again). Never a player structure, never inside a claim. */
+	enum class ERenewal : uint8 { Renewed, Unknown, PlayerOwned, InsideClaim };
+	ERenewal Renew(FName Placement, TConstArrayView<FGLClaim> Claims);
+	int32 ImpactCount() const { return Impacts.Num(); }
 	/**
 	 * Instantiates deferred part actors, nearest to Where first: every part within NearCm at once
 	 * (what Zenny can touch), then more until BudgetSeconds is spent (0: all; < 0: only the near ones). A part is made in its
@@ -127,16 +165,16 @@ public:
 	void RestoreCell(FName Cell, const TArray<FGLSavedStructurePart>& Saved, const TArray<FGLSavedCollapse>& InFlight = TArray<FGLSavedCollapse>(),
 		TArray<FString>* OutProblems = nullptr);
 
-	/** Terrain must not move under an intact grounded part or under debris (a digging refusal, like player pieces). */
+	/** Terrain must not move under an intact grounded part or under debris (a digging refusal, player pieces included). */
 	bool IsUnderStructure(const FVector2D& World, double MarginCm = 50.0) const;
 	/**
-	 * The ground footprints IsUnderStructure tests (intact grounded parts and debris, grown by MarginCm)
-	 * that touch Area: a caller testing many points in one place collects them once (P7: vegetation
+	 * The ground footprints IsUnderStructure tests (intact grounded parts and debris, P11: oriented at their yaw) that
+	 * touch Area, grown by MarginCm: a caller testing many points in one place collects them once (P7: vegetation
 	 * checked every part in the world per tuft, which a dense cell made the most expensive thing in it).
 	 */
-	void CollectFootprints(const FBox2D& Area, double MarginCm, TArray<FBox2D>& Out) const;
-	/** Player pieces must not overlap structure parts or debris. */
-	bool Overlaps(const FBox& Box) const;
+	void CollectFootprints(const FBox2D& Area, double MarginCm, TArray<FGLFootprint>& Out) const;
+	/** A new player piece must not overlap authored parts or any debris (intact player pieces are the rules' own check). */
+	bool Overlaps(const FGLFootprint& Footprint) const;
 
 	const FGLStructureRuntime* Find(FName Placement) const { return Structures.Find(Placement); }
 	FGLStructureRuntime* FindMutable(FName Placement) { return Structures.Find(Placement); }
@@ -153,7 +191,8 @@ public:
 	void HandlePartSalvaged(FName Placement, FName Part, AActor* By);
 
 private:
-	void Collapse(FGLStructureRuntime& Structure, AActor* By, const FVector& From, bool bSilent = false);
+	/** Returns the ids of the pieces that lost support (sorted). */
+	TArray<int32> Collapse(FGLStructureRuntime& Structure, AActor* By, const FVector& From, bool bSilent = false);
 	void Land(FGLActiveCollapse& Collapse);
 	AGLStructurePart* SpawnPart(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part);
 	void MakeDebris(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part);
@@ -163,6 +202,8 @@ private:
 	double GroundAt(const FVector2D& At) const;
 
 	TMap<FName, FGLStructureRuntime> Structures;
+	/** P11: player piece id -> its cell (its structure is PlayerKey(cell)). */
+	TMap<int32, FName> PlayerPieceCells;
 	/** Parts whose actors are still to be presented (placement, part). */
 	TArray<TPair<FName, FName>> Pending;
 	/** Retired part actors of unloaded cells, destroyed within the presentation budget. */

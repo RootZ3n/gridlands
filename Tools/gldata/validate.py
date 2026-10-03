@@ -8,6 +8,7 @@ Output is sorted, so two runs over the same data print the same thing.
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -208,6 +209,7 @@ def cross_check(ds: Dataset) -> None:
     check_encounters(ds)
     check_grid(ds)
     check_knowledge_domains(ds)
+    check_building_v1(ds)
     check_generated_tags(ds)
 
 
@@ -445,7 +447,7 @@ def check_lods(ds: Dataset) -> None:
 
 def check_structures(ds: Dataset) -> None:
     """STR-1 part names are unique; STR-2 a structure stands on the ground: at least one grounded part at z = 0;
-    STR-3 a structure placement is a transform with a yaw in quarter turns (bounds stay exact, ADR-0024);
+    STR-3 a structure placement is a transform with a yaw in whole 2.5 degree steps (P11, ADR-0039; was quarter turns);
     TUN-1 exactly one tuning entity, tuning.world.physical; TUN-2 its noise radii are declared Noise.* tags;
     STR-4 (P10, ADR-0038) everything a placed structure's collapse could hit lies inside its own cell: each part's
     footprint grown by its own height (a topple's reach) and the impact margin. A collapse in flight is frozen with its
@@ -472,8 +474,8 @@ def check_structures(ds: Dataset) -> None:
             transform = data.get("transform")
             if not isinstance(transform, dict):
                 ds.problem("STR-3", rel, ".transform", "a structure placement needs a transform (not an anchor)")
-            elif abs(float(transform.get("yaw", 0)) / 90.0 - round(float(transform.get("yaw", 0)) / 90.0)) > 1e-6:
-                ds.problem("STR-3", rel, ".transform.yaw", "a structure's yaw must be a multiple of 90 degrees")
+            elif not whole_yaw_step(float(transform.get("yaw", 0))):
+                ds.problem("STR-3", rel, ".transform.yaw", f"a structure's yaw must be a whole number of {YAW_STEP} degree steps (ADR-0039)")
             else:
                 check_structure_reach(ds, entity, transform, cells_by_short, margin_cm)
     tunings = [e for e in ds.entities.values() if e.kind == "tuning"]
@@ -564,24 +566,104 @@ def check_structure_reach(ds: Dataset, entity, transform: dict, cells_by_short: 
         return  # ID-10 / PLC-1 report those
     half = float(cell.data["sizeMetres"]) * 50.0
     origin = (list(transform.get("location") or [0, 0, 0]) + [0, 0, 0])[:3]
-    quarter = int(round(float(transform.get("yaw", 0)) / 90.0)) % 4
+    yaw = math.radians(float(transform.get("yaw", 0)))
     for part in structure.data.get("parts", []) or []:
         piece = ds.entities.get(part.get("piece", "")) if isinstance(part, dict) else None
         if not piece:
             continue
         size = (list(piece.data.get("size") or [0, 0, 0]) + [0, 0, 0])[:3]
         local = (list(part.get("location") or [0, 0, 0]) + [0, 0, 0])[:3]
-        x, y = local[0] * 100.0, local[1] * 100.0
-        for _ in range(quarter):
-            x, y = -y, x
-        sx, sy = (size[0], size[1]) if (quarter + int(part.get("yawQuarter", 0))) % 2 == 0 else (size[1], size[0])
+        x = (local[0] * math.cos(yaw) - local[1] * math.sin(yaw)) * 100.0
+        y = (local[0] * math.sin(yaw) + local[1] * math.cos(yaw)) * 100.0
+        # P11: the part's oriented footprint, enclosed along the world axes (exact for quarter turns, conservative otherwise).
+        part_yaw = yaw + math.radians(float(part.get("yaw", 0)))
+        hx, hy = size[0] * 50.0, size[1] * 50.0
+        ex = abs(math.cos(part_yaw)) * hx + abs(math.sin(part_yaw)) * hy
+        ey = abs(math.sin(part_yaw)) * hx + abs(math.cos(part_yaw)) * hy
         reach = size[2] * 100.0 + margin_cm
-        for axis, centre, extent in (("x", origin[0] + x, sx * 50.0), ("y", origin[1] + y, sy * 50.0)):
+        for axis, centre, extent in (("x", origin[0] + x, ex), ("y", origin[1] + y, ey)):
             if abs(centre) + extent + reach > half + 1e-6:
                 ds.problem("STR-4", entity.file, ".transform.location",
                            f"part '{part.get('name')}' could hit {abs(centre) + extent + reach - half:.0f} cm outside its cell along {axis} "
                            "(a collapse in flight is frozen with its cell; its impact must not need a neighbour's creatures)")
                 return
+
+
+YAW_STEP = 2.5
+
+
+def whole_yaw_step(degrees: float) -> bool:
+    steps = degrees / YAW_STEP
+    return abs(steps - round(steps)) < 1e-6
+
+
+def check_building_v1(ds: Dataset) -> None:
+    """P11 (ADR-0039). PH-1 a form's layers are registered phases in canonical order; PH-2 no content for an
+    unimplemented phase (electrical is registered, not built); FIN-1 a finish's phase is implemented and some form
+    accepts it for each role it fits; SV-Q1 a buildable piece's salvage (and a finish's) gives careful, destructive and
+    collapse yields, careful recovering at least as many reusable (non-scrap) items as destructive and destructive at least
+    as many as collapse, and collapse never returning the careful kit; YAW-1 structure part yaws are whole 2.5 degree steps; SOCK-1 socket facings are whole steps;
+    MIG-1 legacyLayers are finishes the piece accepts; CLM-1 a base core, storage or station piece is buildable."""
+    phases = {e.id: e for e in ds.entities.values() if e.kind == "phase"}
+    forms = [e for e in ds.entities.values() if e.kind == "buildpiece"]
+
+    def total(yields):
+        # Reusable recovery only: degraded output (scrap) is what violence produces, never what it improves.
+        return sum(int(y.get("count", 0)) for y in yields or [] if isinstance(y, dict) and ".scrap" not in str(y.get("item", "")))
+
+    def check_paths(owner, salvage_id, where):
+        salvage = ds.entities.get(salvage_id or "")
+        if not salvage:
+            ds.problem("SV-Q1", owner.file, where, "needs a salvage (careful / destructive / collapse yields)")
+            return
+        paths = salvage.data.get("yieldsByPath") or {}
+        if not all(paths.get(k) for k in ("careful", "destructive", "collapse")):
+            ds.problem("SV-Q1", salvage.file, ".yieldsByPath", "needs careful, destructive and collapse yields")
+            return
+        c, d, k = total(paths["careful"]), total(paths["destructive"]), total(paths["collapse"])
+        careful_items = {y.get("item") for y in paths["careful"]}
+        if not (c >= d >= k):
+            ds.problem("SV-Q1", salvage.file, ".yieldsByPath", f"recovery must not improve with violence (careful {c} >= destructive {d} >= collapse {k})")
+        if paths["collapse"] == paths["careful"] and len(careful_items) > 0:
+            ds.problem("SV-Q1", salvage.file, ".yieldsByPath.collapse", "collapse returns the same pristine kit as careful dismantling")
+
+    for entity in sorted(forms, key=lambda e: e.id):
+        data, rel = entity.data, entity.file
+        layers = data.get("layers") or []
+        orders = []
+        for index, layer in enumerate(layers):
+            phase = phases.get(layer)
+            if not phase:
+                ds.problem("PH-1", rel, f".layers[{index}]", f"{layer} is not a registered phase")
+                continue
+            orders.append(int(phase.data.get("order", 0)))
+        if orders != sorted(orders):
+            ds.problem("PH-1", rel, ".layers", "layers must be in canonical phase order (FRAME -> ELECTRICAL -> FINISH)")
+        for index, socket in enumerate(data.get("sockets") or []):
+            if isinstance(socket, dict) and "facing" in socket and not whole_yaw_step(float(socket["facing"])):
+                ds.problem("SOCK-1", rel, f".sockets[{index}].facing", f"a facing must be a whole number of {YAW_STEP} degree steps")
+        for index, layer in enumerate(data.get("legacyLayers") or []):
+            finish = ds.entities.get(layer)
+            if not finish or finish.data.get("phase") not in layers or data.get("role") not in (finish.data.get("fitsRoles") or []):
+                ds.problem("MIG-1", rel, f".legacyLayers[{index}]", f"{layer} is not a finish this piece accepts")
+        if data.get("role") in ("base_core", "storage", "station") and data.get("buildable", True) is False:
+            ds.problem("CLM-1", rel, ".buildable", f"a {data.get('role')} piece is player construction (buildable)")
+        if data.get("buildable", True):
+            check_paths(entity, data.get("salvage"), ".salvage")
+    for entity in sorted(ds.entities.values(), key=lambda e: e.id):
+        data, rel = entity.data, entity.file
+        if entity.kind == "finish":
+            phase = phases.get(data.get("phase", ""))
+            if phase and not phase.data.get("implemented"):
+                ds.problem("PH-2", rel, ".phase", f"{data.get('phase')} is not implemented yet: no content for it")
+            for role in data.get("fitsRoles") or []:
+                if not any(role == f.data.get("role") and data.get("phase") in (f.data.get("layers") or []) for f in forms):
+                    ds.problem("FIN-1", rel, ".fitsRoles", f"no {role} form accepts {data.get('phase')}")
+            check_paths(entity, data.get("salvage"), ".salvage")
+        if entity.kind == "structure":
+            for index, part in enumerate(data.get("parts") or []):
+                if isinstance(part, dict) and not whole_yaw_step(float(part.get("yaw", 0))):
+                    ds.problem("YAW-1", rel, f".parts[{index}].yaw", f"a yaw must be a whole number of {YAW_STEP} degree steps")
 
 
 def check_grid(ds: Dataset) -> None:

@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.bay_wall",
+  "displayName": "Bay stud wall (1 m)",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "role": "wall",
+  "grounded": false,
+  "size": [
+    1.0,
+    0.2,
+    2.5
+  ],
+  "shapes": [
+    {
+      "size": [
+        1.0,
+        0.2,
+        2.5
+      ],
+      "offset": [
+        0,
+        0,
+        1.25
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "top",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        2.5
+      ]
+    },
+    {
+      "name": "left",
+      "role": "side",
+      "offset": [
+        -0.5,
+        0,
+        1.25
+      ],
+      "facing": 180
+    },
+    {
+      "name": "right",
+      "role": "side",
+      "offset": [
+        0.5,
+        0,
+        1.25
+      ],
+      "facing": 0
+    }
+  ],
+  "cost": [
+    {
+      "item": "item.component.stud",
+      "count": 3
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "layers": [
+    "phase.construction.electrical",
+    "phase.construction.finish"
+  ],
+  "salvage": "salvage.build.bay_wall",
+  "frameShapes": [
+    {
+      "size": [
+        1.0,
+        0.14,
+        0.05
+      ],
+      "offset": [
+        0,
+        0,
+        0.025
+      ]
+    },
+    {
+      "size": [
+        1.0,
+        0.14,
+        0.05
+      ],
+      "offset": [
+        0,
+        0,
+        2.475
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        -0.475,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        0.0,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        0.475,
+        0,
+        1.25
+      ]
+    }
+  ],
+  "notes": "P11: a short stud wall whose side sockets face along it, so it takes its yaw from the angle post it snaps to."
+}

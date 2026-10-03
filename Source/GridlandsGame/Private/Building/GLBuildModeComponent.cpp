@@ -96,7 +96,13 @@ void UGLBuildModeComponent::CyclePiece(int32 Direction)
 
 void UGLBuildModeComponent::Rotate()
 {
-	YawQuarter = (YawQuarter + 1) % 4;
+	YawStep = GLStructureRules::NormalizeYawStep(YawStep + GLStructureRules::QuarterTurnSteps);
+	ClearGhost();
+}
+
+void UGLBuildModeComponent::RotateFine()
+{
+	YawStep = GLStructureRules::NormalizeYawStep(YawStep + GLStructureRules::YawStepFromDegrees(15.0));
 	ClearGhost();
 }
 
@@ -133,10 +139,12 @@ void UGLBuildModeComponent::UpdatePreview()
 	if (Mode == EGLToolMode::None)
 	{
 		Status.Reset();
+		UpdateRemovalPreview(nullptr);
 		return;
 	}
 	FHitResult Hit;
 	const bool bAimed = Aim(Hit);
+	UpdateRemovalPreview(bAimed && Mode == EGLToolMode::Build ? &Hit : nullptr);
 	if (Mode != EGLToolMode::Build)
 	{
 		Status = FString::Printf(TEXT("[%s] shovel stroke at the aim point (T: next tool)"), ModeName(Mode));
@@ -155,7 +163,7 @@ void UGLBuildModeComponent::UpdatePreview()
 	{
 		Cost += FString::Printf(TEXT(" %dx %s"), Stack.Count, *Stack.Item.ToString().RightChop(Stack.Item.ToString().Find(TEXT("."), ESearchCase::CaseSensitive, ESearchDir::FromEnd) + 1));
 	}
-	if (!bAimed || !Building->Snap(Def, Hit.ImpactPoint, YawQuarter, Candidate))
+	if (!bAimed || !Building->Snap(Def, Hit.ImpactPoint, YawStep, Candidate))
 	{
 		ClearGhost();
 		Status = FString::Printf(TEXT("[BUILD] %s (%s) - aim at the ground or a free socket"), *PieceDef->DisplayName, *Cost.TrimStart());
@@ -170,16 +178,17 @@ void UGLBuildModeComponent::UpdatePreview()
 	if (Ghost)
 	{
 		const FGLPlacedPiece& Shown = Ghost->GetPiece();
-		if (Shown.Def != Candidate.Def || Shown.YawQuarter != Candidate.YawQuarter || !Shown.Location.Equals(Candidate.Location, 0.1))
+		if (Shown.Def != Candidate.Def || Shown.YawStep != Candidate.YawStep || !Shown.Location.Equals(Candidate.Location, 0.1))
 		{
 			Ghost->Setup(Candidate, true);
 		}
-		Ghost->SetGhostValid(Check.IsAllowed());
+		Ghost->SetGhostPreview(Check.Preview); // the commit's own check: GREEN / YELLOW / RED
 	}
+	const TCHAR* Colour = Check.Preview == EGLPreview::Green ? TEXT("GREEN") : Check.Preview == EGLPreview::Yellow ? TEXT("YELLOW: at its limit") : TEXT("RED");
 	Status = Check.IsAllowed()
-		? FString::Printf(TEXT("[BUILD] %s (%s) - support %.0f%%"), *PieceDef->DisplayName, *Cost.TrimStart(),
-			100.0 * Check.Support / FMath::Max(0.001, GLContent::Get().Find<FGLMaterialDef>(PieceDef->Material)->Support.Strength))
-		: FString::Printf(TEXT("[BUILD] %s (%s) - %s"), *PieceDef->DisplayName, *Cost.TrimStart(), *Check.Reason);
+		? FString::Printf(TEXT("[BUILD] %s (%s) - %s, support %.2f, yaw %.1f"), *PieceDef->DisplayName, *Cost.TrimStart(), Colour, Check.Support,
+			GLStructureRules::YawDegrees(Candidate.YawStep))
+		: FString::Printf(TEXT("[BUILD] %s (%s) - %s: %s"), *PieceDef->DisplayName, *Cost.TrimStart(), Colour, *Check.Reason);
 }
 
 void UGLBuildModeComponent::Primary()
@@ -211,12 +220,96 @@ void UGLBuildModeComponent::Demolish()
 	UGLBuildingSubsystem* Building = GetWorld()->GetSubsystem<UGLBuildingSubsystem>();
 	if (const int32 Id = Building->PieceIdOf(Hit.GetActor()))
 	{
-		Building->Demolish(GetOwner(), Id);
+		const FGLDemolishResult Result = Building->Dismantle(GetOwner(), Id);
+		if (!Result.IsDone())
+		{
+			Status = Result.Refusal == EGLDemolishRefusal::StorageNotEmpty ? TEXT("[BUILD] empty it first") : TEXT("[BUILD] no room for what it gives back");
+		}
 	}
+}
+
+void UGLBuildModeComponent::Smash()
+{
+	FHitResult Hit;
+	if (Mode != EGLToolMode::Build || !Aim(Hit))
+	{
+		return;
+	}
+	UGLBuildingSubsystem* Building = GetWorld()->GetSubsystem<UGLBuildingSubsystem>();
+	if (const int32 Id = Building->PieceIdOf(Hit.GetActor()))
+	{
+		Building->Smash(GetOwner(), Id);
+	}
+}
+
+void UGLBuildModeComponent::InstallFinish()
+{
+	FHitResult Hit;
+	if (Mode != EGLToolMode::Build || !Aim(Hit))
+	{
+		return;
+	}
+	UGLBuildingSubsystem* Building = GetWorld()->GetSubsystem<UGLBuildingSubsystem>();
+	const int32 Id = Building->PieceIdOf(Hit.GetActor());
+	if (!Id)
+	{
+		return;
+	}
+	TArray<FName> Finishes;
+	GLContent::Get().ForEachEntry([&Finishes](const FGLContentEntry& Entry)
+	{
+		if (Entry.Kind == TEXT("finish"))
+		{
+			Finishes.Add(Entry.Id);
+		}
+	});
+	Finishes.Sort(FNameLexicalLess());
+	for (const FName& Finish : Finishes)
+	{
+		if (Building->CheckInstall(GetOwner(), Id, Finish).IsAllowed())
+		{
+			Building->InstallFinish(GetOwner(), Id, Finish);
+			return;
+		}
+	}
+	Status = TEXT("[BUILD] no finish fits (or no materials)");
+}
+
+void UGLBuildModeComponent::UpdateRemovalPreview(const FHitResult* Hit)
+{
+	TArray<int32> Now;
+	UGLBuildingSubsystem* Building = GetWorld() ? GetWorld()->GetSubsystem<UGLBuildingSubsystem>() : nullptr;
+	if (Hit && Building)
+	{
+		if (const int32 Id = Building->PieceIdOf(Hit->GetActor()))
+		{
+			Now = Building->PreviewRemoval(Id); // the commit's own function: what is shown is what will fall
+		}
+	}
+	if (Now == Highlighted)
+	{
+		return;
+	}
+	for (const int32 Id : Highlighted)
+	{
+		if (AGLBuildPiece* Actor = Building ? Building->FindActor(Id) : nullptr)
+		{
+			Actor->SetRemovalHighlight(false);
+		}
+	}
+	for (const int32 Id : Now)
+	{
+		if (AGLBuildPiece* Actor = Building ? Building->FindActor(Id) : nullptr)
+		{
+			Actor->SetRemovalHighlight(true);
+		}
+	}
+	Highlighted = Now;
 }
 
 void UGLBuildModeComponent::ClearGhost()
 {
+	UpdateRemovalPreview(nullptr);
 	if (Ghost)
 	{
 		Ghost->Destroy();

@@ -163,6 +163,7 @@ bool FGLGridTorture::RunTest(const FString& Parameters)
 	S.GoTo(GAtBoundary);
 	TestTrue(TEXT("boundary: both cells loaded"), S.Grid->IsLoaded(GOrigin) && S.Grid->IsLoaded(GLots));
 	S.Inventory->AddItem(TEXT("item.material.timber_plank"), 10);
+	S.Inventory->AddItem(TEXT("item.component.stud"), 12); // P11: walls are framed from studs
 	const FVector PieceAt(50900, 600, S.Terrain->HeightAt(FVector2D(50900, 600)));
 	TestTrue(TEXT("A: a floor 2 m from the boundary"), S.Building->Place(S.Zenny, GPiece(TEXT("buildpiece.modern.timber_foundation"), PieceAt)).IsAllowed());
 	TestTrue(TEXT("A: and a wall on it"), S.Building->Place(S.Zenny, GPiece(TEXT("buildpiece.modern.timber_wall"), PieceAt + FVector(0, 100, 30))).IsAllowed());

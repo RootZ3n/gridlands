@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "tuning.world.physical",
   "displayName": "Physical and noise tuning",
-  "notes": "P6 PROVISIONAL values (never tuned by feel; operator playtest decides). Metres and seconds.",
+  "notes": "P6 PROVISIONAL values (never tuned by feel; operator playtest decides). Metres and seconds. P11: building tuning (claim radius, personal slots) is provisional P11 behaviour.",
   "collapse": {
     "gravity": 9.81,
     "startDelaySeconds": 0.3,
@@ -32,5 +32,9 @@
       "Noise.Move.Land": 8.0,
       "Noise.Mechanism.Slam": 20.0
     }
+  },
+  "building": {
+    "claimRadiusMetres": 32.0,
+    "personalSlots": 32
   }
 }

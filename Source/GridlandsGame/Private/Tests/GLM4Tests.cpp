@@ -103,24 +103,22 @@ bool FGLSalvagePryBar::RunTest(const FString& Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLOverencumbered, "Gridlands.Game.Inventory.OverencumbranceIsAnnouncedOnce", GLTestUtils::Flags)
-bool FGLOverencumbered::RunTest(const FString& Parameters)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLInventoryFull, "Gridlands.Game.Inventory.InventoryFullIsAnnouncedNotWeight", GLTestUtils::Flags)
+bool FGLInventoryFull::RunTest(const FString& Parameters)
 {
+	// P11: no carried weight (operator, 2026-10-03). Carrying any amount never slows Zenny; running out of room is what
+	// NICE notices (the retargeted overencumbrance exchanges).
 	FTestWorld Test;
 	UGLInventoryComponent* Inventory = SpawnSalvager(Test.World);
 	int32 Announced = 0;
-	Test.World->GetSubsystem<UGLEventSubsystem>()->Subscribe(Tag(TEXT("Event.Player.Overencumbered")), FGLGameplayEventDelegate::CreateLambda([&](const FGLGameplayEvent&) { ++Announced; }));
-	Inventory->AddItem(TEXT("item.material.cut_stone"), 30); // 90
-	TestEqual(TEXT("not yet"), Announced, 0);
-	Inventory->AddItem(TEXT("item.material.cut_stone"), 30); // 180 > 150
-	TestTrue(TEXT("now overencumbered"), Inventory->IsOverencumbered());
-	TestEqual(TEXT("announced once"), Announced, 1);
-	Inventory->AddItem(TEXT("item.material.cut_stone"), 5);
-	TestEqual(TEXT("not re-announced while still overencumbered"), Announced, 1);
-	Inventory->RemoveItem(TEXT("item.material.cut_stone"), 40);
-	TestFalse(TEXT("relieved"), Inventory->IsOverencumbered());
-	Inventory->AddItem(TEXT("item.material.cut_stone"), 40);
-	TestEqual(TEXT("announced again after relief"), Announced, 2);
+	Test.World->GetSubsystem<UGLEventSubsystem>()->Subscribe(Tag(TEXT("Event.Player.InventoryFull")), FGLGameplayEventDelegate::CreateLambda([&](const FGLGameplayEvent&) { ++Announced; }));
+	const int32 Stack = GLContent::Get().Find<FGLItemDef>(TEXT("item.material.cut_stone"))->StackSize;
+	const int32 Slots = Inventory->GetInventory().GetMaxSlots();
+	TestEqual(TEXT("a lot of stone fits (no weight limit)"), Inventory->AddItem(TEXT("item.material.cut_stone"), Stack * (Slots - 1)), Stack * (Slots - 1));
+	TestEqual(TEXT("nothing announced while it fits"), Announced, 0);
+	TestEqual(TEXT("the last slot fills"), Inventory->AddItem(TEXT("item.material.cut_stone"), Stack + 5), Stack);
+	TestEqual(TEXT("what did not fit is announced"), Announced, 1);
+	TestEqual(TEXT("and refused, not lost silently: the count is exact"), Inventory->CountOf(TEXT("item.material.cut_stone")), Stack * Slots);
 	return true;
 }
 

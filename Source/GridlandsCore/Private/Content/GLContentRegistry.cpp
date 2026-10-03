@@ -46,6 +46,8 @@ namespace GLContentRegistry
 		{ TEXT("visual"), &FGLVisualDef::StaticStruct },
 		{ TEXT("mechanism"), &FGLMechanismDef::StaticStruct },
 		{ TEXT("navregion"), &FGLNavRegionDef::StaticStruct },
+		{ TEXT("finish"), &FGLFinishDef::StaticStruct },
+		{ TEXT("phase"), &FGLPhaseDef::StaticStruct },
 	};
 
 	/** Top-level entries under Data/ that are not entity kinds. */

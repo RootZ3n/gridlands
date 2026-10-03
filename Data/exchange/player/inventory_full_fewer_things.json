@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "exchange.player.inventory_full_fewer_things",
+  "trigger": [
+    "Event.Player.InventoryFull"
+  ],
+  "category": "Ambient",
+  "priority": 10,
+  "cooldownSeconds": 1200,
+  "maxUses": 2,
+  "weight": 1.0,
+  "lines": [
+    {
+      "speaker": "NICE",
+      "text": "Too much stuff? Have you considered fewer things?"
+    },
+    {
+      "speaker": "Pehlichi",
+      "text": "Have you considered a base?"
+    }
+  ],
+  "notes": "P11: retargeted from weight-based overencumbrance (removed 2026-10-03) to a full inventory. Was exchange.player.overencumbered_pushups (M5), on Event.Player.Overencumbered: NICE \"Too heavy? Have you considered push-ups?\" / Pehlichi \"Have you considered a body?\""
+}

@@ -27,7 +27,7 @@ namespace GLStructureTests
 
 	double FlatGround(const FVector2D&) { return 0.0; }
 
-	FGLPlacedPiece Piece(int32 Id, FName Def, FVector At, int32 Yaw = 0) { return { Id, Def, At, Yaw }; }
+	FGLPlacedPiece Piece(int32 Id, FName Def, FVector At, int32 Quarter = 0) { return { Id, Def, At, Quarter * GLStructureRules::QuarterTurnSteps }; }
 
 	/** A 4 m x 4 m timber shelter: 4 floors, 7 walls and a doorway, 4 roof slopes. Ids: floors 1-4, walls 11-18, roofs 21-24. */
 	TArray<FGLPlacedPiece> Shelter()
@@ -168,8 +168,8 @@ bool FGLStructureGates::RunTest(const FString& Parameters)
 	TestEqual(TEXT("unknown style is refused"), Check.Refusal, EGLBuildRefusal::NotKnown);
 	TestEqual(TEXT("names what is missing"), Check.MissingKnowledge, TArray<FName>{ TEXT("knowledge.style.modern_timber_frame") });
 	Knowledge.Learn(TEXT("knowledge.style.modern_timber_frame"));
-	TestEqual(TEXT("no planks, no wall"), GLStructureRules::CanPlace(Content, Base, WallOnEdge, FlatGround, Knowledge, Inventory).Refusal, EGLBuildRefusal::MissingItems);
-	Inventory.Add(Content, TEXT("item.material.timber_plank"), 2);
+	TestEqual(TEXT("no studs, no wall"), GLStructureRules::CanPlace(Content, Base, WallOnEdge, FlatGround, Knowledge, Inventory).Refusal, EGLBuildRefusal::MissingItems);
+	Inventory.Add(Content, TEXT("item.component.stud"), 6); // P11: a stud wall is framed from studs
 	TestTrue(TEXT("known and paid for"), GLStructureRules::CanPlace(Content, Base, WallOnEdge, FlatGround, Knowledge, Inventory).IsAllowed());
 
 	FGLPlacedPiece Snapped;

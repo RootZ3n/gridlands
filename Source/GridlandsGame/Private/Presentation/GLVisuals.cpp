@@ -21,6 +21,7 @@ namespace
 	UStaticMeshComponent* NewMeshComponent(AActor* Owner, USceneComponent* Parent, UStaticMesh* Mesh)
 	{
 		UStaticMeshComponent* Component = NewObject<UStaticMeshComponent>(Owner);
+		Component->ComponentTags.Add(GLVisuals::VisualTag);
 		Component->SetStaticMesh(Mesh);
 		Component->SetupAttachment(Parent);
 		Component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -131,6 +132,7 @@ UStaticMeshComponent* GLVisuals::Attach(AActor* Owner, USceneComponent* Parent, 
 	if (Def->Light.Intensity > 0.0)
 	{
 		UPointLightComponent* Light = NewObject<UPointLightComponent>(Owner);
+		Light->ComponentTags.Add(GLVisuals::VisualTag);
 		Light->SetupAttachment(Main);
 		Light->SetRelativeLocation(Vec(Def->Light.Offset) * 100.0);
 		Light->SetLightColor(FLinearColor(Vec(Def->Light.Color, FVector::OneVector)));
@@ -147,4 +149,22 @@ int32 GLVisuals::CorruptionCount(FName VisualId)
 {
 	const FGLVisualDef* Def = GLContent::Get().Find<FGLVisualDef>(VisualId);
 	return Def ? Def->Corruption.Num() : 0;
+}
+
+void GLVisuals::Detach(AActor* Owner)
+{
+	if (!Owner)
+	{
+		return;
+	}
+	TArray<UActorComponent*> Tagged = Owner->GetComponentsByTag(UActorComponent::StaticClass(), VisualTag);
+	for (UActorComponent* Component : Tagged)
+	{
+		Component->DestroyComponent();
+	}
+}
+
+bool GLVisuals::HasLook(const AActor* Owner)
+{
+	return Owner && Owner->GetComponentsByTag(UActorComponent::StaticClass(), VisualTag).Num() > 0;
 }

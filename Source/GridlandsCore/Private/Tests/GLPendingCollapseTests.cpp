@@ -51,7 +51,7 @@ namespace GLPendingCollapseTests
 			{ { 4, Deck, FVector(213.3, -7.1, 261.7) }, EGLCollapseMotion::Drop },
 		};
 		TArray<FGLCollapseOutcome> Out = GLCollapseRules::Plan(Content, Decks, {}, [](const FVector2D& At) { return PCGround(At); }, FVector(-400, 0, 0), PCTuning()).Outcomes;
-		const TArray<FGLCollapseRequest> Topple = { { { 7, Trunk, FVector(1503.9, 377.2, 41.3), 1 }, EGLCollapseMotion::Topple } };
+		const TArray<FGLCollapseRequest> Topple = { { { 7, Trunk, FVector(1503.9, 377.2, 41.3), 36 }, EGLCollapseMotion::Topple } };
 		Out.Append(GLCollapseRules::Plan(Content, Topple, {}, [](const FVector2D& At) { return PCGround(At); }, FVector(1100, 300, 0), PCTuning()).Outcomes);
 		return Out;
 	}
@@ -127,7 +127,7 @@ bool FGLPendingCollapseNoReplan::RunTest(const FString& Parameters)
 	Changed.Gravity = 3.0;
 	Changed.ToppleStartDegrees = 20.0;
 	const FName Trunk(TEXT("buildpiece.nature.pine_trunk"));
-	const TArray<FGLCollapseRequest> Same = { { { 7, Trunk, FVector(1503.9, 377.2, 41.3), 1 }, EGLCollapseMotion::Topple } };
+	const TArray<FGLCollapseRequest> Same = { { { 7, Trunk, FVector(1503.9, 377.2, 41.3), 36 }, EGLCollapseMotion::Topple } };
 	const FGLCollapsePlan Replanned = GLCollapseRules::Plan(GLPendingCollapseTests::PCContent(), Same, {}, [](const FVector2D&) { return 0.0; }, FVector(1100, 300, 0), Changed);
 	TestFalse(TEXT("control: a re-plan in the changed world is a different collapse"), Replanned.Outcomes.Num() == 1 && GLPendingCollapse::Identical(Topple, Replanned.Outcomes[0]));
 	FGLCollapseOutcome Rebuilt;

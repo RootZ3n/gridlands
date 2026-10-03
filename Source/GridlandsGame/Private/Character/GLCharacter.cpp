@@ -50,6 +50,9 @@ namespace GLCharacterInput
 	const FName PiecePrevious(TEXT("PiecePrevious"));
 	const FName PieceRotate(TEXT("PieceRotate"));
 	const FName PieceDemolish(TEXT("PieceDemolish"));
+	const FName PieceRotateFine(TEXT("PieceRotateFine"));
+	const FName PieceSmash(TEXT("PieceSmash"));
+	const FName PieceFinish(TEXT("PieceFinish"));
 	const FName Distract(TEXT("PehlichiDistract"));
 	const FName QuickLoad(TEXT("QuickLoad"));
 }
@@ -171,6 +174,10 @@ void AGLCharacter::BuildInput()
 	MappingContext->MapKey(MakeAction(GLCharacterInput::PiecePrevious, EInputActionValueType::Boolean), EKeys::MouseScrollDown);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::PieceRotate, EInputActionValueType::Boolean), EKeys::Z);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::PieceDemolish, EInputActionValueType::Boolean), EKeys::X);
+	// P11 (provisional bindings): fine rotation (15 degrees), destructive smash, install a finish.
+	MappingContext->MapKey(MakeAction(GLCharacterInput::PieceRotateFine, EInputActionValueType::Boolean), EKeys::C);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::PieceSmash, EInputActionValueType::Boolean), EKeys::N);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::PieceFinish, EInputActionValueType::Boolean), EKeys::Y);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::Distract, EInputActionValueType::Boolean), EKeys::V);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::QuickLoad, EInputActionValueType::Boolean), EKeys::F9);
 }
@@ -219,6 +226,9 @@ void AGLCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		Input->BindAction(FindInputAction(GLCharacterInput::PiecePrevious), ETriggerEvent::Started, this, &AGLCharacter::PreviousPiece);
 		Input->BindAction(FindInputAction(GLCharacterInput::PieceRotate), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::Rotate);
 		Input->BindAction(FindInputAction(GLCharacterInput::PieceDemolish), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::Demolish);
+		Input->BindAction(FindInputAction(GLCharacterInput::PieceRotateFine), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::RotateFine);
+		Input->BindAction(FindInputAction(GLCharacterInput::PieceSmash), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::Smash);
+		Input->BindAction(FindInputAction(GLCharacterInput::PieceFinish), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::InstallFinish);
 		Input->BindAction(FindInputAction(GLCharacterInput::QuickLoad), ETriggerEvent::Started, this, &AGLCharacter::QuickLoad);
 	}
 }

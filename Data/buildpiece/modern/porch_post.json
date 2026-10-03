@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.porch_post",
+  "displayName": "Timber porch post",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "role": "post",
+  "grounded": true,
+  "size": [
+    0.2,
+    0.2,
+    2.8
+  ],
+  "shapes": [
+    {
+      "size": [
+        0.2,
+        0.2,
+        2.8
+      ],
+      "offset": [
+        0,
+        0,
+        1.4
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "top",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        2.8
+      ]
+    }
+  ],
+  "cost": [
+    {
+      "item": "item.component.stud",
+      "count": 2
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "layers": [],
+  "salvage": "salvage.build.porch_post",
+  "collapse": {
+    "motion": "topple",
+    "direction": "awayFromInstigator"
+  },
+  "notes": "P11: complete as built."
+}

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "buildpiece.modern.timber_doorway",
-  "displayName": "Timber doorway",
+  "displayName": "Stud doorway",
   "era": "era.memory.modern_day",
   "material": "material.timber.pine",
   "unlockedBy": [
@@ -92,9 +92,91 @@
   ],
   "cost": [
     {
-      "item": "item.material.timber_plank",
-      "count": 2
+      "item": "item.component.stud",
+      "count": 5
     }
   ],
-  "visual": "visual.kittimber.doorway"
+  "layers": [
+    "phase.construction.electrical",
+    "phase.construction.finish"
+  ],
+  "frameShapes": [
+    {
+      "size": [
+        2.0,
+        0.14,
+        0.05
+      ],
+      "offset": [
+        0,
+        0,
+        2.475
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        -0.975,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        0.975,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        -0.5,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        0.5,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.9,
+        0.14,
+        0.2
+      ],
+      "offset": [
+        0,
+        0,
+        2.15
+      ]
+    }
+  ],
+  "salvage": "salvage.build.stud_doorway",
+  "legacyLayers": [
+    "finish.modern.timber_board_doorway"
+  ],
+  "notes": "P11: a framed opening; M10's doorway migrates to this frame + finish.modern.timber_board_doorway."
 }

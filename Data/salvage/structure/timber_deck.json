@@ -11,5 +11,33 @@
       "yieldCategory": "yield.common.salvage"
     }
   ],
-  "notes": "P6: a deck slab; its debris salvages the same (provisional)."
+  "notes": "P6: a deck slab; its debris salvages the same (provisional). P11: by recovery path; debris (collapse) is mostly scrap.",
+  "yieldsByPath": {
+    "careful": [
+      {
+        "item": "item.material.timber_plank",
+        "count": 3,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ],
+    "destructive": [
+      {
+        "item": "item.material.timber_plank",
+        "count": 1,
+        "yieldCategory": "yield.common.salvage"
+      },
+      {
+        "item": "item.material.scrap_timber",
+        "count": 2,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ],
+    "collapse": [
+      {
+        "item": "item.material.scrap_timber",
+        "count": 3,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ]
+  }
 }

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.base_core",
+  "displayName": "Base core",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "role": "base_core",
+  "grounded": true,
+  "size": [
+    0.6,
+    0.6,
+    1.2
+  ],
+  "shapes": [
+    {
+      "size": [
+        0.6,
+        0.6,
+        1.2
+      ],
+      "offset": [
+        0,
+        0,
+        0.6
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "g0",
+      "role": "bottom",
+      "offset": [
+        -0.3,
+        -0.3,
+        0
+      ]
+    },
+    {
+      "name": "g1",
+      "role": "bottom",
+      "offset": [
+        0.3,
+        -0.3,
+        0
+      ]
+    },
+    {
+      "name": "g2",
+      "role": "bottom",
+      "offset": [
+        -0.3,
+        0.3,
+        0
+      ]
+    },
+    {
+      "name": "g3",
+      "role": "bottom",
+      "offset": [
+        0.3,
+        0.3,
+        0
+      ]
+    }
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 2
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "layers": [],
+  "salvage": "salvage.build.base_core",
+  "notes": "P11: establishes a claim (a recognized base). One core, 32 m, no overlap is P11 behaviour, not an invariant."
+}

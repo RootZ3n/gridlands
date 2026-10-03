@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.storage_crate",
+  "displayName": "Storage crate",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "role": "storage",
+  "grounded": true,
+  "size": [
+    1.0,
+    0.8,
+    0.8
+  ],
+  "shapes": [
+    {
+      "size": [
+        1.0,
+        0.8,
+        0.8
+      ],
+      "offset": [
+        0,
+        0,
+        0.4
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "g0",
+      "role": "bottom",
+      "offset": [
+        -0.5,
+        -0.4,
+        0
+      ]
+    },
+    {
+      "name": "g1",
+      "role": "bottom",
+      "offset": [
+        0.5,
+        -0.4,
+        0
+      ]
+    },
+    {
+      "name": "g2",
+      "role": "bottom",
+      "offset": [
+        -0.5,
+        0.4,
+        0
+      ]
+    },
+    {
+      "name": "g3",
+      "role": "bottom",
+      "offset": [
+        0.5,
+        0.4,
+        0
+      ]
+    }
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 4
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "layers": [],
+  "salvage": "salvage.build.storage_crate",
+  "storage": {
+    "slots": 24
+  },
+  "notes": "P11: shared base storage (inside a claim, construction and crafting draw from it)."
+}

@@ -2,6 +2,7 @@
 #include "World/GLNavRegionSubsystem.h"
 
 #include "Building/GLBuildingSubsystem.h"
+#include "Structure/GLStructureSubsystem.h"
 #include "Content/GLContent.h"
 #include "Content/GLContentDefinitions.h"
 #include "Engine/LevelStreamingDynamic.h"
@@ -188,18 +189,19 @@ void UGLGridSubsystem::TryFinishRuntime(FName Cell, FGLLoadedCell& Entry)
 		return;
 	}
 	UGLSaveSubsystem* Saves = World->GetSubsystem<UGLSaveSubsystem>();
-	UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>();
 	FGLSavedCell Record;
 	Record.Cell = Cell;
 	const bool bHadState = Saves->TakeDormant(Cell, Record);
 	// Anything done to this cell while it was loading is newer than its kept record: its ground as
 	// it is now, and any pieces already placed on it.
 	Terrain->CaptureCellDelta(Cell, Record.TerrainIndices, Record.TerrainDeltaCm);
-	for (const FGLPlacedPiece& Piece : Building->PiecesOfCell(Cell))
+	TArray<FGLSavedPiece> Placed;
+	World->GetSubsystem<UGLStructureSubsystem>()->CapturePlayerCell(Cell, Placed);
+	for (const FGLSavedPiece& Piece : Placed)
 	{
 		if (!Record.BuildPieces.ContainsByPredicate([&Piece](const FGLSavedPiece& S) { return S.Id == Piece.Id; }))
 		{
-			Record.BuildPieces.Add({ Piece.Id, Piece.Def, Piece.Location, Piece.YawQuarter });
+			Record.BuildPieces.Add(Piece);
 		}
 	}
 	// Authoritative first (ADR-0033): the placements' gameplay model, then the kept state on it, in
@@ -243,7 +245,6 @@ bool UGLGridSubsystem::UnloadCell(FName Cell)
 		R.Epoch = Entry.Epoch;
 		R.bCancelled = true;
 	}
-	World->GetSubsystem<UGLBuildingSubsystem>()->RemoveCell(Cell);
 	World->GetSubsystem<UGLPlacementSubsystem>()->DespawnCell(Cell);
 	World->GetSubsystem<UGLTerrainSubsystem>()->RemoveCell(Cell);
 	if (Entry.Boundary)

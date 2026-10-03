@@ -7,6 +7,7 @@
 #include "NavigationSystem.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "Building/GLBuildingSubsystem.h"
+#include "Structure/GLStructureSubsystem.h"
 #include "Terrain/GLTerrainChunk.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "Tests/GLTestUtils.h"
@@ -274,9 +275,15 @@ bool FGLNavAroundWalls::RunTest(const FString& Parameters)
 	for (double Y = 100.0; Y < GLTerrainNavTests::GapFromY; Y += 200.0)
 	{
 		Line.Add({ Id++, TEXT("buildpiece.modern.timber_foundation"), FVector(GLTerrainNavTests::SeamX, Y, 0.0), 0 });
-		Line.Add({ Id++, TEXT("buildpiece.modern.timber_wall"), FVector(GLTerrainNavTests::SeamX + 100.0, Y, 30.0), 1 });
+		Line.Add({ Id++, TEXT("buildpiece.modern.timber_wall"), FVector(GLTerrainNavTests::SeamX + 100.0, Y, 30.0), GLStructureRules::QuarterTurnSteps });
 	}
-	Scene.Test.World->GetSubsystem<UGLBuildingSubsystem>()->Restore(Line, Id);
+	UGLBuildingSubsystem* Building = Scene.Test.World->GetSubsystem<UGLBuildingSubsystem>();
+	for (FGLPlacedPiece& Piece : Line)
+	{
+		Piece.Origin = EGLPieceOrigin::Player;
+		Piece.Cell = Building->CellFor(Piece.Location);
+		Scene.Test.World->GetSubsystem<UGLStructureSubsystem>()->AddPlayerPiece(Piece, false);
+	}
 	TestTrue(TEXT("navigation rebuilds around the pieces"), Scene.Settle());
 	bool bPartial = true;
 	const double WallX = GLTerrainNavTests::SeamX + 100.0; // the walls stand on the floors' east edge

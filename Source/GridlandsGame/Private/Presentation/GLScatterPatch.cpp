@@ -92,7 +92,7 @@ void AGLScatterPatch::Rebuild()
 	const UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>();
 	Instances->ClearInstances();
 	// Structure footprints near the patch, once (not every part in the world per tuft).
-	TArray<FBox2D> Footprints;
+	TArray<FGLFootprint> Footprints;
 	if (Structures)
 	{
 		const FVector2D C(GetActorLocation());
@@ -110,7 +110,7 @@ void AGLScatterPatch::Rebuild()
 		const double Yaw = Random.FRandRange(0.0, 360.0);
 		const double Scale = Def->Scale * Random.FRandRange(0.75, 1.3);
 		const FVector2D At = Centre + FVector2D(FMath::Cos(Angle), FMath::Sin(Angle)) * Distance;
-		if (Terrain->EditedAt(At) > ExposedCm || Footprints.ContainsByPredicate([&At](const FBox2D& F) { return F.IsInsideOrOn(At); }) || (Building && Building->IsUnderStructure(At)))
+		if (Terrain->EditedAt(At) > ExposedCm || Footprints.ContainsByPredicate([&At](const FGLFootprint& F) { return F.ContainsXY(At); }) || (Building && Building->IsUnderStructure(At)))
 		{
 			continue;
 		}

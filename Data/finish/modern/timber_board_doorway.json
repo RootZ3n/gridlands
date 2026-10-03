@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "finish.modern.timber_board_doorway",
+  "displayName": "Timber boards (doorway)",
+  "era": "era.memory.modern_day",
+  "phase": "phase.construction.finish",
+  "fitsRoles": [
+    "doorway"
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 2
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "salvage": "salvage.finish.timber_board",
+  "visual": "visual.kittimber.doorway",
+  "notes": "P11: the M10 doorway's look, now a finish (v0 doorways migrate to frame + this)."
+}

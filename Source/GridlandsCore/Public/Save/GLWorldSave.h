@@ -39,18 +39,6 @@ struct GRIDLANDSCORE_API FGLSavedTransform
 	UPROPERTY() double Yaw = 0.0;
 };
 
-/** A placed build piece (ADR-0024). Support is never saved; it is derived on load. */
-USTRUCT()
-struct GRIDLANDSCORE_API FGLSavedPiece
-{
-	GENERATED_BODY()
-
-	UPROPERTY() int32 Id = 0;
-	UPROPERTY() FName Def;
-	UPROPERTY() FVector Location = FVector::ZeroVector;
-	UPROPERTY() int32 YawQuarter = 0;
-};
-
 /** What happened to one part of an authored structure (P6). Intact parts are not saved (they are the authored default). */
 UENUM()
 enum class EGLStructurePartState : uint8
@@ -66,6 +54,34 @@ enum class EGLStructurePartState : uint8
  * canonical structure data. Debris keeps its authoritative rest transform, so a returning cell never
  * replays a collapse.
  */
+/**
+ * A player-built piece (ADR-0024; v3, P11 / ADR-0039): the structural fact and what it holds. Support is never saved; it
+ * is derived on load. Intact pieces and their debris are both kept (a player structure has no authored default to
+ * fall back to); a removed or salvaged piece is simply gone. v2 files migrate in GLSaveCodec (yawQuarter -> yawStep,
+ * origin Player, v0 pieces get their legacy layers).
+ */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLSavedPiece
+{
+	GENERATED_BODY()
+
+	UPROPERTY() int32 Id = 0;
+	UPROPERTY() FName Def;
+	UPROPERTY() FVector Location = FVector::ZeroVector;
+	/** 2.5 degree steps (0..143). */
+	UPROPERTY() int32 YawStep = 0;
+	/** EGLPieceOrigin as a number (append-only): 1 = Player. */
+	UPROPERTY() uint8 Origin = 1;
+	/** Installed layers (finish.*), in phase order. */
+	UPROPERTY() TArray<FName> Layers;
+	/** A storage piece's contents (item -> count), exactly as held. */
+	UPROPERTY() TArray<FGLSavedCount> Contents;
+	/** Intact or Debris (a collapse decided; it lies at Rest*). */
+	UPROPERTY() EGLStructurePartState State = EGLStructurePartState::Intact;
+	UPROPERTY() FVector RestLocation = FVector::ZeroVector;
+	UPROPERTY() FQuat RestRotation = FQuat::Identity;
+};
+
 USTRUCT()
 struct GRIDLANDSCORE_API FGLSavedStructurePart
 {
@@ -209,8 +225,11 @@ struct GRIDLANDSCORE_API FGLWorldSave
 {
 	GENERATED_BODY()
 
-	/** v2 (P3): per-cell records in Cells; v1 files migrate (their flat cell fields become one record). */
-	static constexpr int32 CurrentVersion = 2;
+	/**
+	 * v3 (P11): player pieces carry yawStep, origin, layers, contents and debris state. v2 files migrate (GLSaveCodec);
+	 * v1 files first become v2 (their flat cell fields become one record).
+	 */
+	static constexpr int32 CurrentVersion = 3;
 
 	UPROPERTY() int32 SchemaVersion = CurrentVersion;
 	UPROPERTY() FName Cell;
@@ -248,11 +267,17 @@ struct GRIDLANDSCORE_API FGLWorldSave
 	UPROPERTY() FGLSavedTransform Pehlichi;
 };
 
+class FGLContentRegistry;
+
 /** JSON encoding, versions and migrations for FGLWorldSave (pure). */
 namespace GLSaveCodec
 {
 	GRIDLANDSCORE_API FString ToJson(const FGLWorldSave& Save);
 
-	/** Parses and migrates. Returns false (with Problem) for unreadable text, a missing version, or a newer version. */
-	GRIDLANDSCORE_API bool FromJson(const FString& Text, FGLWorldSave& OutSave, FString& OutProblem);
+	/**
+	 * Parses and migrates. Returns false (with Problem) for unreadable text, a missing version, or a newer version.
+	 * Content (optional) supplies the v2 -> v3 legacy layers of v0 pieces (buildpiece legacyLayers, MIG-1); without it
+	 * a migrated piece keeps no layers. Deterministic: the same text and content give the same save.
+	 */
+	GRIDLANDSCORE_API bool FromJson(const FString& Text, FGLWorldSave& OutSave, FString& OutProblem, const FGLContentRegistry* Content = nullptr);
 }

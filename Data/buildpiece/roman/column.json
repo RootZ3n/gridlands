@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.roman.column",
+  "displayName": "Roman column",
+  "era": "era.memory.roman",
+  "material": "material.masonry.roman_concrete",
+  "role": "post",
+  "grounded": true,
+  "size": [
+    0.5,
+    0.5,
+    2.8
+  ],
+  "shapes": [
+    {
+      "size": [
+        0.5,
+        0.5,
+        0.25
+      ],
+      "offset": [
+        0,
+        0,
+        0.125
+      ]
+    },
+    {
+      "size": [
+        0.36,
+        0.36,
+        2.3
+      ],
+      "offset": [
+        0,
+        0,
+        1.4
+      ]
+    },
+    {
+      "size": [
+        0.56,
+        0.56,
+        0.25
+      ],
+      "offset": [
+        0,
+        0,
+        2.675
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "top",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        2.8
+      ]
+    }
+  ],
+  "cost": [
+    {
+      "item": "item.material.cut_stone",
+      "count": 3
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.roman_masonry"
+  ],
+  "layers": [],
+  "salvage": "salvage.build.roman_column",
+  "collapse": {
+    "motion": "topple",
+    "direction": "awayFromInstigator"
+  },
+  "notes": "P11: a deliberately mismatched support (WINCHESTER): Roman masonry holding up a timber porch."
+}

@@ -315,7 +315,7 @@ class SliceDialogueTests(unittest.TestCase):
     """M11: smart-ass dialogue is a core feature; the slice carries ~40 exchanges across these categories."""
 
     FAMILIES = {
-        "salvage": "Event.Salvage", "overencumbrance": "Event.Player.Overencumbered", "building": "Event.Building",
+        "salvage": "Event.Salvage", "inventoryFull": "Event.Player.InventoryFull", "building": "Event.Building",
         "death": "Event.Player.Died", "exploration": "Event.Discovery", "glitches": "Event.Glitch",
         "riddle": "Event.Puzzle", "silence": "Event.Player.Silent", "ambient": "Event.Ambient",
         "creature": "Event.Creature", "storm": "Event.Storm", "terraform": "Event.Terrain",
