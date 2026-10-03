@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/World/GLNavRegionSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLNavRegionSubsystem.cpp
+@@ -106,7 +106,7 @@
+ 			Invoker->SetProviding(bRelevant);
+ 		}
+ 	}
+-	SweepStaleTiles(Now);
++	// DEFECT
+ }
+ 
+ void UGLNavRegionSubsystem::SweepStaleTiles(double Now)

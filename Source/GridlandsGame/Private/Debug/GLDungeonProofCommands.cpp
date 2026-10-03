@@ -7,6 +7,15 @@
 //                                  while it attacks, Pehlichi operates the cage: the warden is NEUTRALIZED
 //   gl.Dungeon.Proof report        after a restart: outcomes, presentation, nothing replayed
 //   gl.Dungeon.Proof navscale      navigation tiles with the room's creatures, then with 1 and 16 extra active ones
+//   gl.Dungeon.Proof structural    P10 (ADR-0038): the ordinary carport. Zenny takes its first post (it stands), sends
+//                                  Pehlichi under the hanging deck and has him lure; once the warden is under the decks
+//                                  Zenny takes the last post. The fall is decided at failure, its victims at impact.
+//   gl.Dungeon.Proof structural-midfall   the same, but quits (autosave) half a second into the fall: a following
+//                                  `report` run resumes the fall from the save and resolves the impact once
+//   gl.Dungeon.Proof structural-unload    the same, but Zenny leaves the lots mid-fall (it streams out, frozen), waits,
+//                                  and comes back: the fall resumes where it stopped
+//   gl.Dungeon.Proof structural-control   the same, after Zenny wounds the arena patrol in an ordinary fight: the
+//                                  non-susceptible patrol under the same impact is damaged, and defeated if that suffices
 
 #include "Character/GLCharacter.h"
 #include "Combat/GLCombatComponent.h"
@@ -32,6 +41,9 @@
 #include "Noise/GLNoiseSubsystem.h"
 #include "Pehlichi/GLPehlichi.h"
 #include "Pehlichi/GLPehlichiCommandComponent.h"
+#include "Salvage/GLSalvageableComponent.h"
+#include "Structure/GLStructurePart.h"
+#include "Structure/GLStructureSubsystem.h"
 #include "Serialization/JsonSerializer.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "World/GLGridCells.h"
@@ -44,7 +56,7 @@
 namespace
 {
 	const FName DPLots(TEXT("cell.outer.diner_lots"));
-	constexpr int32 DPFirstGremlin = 21, DPWarden = 25, DPCage = 26, DPFan = 27;
+	constexpr int32 DPFirstGremlin = 21, DPWarden = 25, DPCage = 26, DPFan = 27, DPCarport = 29;
 
 	FName DPId(int32 I) { return UGLPlacementSubsystem::DungeonProofId(I); }
 
@@ -68,6 +80,12 @@ namespace
 		TArray<AGLCreature*> Extra;
 		FTSTicker::FDelegateHandle Ticker;
 		bool bInside = false; // navscale inside: Zenny stands in the room (his own circle covers it too)
+		// P10 structural route
+		int32 Hits = 0;
+		double NextHit = 0.0;
+		double FailedAt = -1.0;
+		FVector WardenAtFailure = FVector::ZeroVector;
+		TArray<double> WardenDistanceToDeckEast; // sampled from failure to impact (does it move?)
 	};
 	TSharedPtr<FDungeonRun> Run;
 
@@ -150,6 +168,56 @@ namespace
 			E->SetNumberField(Pair.Key.ToString(), Pair.Value);
 		}
 		O->SetObjectField(TEXT("events"), E);
+		// P10: the carport and what its impacts did, and every room creature's outcome.
+		if (const UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>())
+		{
+			TSharedRef<FJsonObject> Parts = MakeShared<FJsonObject>();
+			if (const FGLStructureRuntime* Carport = Structures->Find(DPId(DPCarport)))
+			{
+				for (const FGLStructurePartRuntime& Part : Carport->Parts)
+				{
+					static const TCHAR* Names[] = { TEXT("intact"), TEXT("removed"), TEXT("debris"), TEXT("debris-salvaged") };
+					Parts->SetStringField(Part.Name.ToString(), Names[FMath::Clamp(static_cast<int32>(Part.State), 0, 3)]);
+				}
+			}
+			O->SetObjectField(TEXT("carport"), Parts);
+			O->SetNumberField(TEXT("collapsesInFlight"), Structures->ActiveCollapses());
+			TArray<TSharedPtr<FJsonValue>> Impacts;
+			for (const FGLImpactRecord& Impact : Structures->GetImpacts())
+			{
+				TSharedRef<FJsonObject> I = MakeShared<FJsonObject>();
+				I->SetStringField(TEXT("part"), Impact.Part.ToString());
+				I->SetNumberField(TEXT("damage"), Impact.Damage);
+				I->SetNumberField(TEXT("severity"), Impact.Severity);
+				I->SetNumberField(TEXT("hit"), Impact.Hit.Num());
+				TArray<TSharedPtr<FJsonValue>> Pinned, Damaged;
+				for (const FName& Id : Impact.Pinned) { Pinned.Add(MakeShared<FJsonValueString>(Id.ToString())); }
+				for (const FName& Id : Impact.Damaged) { Damaged.Add(MakeShared<FJsonValueString>(Id.ToString())); }
+				I->SetArrayField(TEXT("pinned"), Pinned);
+				I->SetArrayField(TEXT("damaged"), Damaged);
+				Impacts.Add(MakeShared<FJsonValueObject>(I));
+			}
+			O->SetArrayField(TEXT("impacts"), Impacts);
+		}
+		TSharedRef<FJsonObject> Creatures = MakeShared<FJsonObject>();
+		for (int32 I = DPFirstGremlin; I <= DPWarden; ++I)
+		{
+			if (const FGLActorPlacement* M = Placements->FindActorModel(DPId(I)))
+			{
+				const TCHAR* Outcome = M->Creature.Outcome == EGLCreatureOutcome::Defeated ? TEXT("Defeated") : M->Creature.Outcome == EGLCreatureOutcome::Neutralized ? TEXT("Neutralized") : TEXT("None");
+				Creatures->SetStringField(DPId(I).ToString(), FString::Printf(TEXT("%s %s health %.1f"), Outcome, *M->Creature.NeutralizedHow.ToString(), M->Creature.Health));
+			}
+		}
+		O->SetObjectField(TEXT("creatures"), Creatures);
+		if (Run->FailedAt >= 0.0)
+		{
+			O->SetNumberField(TEXT("supportFailedAtSeconds"), Run->FailedAt - Run->Started);
+			O->SetStringField(TEXT("wardenAtFailure"), Run->WardenAtFailure.ToCompactString());
+			TArray<TSharedPtr<FJsonValue>> Track;
+			for (const double D : Run->WardenDistanceToDeckEast) { Track.Add(MakeShared<FJsonValueNumber>(FMath::RoundToDouble(D))); }
+			O->SetArrayField(TEXT("wardenDistanceToDeckEastCm"), Track);
+			O->SetNumberField(TEXT("salvageHits"), Run->Hits);
+		}
 		FString Text;
 		FJsonSerializer::Serialize(O, TJsonWriterFactory<>::Create(&Text));
 		FFileHelper::SaveStringToFile(Text, *(FPaths::ProjectSavedDir() / TEXT("P9") / (TEXT("dungeon-") + Run->Mode + TEXT(".json"))));
@@ -280,6 +348,207 @@ namespace
 		default:
 			Finish(World, true);
 			return false;
+		}
+		return true;
+	}
+
+	/** The carport part's live piece (world bottom centre), and whether a creature's feet are under a deck (footprint + margin). */
+	FVector CarportPart(UWorld* World, const TCHAR* Part)
+	{
+		const FGLStructureRuntime* R = World->GetSubsystem<UGLStructureSubsystem>()->Find(DPId(DPCarport));
+		const FGLStructurePartRuntime* P = R ? R->Parts.FindByPredicate([Part](const FGLStructurePartRuntime& X) { return X.Name == FName(Part); }) : nullptr;
+		return P ? P->Piece.Location : FVector::ZeroVector;
+	}
+
+	bool UnderDecks(UWorld* World, const FVector& Feet)
+	{
+		const FVector West = CarportPart(World, TEXT("deck_west")), East = CarportPart(World, TEXT("deck_east"));
+		const double MinX = FMath::Min(West.X, East.X) - 100.0, MaxX = FMath::Max(West.X, East.X) + 100.0;
+		return Feet.X > MinX + 40.0 && Feet.X < MaxX - 40.0 && FMath::Abs(Feet.Y - East.Y) < 100.0 - 40.0; // well inside, not on the edge
+	}
+
+	/** One salvage hit per 0.15 s through the ordinary pipeline (Zenny's interaction). True once the part came away. */
+	bool HitPart(UWorld* World, const TCHAR* Part)
+	{
+		AGLStructurePart* Actor = World->GetSubsystem<UGLStructureSubsystem>()->FindPart(DPId(DPCarport), Part);
+		if (!Actor || Actor->GetSalvageable()->IsSalvaged())
+		{
+			return true;
+		}
+		if (World->GetTimeSeconds() >= Run->NextHit)
+		{
+			Run->NextHit = World->GetTimeSeconds() + 0.15;
+			++Run->Hits;
+			Actor->GetSalvageable()->Interact(ZennyOf(World), UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Interact.Salvage")));
+		}
+		return Actor->GetSalvageable()->IsSalvaged();
+	}
+
+	/** One frame of the structural route (P10). */
+	bool TickStructural(UWorld* World)
+	{
+		UGLPlacementSubsystem* Placements = World->GetSubsystem<UGLPlacementSubsystem>();
+		UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>();
+		AGLCharacter* Zenny = ZennyOf(World);
+		AGLPehlichi* Peh = PehlichiOf(World);
+		const double InPhase = World->GetTimeSeconds() - Run->PhaseAt;
+		const FVector East = CarportPart(World, TEXT("deck_east"));
+		const FVector2D EastRoom(East.X - 102400.0 - UGLPlacementSubsystem::DungeonProofOrigin.X, East.Y - UGLPlacementSubsystem::DungeonProofOrigin.Y);
+		if (Zenny && Zenny->GetHealth()->GetCurrent() < 25.0)
+		{
+			Zenny->GetHealth()->Restore(Zenny->GetHealth()->GetMax()); // a script cannot dodge (counted, as in P9)
+			++Run->Events.FindOrAdd(TEXT("Dev.ZennyHealed"));
+		}
+		FVector Warden;
+		const bool bWarden = Placements->CreatureLocation(DPId(DPWarden), Warden);
+		switch (Run->Phase)
+		{
+		case 1: if (WalkTo(World, -1750, 500)) { NextPhase(World, TEXT("in by the west gap")); } break;
+		case 2: if (WalkTo(World, -1650, 1150)) { NextPhase(World, TEXT("into the north corridor")); } break;
+		case 3: if (WalkTo(World, -250, 1150)) { NextPhase(World, TEXT("through the corridor")); } break;
+		case 4: if (WalkTo(World, 300, 800)) { NextPhase(World, TEXT("into the arena's north half")); } break;
+		case 5:
+			if (WalkTo(World, 450, 500))
+			{
+				const AGLCreature* Patrol = Placements->FindCreature(DPId(DPFirstGremlin + 3));
+				if (Run->Mode == TEXT("structural-control") && Patrol && Patrol->IsActiveHostile() && Patrol->GetHealth()->GetCurrent() >= Patrol->GetHealth()->GetMax())
+				{
+					Run->Phase = 40; // the control: first an ordinary scuffle with the arena patrol (it is wounded, not killed)
+					Run->PhaseAt = World->GetTimeSeconds();
+					Log(TEXT("control: wounding the arena patrol in an ordinary fight first"));
+					break;
+				}
+				NextPhase(World, TEXT("at the carport's posts (west of them, outside every deck)"));
+			}
+			break;
+		case 40: // structural-control only: Zenny's own attacks until the arena patrol is wounded
+		{
+			AGLCreature* Foe = Placements->FindCreature(DPId(DPFirstGremlin + 3));
+			if (!Foe || !Foe->IsActiveHostile() || Foe->GetHealth()->GetCurrent() < Foe->GetHealth()->GetMax() || InPhase > 30.0)
+			{
+				Log(FString::Printf(TEXT("control: the arena patrol has %.0f of %.0f hp"), Foe ? Foe->GetHealth()->GetCurrent() : -1.0, Foe ? Foe->GetHealth()->GetMax() : -1.0));
+				Run->Phase = 5;
+				break;
+			}
+			const FVector To = Foe->GetActorLocation() - Zenny->GetActorLocation();
+			if (To.Size2D() > 120.0)
+			{
+				Zenny->AddMovementInput(FVector(To.X, To.Y, 0.0).GetSafeNormal(), 1.0f, true);
+			}
+			Zenny->SetActorRotation(FRotator(0.0, To.Rotation().Yaw, 0.0));
+			Zenny->GetCombat()->Attack();
+			break;
+		}
+		case 6: // the first post: redundancy holds
+			if (HitPart(World, TEXT("post_north")))
+			{
+				NextPhase(World, FString::Printf(TEXT("first post away after %d hits; collapses in flight: %d (redundancy: it stands)"), Run->Hits, Structures->ActiveCollapses()));
+			}
+			break;
+		case 7: // Zenny takes Pehlichi under the hanging deck and tells him to stay there
+			if (WalkTo(World, EastRoom.X + 60.0, EastRoom.Y) && InPhase > 2.0)
+			{
+				const EGLCommandRejection R = Peh ? Peh->GetCommands()->Issue(TEXT("Command.Pehlichi.Stay"), Zenny) : EGLCommandRejection::UnknownCommand;
+				NextPhase(World, FString::Printf(TEXT("Pehlichi told to stay (%s) at %s, %.0f cm from the hanging deck's centre"), R == EGLCommandRejection::None ? TEXT("accepted") : TEXT("REJECTED"),
+					Peh ? *Peh->GetActorLocation().ToCompactString() : TEXT("?"), Peh ? FVector::Dist2D(Peh->GetActorLocation(), East) : -1.0));
+			}
+			break;
+		case 8: // back to the last post
+			if (WalkTo(World, 450, 500))
+			{
+				const EGLCommandRejection R = Peh ? Peh->GetCommands()->Issue(TEXT("Command.Pehlichi.Distract"), Zenny) : EGLCommandRejection::UnknownCommand;
+				NextPhase(World, FString::Printf(TEXT("Pehlichi lures from under the decks: %s"), R == EGLCommandRejection::None ? TEXT("accepted") : TEXT("REJECTED")));
+			}
+			break;
+		case 9: // wait for the warden to come under the decks (the lure, or Zenny himself)
+			if (bWarden && UnderDecks(World, Warden))
+			{
+				NextPhase(World, FString::Printf(TEXT("the warden is under the decks (%s, state %s): taking the last post"), *Warden.ToCompactString(),
+					Placements->FindCreature(DPId(DPWarden)) ? GLCreatureRules::StateName(Placements->FindCreature(DPId(DPWarden))->GetState()) : TEXT("?")));
+			}
+			else if (InPhase > 40.0)
+			{
+				NextPhase(World, TEXT("the warden never came under the decks: taking the post anyway"));
+			}
+			break;
+		case 10: // the last post: support fails
+			if (HitPart(World, TEXT("post_south")))
+			{
+				Run->FailedAt = World->GetTimeSeconds();
+				Run->WardenAtFailure = Warden;
+				NextPhase(World, FString::Printf(TEXT("SUPPORT FAILED (%d hits): %d part(s) in flight; the warden %s under the decks at failure"), Run->Hits, Structures->ActiveCollapses(),
+					bWarden && UnderDecks(World, Warden) ? TEXT("IS") : TEXT("is NOT")));
+			}
+			break;
+		case 11: // in flight: the warden is free to move; the impact decides
+		{
+			Run->WardenDistanceToDeckEast.Add(bWarden ? FVector::Dist2D(Warden, East) : -1.0);
+			if (Run->Mode == TEXT("structural-midfall") && InPhase >= 0.5)
+			{
+				NextPhase(World, FString::Printf(TEXT("quitting MID-FALL (%d in flight): the autosave keeps the fall"), Structures->ActiveCollapses()));
+				Finish(World, true);
+				return false;
+			}
+			if (Run->Mode == TEXT("structural-unload") && InPhase >= 0.4)
+			{
+				Zenny->GetCharacterMovement()->DisableMovement();
+				Zenny->SetActorLocation(FVector(0, -1200, 300), false, nullptr, ETeleportType::TeleportPhysics);
+				NextPhase(World, FString::Printf(TEXT("leaving the lots MID-FALL (%d in flight)"), Structures->ActiveCollapses()));
+				Run->Phase = 20;
+				break;
+			}
+			if (InPhase > 3.0)
+			{
+				NextPhase(World, FString::Printf(TEXT("after the fall: warden %s; impacts %d"), Placements->IsCreatureNeutralized(DPId(DPWarden)) ? TEXT("NEUTRALIZED") : Placements->IsCreatureDefeated(DPId(DPWarden)) ? TEXT("DEFEATED") : TEXT("unaffected"), Structures->GetImpacts().Num()));
+				Run->Phase = 30;
+			}
+			break;
+		}
+		case 20: // away: the lots stream out with the fall frozen in their record
+		{
+			UGLGridSubsystem* Grid = World->GetSubsystem<UGLGridSubsystem>();
+			if (!Grid->IsLoaded(DPLots) && InPhase > 5.0)
+			{
+				Zenny->SetActorLocation(RoomPoint(World, 450, 500, 120.0), false, nullptr, ETeleportType::TeleportPhysics);
+				NextPhase(World, TEXT("the lots are out (5 s away): coming back"));
+			}
+			else if (InPhase > 60.0)
+			{
+				NextPhase(World, TEXT("the lots never streamed out"));
+				Run->Phase = 30;
+			}
+			break;
+		}
+		case 21: // back: wait for the lots, stand on the ground, let the fall finish
+		{
+			UGLGridSubsystem* Grid = World->GetSubsystem<UGLGridSubsystem>();
+			if (Grid->IsComplete(DPLots) && Placements->IsCellPresented(DPLots) && Zenny->GetCharacterMovement()->MovementMode == MOVE_None)
+			{
+				Zenny->SetActorLocation(RoomPoint(World, 450, 500, 120.0), false, nullptr, ETeleportType::TeleportPhysics);
+				Zenny->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+				Log(FString::Printf(TEXT("back in the lots: %d part(s) still in flight (resumed, not replayed)"), Structures->ActiveCollapses()));
+				Run->PhaseAt = World->GetTimeSeconds(); // the 4 s below count from standing there again
+			}
+			if (Zenny->GetCharacterMovement()->MovementMode != MOVE_None && InPhase > 4.0)
+			{
+				NextPhase(World, FString::Printf(TEXT("after the resumed fall: warden %s; impacts %d"), Placements->IsCreatureNeutralized(DPId(DPWarden)) ? TEXT("NEUTRALIZED") : TEXT("not neutralized"), Structures->GetImpacts().Num()));
+				Run->Phase = 30;
+			}
+			break;
+		}
+		case 30:
+			if (InPhase > 2.0)
+			{
+				Finish(World, true);
+				return false;
+			}
+			break;
+		default:
+			if (Run->Phase > 30)
+			{
+				Finish(World, true);
+				return false;
+			}
 		}
 		return true;
 	}
@@ -487,7 +756,7 @@ namespace
 				Run->TasksPeak = FMath::Max(Run->TasksPeak, Tasks);
 			}
 			const bool bContinue = Run->Mode == TEXT("direct") ? TickDirect(W) : Run->Mode == TEXT("report") ? TickReport(W)
-				: Run->Mode == TEXT("navscale") ? TickNavScale(W) : TickEnvironmental(W);
+				: Run->Mode == TEXT("navscale") ? TickNavScale(W) : Run->Mode.StartsWith(TEXT("structural")) ? TickStructural(W) : TickEnvironmental(W);
 			if (!bContinue)
 			{
 				Run.Reset();
@@ -497,7 +766,7 @@ namespace
 	}
 
 	FAutoConsoleCommandWithWorldAndArgs DungeonProofCommand(TEXT("gl.Dungeon.Proof"),
-		TEXT("DEV ONLY (P9, needs -GLDungeonProof): direct | environmental | report | navscale. Writes Saved/P9/dungeon-<mode>.json and quits (autosave)."),
+		TEXT("DEV ONLY (P9/P10, needs -GLDungeonProof): direct | environmental | structural | structural-midfall | structural-unload | report | navscale. Writes Saved/P9/dungeon-<mode>.json and quits (autosave)."),
 		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic(&Start));
 }
 

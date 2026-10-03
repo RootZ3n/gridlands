@@ -1,0 +1,64 @@
+{
+	"mode": "report",
+	"seconds": 4.0031623207032681,
+	"wardenOutcome": "Neutralized",
+	"wardenNeutralizedHow": "Neutralize.Pinned",
+	"wardenActorPresent": true,
+	"wardenActorInert": true,
+	"wardenHealth": 240,
+	"cageState": "raised",
+	"cageLift": 300,
+	"zennyDamageTaken": 0,
+	"wardenDamageTaken": 0,
+	"navActiveTilesPeak": 202,
+	"navPendingTasksPeak": 0,
+	"navStaleTiles": 0,
+	"navSweptTiles": 0,
+	"residue": 5,
+	"events":
+	{
+		"Event.Creature.Neutralized": 1,
+		"Event.Item.Acquired": 1,
+		"Event.Encounter.Resolved": 1,
+		"Event.Structure.Impact": 2
+	},
+	"carport":
+	{
+		"post_south": "removed",
+		"post_north": "removed",
+		"deck_west": "debris",
+		"deck_east": "debris"
+	},
+	"collapsesInFlight": 0,
+	"impacts": [
+		{
+			"part": "deck_west",
+			"damage": 59,
+			"severity": 2.4500000000000002,
+			"hit": 3,
+			"pinned": [
+				"placement.diner_lots.proof_dungeon_025"
+			],
+			"damaged": [
+				"placement.diner_lots.proof_dungeon_022",
+				"placement.diner_lots.proof_dungeon_024"
+			]
+		},
+		{
+			"part": "deck_east",
+			"damage": 59.200000000000003,
+			"severity": 2.46,
+			"hit": 0,
+			"pinned": [],
+			"damaged": []
+		}
+	],
+	"creatures":
+	{
+		"placement.diner_lots.proof_dungeon_021": "None None health -1.0",
+		"placement.diner_lots.proof_dungeon_022": "None None health 1.0",
+		"placement.diner_lots.proof_dungeon_023": "None None health -1.0",
+		"placement.diner_lots.proof_dungeon_024": "None None health 1.0",
+		"placement.diner_lots.proof_dungeon_025": "Neutralized Neutralize.Pinned health -1.0"
+	}
+}

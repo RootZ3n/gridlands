@@ -19,7 +19,8 @@
   "leashRadius": 30.0,
   "visual": "visual.creature.raccoon_glitched",
   "neutralizableBy": [
-    "Neutralize.Contained"
+    "Neutralize.Contained",
+    "Neutralize.Pinned"
   ],
   "encounter": {
     "rewards": [
@@ -30,5 +31,5 @@
       }
     ]
   },
-  "notes": "P9 dev proof encounter target: defeated through health, or neutralized by containment. Values provisional."
+  "notes": "P9 dev proof encounter target: defeated through health, or neutralized by containment (P9) or by being pinned under a structural impact (P10). Values provisional."
 }

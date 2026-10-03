@@ -163,7 +163,7 @@ missing, including right after a teleport or a load.
   collects the nearby footprints once (`CollectFootprints`).
 
 ## Not changed
-- **P6's GAMEPLAY CONSISTENCY DEBT is untouched.** A mid-fall save keeps the outcome, but not the
+- **P6's GAMEPLAY CONSISTENCY DEBT was untouched here; P10 closed it ([ADR-0038](0038-structural-environmental-resolution.md)).** A mid-fall save kept the outcome, but not the
   impact damage still to come.
   - Presentation never replays or applies damage; the model decides.
   - This path was not redesigned: a collapse unloaded mid-fall still drops its unapplied impact,

@@ -78,6 +78,51 @@ struct GRIDLANDSCORE_API FGLSavedStructurePart
 	UPROPERTY() FRotator Rotation = FRotator::ZeroRotator;
 };
 
+/**
+ * P10 (ADR-0038): a collapse whose support has failed and whose impact has not happened yet (SUPPORT FAILED, DELAY or
+ * IN FLIGHT). Only what the decision already fixed: it is never re-planned on load, because the world may have
+ * changed since. The gameplay facts (how far along it is, when and where it hits, how hard, who caused it and who is
+ * credited) and what its pose needs; a topple's angle samples are re-integrated from the three inputs that made them.
+ * Transforms keep their quaternions, so the reconstruction is bit-identical to the plan.
+ */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLSavedCollapse
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FName Placement;
+	UPROPERTY() FName Part;
+	/** Seconds since its support failed, on its own clock (which stops while its cell is dormant). */
+	UPROPERTY() double ElapsedSeconds = 0.0;
+	/** EGLCollapseMotion as a number (append-only enum). */
+	UPROPERTY() uint8 Motion = 0;
+	UPROPERTY() FVector StartLocation = FVector::ZeroVector;
+	UPROPERTY() FQuat StartRotation = FQuat::Identity;
+	UPROPERTY() FVector RestLocation = FVector::ZeroVector;
+	UPROPERTY() FQuat RestRotation = FQuat::Identity;
+	UPROPERTY() double StartSeconds = 0.0;
+	UPROPERTY() double ImpactSeconds = 0.0;
+	UPROPERTY() FVector ImpactCentre = FVector::ZeroVector;
+	UPROPERTY() FVector ImpactAxisX = FVector::ForwardVector;
+	UPROPERTY() FVector ImpactAxisY = FVector::RightVector;
+	UPROPERTY() FVector ImpactAxisZ = FVector::UpVector;
+	UPROPERTY() FVector ImpactHalfExtent = FVector::ZeroVector;
+	UPROPERTY() double Damage = 0.0;
+	UPROPERTY() double Severity = 0.0;
+	UPROPERTY() double FallMetres = 0.0;
+	UPROPERTY() FVector Pivot = FVector::ZeroVector;
+	UPROPERTY() FVector TiltAxis = FVector::ZeroVector;
+	UPROPERTY() double ToppleDropCm = 0.0;
+	UPROPERTY() double ToppleHeightCm = 0.0;
+	UPROPERTY() double ToppleGravityCmS2 = 0.0;
+	UPROPERTY() double ToppleStartRadians = 0.0;
+	/** The impact noise's material. */
+	UPROPERTY() FName Material;
+	/** Who physically removed the support, and who receives gameplay attribution (kills, drops). Kept apart (P10). */
+	UPROPERTY() FName Cause;
+	UPROPERTY() FName Credit;
+};
+
 /** P9: how an encounter creature left the fight (ADR-0037). Stored as a number: append only. */
 UENUM()
 enum class EGLCreatureOutcome : uint8
@@ -148,13 +193,15 @@ struct GRIDLANDSCORE_API FGLSavedCell
 	UPROPERTY() TArray<int32> TerrainDeltaCm;
 	/** P6: every authored structure part that is no longer intact (optional in v2 files: absent means none). */
 	UPROPERTY() TArray<FGLSavedStructurePart> StructureParts;
+	/** P10: collapses in flight (support failed, impact still to come; optional in v2 files: absent means none). */
+	UPROPERTY() TArray<FGLSavedCollapse> Collapses;
 	/** P9: every creature's gameplay facts, and every mechanism's state (optional in v2 files). */
 	UPROPERTY() TArray<FGLSavedCreature> Creatures;
 	UPROPERTY() TArray<FGLSavedMechanism> Mechanisms;
 	/** P9: world seconds when captured while streaming out (< 0: loaded from a file, so no time has passed). */
 	UPROPERTY() double CapturedWorldSeconds = -1.0;
 
-	bool IsEmpty() const { return Glitches.Num() == 0 && SalvagedPlacements.Num() == 0 && DefeatedCreatures.Num() == 0 && BuildPieces.Num() == 0 && TerrainIndices.Num() == 0 && StructureParts.Num() == 0 && Creatures.Num() == 0 && Mechanisms.Num() == 0; }
+	bool IsEmpty() const { return Glitches.Num() == 0 && SalvagedPlacements.Num() == 0 && DefeatedCreatures.Num() == 0 && BuildPieces.Num() == 0 && TerrainIndices.Num() == 0 && StructureParts.Num() == 0 && Collapses.Num() == 0 && Creatures.Num() == 0 && Mechanisms.Num() == 0; }
 };
 
 USTRUCT()

@@ -126,8 +126,11 @@ Its dev definitions live under `<kind>.proof.*`. PRF-1 keeps them out of every D
   `CreatureLocation`.
 
 ## Not changed / not built
-- **Environmental kills.**
-- **Structural-collapse neutralization and the mid-fall persistence debt:** P10, separate.
+- **Environmental kills by mechanisms.** (Structural impacts already damage, and can defeat, through the health system:
+  P6, and on creature models since P10.)
+- **Structural-collapse neutralization and the mid-fall persistence debt:** P10, separate. **Built in
+  [ADR-0038](0038-structural-environmental-resolution.md)** with `Neutralize.Pinned`. The rules here are unchanged:
+  outcomes final, Neutralized immune to later damage.
 - **Named dungeons, production art, agility progression, Pehlichi's skill tree, diet/fart mechanics,
   legendaries, NICE dialogue, achievements, crouch/sneak, vegetation concealment, a mechanism library.**
 - **Operate progress is not saved** (an interrupted operation is commanded again).

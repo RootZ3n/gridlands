@@ -1,0 +1,15 @@
+--- a/Source/GridlandsGame/Private/Combat/GLCreature.cpp
++++ b/Source/GridlandsGame/Private/Combat/GLCreature.cpp
+@@ -105,10 +105,10 @@
+ 	Lure = Model.Lure;
+ 	LureLeft = FMath::Max(0.0, Model.LureSeconds - Passed);
+ 	// Attack is re-derived from range every step; it resumes as the chase it was.
+-	State = Model.State == EGLCreatureState::Attack ? EGLCreatureState::Chase : Model.State;
++	State = Model.Outcome == EGLCreatureOutcome::Neutralized || Model.State == EGLCreatureState::Attack ? EGLCreatureState::Chase : Model.State; // DEFECT
+ 	if (Model.Outcome == EGLCreatureOutcome::Neutralized)
+ 	{
+-		PresentNeutralized(Model.HeldAt, Model.HeldYaw);
++		// DEFECT: presented as an active hostile
+ 	}
+ 	UpdateNavigationNeed();
+ }

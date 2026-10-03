@@ -3,7 +3,10 @@
 # fresh world, then a restart from its autosave that reports what persisted (nothing may replay); and the
 # navigation-scale measurement (the room's creatures, then 1 and 16 extra active ones in the same region).
 # Results: Saved/P9/dungeon-<run>.json and <run>.log.txt.
-# Usage: Tools/p9-dungeon-proof.sh [direct] [environmental] [navscale]   (default: all three)
+# P10 (ADR-0038) adds the structural route on the ordinary carport: structural, structural-midfall (quit mid-fall,
+# then a restart that resumes the fall, then one that must replay nothing) and structural-unload (stream out mid-fall).
+# Usage: Tools/p9-dungeon-proof.sh [direct] [environmental] [navscale] [structural] [structural-midfall] [structural-unload]
+#        (default: direct environmental navscale)
 set -uo pipefail
 . "$(dirname "$0")/lib/common.sh"
 resolve_engine_root
@@ -25,6 +28,10 @@ for route in "${ROUTES[@]}"; do
 	[ "$route" = navscale ] && continue
 	rm -f "$SAVE"
 	launch "$route" -GLNewWorld "$route"
+	if [ "$route" = structural-midfall ]; then
+		# P10: the run quit half a second into the fall; this restart resumes the fall from the autosave and resolves it
+		launch "$route-resume" "" report
+	fi
 	launch "$route-restart" "" report
 done
 rm -f "$SAVE"

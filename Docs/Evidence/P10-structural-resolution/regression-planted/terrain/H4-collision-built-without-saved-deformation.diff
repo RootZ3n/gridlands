@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Terrain/GLTerrainCollision.cpp
++++ b/Source/GridlandsGame/Private/Terrain/GLTerrainCollision.cpp
+@@ -75,7 +75,7 @@
+ 		return nullptr;
+ 	}
+ 	const int32 V = Snap.Verts, Side = V + 2;
+-	auto H = [&Snap, Side](int32 X, int32 Y) { return static_cast<double>(Snap.Heights[(Y + 1) * Side + (X + 1)]); };
++	auto H = [&Snap, Side](int32 X, int32 Y) { return static_cast<double>(Snap.Base[(Y + 1) * Side + (X + 1)]); }; // DEFECT: base, not edited, heights
+ 	TSharedRef<FGLChunkCollisionGeometry> G = MakeShared<FGLChunkCollisionGeometry>();
+ 	G->Mode = Mode;
+ 	G->Verts = V;

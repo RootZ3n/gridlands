@@ -1,0 +1,11 @@
+--- a/Tools/gldata/validate.py
++++ b/Tools/gldata/validate.py
+@@ -475,7 +475,7 @@
+             elif abs(float(transform.get("yaw", 0)) / 90.0 - round(float(transform.get("yaw", 0)) / 90.0)) > 1e-6:
+                 ds.problem("STR-3", rel, ".transform.yaw", "a structure's yaw must be a multiple of 90 degrees")
+             else:
+-                check_structure_reach(ds, entity, transform, cells_by_short, margin_cm)
++                pass  # DEFECT
+     tunings = [e for e in ds.entities.values() if e.kind == "tuning"]
+     if [e.id for e in tunings] != [TUNING_ID]:
+         ds.problem("TUN-1", "Data/tuning", "", f"exactly one tuning entity, {TUNING_ID}, is required (found {sorted(e.id for e in tunings)})")

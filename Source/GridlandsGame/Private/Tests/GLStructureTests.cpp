@@ -244,14 +244,17 @@ bool FGLStructurePersists::RunTest(const FString& Parameters)
 	// Cross away mid-fall: the origin streams out with the collapse unfinished.
 	S.GoTo(SDeepInLots);
 	TestFalse(TEXT("the origin streamed out"), S.Grid->IsLoaded(SOrigin));
-	TestEqual(TEXT("its unfinished collapses went with it"), S.Structures->ActiveCollapses(), 0);
+	TestEqual(TEXT("its unfinished collapses left the world with it"), S.Structures->ActiveCollapses(), 0);
+	const FGLSavedCell* Away = S.Test.World->GetSubsystem<UGLSaveSubsystem>()->PeekDormant(SOrigin);
+	TestTrue(TEXT("P10: kept, frozen, in the cell's record (the P6 mid-fall debt is closed)"), Away && Away->Collapses.Num() == 2);
 	TestEqual(TEXT("no carport actors remain"), S.PartActors(SCarportEdge), 0);
 	const int32 ImpactsAway = S.Structures->GetImpacts().Num();
-	// Back again, three times: the outcome, never a replay.
+	// Back again, three times: the first return finishes the fall (each impact once); after that, the outcome, never a replay.
 	for (int32 Round = 0; Round < 3; ++Round)
 	{
 		S.GoTo(SAtEdge);
 		S.Run(3.0);
+		TestEqual(TEXT("P10: the resumed impacts landed exactly once (two decks)"), S.Structures->GetImpacts().Num(), ImpactsAway + 2);
 		TestEqual(TEXT("west deck: debris"), S.StateOf(SCarportEdge, TEXT("deck_west")), EGLStructurePartState::Debris);
 		TestEqual(TEXT("east deck: debris"), S.StateOf(SCarportEdge, TEXT("deck_east")), EGLStructurePartState::Debris);
 		TestEqual(TEXT("posts stay removed (no restored supports)"), S.StateOf(SCarportEdge, TEXT("post_north")), EGLStructurePartState::Removed);
@@ -259,7 +262,7 @@ bool FGLStructurePersists::RunTest(const FString& Parameters)
 		AGLStructurePart* West = S.Structures->FindPart(SCarportEdge, TEXT("deck_west"));
 		TestTrue(TEXT("at the same rest"), West && West->GetActorLocation().Equals(WestRest.GetLocation(), 0.5));
 		TestEqual(TEXT("no collapse replayed"), S.Structures->ActiveCollapses(), 0);
-		TestEqual(TEXT("no impact repeated (no duplicate damage)"), S.Structures->GetImpacts().Num(), ImpactsAway);
+		TestEqual(TEXT("no impact repeated (no duplicate damage)"), S.Structures->GetImpacts().Num(), ImpactsAway + 2);
 		S.GoTo(SDeepInLots);
 	}
 	// Salvage one piece of debris, then save standing in the neighbouring cell.

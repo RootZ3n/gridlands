@@ -446,7 +446,13 @@ def check_lods(ds: Dataset) -> None:
 def check_structures(ds: Dataset) -> None:
     """STR-1 part names are unique; STR-2 a structure stands on the ground: at least one grounded part at z = 0;
     STR-3 a structure placement is a transform with a yaw in quarter turns (bounds stay exact, ADR-0024);
-    TUN-1 exactly one tuning entity, tuning.world.physical; TUN-2 its noise radii are declared Noise.* tags."""
+    TUN-1 exactly one tuning entity, tuning.world.physical; TUN-2 its noise radii are declared Noise.* tags;
+    STR-4 (P10, ADR-0038) everything a placed structure's collapse could hit lies inside its own cell: each part's
+    footprint grown by its own height (a topple's reach) and the impact margin. A collapse in flight is frozen with its
+    cell, so an impact may never need a neighbouring cell's creatures."""
+    cells_by_short = {e.id.split(".")[-1]: e for e in ds.entities.values() if e.kind == "cell"}
+    tuning = ds.entities.get(TUNING_ID)
+    margin_cm = float(((tuning.data.get("collapse", {}) if tuning else {}) or {}).get("impactMarginMetres", 0.0)) * 100.0
     for entity in sorted(ds.entities.values(), key=lambda e: e.id):
         data, rel = entity.data, entity.file
         if entity.kind == "structure":
@@ -468,6 +474,8 @@ def check_structures(ds: Dataset) -> None:
                 ds.problem("STR-3", rel, ".transform", "a structure placement needs a transform (not an anchor)")
             elif abs(float(transform.get("yaw", 0)) / 90.0 - round(float(transform.get("yaw", 0)) / 90.0)) > 1e-6:
                 ds.problem("STR-3", rel, ".transform.yaw", "a structure's yaw must be a multiple of 90 degrees")
+            else:
+                check_structure_reach(ds, entity, transform, cells_by_short, margin_cm)
     tunings = [e for e in ds.entities.values() if e.kind == "tuning"]
     if [e.id for e in tunings] != [TUNING_ID]:
         ds.problem("TUN-1", "Data/tuning", "", f"exactly one tuning entity, {TUNING_ID}, is required (found {sorted(e.id for e in tunings)})")
@@ -546,6 +554,34 @@ def check_encounters(ds: Dataset) -> None:
         elif entity.kind == "navregion":
             if any(not isinstance(x, (int, float)) or x <= 0 for x in data.get("extent", [])[:3]):
                 ds.problem("NAV-1", rel, ".extent", "half-extents must be positive")
+
+
+def check_structure_reach(ds: Dataset, entity, transform: dict, cells_by_short: dict, margin_cm: float) -> None:
+    """STR-4 (see check_structures): the placement's possible impact reach stays inside its cell (cell-local cm)."""
+    cell = cells_by_short.get(entity.id.split(".")[1]) if entity.id.count(".") >= 2 else None
+    structure = ds.entities.get(entity.data.get("definition", ""))
+    if not cell or not structure or not cell.data.get("sizeMetres"):
+        return  # ID-10 / PLC-1 report those
+    half = float(cell.data["sizeMetres"]) * 50.0
+    origin = (list(transform.get("location") or [0, 0, 0]) + [0, 0, 0])[:3]
+    quarter = int(round(float(transform.get("yaw", 0)) / 90.0)) % 4
+    for part in structure.data.get("parts", []) or []:
+        piece = ds.entities.get(part.get("piece", "")) if isinstance(part, dict) else None
+        if not piece:
+            continue
+        size = (list(piece.data.get("size") or [0, 0, 0]) + [0, 0, 0])[:3]
+        local = (list(part.get("location") or [0, 0, 0]) + [0, 0, 0])[:3]
+        x, y = local[0] * 100.0, local[1] * 100.0
+        for _ in range(quarter):
+            x, y = -y, x
+        sx, sy = (size[0], size[1]) if (quarter + int(part.get("yawQuarter", 0))) % 2 == 0 else (size[1], size[0])
+        reach = size[2] * 100.0 + margin_cm
+        for axis, centre, extent in (("x", origin[0] + x, sx * 50.0), ("y", origin[1] + y, sy * 50.0)):
+            if abs(centre) + extent + reach > half + 1e-6:
+                ds.problem("STR-4", entity.file, ".transform.location",
+                           f"part '{part.get('name')}' could hit {abs(centre) + extent + reach - half:.0f} cm outside its cell along {axis} "
+                           "(a collapse in flight is frozen with its cell; its impact must not need a neighbour's creatures)")
+                return
 
 
 def check_grid(ds: Dataset) -> None:

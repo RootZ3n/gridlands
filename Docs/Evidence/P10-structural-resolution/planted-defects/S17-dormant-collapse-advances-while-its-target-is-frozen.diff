@@ -1,0 +1,12 @@
+--- a/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
+@@ -391,7 +391,8 @@
+ 	// Structures after the ground (debris rests on it); silently, so no collapse replays.
+ 	if (UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>())
+ 	{
+-		Structures->RestoreCell(Record.Cell, Record.StructureParts, Record.Collapses, OutProblems);
++		TArray<FGLSavedCollapse> Aged = Record.Collapses; for (FGLSavedCollapse& C : Aged) { C.ElapsedSeconds += Elapsed; } // DEFECT: the fall kept time
++		Structures->RestoreCell(Record.Cell, Record.StructureParts, Aged, OutProblems);
+ 	}
+ }
+ 

@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -647,6 +647,7 @@
+ 			// P10: still in flight. Silently resumed from where it was (no collapse event, no noise); its impact is to come.
+ 			Outcome.PieceId = Part->Piece.Id;
+ 			Outcome.Def = Part->Piece.Def;
++			{ const TArray<FGLCollapseRequest> Again = { { Part->Piece, Part->Motion, Part->Direction, Part->DamageScale } }; const FGLCollapsePlan P = GLCollapseRules::Plan(GLContent::Get(), Again, {}, [this](const FVector2D& At) { return GroundAt(At); }, FVector::ZeroVector, GLContent::Tuning().Collapse); if (P.Outcomes.Num() == 1) { Outcome = P.Outcomes[0]; Outcome.PieceId = Part->Piece.Id; } } // DEFECT: re-planned
+ 			Part->Rest = Outcome.Rest;
+ 			FGLActiveCollapse& Resumed = Active.AddDefaulted_GetRef();
+ 			Resumed.Placement = Placement;

@@ -33,16 +33,27 @@ struct GRIDLANDSGAME_API FGLStructureRuntime
 	FGLStructurePartRuntime* Find(FName Part) { return Parts.FindByPredicate([Part](const FGLStructurePartRuntime& P) { return P.Name == Part; }); }
 };
 
-/** A collapse in progress: the plan's impact still to happen, and the pose to present until then. */
+/**
+ * A collapse in progress (P10, ADR-0038: SUPPORT FAILED, DELAY, IN FLIGHT): the plan's impact still to happen, and the
+ * pose to present until then. The plan fixed the trajectory, rest, impact time and volume; WHO it affects is decided
+ * only at impact, from where everything is then. Its clock runs only while its cell is live and none of the cell's
+ * creatures is waiting to be presented (a frozen creature must not lose time against a falling structure).
+ */
 struct GRIDLANDSGAME_API FGLActiveCollapse
 {
 	FName Placement;
 	FName Part;
+	FName Cell;
 	FGLCollapseOutcome Outcome;
-	double DecidedAt = 0.0;
+	/** Seconds since its support failed, on its own clock. */
+	double Elapsed = 0.0;
 	bool bImpacted = false;
 	FName Material;
-	TWeakObjectPtr<AActor> Instigator;
+	/** Who physically removed the support, and who receives gameplay attribution (kills, drops): identities, not actors, so a save keeps them. */
+	FName Cause;
+	FName Credit;
+	/** The credited actor while this session lasts (any pawn); after a reload, Credit's identity finds it again. */
+	TWeakObjectPtr<AActor> CreditActor;
 };
 
 /** What one impact did (tests and evidence read it). */
@@ -51,7 +62,12 @@ struct GRIDLANDSGAME_API FGLImpactRecord
 	FName Placement;
 	FName Part;
 	double Damage = 0.0;
+	double Severity = 0.0;
+	/** Every pawn or creature the impact volume touched (creature models included, presented or not). */
 	TArray<TWeakObjectPtr<AActor>> Hit;
+	/** Creature placements it pinned (Neutralize.Pinned: no damage) and creature placements it damaged. */
+	TArray<FName> Pinned;
+	TArray<FName> Damaged;
 };
 
 /**
@@ -94,13 +110,22 @@ public:
 	int32 PendingPresentation() const { return Pending.Num(); }
 	/** Part actors of unloaded cells still waiting to be destroyed (retired: inert, hidden, no collision). */
 	int32 RetiringActors() const { return Retiring.Num(); }
-	/** Streaming: removes a cell's structures and drops their unfinished collapses (the outcome is already final). */
+	/**
+	 * Streaming: removes a cell's structures and their collapses in flight. The cell's record captured those first
+	 * (CaptureCollapses), so they are frozen while it is dormant and resume, never replay, when it returns (P10).
+	 */
 	int32 RemoveCell(FName Cell);
 
 	/** Save: every part of the cell's structures that is no longer intact, sorted. */
 	void CaptureCell(FName Cell, TArray<FGLSavedStructurePart>& Out) const;
-	/** Load/stream-in: applies saved part states silently (no collapse replayed, no damage, no noise). */
-	void RestoreCell(FName Cell, const TArray<FGLSavedStructurePart>& Saved, TArray<FString>* OutProblems = nullptr);
+	/** P10: every collapse of the cell still in flight (support failed, impact to come), sorted. */
+	void CaptureCollapses(FName Cell, TArray<FGLSavedCollapse>& Out) const;
+	/**
+	 * Load/stream-in: applies saved part states silently (no collapse replayed, no damage, no noise). P10: a part with a
+	 * saved collapse in flight resumes it from its elapsed time (not solid, at the plan's pose); its impact is still to come.
+	 */
+	void RestoreCell(FName Cell, const TArray<FGLSavedStructurePart>& Saved, const TArray<FGLSavedCollapse>& InFlight = TArray<FGLSavedCollapse>(),
+		TArray<FString>* OutProblems = nullptr);
 
 	/** Terrain must not move under an intact grounded part or under debris (a digging refusal, like player pieces). */
 	bool IsUnderStructure(const FVector2D& World, double MarginCm = 50.0) const;
@@ -117,6 +142,10 @@ public:
 	FGLStructureRuntime* FindMutable(FName Placement) { return Structures.Find(Placement); }
 	AGLStructurePart* FindPart(FName Placement, FName Part) const;
 	int32 ActiveCollapses() const { return Active.Num(); }
+	const TArray<FGLActiveCollapse>& GetActive() const { return Active; }
+	/** P10: a gameplay identity for an actor (Zenny, Pehlichi, a creature's placement), and back. */
+	static FName IdentityOf(const AActor* Actor);
+	AActor* ActorOf(FName Identity) const;
 	const TArray<FGLImpactRecord>& GetImpacts() const { return Impacts; }
 	double GetClock() const { return Clock; }
 

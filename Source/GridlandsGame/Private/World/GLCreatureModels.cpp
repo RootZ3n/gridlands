@@ -4,6 +4,7 @@
 
 #include "World/GLPlacementSubsystem.h"
 
+#include "Building/GLCollapseRules.h"
 #include "Combat/GLCreature.h"
 #include "Combat/GLHealthComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -73,6 +74,51 @@ bool UGLPlacementSubsystem::CreatureLocation(FName PlacementId, FVector& OutLoca
 	const AGLCreature* Creature = Cast<AGLCreature>(Model->Actor.Get());
 	OutLocation = Creature && Model->Creature.IsActiveHostile() ? FeetOf(*Creature) : Model->Location;
 	return true;
+}
+
+TArray<FName> UGLPlacementSubsystem::ActiveCreaturesTouching(const FGLImpactVolume& Volume) const
+{
+	TArray<FName> Out;
+	for (const TPair<FName, FGLActorPlacement>& Entry : ActorModels)
+	{
+		FVector Feet;
+		if (Entry.Value.Kind != TEXT("spawn") || !Entry.Value.Creature.IsActiveHostile() || !CreatureLocation(Entry.Key, Feet))
+		{
+			continue;
+		}
+		const FVector Centre = Feet + FVector(0.0, 0.0, GLCreatureRules::CapsuleHalfHeightCm);
+		if (Volume.TouchesCapsule(Centre, GLCreatureRules::CapsuleRadiusCm, GLCreatureRules::CapsuleHalfHeightCm))
+		{
+			Out.Add(Entry.Key);
+		}
+	}
+	Out.Sort(FNameLexicalLess());
+	return Out;
+}
+
+bool UGLPlacementSubsystem::DamageCreature(FName PlacementId, double Amount, AActor* Instigator)
+{
+	const FGLActorPlacement* Model = ActorModels.Find(PlacementId);
+	if (!Model || Model->Kind != TEXT("spawn") || !Model->Creature.IsActiveHostile() || Amount <= 0.0)
+	{
+		return false;
+	}
+	if (!Model->Actor.IsValid())
+	{
+		PresentActor(PlacementId); // one damage system: the actor's, made from the model as it is now
+	}
+	AGLCreature* Creature = FindCreature(PlacementId);
+	if (!Creature || !Creature->GetHealth())
+	{
+		UE_LOG(LogGridlands, Warning, TEXT("Creatures: %s could not be presented to take %.0f damage"), *PlacementId.ToString(), Amount);
+		return false;
+	}
+	return Creature->GetHealth()->ApplyDamage(Amount, Instigator) > 0.0;
+}
+
+bool UGLPlacementSubsystem::HasPendingCreatures(FName Cell) const
+{
+	return PendingActors.ContainsByPredicate([Cell](const FGLPendingActor& P) { return P.Cell == Cell && P.Kind == TEXT("spawn"); });
 }
 
 FGLSavedCreature UGLPlacementSubsystem::CaptureCreature(const FGLActorPlacement& Model) const

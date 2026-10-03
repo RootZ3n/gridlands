@@ -294,6 +294,7 @@ FGLSavedCell UGLSaveSubsystem::CaptureCell(FName Cell) const
 	if (const UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>())
 	{
 		Structures->CaptureCell(Cell, Record.StructureParts);
+		Structures->CaptureCollapses(Cell, Record.Collapses); // P10: in flight, frozen while the record waits
 	}
 	Record.Glitches.Sort([](const FGLSavedGlitch& A, const FGLSavedGlitch& B) { return A.Placement.LexicalLess(B.Placement); });
 	Record.SalvagedPlacements.Sort(FNameLexicalLess());
@@ -390,7 +391,7 @@ void UGLSaveSubsystem::ApplyCell(const FGLSavedCell& Record, TArray<FString>* Ou
 	// Structures after the ground (debris rests on it); silently, so no collapse replays.
 	if (UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>())
 	{
-		Structures->RestoreCell(Record.Cell, Record.StructureParts, OutProblems);
+		Structures->RestoreCell(Record.Cell, Record.StructureParts, Record.Collapses, OutProblems);
 	}
 }
 
@@ -403,6 +404,7 @@ void UGLSaveSubsystem::AgeToNow(FGLSavedCell& Record, double Now)
 		Creature.NoiseSeconds = FMath::Max(0.0, Creature.NoiseSeconds - Passed);
 		Creature.LureSeconds = FMath::Max(0.0, Creature.LureSeconds - Passed);
 	}
+	// P10: a collapse in flight is not aged: its clock stops while its cell is dormant (its creatures cannot move either).
 	Record.CapturedWorldSeconds = -1.0; // as written to a file: no time passes until it is read again
 }
 

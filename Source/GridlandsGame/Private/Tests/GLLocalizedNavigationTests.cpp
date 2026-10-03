@@ -3,6 +3,7 @@
 // boundaries, and leave nothing behind when a cell unloads.
 
 #include "Character/GLCharacter.h"
+#include "Components/DynamicMeshComponent.h"
 #include "Combat/GLCreature.h"
 #include "EngineUtils.h"
 #include "NavigationPath.h"

@@ -40,7 +40,7 @@ namespace GLEncounterTests
 	const FName ENLots(TEXT("cell.outer.diner_lots"));
 	const FString ENSlot(TEXT("gl-encounter-test"));
 	const FVector ENFarAway(0, -1200, 100); // the origin: the lots stream out
-	// Layout indices (GLDungeonProofLayout.inl): 0-19 walls, 20 grate, 21-24 patrol gremlins, 25 warden, 26 cage, 27 fan, 28 region.
+	// Layout indices (GLDungeonProofLayout.inl): 0-19 walls, 20 grate, 21-24 patrol gremlins, 25 warden, 26 cage, 27 fan, 28 region, 29 carport (P10).
 	constexpr int32 ENFirstGremlin = 21;
 	constexpr int32 ENWarden = 25;
 	constexpr int32 ENCage = 26;
@@ -217,7 +217,7 @@ bool FGLProofRoomStands::RunTest(const FString& Parameters)
 				GLCollapseRules::Unsupported(GLContent::Get(), Pieces, [&S](const FVector2D& At) { return S.Terrain->HeightAt(At); }).Num(), 0);
 		}
 	}
-	TestEqual(TEXT("21 dev structures (20 walls, the grate)"), Structs, 21);
+	TestEqual(TEXT("22 structures (20 dev walls, the grate, P10's ordinary carport)"), Structs, 22);
 	for (int32 I = GLEncounterTests::ENFirstGremlin; I <= GLEncounterTests::ENWarden; ++I)
 	{
 		const FGLActorPlacement* M = S.Model(I);

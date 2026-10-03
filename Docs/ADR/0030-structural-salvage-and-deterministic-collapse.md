@@ -67,6 +67,11 @@ and decide everything gameplay needs, up front:
 - **At impact time** it damages every pawn with health whose capsule touches the volume, once,
   through the normal health system. The instigator is whoever salvaged the support, so kills and
   drops behave like any other.
+  - **Amended by P10 ([ADR-0038](0038-structural-environmental-resolution.md)):**
+    - creatures are decided on their **models** (presented or not), with one shared capsule;
+    - each gets at most one outcome: Neutralize.Pinned if susceptible and the impact is severe enough, else this
+      ordinary damage;
+    - the instigator is kept as separate cause and credit identities.
 - It emits `Noise.Structure.Collapse`, and the debris becomes solid and salvageable (provisionally,
   with the part's own salvage).
 - **Presentation follows.** The part's pose is `GLCollapseRules::Motion(outcome, t)`.
@@ -81,8 +86,9 @@ and only for parts that are no longer intact.
 
 **Streaming and restart:**
 - A structure streams with its cell; debris belongs to its structure's cell.
-- A cell that unloads mid-fall drops the unfinished collapse. Its outcome is already saved, so the
-  collapse is never replayed and its damage never lands twice.
+- ~~A cell that unloads mid-fall drops the unfinished collapse.~~ **Amended by P10 ([ADR-0038](0038-structural-environmental-resolution.md)):**
+  a collapse in flight is a durable fact (`FGLSavedCollapse`). It is frozen in its cell's record while the cell is
+  dormant, saved to file mid-fall, and resumed, never replayed, so its impact lands exactly once.
 - **Loading restores silently:** no collapse, no damage, no noise, no events.
 - **If data changed** so that an intact part has no support after loading, that part settles as
   debris silently and a load problem is reported.
@@ -123,10 +129,10 @@ and only for parts that are no longer intact.
   are not modelled. Cascades come from support alone.
 
 ## Recorded debt (operator, 2026-09-25)
-- **GAMEPLAY CONSISTENCY DEBT: saving or unloading mid-fall.** The collapse outcome persists, but
-  impact damage that has not happened yet is never applied afterwards. That is a future save/reload
-  exploit: a player could avoid lethal collapse damage. **It must be resolved before structural
-  collapse is production-complete.** Not addressed until a milestone touches this path.
+- ~~**GAMEPLAY CONSISTENCY DEBT: saving or unloading mid-fall.**~~ **CLOSED by P10
+  ([ADR-0038](0038-structural-environmental-resolution.md)).** The impact still to come persists through saves, restarts
+  and streaming, and lands once on whoever is under it then. It was: the collapse outcome persisted, but
+  impact damage that had not happened yet was never applied afterwards (a save/reload exploit).
 - **Player-built physical collapse: deferred** (a future operator decision; see ADR-0024).
 - **Debris impact and load propagation between parts: deferred** until there is a measured design
   need.

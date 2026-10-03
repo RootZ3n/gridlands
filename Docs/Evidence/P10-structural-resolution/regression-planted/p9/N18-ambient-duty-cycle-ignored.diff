@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Mechanism/GLMechanismSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Mechanism/GLMechanismSubsystem.cpp
+@@ -199,7 +199,7 @@
+ 		return false;
+ 	}
+ 	const FGLMechanismAmbientDef& A = Def->Ambient;
+-	return A.Period <= 0.0 || FMath::Fmod(Seconds + A.Phase, A.Period) < A.OnSeconds;
++	return true; // DEFECT
+ }
+ 
+ double UGLMechanismSubsystem::MaskAt(const FVector& Listener) const

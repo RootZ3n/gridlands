@@ -90,6 +90,12 @@ bool FGLImpactVolume::Touches(const FVector& Point, double RadiusCm) const
 	return FVector::DistSquared(Point, Closest) <= RadiusCm * RadiusCm;
 }
 
+bool FGLImpactVolume::TouchesCapsule(const FVector& CapsuleCentre, double RadiusCm, double HalfHeightCm) const
+{
+	const FVector Up(0.0, 0.0, FMath::Max(0.0, HalfHeightCm - RadiusCm));
+	return Touches(CapsuleCentre, RadiusCm) || Touches(CapsuleCentre + Up, RadiusCm) || Touches(CapsuleCentre - Up, RadiusCm);
+}
+
 EGLCollapseMotion GLCollapseRules::MotionFromData(FName Motion)
 {
 	return Motion == TEXT("topple") ? EGLCollapseMotion::Topple : EGLCollapseMotion::Drop;
@@ -205,24 +211,10 @@ FGLCollapsePlan GLCollapseRules::Plan(const FGLContentRegistry& Content, TConstA
 			// Rotating +90 degrees about Up x D takes Up to D: the top falls toward D.
 			Out.TiltAxis = FVector::CrossProduct(FVector::UpVector, D).GetSafeNormal();
 
-			// A uniform rod pivoting at its base: theta'' = (3 g / 2 L) sin(theta). Fixed-step, deterministic.
-			const double Omega2 = 3.0 * G / (2.0 * Height);
-			double Theta = FMath::DegreesToRadians(FMath::Clamp(Tuning.ToppleStartDegrees, 0.1, 45.0));
-			double Rate = 0.0, Time = 0.0, NextSample = 0.0;
-			constexpr double Step = 0.0005;
-			while (Theta < UE_HALF_PI && Time < 30.0)
-			{
-				if (Time >= NextSample)
-				{
-					Out.ToppleAngles.Add(Theta);
-					NextSample += ToppleSampleSeconds;
-				}
-				Rate += Omega2 * FMath::Sin(Theta) * Step;
-				Theta += Rate * Step;
-				Time += Step;
-			}
-			Out.ToppleAngles.Add(UE_HALF_PI);
-			Out.ImpactSeconds = Delay + Time;
+			Out.ToppleHeightCm = Height;
+			Out.ToppleGravityCmS2 = G;
+			Out.ToppleStartRadians = FMath::DegreesToRadians(FMath::Clamp(Tuning.ToppleStartDegrees, 0.1, 45.0));
+			Out.ImpactSeconds = Delay + IntegrateTopple(Out.ToppleHeightCm, Out.ToppleGravityCmS2, Out.ToppleStartRadians, Out.ToppleAngles);
 
 			const FQuat Tilt(Out.TiltAxis, UE_HALF_PI);
 			const FVector Lowered = Out.Start.GetLocation() - FVector(0.0, 0.0, Out.ToppleDropCm);
@@ -243,9 +235,38 @@ FGLCollapsePlan GLCollapseRules::Plan(const FGLContentRegistry& Content, TConstA
 			Surfaces.Add(Landed);
 		}
 		Out.Damage = DamageFor(Out.FallMetres, Request.DamageScale, Tuning);
+		Out.Severity = Out.FallMetres * 100.0 < NoFallCm ? 0.0 : Out.FallMetres * Request.DamageScale;
 		Plan.Outcomes.Add(MoveTemp(Out));
 	}
 	return Plan;
+}
+
+double GLCollapseRules::IntegrateTopple(double HeightCm, double GravityCmS2, double StartRadians, TArray<double>& OutAngles)
+{
+	// A uniform rod pivoting at its base: theta'' = (3 g / 2 L) sin(theta). Fixed-step, deterministic.
+	OutAngles.Reset();
+	const double Omega2 = 3.0 * GravityCmS2 / (2.0 * FMath::Max(1.0, HeightCm));
+	double Theta = StartRadians;
+	double Rate = 0.0, Time = 0.0, NextSample = 0.0;
+	constexpr double Step = 0.0005;
+	while (Theta < UE_HALF_PI && Time < 30.0)
+	{
+		if (Time >= NextSample)
+		{
+			OutAngles.Add(Theta);
+			NextSample += ToppleSampleSeconds;
+		}
+		Rate += Omega2 * FMath::Sin(Theta) * Step;
+		Theta += Rate * Step;
+		Time += Step;
+	}
+	OutAngles.Add(UE_HALF_PI);
+	return Time;
+}
+
+bool GLCollapseRules::Pins(const FGLCollapseOutcome& Outcome, const FGLCollapseTuningDef& Tuning)
+{
+	return Tuning.PinMinSeverity > 0.0 && Outcome.Severity >= Tuning.PinMinSeverity;
 }
 
 FTransform GLCollapseRules::Motion(const FGLCollapseOutcome& Outcome, double Seconds)

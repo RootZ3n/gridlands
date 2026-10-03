@@ -38,6 +38,11 @@ struct GRIDLANDSCORE_API FGLImpactVolume
 
 	/** True when a sphere of RadiusCm at Point touches the box. */
 	bool Touches(const FVector& Point, double RadiusCm = 0.0) const;
+	/**
+	 * P10: true when an upright capsule (centre, radius, half height) touches the box, tested as its bottom, middle
+	 * and top spheres. The one test for every pawn and creature model an impact can hit.
+	 */
+	bool TouchesCapsule(const FVector& CapsuleCentre, double RadiusCm, double HalfHeightCm) const;
 };
 
 /**
@@ -58,6 +63,11 @@ struct GRIDLANDSCORE_API FGLCollapseOutcome
 	/** Where anything with health is hit at ImpactSeconds, and how hard. */
 	FGLImpactVolume Impact;
 	double Damage = 0.0;
+	/**
+	 * P10 (ADR-0038): how hard it hits, physically: metres fallen x the material's impactScale (0 when it barely
+	 * moved, like damage). Pinning compares it with tuning; the structure never knows who is hit.
+	 */
+	double Severity = 0.0;
 	/** Metres its centre of mass fell (drop: the fall; topple: half its height). */
 	double FallMetres = 0.0;
 	/** topple: the pivot (a point on the base edge) and the tilt axis. */
@@ -67,6 +77,10 @@ struct GRIDLANDSCORE_API FGLCollapseOutcome
 	double ToppleDropCm = 0.0;
 	/** topple: the tilt angle (radians) sampled every ToppleSampleSeconds from StartSeconds. */
 	TArray<double> ToppleAngles;
+	/** topple: the inputs ToppleAngles were integrated from (P10: a pending collapse re-integrates them, never re-plans). */
+	double ToppleHeightCm = 0.0;
+	double ToppleGravityCmS2 = 0.0;
+	double ToppleStartRadians = 0.0;
 };
 
 /** The result of taking pieces away from a structure. */
@@ -98,6 +112,16 @@ namespace GLCollapseRules
 	GRIDLANDSCORE_API FGLCollapsePlan Plan(const FGLContentRegistry& Content, TConstArrayView<FGLCollapseRequest> Collapsing,
 		TConstArrayView<FGLPlacedPiece> Standing, GLStructureRules::FGroundHeight Ground, const FVector& Instigator,
 		const FGLCollapseTuningDef& Tuning);
+
+	/**
+	 * A uniform rod tipping about its base from StartRadians to lying flat (theta'' = 3 g sin(theta) / 2 L), fixed
+	 * step: the angle every ToppleSampleSeconds into OutAngles. Returns the seconds it takes. Pure and
+	 * deterministic: the same three inputs give bit-identical angles (P10 reconstruction relies on it).
+	 */
+	GRIDLANDSCORE_API double IntegrateTopple(double HeightCm, double GravityCmS2, double StartRadians, TArray<double>& OutAngles);
+
+	/** P10: does this impact pin (a Neutralize.Pinned susceptibility applies)? Severity at or above the tuning threshold. */
+	GRIDLANDSCORE_API bool Pins(const FGLCollapseOutcome& Outcome, const FGLCollapseTuningDef& Tuning);
 
 	/** The authoritative pose at Seconds after the decision (presentation follows it). */
 	GRIDLANDSCORE_API FTransform Motion(const FGLCollapseOutcome& Outcome, double Seconds);

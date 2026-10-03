@@ -79,6 +79,9 @@ and an entry here. It's a code change, reviewed.
 - **[V] STR-1** A structure's part names are unique (saves refer to parts by name).
 - **[V] STR-2** A structure has a grounded part at z = 0.
 - **[V] STR-3** A structure placement is a transform whose yaw is a multiple of 90 degrees.
+- **[V] STR-4** (P10, ADR-0038) Everything a placed structure's collapse could hit lies inside its own cell: each part's
+  footprint grown by its own height and the impact margin. A fall in flight is frozen with its cell, so its impact
+  must never need a neighbouring cell's creatures.
 - **[V] TUN-1** There is exactly one tuning entity: `tuning.world.physical`.
 - **[V] TUN-2** Its noise radii are keyed by declared `Noise.*` tags.
 - **[V] PRF-1** Dev-proof definitions (`<kind>.proof.*`) are placed only by dev fixtures: no Data placement may
@@ -153,7 +156,7 @@ part      = upper *( alpha / digit )          ; PascalCase, 1..32 chars
 | `Capability` | capability categories | `Capability.Pehlichi.Scan` |
 | `Requirement` | glitch requirement kinds | `Requirement.ObjectSalvaged` |
 | `Noise` | world noise actions (P6, ADR-0031): authoritative sounds creatures hear | `Noise.Terrain.Dig` |
-| `Neutralize` | non-damage encounter outcomes (P9, ADR-0037): how a creature was taken out without dying | `Neutralize.Contained` |
+| `Neutralize` | non-damage encounter outcomes (P9, ADR-0037): how a creature was taken out without dying (P10 adds `Neutralize.Pinned`, ADR-0038) | `Neutralize.Contained` |
 
 **[V] TAG-5** A new namespace needs a row here and a real owning system.
 

@@ -69,7 +69,7 @@ Gridlands.Game.Presentation 6
 Gridlands.Game.Navigation 3
 
 # P6: authored structures, deterministic collapse, trees, persistence (ADR-0030); world noise and creature memory (ADR-0031).
-Gridlands.Core.Structure 3
+Gridlands.Core.Structure 6
 Gridlands.Game.Structure 5
 Gridlands.Game.Noise 2
 Gridlands.Game.Streaming 4
@@ -85,3 +85,7 @@ Gridlands.Game.ActorPresentation 4
 Gridlands.Game.Lod 3
 Gridlands.Game.TownBlock 3
 Gridlands.Game.Encounter 11
+
+# P10: structural environmental resolution (ADR-0038; Gridlands.Core.Structure above also holds its 3 pending-collapse tests): a pending collapse rebuilt bit-identically and never re-planned;
+# impact-time authority over creature models (pinned XOR damaged); save/restart and unload never change an outcome.
+Gridlands.Game.Structural 10

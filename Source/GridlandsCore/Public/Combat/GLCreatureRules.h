@@ -79,6 +79,13 @@ struct GRIDLANDSCORE_API FGLCreatureDecision
 namespace GLCreatureRules
 {
 	constexpr double HomeToleranceCm = 150.0;
+	/**
+	 * P10: every creature's collision capsule (cm). The actor is built with it and a model's impacts are tested with
+	 * it, so a creature with no actor is exactly as hittable as a presented one. A model stands at its feet; the
+	 * capsule centre is CapsuleHalfHeightCm above them.
+	 */
+	constexpr double CapsuleRadiusCm = 40.0;
+	constexpr double CapsuleHalfHeightCm = 60.0;
 
 	/** Within sight radius, inside the view cone (or already chasing), and in line of sight. */
 	GRIDLANDSCORE_API bool Sees(const FGLCreatureDef& Def, const FGLCreatureFacts& Facts, bool bAlreadyChasing);

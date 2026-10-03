@@ -1,5 +1,9 @@
 #include "Structure/GLStructureSubsystem.h"
 
+#include "Building/GLPendingCollapse.h"
+#include "Character/GLCharacter.h"
+#include "Combat/GLCreature.h"
+#include "Combat/GLCreatureRules.h"
 #include "Combat/GLHealthComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Content/GLContent.h"
@@ -10,10 +14,13 @@
 #include "GameFramework/Character.h"
 #include "GameplayTagsManager.h"
 #include "GridlandsGame.h"
+#include "Kismet/GameplayStatics.h"
 #include "Noise/GLNoiseSubsystem.h"
+#include "Pehlichi/GLPehlichi.h"
 #include "Salvage/GLSalvageableComponent.h"
 #include "Structure/GLStructurePart.h"
 #include "Terrain/GLTerrainSubsystem.h"
+#include "World/GLPlacementSubsystem.h"
 
 namespace
 {
@@ -65,6 +72,50 @@ namespace
 void UGLStructureSubsystem::Tick(float DeltaSeconds)
 {
 	Advance(DeltaSeconds);
+}
+
+FName UGLStructureSubsystem::IdentityOf(const AActor* Actor)
+{
+	if (Cast<AGLCharacter>(Actor))
+	{
+		return TEXT("Zenny");
+	}
+	if (Cast<AGLPehlichi>(Actor))
+	{
+		return TEXT("Pehlichi");
+	}
+	if (const AGLCreature* Creature = Cast<AGLCreature>(Actor))
+	{
+		return Creature->GetPlacementId();
+	}
+	return NAME_None;
+}
+
+AActor* UGLStructureSubsystem::ActorOf(FName Identity) const
+{
+	UWorld* World = GetWorld();
+	if (!World || Identity.IsNone())
+	{
+		return nullptr;
+	}
+	if (Identity == TEXT("Zenny"))
+	{
+		for (TActorIterator<AGLCharacter> It(World); It; ++It)
+		{
+			return *It;
+		}
+		return nullptr;
+	}
+	if (Identity == TEXT("Pehlichi"))
+	{
+		for (TActorIterator<AGLPehlichi> It(World); It; ++It)
+		{
+			return *It;
+		}
+		return nullptr;
+	}
+	const UGLPlacementSubsystem* Placements = World->GetSubsystem<UGLPlacementSubsystem>();
+	return Placements ? Placements->FindCreature(Identity) : nullptr;
 }
 
 double UGLStructureSubsystem::GroundAt(const FVector2D& At) const
@@ -175,7 +226,7 @@ AGLStructurePart* UGLStructureSubsystem::Present(FGLStructureRuntime& Structure,
 	{
 		// Mid-fall (decided while it was waiting): the plan's pose, not solid, until it lands.
 		Actor->SetSolid(false);
-		Actor->SetActorTransform(GLCollapseRules::Motion(Falling->Outcome, Clock - Falling->DecidedAt));
+		Actor->SetActorTransform(GLCollapseRules::Motion(Falling->Outcome, Falling->Elapsed));
 	}
 	return Actor;
 }
@@ -342,10 +393,14 @@ void UGLStructureSubsystem::Collapse(FGLStructureRuntime& Structure, AActor* By,
 		FGLActiveCollapse& Entry = Active.AddDefaulted_GetRef();
 		Entry.Placement = Structure.Placement;
 		Entry.Part = Part->Name;
+		Entry.Cell = Structure.Cell;
 		Entry.Outcome = Outcome;
-		Entry.DecidedAt = Clock;
 		Entry.Material = MaterialOf(Part->Piece);
-		Entry.Instigator = By;
+		// P10: what physically caused it and who is credited are separate facts. Today the credit is the one who
+		// removed the support (P6's rule); attribution through Pehlichi is a future operator decision (ADR-0038).
+		Entry.Cause = IdentityOf(By);
+		Entry.Credit = Entry.Cause;
+		Entry.CreditActor = By;
 	}
 	UE_LOG(LogGridlands, Log, TEXT("Structures: %s lost support: %d part(s) collapse (decided in %.3f ms)"), *Structure.Placement.ToString(), Plan.Outcomes.Num(), (FPlatformTime::Seconds() - Began) * 1000.0);
 	if (!bSilent)
@@ -356,17 +411,26 @@ void UGLStructureSubsystem::Collapse(FGLStructureRuntime& Structure, AActor* By,
 
 void UGLStructureSubsystem::Advance(double Seconds)
 {
-	Clock += FMath::Max(0.0, Seconds);
-	for (FGLActiveCollapse& Collapse : Active)
+	const double Dt = FMath::Max(0.0, Seconds);
+	Clock += Dt;
+	const UGLPlacementSubsystem* Placements = GetWorld() ? GetWorld()->GetSubsystem<UGLPlacementSubsystem>() : nullptr;
+	for (int32 I = 0; I < Active.Num(); ++I) // by index: an impact can present a creature, never add a collapse
 	{
-		const double Since = Clock - Collapse.DecidedAt;
+		FGLActiveCollapse& Collapse = Active[I];
+		// P10: a creature waiting for presentation is frozen (ADR-0037), so the fall waits with it: the race between
+		// the structure and whoever might escape it is run on one clock, or not at all.
+		if (Placements && Placements->HasPendingCreatures(Collapse.Cell))
+		{
+			continue;
+		}
+		Collapse.Elapsed += Dt;
 		if (AGLStructurePart* Actor = FindPart(Collapse.Placement, Collapse.Part))
 		{
-			Actor->SetActorTransform(GLCollapseRules::Motion(Collapse.Outcome, Since));
+			Actor->SetActorTransform(GLCollapseRules::Motion(Collapse.Outcome, Collapse.Elapsed));
 		}
-		if (!Collapse.bImpacted && Since >= Collapse.Outcome.ImpactSeconds)
+		if (!Collapse.bImpacted && Collapse.Elapsed >= Collapse.Outcome.ImpactSeconds)
 		{
-			Land(Collapse);
+			Land(Active[I]);
 		}
 	}
 	Active.RemoveAll([](const FGLActiveCollapse& Collapse) { return Collapse.bImpacted; });
@@ -383,40 +447,80 @@ void UGLStructureSubsystem::Advance(double Seconds)
 void UGLStructureSubsystem::Land(FGLActiveCollapse& Collapse)
 {
 	const double Began = FPlatformTime::Seconds();
-	Collapse.bImpacted = true;
-	FGLImpactRecord& Record = Impacts.AddDefaulted_GetRef();
+	Collapse.bImpacted = true; // at once: from here a save holds this part as debris at rest, never as still to hit
+	FGLImpactRecord Record;
 	Record.Placement = Collapse.Placement;
 	Record.Part = Collapse.Part;
 	Record.Damage = Collapse.Outcome.Damage;
-	// Whatever has health inside the authoritative impact volume is hit, once, by the normal health system.
+	Record.Severity = Collapse.Outcome.Severity;
+	// Copies: presenting a creature below can grow the actor arrays, never this collapse's facts.
+	const FGLCollapseOutcome Outcome = Collapse.Outcome;
+	const FName Placement = Collapse.Placement, PartName = Collapse.Part, Material = Collapse.Material, Cause = Collapse.Cause;
+	AActor* Credit = Collapse.CreditActor.IsValid() ? Collapse.CreditActor.Get() : ActorOf(Collapse.Credit);
+	// P10 (ADR-0038): the impact decides from the world as it is NOW. A creature model (presented or not) touching the
+	// volume gets ONE outcome: pinned (Neutralize.Pinned: no damage, no death, no kill) when the impact is severe
+	// enough and it is susceptible, else the ordinary damage path, which may defeat it through its health.
+	UGLPlacementSubsystem* Placements = GetWorld()->GetSubsystem<UGLPlacementSubsystem>();
+	const bool bPins = GLCollapseRules::Pins(Outcome, GLContent::Tuning().Collapse);
+	if (Placements)
+	{
+		for (const FName& Creature : Placements->ActiveCreaturesTouching(Outcome.Impact))
+		{
+			FVector Feet;
+			Placements->CreatureLocation(Creature, Feet);
+			const FGLActorPlacement* Model = Placements->FindActorModel(Creature);
+			const double Yaw = Model ? Model->Creature.Yaw : 0.0;
+			if (bPins && Placements->TryNeutralize(Creature, TEXT("Neutralize.Pinned"), Placement, Feet, Yaw))
+			{
+				Record.Pinned.Add(Creature);
+			}
+			else if (Outcome.Damage > 0.0 && Placements->DamageCreature(Creature, Outcome.Damage, Credit))
+			{
+				Record.Damaged.Add(Creature);
+			}
+			Record.Hit.Add(Placements->FindCreature(Creature));
+		}
+	}
+	// Every other pawn with health (Zenny; a dev proof creature, which has no model): the normal health system.
 	for (TActorIterator<APawn> It(GetWorld()); It; ++It)
 	{
+		const AGLCreature* AsCreature = Cast<AGLCreature>(*It);
+		if (AsCreature && Placements && Placements->FindActorModel(AsCreature->GetPlacementId()))
+		{
+			continue; // decided on its model above
+		}
 		UGLHealthComponent* Health = It->FindComponentByClass<UGLHealthComponent>();
-		if (!Health || Health->IsDead())
+		if (!Health || Health->IsDead() || (AsCreature && !AsCreature->IsActiveHostile()))
 		{
 			continue;
 		}
-		const FVector Centre = It->GetActorLocation();
 		double Radius = 40.0, Half = 90.0;
 		if (const ACharacter* Character = Cast<ACharacter>(*It))
 		{
 			Radius = Character->GetCapsuleComponent()->GetScaledCapsuleRadius();
 			Half = Character->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 		}
-		const FVector Up(0.0, 0.0, FMath::Max(0.0, Half - Radius));
-		if (Collapse.Outcome.Impact.Touches(Centre, Radius) || Collapse.Outcome.Impact.Touches(Centre + Up, Radius) || Collapse.Outcome.Impact.Touches(Centre - Up, Radius))
+		if (Outcome.Impact.TouchesCapsule(It->GetActorLocation(), Radius, Half))
 		{
 			Record.Hit.Add(*It);
-			if (Collapse.Outcome.Damage > 0.0)
+			if (Outcome.Damage > 0.0)
 			{
-				Health->ApplyDamage(Collapse.Outcome.Damage, Collapse.Instigator.Get());
+				Health->ApplyDamage(Outcome.Damage, Credit);
 			}
 		}
 	}
-	UE_LOG(LogGridlands, Log, TEXT("Structures: %s/%s hit (%.0f damage, %d hit; impact resolved in %.3f ms)"), *Collapse.Placement.ToString(), *Collapse.Part.ToString(), Record.Damage, Record.Hit.Num(), (FPlatformTime::Seconds() - Began) * 1000.0);
-	UGLNoiseSubsystem::EmitAction(this, TEXT("Noise.Structure.Collapse"), Collapse.Outcome.Impact.Centre, Collapse.Instigator.Get(), Collapse.Material);
-	FGLStructureRuntime* Structure = Structures.Find(Collapse.Placement);
-	FGLStructurePartRuntime* Part = Structure ? Structure->Find(Collapse.Part) : nullptr;
+	UE_LOG(LogGridlands, Log, TEXT("Structures: %s/%s hit (%.0f damage, severity %.2f, %d hit, %d pinned, %d damaged creatures; impact resolved in %.3f ms)"), *Placement.ToString(), *PartName.ToString(),
+		Record.Damage, Record.Severity, Record.Hit.Num(), Record.Pinned.Num(), Record.Damaged.Num(), (FPlatformTime::Seconds() - Began) * 1000.0);
+	UGLNoiseSubsystem::EmitAction(this, TEXT("Noise.Structure.Collapse"), Outcome.Impact.Centre, Cause == Collapse.Credit && Credit ? Credit : ActorOf(Cause), Material);
+	FGLGameplayEvent Impact;
+	Impact.Tag = UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Structure.Impact"));
+	Impact.Subject = Placement;
+	Impact.Instigator = Credit;
+	Impact.Numbers.Add(TEXT("pinned"), Record.Pinned.Num());
+	Impact.Numbers.Add(TEXT("damaged"), Record.Damaged.Num());
+	UGLEventSubsystem::Emit(this, MoveTemp(Impact));
+	FGLStructureRuntime* Structure = Structures.Find(Placement);
+	FGLStructurePartRuntime* Part = Structure ? Structure->Find(PartName) : nullptr;
 	if (Part && Part->State == EGLStructurePartState::Debris)
 	{
 		MakeDebris(*Structure, *Part);
@@ -425,6 +529,7 @@ void UGLStructureSubsystem::Land(FGLActiveCollapse& Collapse)
 			Actor->OnPresentationImpact.Broadcast(Actor);
 		}
 	}
+	Impacts.Add(MoveTemp(Record));
 }
 
 int32 UGLStructureSubsystem::RemoveCell(FName Cell)
@@ -450,6 +555,7 @@ int32 UGLStructureSubsystem::RemoveCell(FName Cell)
 			}
 		}
 		const FName Placement = It.Key();
+		// P10: the cell's record captured its collapses in flight (StowCell runs first); they wait there, frozen.
 		Active.RemoveAll([Placement](const FGLActiveCollapse& Collapse) { return Collapse.Placement == Placement; });
 		Pending.RemoveAll([Placement](const TPair<FName, FName>& Entry) { return Entry.Key == Placement; }); // cancelled presentation
 		It.RemoveCurrent();
@@ -489,7 +595,22 @@ void UGLStructureSubsystem::CaptureCell(FName Cell, TArray<FGLSavedStructurePart
 	});
 }
 
-void UGLStructureSubsystem::RestoreCell(FName Cell, const TArray<FGLSavedStructurePart>& Saved, TArray<FString>* OutProblems)
+void UGLStructureSubsystem::CaptureCollapses(FName Cell, TArray<FGLSavedCollapse>& Out) const
+{
+	for (const FGLActiveCollapse& Collapse : Active)
+	{
+		if (Collapse.Cell == Cell && !Collapse.bImpacted)
+		{
+			Out.Add(GLPendingCollapse::Capture(Collapse.Placement, Collapse.Part, Collapse.Outcome, Collapse.Elapsed, Collapse.Material, Collapse.Cause, Collapse.Credit));
+		}
+	}
+	Out.Sort([](const FGLSavedCollapse& A, const FGLSavedCollapse& B)
+	{
+		return A.Placement != B.Placement ? A.Placement.LexicalLess(B.Placement) : A.Part.LexicalLess(B.Part);
+	});
+}
+
+void UGLStructureSubsystem::RestoreCell(FName Cell, const TArray<FGLSavedStructurePart>& Saved, const TArray<FGLSavedCollapse>& InFlight, TArray<FString>* OutProblems)
 {
 	auto Problem = [OutProblems](const FString& Message)
 	{
@@ -513,7 +634,38 @@ void UGLStructureSubsystem::RestoreCell(FName Cell, const TArray<FGLSavedStructu
 		Part->State = Entry.State;
 		const FName Name = Part->Name, Placement = Entry.Placement;
 		Active.RemoveAll([Name, Placement](const FGLActiveCollapse& Collapse) { return Collapse.Placement == Placement && Collapse.Part == Name; });
-		if (Entry.State == EGLStructurePartState::Debris)
+		const FGLSavedCollapse* Flight = InFlight.FindByPredicate([Name, Placement](const FGLSavedCollapse& C) { return C.Placement == Placement && C.Part == Name; });
+		FGLCollapseOutcome Outcome;
+		FString Why;
+		if (Flight && Entry.State == EGLStructurePartState::Debris && !GLPendingCollapse::Reconstruct(*Flight, Outcome, &Why))
+		{
+			Problem(FString::Printf(TEXT("saved collapse of %s/%s is not a plan (%s): it settles at rest"), *Placement.ToString(), *Name.ToString(), *Why));
+			Flight = nullptr;
+		}
+		if (Flight && Entry.State == EGLStructurePartState::Debris)
+		{
+			// P10: still in flight. Silently resumed from where it was (no collapse event, no noise); its impact is to come.
+			Outcome.PieceId = Part->Piece.Id;
+			Outcome.Def = Part->Piece.Def;
+			Part->Rest = Outcome.Rest;
+			FGLActiveCollapse& Resumed = Active.AddDefaulted_GetRef();
+			Resumed.Placement = Placement;
+			Resumed.Part = Name;
+			Resumed.Cell = Structure->Cell;
+			Resumed.Outcome = MoveTemp(Outcome);
+			Resumed.Elapsed = Flight->ElapsedSeconds;
+			Resumed.Material = Flight->Material;
+			Resumed.Cause = Flight->Cause;
+			Resumed.Credit = Flight->Credit;
+			if (AGLStructurePart* Actor = Part->Actor.Get())
+			{
+				Actor->SetSolid(false);
+				Actor->SetActorHiddenInGame(false);
+				Actor->SetActorTransform(GLCollapseRules::Motion(Resumed.Outcome, Resumed.Elapsed));
+			}
+			// A part still waiting for presentation is made later at the plan's pose (Present).
+		}
+		else if (Entry.State == EGLStructurePartState::Debris)
 		{
 			Part->Rest = FTransform(Entry.Rotation, Entry.Location);
 			if (!IsPending(Entry.Placement, Part->Name))
@@ -526,6 +678,13 @@ void UGLStructureSubsystem::RestoreCell(FName Cell, const TArray<FGLSavedStructu
 		{
 			Actor->Destroy(); // removed or salvaged debris: gone (silently)
 			Part->Actor = nullptr;
+		}
+	}
+	for (const FGLSavedCollapse& Flight : InFlight)
+	{
+		if (!Active.ContainsByPredicate([&Flight](const FGLActiveCollapse& C) { return C.Placement == Flight.Placement && C.Part == Flight.Part; }))
+		{
+			Problem(FString::Printf(TEXT("saved collapse of %s/%s has no fallen part to resume"), *Flight.Placement.ToString(), *Flight.Part.ToString()));
 		}
 	}
 	// A saved world must be structurally consistent. If data changed so that an intact part is now

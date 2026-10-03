@@ -162,6 +162,20 @@ public:
 	bool TryNeutralize(FName PlacementId, FName How, FName By, const FVector& HeldAt, double HeldYaw);
 	/** P9: where a creature is now (its actor while presented, else its model). False if unknown. */
 	bool CreatureLocation(FName PlacementId, FVector& OutLocation) const;
+	/**
+	 * P10 (ADR-0038): the active creatures (neither defeated nor neutralized) whose capsule, at where each is NOW
+	 * (CreatureLocation, presented or not), touches Volume; sorted by placement. One capsule for actor and model
+	 * (GLCreatureRules::CapsuleRadiusCm / CapsuleHalfHeightCm).
+	 */
+	TArray<FName> ActiveCreaturesTouching(const struct FGLImpactVolume& Volume) const;
+	/**
+	 * P10: environmental damage to a creature through THE health system: a creature waiting for presentation is
+	 * presented first (by the pump's own path), so health, defeat, drops, events and credit are exactly the actor
+	 * path's. Returns whether any damage was taken (false if it is not an active creature, or takes none).
+	 */
+	bool DamageCreature(FName PlacementId, double Amount, AActor* Instigator);
+	/** P10: any creature of Cell still waiting for its actor (frozen meanwhile, so a collapse there waits too). */
+	bool HasPendingCreatures(FName Cell) const;
 	/** P9: a presented creature's facts written through to its model (AGLCreature calls it every step). */
 	void SyncCreatureFromActor(const AGLCreature& Creature);
 	/** P9: its facts as a save keeps them (timers as remaining now). */
