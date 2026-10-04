@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.angle_post_l45",
+  "displayName": "Angle post (45 left)",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "role": "post",
+  "grounded": true,
+  "size": [
+    0.2,
+    0.2,
+    2.5
+  ],
+  "shapes": [
+    {
+      "size": [
+        0.2,
+        0.2,
+        2.5
+      ],
+      "offset": [
+        0,
+        0,
+        1.25
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "top",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        2.5
+      ]
+    },
+    {
+      "name": "in",
+      "role": "side",
+      "offset": [
+        -0.1,
+        0,
+        1.25
+      ],
+      "facing": 180
+    },
+    {
+      "name": "out",
+      "role": "side",
+      "offset": [
+        0.1,
+        0,
+        1.25
+      ],
+      "facing": 45
+    }
+  ],
+  "cost": [
+    {
+      "item": "item.component.stud",
+      "count": 1
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "layers": [],
+  "salvage": "salvage.build.angle_post",
+  "notes": "P11: an angle post: a wall snapped to its out socket turns 45 degrees (bays, octagons, hexagons, segmented towers)."
+}

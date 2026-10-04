@@ -74,7 +74,9 @@ The visual mesh may overhang `size` for trim. The data boxes stay authoritative.
 - **The data validator passes:** STR, BLD, VIS and ID rules.
 
 ## Limits found (named, not hidden)
-- **Quarter-turn yaw and axis-aligned support boxes.** Support geometry is boxes in 90° steps.
+- **Resolved in P11 (ADR-0039): yaw is any whole 2.5 degree step, with oriented support boxes.** Parts and placements
+  carry `yaw` in degrees (YAW-1, STR-3); angled pieces snap through socket facings. The text below is the P7 record.
+- **Quarter-turn yaw and axis-aligned support boxes (P7; superseded).** Support geometry was boxes in 90° steps.
   - Round, diagonal or angled architecture (round towers, carousels, pagoda roofs, angled
     Victorian bays) is represented by approximating support parts with art meshes of any shape on
     top.

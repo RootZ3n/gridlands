@@ -2,6 +2,8 @@
 #include "World/GLNavRegionSubsystem.h"
 
 #include "Building/GLBuildingSubsystem.h"
+#include "Structure/GLStructureSubsystem.h"
+#include "World/GLWinchesterHouse.h"
 #include "Content/GLContent.h"
 #include "Content/GLContentDefinitions.h"
 #include "Engine/LevelStreamingDynamic.h"
@@ -11,6 +13,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Save/GLSaveSubsystem.h"
 #include "Terrain/GLTerrainSubsystem.h"
+#include "UObject/UObjectArray.h"
 #include "World/GLGridBoundary.h"
 #include "World/GLGridCells.h"
 #include "World/GLPlacementSubsystem.h"
@@ -188,24 +191,42 @@ void UGLGridSubsystem::TryFinishRuntime(FName Cell, FGLLoadedCell& Entry)
 		return;
 	}
 	UGLSaveSubsystem* Saves = World->GetSubsystem<UGLSaveSubsystem>();
-	UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>();
 	FGLSavedCell Record;
 	Record.Cell = Cell;
 	const bool bHadState = Saves->TakeDormant(Cell, Record);
 	// Anything done to this cell while it was loading is newer than its kept record: its ground as
 	// it is now, and any pieces already placed on it.
 	Terrain->CaptureCellDelta(Cell, Record.TerrainIndices, Record.TerrainDeltaCm);
-	for (const FGLPlacedPiece& Piece : Building->PiecesOfCell(Cell))
+	TArray<FGLSavedPiece> Placed;
+	World->GetSubsystem<UGLStructureSubsystem>()->CapturePlayerCell(Cell, Placed);
+	for (const FGLSavedPiece& Piece : Placed)
 	{
 		if (!Record.BuildPieces.ContainsByPredicate([&Piece](const FGLSavedPiece& S) { return S.Id == Piece.Id; }))
 		{
-			Record.BuildPieces.Add({ Piece.Id, Piece.Def, Piece.Location, Piece.YawQuarter });
+			Record.BuildPieces.Add(Piece);
 		}
 	}
+#if !UE_BUILD_SHIPPING
+	// P11 density fixture (-GLPlayerDense, dev only): a 309-piece player-built base arrives with the lots the first time,
+	// as saved facts through the real restore path (presentation over frames, captured on unload, restored on return).
+	static bool bPlayerDenseSeeded = false;
+	if (!bPlayerDenseSeeded && Record.BuildPieces.Num() == 0 && Cell == FName(TEXT("cell.outer.diner_lots")) && FParse::Param(FCommandLine::Get(), TEXT("GLPlayerDense")))
+	{
+		bPlayerDenseSeeded = true;
+		int32 Units = 50; // 309 pieces; -GLPlayerDenseUnits=100 is the ~600-piece stress (diagnostic, not a limit)
+		FParse::Value(FCommandLine::Get(), TEXT("GLPlayerDenseUnits="), Units);
+		Record.BuildPieces = FGLWinchesterHouse::DensePlayerBaseSaved(FVector(75000.0, -26000.0, 0.0), FMath::Clamp(Units, 1, 400),
+			[Terrain](const FVector2D& At) { return Terrain->HeightAt(At); }, 900000, Cell);
+		World->GetSubsystem<UGLBuildingSubsystem>()->SetNextId(900000 + Record.BuildPieces.Num());
+		UE_LOG(LogGridlands, Log, TEXT("Grid: DEV player-built density fixture seeded (%d pieces in %s)"), Record.BuildPieces.Num(), *Cell.ToString());
+	}
+#endif
 	// Authoritative first (ADR-0033): the placements' gameplay model, then the kept state on it, in
 	// this one frame. Deferred presentation is made later from the resolved model, never before.
 	World->GetSubsystem<UGLPlacementSubsystem>()->SpawnCell(Cell, true);
+	const double ApplyStart = FPlatformTime::Seconds();
 	Saves->ApplyCell(Record);
+	UE_LOG(LogGridlands, Log, TEXT("Grid: %s kept state applied in %.3f ms (%d player pieces)"), *Cell.ToString(), (FPlatformTime::Seconds() - ApplyStart) * 1000.0, Record.BuildPieces.Num());
 	if (bShowBoundaries)
 	{
 		const FGLCellDef* Def = GLContent::Get().Find<FGLCellDef>(Cell);
@@ -233,7 +254,9 @@ bool UGLGridSubsystem::UnloadCell(FName Cell)
 	// still has its full kept record: only its ground (which may have been edited) is merged.
 	if (Entry.bRuntime)
 	{
+		const double StowStart = FPlatformTime::Seconds();
 		Saves->StowCell(Cell);
+		UE_LOG(LogGridlands, Log, TEXT("Grid: %s captured in %.3f ms"), *Cell.ToString(), (FPlatformTime::Seconds() - StowStart) * 1000.0);
 	}
 	else
 	{
@@ -243,7 +266,6 @@ bool UGLGridSubsystem::UnloadCell(FName Cell)
 		R.Epoch = Entry.Epoch;
 		R.bCancelled = true;
 	}
-	World->GetSubsystem<UGLBuildingSubsystem>()->RemoveCell(Cell);
 	World->GetSubsystem<UGLPlacementSubsystem>()->DespawnCell(Cell);
 	World->GetSubsystem<UGLTerrainSubsystem>()->RemoveCell(Cell);
 	if (Entry.Boundary)
@@ -256,7 +278,7 @@ bool UGLGridSubsystem::UnloadCell(FName Cell)
 		Entry.Level->SetShouldBeLoaded(false);
 	}
 	++Unloads;
-	UE_LOG(LogGridlands, Log, TEXT("Grid: unloaded %s at frame %llu (epoch %d, %s)"), *Cell.ToString(), GFrameCounter, Entry.Epoch, Entry.bRuntime ? TEXT("was ready") : TEXT("cancelled mid-load"));
+	UE_LOG(LogGridlands, Log, TEXT("Grid: unloaded %s at frame %llu (epoch %d, %s; live UObjects %d)"), *Cell.ToString(), GFrameCounter, Entry.Epoch, Entry.bRuntime ? TEXT("was ready") : TEXT("cancelled mid-load"), GUObjectArray.GetObjectArrayNumMinusAvailable());
 	return true;
 }
 

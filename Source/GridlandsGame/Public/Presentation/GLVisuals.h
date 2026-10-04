@@ -27,6 +27,12 @@ namespace GLVisuals
 	 */
 	GRIDLANDSGAME_API int32 Preload();
 
+	/** Components a visual creates carry this tag (P11: a piece's look changes when a finish is installed). */
+	inline const FName VisualTag = TEXT("GLVisual");
+	/** Removes every component Attach made on Owner. */
+	GRIDLANDSGAME_API void Detach(AActor* Owner);
+	GRIDLANDSGAME_API bool HasLook(const AActor* Owner);
+
 	/** Attaches VisualId under Parent. Returns the main mesh component, or null if the visual is unknown. */
 	GRIDLANDSGAME_API UStaticMeshComponent* Attach(AActor* Owner, USceneComponent* Parent, FName VisualId, const FTransform& Local = FTransform::Identity);
 

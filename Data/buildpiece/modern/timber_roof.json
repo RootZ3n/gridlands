@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "buildpiece.modern.timber_roof",
-  "displayName": "Timber roof",
+  "displayName": "Roof frame",
   "era": "era.memory.modern_day",
   "material": "material.timber.pine",
   "unlockedBy": [
@@ -69,9 +69,83 @@
   ],
   "cost": [
     {
-      "item": "item.material.timber_plank",
-      "count": 2
+      "item": "item.component.stud",
+      "count": 4
     }
   ],
-  "visual": "visual.kittimber.roof"
+  "layers": [
+    "phase.construction.finish"
+  ],
+  "frameShapes": [
+    {
+      "size": [
+        0.05,
+        2.236,
+        0.12
+      ],
+      "offset": [
+        -0.975,
+        0,
+        0.5
+      ],
+      "pitch": 26.57
+    },
+    {
+      "size": [
+        0.05,
+        2.236,
+        0.12
+      ],
+      "offset": [
+        -0.5,
+        0,
+        0.5
+      ],
+      "pitch": 26.57
+    },
+    {
+      "size": [
+        0.05,
+        2.236,
+        0.12
+      ],
+      "offset": [
+        0,
+        0,
+        0.5
+      ],
+      "pitch": 26.57
+    },
+    {
+      "size": [
+        0.05,
+        2.236,
+        0.12
+      ],
+      "offset": [
+        0.5,
+        0,
+        0.5
+      ],
+      "pitch": 26.57
+    },
+    {
+      "size": [
+        0.05,
+        2.236,
+        0.12
+      ],
+      "offset": [
+        0.975,
+        0,
+        0.5
+      ],
+      "pitch": 26.57
+    }
+  ],
+  "salvage": "salvage.build.roof_frame",
+  "legacyLayers": [
+    "finish.modern.shingles"
+  ],
+  "notes": "P11: rafters (FRAME) take shingles (FINISH); two slopes meeting at the ridge make a gable. M10's roof migrates to this frame + shingles."
 }

@@ -208,8 +208,9 @@ bool UGLPlacementSubsystem::SpawnPlacement(FName CellId, FName Id, const FGLPlac
 	{
 		// Authored structures (P6) live in the structure subsystem, which owns their part states. With
 		// deferred presentation only that authoritative model is made now; part actors follow (P7).
-		const int32 YawQuarter = ((FMath::RoundToInt(Yaw / 90.0) % 4) + 4) % 4;
-		return World->GetSubsystem<UGLStructureSubsystem>()->SpawnStructure(Id, Placement.Definition, CellId, Location, YawQuarter, bDeferPresentation);
+		// P11: any whole 2.5 degree step (STR-3 refuses anything else in data).
+		return World->GetSubsystem<UGLStructureSubsystem>()->SpawnStructure(Id, Placement.Definition, CellId, Location,
+			GLStructureRules::YawStepFromDegrees(Yaw), bDeferPresentation);
 	}
 	if (Placement.Kind == TEXT("scatter"))
 	{

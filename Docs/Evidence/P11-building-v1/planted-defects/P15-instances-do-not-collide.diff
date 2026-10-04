@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp
++++ b/Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp
+@@ -128,7 +128,7 @@
+ 	}
+ 	if (!Collision)
+ 	{
+-		Collision = NewSet(LoadObject<UStaticMesh>(nullptr, BatchCubePath), true);
++		Collision = NewSet(LoadObject<UStaticMesh>(nullptr, BatchCubePath), false); // DEFECT
+ 		Collision->SetVisibility(false); // the envelope collides and navigation reads it; what is seen is the look
+ 		Collision->SetCastShadow(false);
+ 	}

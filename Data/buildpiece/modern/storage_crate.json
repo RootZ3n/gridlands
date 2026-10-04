@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.storage_crate",
+  "displayName": "Storage crate",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "role": "storage",
+  "grounded": false,
+  "size": [
+    1.0,
+    0.8,
+    0.8
+  ],
+  "shapes": [
+    {
+      "size": [
+        1.0,
+        0.8,
+        0.8
+      ],
+      "offset": [
+        0,
+        0,
+        0.4
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 4
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "layers": [],
+  "salvage": "salvage.build.storage_crate",
+  "storage": {
+    "slots": 24
+  },
+  "notes": "P11: shared base storage. It stands on a floor (the floor's centre socket), so it can lose its support and collapse; its contents are never lost (lootable debris)."
+}

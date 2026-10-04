@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -561,6 +561,7 @@
+ 		Entry.Part = Part->Name;
+ 		Entry.Cell = Structure.Cell;
+ 		Entry.Outcome = Outcome;
++		Entry.Outcome.Impact.Centre.Z += Outcome.FallMetres * 100.0; // DEFECT: the start pose
+ 		Entry.Material = MaterialOf(Part->Piece);
+ 		// P10: what physically caused it and who is credited are separate facts. Today the credit is the one who
+ 		// removed the support (P6's rule); attribution through Pehlichi is a future operator decision (ADR-0038).

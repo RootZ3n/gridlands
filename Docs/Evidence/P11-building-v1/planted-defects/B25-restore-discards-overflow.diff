@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Inventory/GLInventoryComponent.cpp
++++ b/Source/GridlandsGame/Private/Inventory/GLInventoryComponent.cpp
+@@ -80,7 +80,7 @@
+ 	Inventory = FGLInventory(Inventory.GetMaxSlots());
+ 	for (const TPair<FName, int32>& Item : Items)
+ 	{
+-		Inventory.ForceAdd(GLContent::Get(), Item.Key, Item.Value); // a save is never truncated (P11)
++		Inventory.Add(GLContent::Get(), Item.Key, Item.Value); // DEFECT
+ 	}
+ }
+ 

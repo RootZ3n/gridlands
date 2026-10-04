@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -654,7 +654,7 @@
+ 		const AGLCreature* AsCreature = Cast<AGLCreature>(*It);
+ 		if (AsCreature && Placements && Placements->FindActorModel(AsCreature->GetPlacementId()))
+ 		{
+-			continue; // decided on its model above
++			; // DEFECT
+ 		}
+ 		UGLHealthComponent* Health = It->FindComponentByClass<UGLHealthComponent>();
+ 		if (!Health || Health->IsDead() || (AsCreature && !AsCreature->IsActiveHostile()))

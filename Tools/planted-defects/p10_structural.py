@@ -74,8 +74,8 @@ DEFECTS = [
         '\t\t// Mid-fall (decided while it was waiting): the plan\'s pose, not solid, until it lands.\n\t\tActor->SetSolid(true); // DEFECT')]),
     ('S16-restored-with-elapsed-reset', [(STRUCT, '\t\t\tResumed.Elapsed = Flight->ElapsedSeconds;', '\t\t\tResumed.Elapsed = 0.0; // DEFECT')]),
     ('S17-dormant-collapse-advances-while-its-target-is-frozen', [(SAVE,
-        '\t\tStructures->RestoreCell(Record.Cell, Record.StructureParts, Record.Collapses, OutProblems);',
-        '\t\tTArray<FGLSavedCollapse> Aged = Record.Collapses; for (FGLSavedCollapse& C : Aged) { C.ElapsedSeconds += Elapsed; } // DEFECT: the fall kept time\n\t\tStructures->RestoreCell(Record.Cell, Record.StructureParts, Aged, OutProblems);')]),
+        '\t\tStructures->RestoreCell(Record.Cell, Record.StructureParts, AuthoredFlights, OutProblems);',
+        '\t\tTArray<FGLSavedCollapse> Aged = AuthoredFlights; for (FGLSavedCollapse& C : Aged) { C.ElapsedSeconds += Elapsed; } // DEFECT: the fall kept time\n\t\tStructures->RestoreCell(Record.Cell, Record.StructureParts, Aged, OutProblems);')]),  # P11: authored flights (player flights restore with their pieces)
     ('S18-resumes-before-restored-creatures-can-move', [(STRUCT,
         '\t\tif (Placements && Placements->HasPendingCreatures(Collapse.Cell))', '\t\tif (false && Placements && Placements->HasPendingCreatures(Collapse.Cell)) // DEFECT')]),
     ('S19-restore-replans-in-the-current-world', [(STRUCT, '\t\t\tOutcome.Def = Part->Piece.Def;',

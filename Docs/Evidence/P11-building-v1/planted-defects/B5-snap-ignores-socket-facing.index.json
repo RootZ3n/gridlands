@@ -1,0 +1,1231 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A106E6B6CD71CCB272A0EA0A82D0A2",
+			"instanceName": "Pehverse-685146",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.10.04-12.32.43",
+	"succeeded": 32,
+	"succeededWithWarnings": 0,
+	"failed": 6,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 3.5033221244812012,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "GroundDecidesWhereFloorsGo",
+			"fullTestPath": "Gridlands.Core.Building.GroundDecidesWhereFloorsGo",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0098475543782114983,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "KnowledgeItemsAndSnapping",
+			"fullTestPath": "Gridlands.Core.Building.KnowledgeItemsAndSnapping",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0079065533354878426,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemovingASupportCollapsesWhatItHeld",
+			"fullTestPath": "Gridlands.Core.Building.RemovingASupportCollapsesWhatItHeld",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0082568898797035217,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShelterStandsAndEveryPlacementIsValid",
+			"fullTestPath": "Gridlands.Core.Building.ShelterStandsAndEveryPlacementIsValid",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0074737221002578735,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SupportWeakensUpAndOut",
+			"fullTestPath": "Gridlands.Core.Building.SupportWeakensUpAndOut",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0079719861969351768,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ACollapseAtAngleUsesThePiecesOwnAxes",
+			"fullTestPath": "Gridlands.Core.BuildingV1.ACollapseAtAngleUsesThePiecesOwnAxes",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.010188871994614601,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AngledPolygonsCloseBySnappingAlone",
+			"fullTestPath": "Gridlands.Core.BuildingV1.AngledPolygonsCloseBySnappingAlone",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0076873060315847397,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l45: the polygon closes (gap 960.0000 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l45: wall 0 turned exactly by the data' to be 18, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l45: wall 1 turned exactly by the data' to be 36, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l45: wall 2 turned exactly by the data' to be 54, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l45: wall 3 turned exactly by the data' to be 72, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l45: wall 4 turned exactly by the data' to be 90, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l45: wall 5 turned exactly by the data' to be 108, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l45: wall 6 turned exactly by the data' to be 126, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l45: piece 16 stands (support 0.00)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l60: the polygon closes (gap 720.0000 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l60: wall 0 turned exactly by the data' to be 24, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l60: wall 1 turned exactly by the data' to be 48, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l60: wall 2 turned exactly by the data' to be 72, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l60: wall 3 turned exactly by the data' to be 96, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l60: wall 4 turned exactly by the data' to be 120, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l60: piece 12 stands (support 0.00)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: the polygon closes (gap 1920.0000 cm)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 0 turned exactly by the data' to be 9, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 1 turned exactly by the data' to be 18, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 2 turned exactly by the data' to be 27, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 3 turned exactly by the data' to be 36, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 4 turned exactly by the data' to be 45, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 5 turned exactly by the data' to be 54, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 6 turned exactly by the data' to be 63, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 7 turned exactly by the data' to be 72, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 8 turned exactly by the data' to be 81, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 9 turned exactly by the data' to be 90, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 10 turned exactly by the data' to be 99, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 11 turned exactly by the data' to be 108, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 12 turned exactly by the data' to be 117, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 13 turned exactly by the data' to be 126, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: wall 14 turned exactly by the data' to be 135, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'buildpiece.modern.angle_post_l225: piece 32 stands (support 0.00)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.32.39"
+				}
+			],
+			"warnings": 0,
+			"errors": 33,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "APlanRebuiltAt45DegreesIsTheSameBuilding",
+			"fullTestPath": "Gridlands.Core.BuildingV1.APlanRebuiltAt45DegreesIsTheSameBuilding",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0077869151718914509,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CarefulBeatsDestructiveBeatsCollapse",
+			"fullTestPath": "Gridlands.Core.BuildingV1.CarefulBeatsDestructiveBeatsCollapse",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0083689559251070023,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClaimsAreDerivedAndRenewalNeverTouchesPlayerConstruction",
+			"fullTestPath": "Gridlands.Core.BuildingV1.ClaimsAreDerivedAndRenewalNeverTouchesPlayerConstruction",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.007936457172036171,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FacingSocketsLinkOnlyWhenTheyFaceEachOther",
+			"fullTestPath": "Gridlands.Core.BuildingV1.FacingSocketsLinkOnlyWhenTheyFaceEachOther",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0077356640249490738,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'taking its yaw from the data (45), not from the requested yaw' to be 18, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Private/Tests/GLBuildingV1RulesTests.cpp",
+					"lineNumber": 195,
+					"timestamp": "2026.10.04-12.32.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'it stands, held by the post' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/SparseSet.h.inl",
+					"lineNumber": 110,
+					"timestamp": "2026.10.04-12.32.39"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FrameThenFinishAndElectricalIsRegisteredNotBuilt",
+			"fullTestPath": "Gridlands.Core.BuildingV1.FrameThenFinishAndElectricalIsRegisteredNotBuilt",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0075855851173400879,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MaterialPoolIsOrderedAndAllOrNothing",
+			"fullTestPath": "Gridlands.Core.BuildingV1.MaterialPoolIsOrderedAndAllOrNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0079399747774004936,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OverlapAndFootprintsAreOriented",
+			"fullTestPath": "Gridlands.Core.BuildingV1.OverlapAndFootprintsAreOriented",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0080446600914001465,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PreviewIsTheCommitsOwnRule",
+			"fullTestPath": "Gridlands.Core.BuildingV1.PreviewIsTheCommitsOwnRule",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0081838099285960197,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Version2SavesMigrateToVersion3Deterministically",
+			"fullTestPath": "Gridlands.Core.BuildingV1.Version2SavesMigrateToVersion3Deterministically",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0087979082018136978,
+			"dateTime": "2026.10.04-12.32.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "YawIsAnIntegerIn2p5DegreeSteps",
+			"fullTestPath": "Gridlands.Core.BuildingV1.YawIsAnIntegerIn2p5DegreeSteps",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0083024697378277779,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StacksAndCapacity",
+			"fullTestPath": "Gridlands.Core.Inventory.StacksAndCapacity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0097278589382767677,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CodecRoundTripAndVersions",
+			"fullTestPath": "Gridlands.Core.Save.CodecRoundTripAndVersions",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.0081134308129549026,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Version1MigratesToCellRecords",
+			"fullTestPath": "Gridlands.Core.Save.Version1MigratesToCellRecords",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.007216552272439003,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PiecesBlockNavigation",
+			"fullTestPath": "Gridlands.Game.Building.PiecesBlockNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.15676477551460266,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "wall line with a gap: path crosses the wall line x = 65 m at y = 5047",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.32.40"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PreviewColoursAndRemovalPredictionsAreTheCommitsOwn",
+			"fullTestPath": "Gridlands.Game.Building.PreviewColoursAndRemovalPredictionsAreTheCommitsOwn",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.032028794288635254,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RefusalsChangeNothing",
+			"fullTestPath": "Gridlands.Game.Building.RefusalsChangeNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.055153284221887589,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemovalCollapsesByTheCanonicalRulesAsPredicted",
+			"fullTestPath": "Gridlands.Game.Building.RemovalCollapsesByTheCanonicalRulesAsPredicted",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.063465878367424011,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShelterFromInventoryPersistsAcrossReload",
+			"fullTestPath": "Gridlands.Game.Building.ShelterFromInventoryPersistsAcrossReload",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.062749050557613373,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ABasementIsAnOpenPitThenAStructure",
+			"fullTestPath": "Gridlands.Game.BuildingV1.ABasementIsAnOpenPitThenAStructure",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.1017158031463623,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BaseStorageClaimsAndContainersNeverLoseAnything",
+			"fullTestPath": "Gridlands.Game.BuildingV1.BaseStorageClaimsAndContainersNeverLoseAnything",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.052747555077075958,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StoringAndTakingMoveOnlyWhatFits",
+			"fullTestPath": "Gridlands.Game.BuildingV1.StoringAndTakingMoveOnlyWhatFits",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.031518798321485519,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StoringAndTakingNeverLosesAnything",
+			"fullTestPath": "Gridlands.Game.BuildingV1.StoringAndTakingNeverLosesAnything",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.024820355698466301,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ThreeHundredPiecesScaleLinearly",
+			"fullTestPath": "Gridlands.Game.BuildingV1.ThreeHundredPiecesScaleLinearly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.10372760146856308,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "309 pieces: 1300 instances in 6 components",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.32.40"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "617 pieces: 2600 instances in 6 components",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.32.40"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "supportMs: 309 pieces 1.113 ms, 617 pieces 2.147 ms (x1.93)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.32.40"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "previewMs: 309 pieces 1.137 ms, 617 pieces 2.324 ms (x2.04)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.32.40"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "removalPredictionMs: 309 pieces 1.073 ms, 617 pieces 2.110 ms (x1.97)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.32.40"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "captureMs: 309 pieces 0.022 ms, 617 pieces 0.040 ms (x1.83)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.32.40"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "restoreMs: 309 pieces 0.507 ms, 617 pieces 0.803 ms (x1.58)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.32.40"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "presentMs: 309 pieces 8.463 ms, 617 pieces 15.171 ms (x1.79)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.32.40"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "lookupMsPerTrace: 309 pieces 0.002 ms, 617 pieces 0.002 ms (x0.93)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.32.40"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WinchesterHouseFrameFinishCollapseAndPersistence",
+			"fullTestPath": "Gridlands.Game.BuildingV1.WinchesterHouseFrameFinishCollapseAndPersistence",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.04681231826543808,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'framed (with the 45 degree bay)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingV1Tests.cpp",
+					"lineNumber": 114,
+					"timestamp": "2026.10.04-12.32.40"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldRenewalNeverTouchesPlayerConstruction",
+			"fullTestPath": "Gridlands.Game.BuildingV1.WorldRenewalNeverTouchesPlayerConstruction",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.030544206500053406,
+			"dateTime": "2026.10.04-12.32.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PlayerConstructionStreamsWholeAndAFallResumes",
+			"fullTestPath": "Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 1.9799098968505859,
+			"dateTime": "2026.10.04-12.32.41",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(357): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.32.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'frame' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 501,
+					"timestamp": "2026.10.04-12.32.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'finish' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 502,
+					"timestamp": "2026.10.04-12.32.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'every WINCHESTER check so far holds' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 504,
+					"timestamp": "2026.10.04-12.32.41"
+				}
+			],
+			"warnings": 0,
+			"errors": 3,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RetiredPlayerCollisionIsInertAndAlwaysRemoved",
+			"fullTestPath": "Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.47324079275131226,
+			"dateTime": "2026.10.04-12.32.43",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'frame' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 572,
+					"timestamp": "2026.10.04-12.32.43"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InventoryFullIsAnnouncedNotWeight",
+			"fullTestPath": "Gridlands.Game.Inventory.InventoryFullIsAnnouncedNotWeight",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.026822267100214958,
+			"dateTime": "2026.10.04-12.32.43",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RestoreNeverDiscardsOverflow",
+			"fullTestPath": "Gridlands.Game.Inventory.RestoreNeverDiscardsOverflow",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.021773632615804672,
+			"dateTime": "2026.10.04-12.32.43",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InstancedPiecesKeepTheirIdentityThroughEveryChange",
+			"fullTestPath": "Gridlands.Game.PlayerPresentation.InstancedPiecesKeepTheirIdentityThroughEveryChange",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.025744421407580376,
+			"dateTime": "2026.10.04-12.32.43",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TheWinchesterHouseIsOneBatchThatFollowsTheModel",
+			"fullTestPath": "Gridlands.Game.PlayerPresentation.TheWinchesterHouseIsOneBatchThatFollowsTheModel",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A106E6B6CD71CCB272A0EA0A82D0A2"
+			],
+			"duration": 0.048709645867347717,
+			"dateTime": "2026.10.04-12.32.43",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'framed' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingV1Tests.cpp",
+					"lineNumber": 630,
+					"timestamp": "2026.10.04-12.32.43"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		}
+	]
+}

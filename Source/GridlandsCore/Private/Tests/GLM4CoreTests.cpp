@@ -27,31 +27,38 @@ namespace GLM4CoreTests
 
 using namespace GLM4CoreTests;
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLInventoryRules, "Gridlands.Core.Inventory.StacksWeightAndCapacity", M4CoreFlags)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLInventoryRules, "Gridlands.Core.Inventory.StacksAndCapacity", M4CoreFlags)
 bool FGLInventoryRules::RunTest(const FString& Parameters)
 {
-	const FName Wire(TEXT("item.material.copper_wire")); // stack 50, weight 0.1
-	const FName Stone(TEXT("item.material.cut_stone"));  // stack 30, weight 3.0
-	FGLInventory Inventory(3, 100.0);
-	TestEqual(TEXT("120 wire fits in 3 slots of 50"), Inventory.Add(Content(), Wire, 120), 120);
+	// P11: slots and per-item stack limits are the inventory limit; there is no carried weight (operator, 2026-10-03).
+	const FName Wire(TEXT("item.material.copper_wire"));
+	const FName Stone(TEXT("item.material.cut_stone"));
+	const int32 WireStack = Content().Find<FGLItemDef>(Wire)->StackSize;
+	FGLInventory Inventory(3);
+	TestEqual(TEXT("2.4 stacks of wire fit in 3 slots"), Inventory.Add(Content(), Wire, WireStack * 2 + WireStack / 2), WireStack * 2 + WireStack / 2);
 	TestEqual(TEXT("as three stacks"), Inventory.GetStacks().Num(), 3);
-	TestEqual(TEXT("space left for wire"), Inventory.SpaceFor(Content(), Wire), 30);
+	TestEqual(TEXT("space left for wire"), Inventory.SpaceFor(Content(), Wire), WireStack - WireStack / 2);
 	TestEqual(TEXT("no slot for a new item"), Inventory.Add(Content(), Stone, 1), 0);
-	TestEqual(TEXT("overflow is refused, not lost silently"), Inventory.Add(Content(), Wire, 40), 30);
-	TestEqual(TEXT("count"), Inventory.CountOf(Wire), 150);
+	TestEqual(TEXT("overflow is refused, not lost silently"), Inventory.Add(Content(), Wire, WireStack), WireStack - WireStack / 2);
+	TestEqual(TEXT("count"), Inventory.CountOf(Wire), WireStack * 3);
+	for (const FGLInventoryStack& Stack : Inventory.GetStacks())
+	{
+		TestTrue(TEXT("no stack exceeds the stack limit"), Stack.Count <= WireStack);
+	}
 	TestEqual(TEXT("unknown items are refused"), Inventory.Add(Content(), TEXT("item.material.unobtainium"), 1), 0);
 
-	TestFalse(TEXT("removing more than carried fails"), Inventory.Remove(Wire, 151));
-	TestEqual(TEXT("and changes nothing"), Inventory.CountOf(Wire), 150);
-	TestTrue(TEXT("remove across stacks"), Inventory.Remove(Wire, 120));
+	TestFalse(TEXT("removing more than carried fails"), Inventory.Remove(Wire, WireStack * 3 + 1));
+	TestEqual(TEXT("and changes nothing"), Inventory.CountOf(Wire), WireStack * 3);
+	TestTrue(TEXT("remove across stacks"), Inventory.Remove(Wire, WireStack * 2));
 	TestEqual(TEXT("empty stacks are dropped"), Inventory.GetStacks().Num(), 1);
 
-	FGLInventory Heavy(10, 100.0);
-	Heavy.Add(Content(), Stone, 30); // 90 kg
-	TestFalse(TEXT("90 of 100 is not overencumbered"), Heavy.IsOverencumbered(Content()));
-	Heavy.Add(Content(), Stone, 4); // 102 kg
-	TestTrue(TEXT("102 of 100 is overencumbered (allowed, not refused)"), Heavy.IsOverencumbered(Content()));
-	TestEqual(TEXT("weight is exact"), Heavy.TotalWeight(Content()), 102.0);
+	// A save is never truncated: restoring more than fits keeps everything (adds are refused until space is freed).
+	FGLInventory Restored(2);
+	TestEqual(TEXT("force-add restores all of it"), Restored.ForceAdd(Content(), Wire, WireStack * 3 + 7), WireStack * 3 + 7);
+	TestEqual(TEXT("nothing is discarded"), Restored.CountOf(Wire), WireStack * 3 + 7);
+	TestTrue(TEXT("it is over capacity"), Restored.IsOverCapacity());
+	TestEqual(TEXT("over capacity, a new item is refused"), Restored.Add(Content(), Stone, 1), 0);
+	TestEqual(TEXT("and there is no space for more wire"), Restored.SpaceFor(Content(), Wire), 0);
 	return true;
 }
 

@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Noise/GLNoiseSubsystem.h"
+#include "Structure/GLStructureSubsystem.h"
 
 UGLFootstepsComponent::UGLFootstepsComponent()
 {
@@ -16,8 +17,22 @@ FName UGLFootstepsComponent::FloorMaterial() const
 {
 	const ACharacter* Character = Cast<ACharacter>(GetOwner());
 	const UCharacterMovementComponent* Movement = Character ? Character->GetCharacterMovement() : nullptr;
-	const AGLBuildPiece* Piece = Movement && Movement->CurrentFloor.IsWalkableFloor() ? Cast<AGLBuildPiece>(Movement->CurrentFloor.HitResult.GetActor()) : nullptr;
-	const FGLBuildPieceDef* Def = Piece ? GLContent::Get().Find<FGLBuildPieceDef>(Piece->GetPiece().Def) : nullptr;
+	if (!Movement || !Movement->CurrentFloor.IsWalkableFloor())
+	{
+		return NAME_None;
+	}
+	const FHitResult& Floor = Movement->CurrentFloor.HitResult;
+	FName PieceDef;
+	if (const AGLBuildPiece* Piece = Cast<AGLBuildPiece>(Floor.GetActor()))
+	{
+		PieceDef = Piece->GetPiece().Def; // an authored part, or a player piece with its own actor
+	}
+	else if (const UGLStructureSubsystem* Structures = GetWorld()->GetSubsystem<UGLStructureSubsystem>())
+	{
+		const FGLStructurePartRuntime* Part = Structures->FindPlayerPiece(Structures->PlayerPieceAt(Floor)); // an instanced player floor
+		PieceDef = Part ? Part->Piece.Def : NAME_None;
+	}
+	const FGLBuildPieceDef* Def = PieceDef.IsNone() ? nullptr : GLContent::Get().Find<FGLBuildPieceDef>(PieceDef);
 	return Def ? Def->Material : NAME_None;
 }
 

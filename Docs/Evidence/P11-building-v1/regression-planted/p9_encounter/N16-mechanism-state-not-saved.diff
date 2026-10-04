@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
+@@ -277,7 +277,7 @@
+ 	}
+ 	if (const UGLMechanismSubsystem* Mechanisms = World->GetSubsystem<UGLMechanismSubsystem>())
+ 	{
+-		Mechanisms->CaptureCell(Cell, Record.Mechanisms);
++		; // DEFECT
+ 	}
+ 	Record.CapturedWorldSeconds = World->GetTimeSeconds();
+ 	if (const UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>())

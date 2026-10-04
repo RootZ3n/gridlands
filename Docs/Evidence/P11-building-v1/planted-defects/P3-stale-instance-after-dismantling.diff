@@ -1,0 +1,12 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -1055,8 +1055,7 @@
+ 		return {};
+ 	}
+ 	const FVector Where = PartBox(*Part).GetCenter();
+-	Uninstance(*Structure, *Part);
+-	ToDestroy.Add(Part->Actor);
++	ToDestroy.Add(Part->Actor); // DEFECT: its instances stay
+ 	Part->Actor = nullptr;
+ 	Pending.Remove(TPair<FName, FName>(Structure->Placement, Part->Name));
+ 	// Gone whole: a removed player piece leaves no fact behind.

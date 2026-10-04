@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "buildpiece.modern.timber_wall",
-  "displayName": "Timber wall",
+  "displayName": "Stud wall",
   "era": "era.memory.modern_day",
   "material": "material.timber.pine",
   "unlockedBy": [
@@ -68,9 +68,103 @@
   ],
   "cost": [
     {
-      "item": "item.material.timber_plank",
-      "count": 2
+      "item": "item.component.stud",
+      "count": 6
     }
   ],
-  "visual": "visual.kittimber.wall"
+  "layers": [
+    "phase.construction.electrical",
+    "phase.construction.finish"
+  ],
+  "frameShapes": [
+    {
+      "size": [
+        2.0,
+        0.14,
+        0.05
+      ],
+      "offset": [
+        0,
+        0,
+        0.025
+      ]
+    },
+    {
+      "size": [
+        2.0,
+        0.14,
+        0.05
+      ],
+      "offset": [
+        0,
+        0,
+        2.475
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        -0.975,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        -0.4875,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        0.0,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        0.4875,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        0.975,
+        0,
+        1.25
+      ]
+    }
+  ],
+  "salvage": "salvage.build.stud_wall",
+  "legacyLayers": [
+    "finish.modern.timber_board_wall"
+  ],
+  "notes": "P11: FRAME is the structural object; a finish is a layer. M10's finished timber wall migrates to this frame + finish.modern.timber_board_wall."
 }

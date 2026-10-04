@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "recipe.component.stud",
+  "displayName": "Saw studs",
+  "output": {
+    "item": "item.component.stud",
+    "count": 4
+  },
+  "inputs": [
+    {
+      "item": "item.material.timber_log",
+      "count": 1
+    }
+  ],
+  "station": "Station.Saw",
+  "craftSeconds": 2.0,
+  "notes": "P11: raw log -> sawing -> studs (provisional)."
+}

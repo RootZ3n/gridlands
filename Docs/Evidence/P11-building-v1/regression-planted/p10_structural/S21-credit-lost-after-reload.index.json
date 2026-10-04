@@ -1,0 +1,686 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A1076A703E77BD8F199CF140F14999",
+			"instanceName": "Pehverse-1314264",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.10.04-14.58.43",
+	"succeeded": 28,
+	"succeededWithWarnings": 2,
+	"failed": 2,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 130.85829162597656,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "APendingCollapseIsNeverReplanned",
+			"fullTestPath": "Gridlands.Core.Structure.APendingCollapseIsNeverReplanned",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 0.010922836139798164,
+			"dateTime": "2026.10.04-14.56.32",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "APendingCollapseRebuildsBitIdenticallyThroughTheSaveFormat",
+			"fullTestPath": "Gridlands.Core.Structure.APendingCollapseRebuildsBitIdenticallyThroughTheSaveFormat",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 0.008511468768119812,
+			"dateTime": "2026.10.04-14.56.32",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DropIsDeterministicAndItsImpactIsTruthful",
+			"fullTestPath": "Gridlands.Core.Structure.DropIsDeterministicAndItsImpactIsTruthful",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 0.010069627314805984,
+			"dateTime": "2026.10.04-14.56.32",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ImpactSeverityIsPhysicalAndPinningIsTuning",
+			"fullTestPath": "Gridlands.Core.Structure.ImpactSeverityIsPhysicalAndPinningIsTuning",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 0.0081503558903932571,
+			"dateTime": "2026.10.04-14.56.32",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OnlyWhatLosesSupportFallsAndItCascades",
+			"fullTestPath": "Gridlands.Core.Structure.OnlyWhatLosesSupportFallsAndItCascades",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 0.0081366840749979019,
+			"dateTime": "2026.10.04-14.56.32",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ToppleFollowsItsDirectionPolicy",
+			"fullTestPath": "Gridlands.Core.Structure.ToppleFollowsItsDirectionPolicy",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 0.0077711092308163643,
+			"dateTime": "2026.10.04-14.56.32",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AmbientMaskingAppliesToStepsAndLuresAlike",
+			"fullTestPath": "Gridlands.Game.Encounter.AmbientMaskingAppliesToStepsAndLuresAlike",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 1.1686321496963501,
+			"dateTime": "2026.10.04-14.56.32",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AnUnpresentedCreatureHearsByTheSameRule",
+			"fullTestPath": "Gridlands.Game.Encounter.AnUnpresentedCreatureHearsByTheSameRule",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 1.1071196794509888,
+			"dateTime": "2026.10.04-14.56.33",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AWoundedCreatureStaysWoundedAcrossStreamingAndRestart",
+			"fullTestPath": "Gridlands.Game.Encounter.AWoundedCreatureStaysWoundedAcrossStreamingAndRestart",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 2.6682717800140381,
+			"dateTime": "2026.10.04-14.56.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ChaseAndSearchSurviveStreamingAndRestart",
+			"fullTestPath": "Gridlands.Game.Encounter.ChaseAndSearchSurviveStreamingAndRestart",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 2.6053056716918945,
+			"dateTime": "2026.10.04-14.56.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ContainmentReflectsTheWorldAtTheDecision",
+			"fullTestPath": "Gridlands.Game.Encounter.ContainmentReflectsTheWorldAtTheDecision",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 0.98899149894714355,
+			"dateTime": "2026.10.04-14.56.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DirectRouteDefeatsTheWardenThroughHealth",
+			"fullTestPath": "Gridlands.Game.Encounter.DirectRouteDefeatsTheWardenThroughHealth",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 2.0214121341705322,
+			"dateTime": "2026.10.04-14.56.41",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "EnvironmentalRouteNeutralizesWithoutDamage",
+			"fullTestPath": "Gridlands.Game.Encounter.EnvironmentalRouteNeutralizesWithoutDamage",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 1.0156614780426025,
+			"dateTime": "2026.10.04-14.56.43",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "the cage dropped after 13.8 s; Zenny took 90 damage meanwhile",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-14.56.44"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "IdleCreaturesAddNoNavigation",
+			"fullTestPath": "Gridlands.Game.Encounter.IdleCreaturesAddNoNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 1.2389051914215088,
+			"dateTime": "2026.10.04-14.56.44",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "tiles in the town with its idle creatures: 250",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-14.56.45"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NavigationScalesWithTheRegionNotTheCreatures",
+			"fullTestPath": "Gridlands.Game.Encounter.NavigationScalesWithTheRegionNotTheCreatures",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 1.2934834957122803,
+			"dateTime": "2026.10.04-14.56.45",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "tiles: region with the room's 5 creatures 164; with 16 more active ones 164 (16 active, 0 with their own navigation)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-14.56.46"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NeutralizedStaysContainedAndNothingReplays",
+			"fullTestPath": "Gridlands.Game.Encounter.NeutralizedStaysContainedAndNothingReplays",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 2.5666368007659912,
+			"dateTime": "2026.10.04-14.56.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ProofRoomStandsAndSpawnsModelsFirst",
+			"fullTestPath": "Gridlands.Game.Encounter.ProofRoomStandsAndSpawnsModelsFirst",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 1.0094609260559082,
+			"dateTime": "2026.10.04-14.56.49",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AFallWaitsUntilTheCellsCreaturesCanMove",
+			"fullTestPath": "Gridlands.Game.Structural.AFallWaitsUntilTheCellsCreaturesCanMove",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 2.022125244140625,
+			"dateTime": "2026.10.04-14.56.50",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ANonSusceptibleTargetTakesOrdinaryDamageAndCanBeDefeated",
+			"fullTestPath": "Gridlands.Game.Structural.ANonSusceptibleTargetTakesOrdinaryDamageAndCanBeDefeated",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 3.985076904296875,
+			"dateTime": "2026.10.04-14.56.52",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "outcome 0 None, health 0.8, damage 59.2, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 0, resolved 0, collapse noise 2",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-14.56.54"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-14.56.55"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "outcome 1 None, health 0.0, damage 60.0, Zenny 100, residue 2; collapsed 1, impacts 2, neutralized 0, defeated 1, resolved 0, collapse noise 2",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-14.56.55"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "impact deck_west: hit 0, pinned [], damaged []",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-14.56.56"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "impact deck_east: hit 2, pinned [placement.diner_lots.proof_dungeon_025], damaged [placement.diner_lots.proof_dungeon_021]",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-14.56.56"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "APinnedCreatureStaysPinnedImmuneAndResolvedOnce",
+			"fullTestPath": "Gridlands.Game.Structural.APinnedCreatureStaysPinnedImmuneAndResolvedOnce",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 2.0252559185028076,
+			"dateTime": "2026.10.04-14.56.56",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ARestoredFallIsTheDecidedFallNotAReplan",
+			"fullTestPath": "Gridlands.Game.Structural.ARestoredFallIsTheDecidedFallNotAReplan",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 3.0387675762176514,
+			"dateTime": "2026.10.04-14.56.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ASusceptibleTargetUnderTheImpactIsPinnedNotDamaged",
+			"fullTestPath": "Gridlands.Game.Structural.ASusceptibleTargetUnderTheImpactIsPinnedNotDamaged",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 0.99714362621307373,
+			"dateTime": "2026.10.04-14.57.01",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zenny 100, residue 5; collapsed 1, impacts 2, neutralized 1, defeated 0, resolved 1, collapse noise 2",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-14.57.02"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ImpactsQueryCreatureModelsAndDamageThroughTheOneHealthPath",
+			"fullTestPath": "Gridlands.Game.Structural.ImpactsQueryCreatureModelsAndDamageThroughTheOneHealthPath",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 1.1028211116790771,
+			"dateTime": "2026.10.04-14.57.02",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SaveRestartAtAnyMomentNeverChangesTheOutcome",
+			"fullTestPath": "Gridlands.Game.Structural.SaveRestartAtAnyMomentNeverChangesTheOutcome",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 64.367385864257812,
+			"dateTime": "2026.10.04-14.57.03",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Control: save/restart at 0.500 s gives the same outcome as no break\n    straight: outcome 1 None, health 0.0, damage 60.0, Zenny 100, residue 2; collapsed 1, impacts 2, neutralized 0, defeated 1, resolved 0, collapse noise 2\n    broken:   outcome 1 None, health 0.0, damage 60.0, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 1, resolved 0, collapse noise 2' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-14.57.55"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Control: save/restart at 1.007 s gives the same outcome as no break\n    straight: outcome 1 None, health 0.0, damage 60.0, Zenny 100, residue 2; collapsed 1, impacts 2, neutralized 0, defeated 1, resolved 0, collapse noise 2\n    broken:   outcome 1 None, health 0.0, damage 60.0, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 1, resolved 0, collapse noise 2' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-14.57.58"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TheImpactDecidesFromWhereTargetsAreAtImpact",
+			"fullTestPath": "Gridlands.Game.Structural.TheImpactDecidesFromWhereTargetsAreAtImpact",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 4.0047502517700195,
+			"dateTime": "2026.10.04-14.58.07",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-14.58.10"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TheOrdinaryCarportStandsFailsAndFallsByItsOwnRules",
+			"fullTestPath": "Gridlands.Game.Structural.TheOrdinaryCarportStandsFailsAndFallsByItsOwnRules",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 0.98500204086303711,
+			"dateTime": "2026.10.04-14.58.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UnloadingMidFallFreezesTheFallAndNeverChangesTheOutcome",
+			"fullTestPath": "Gridlands.Game.Structural.UnloadingMidFallFreezesTheFallAndNeverChangesTheOutcome",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 22.717565536499023,
+			"dateTime": "2026.10.04-14.58.12",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'UnloadControl: unload at 0.500 s gives the same outcome as no break\n    straight: outcome 1 None, health 0.0, damage 60.0, Zenny 100, residue 2; collapsed 1, impacts 2, neutralized 0, defeated 1, resolved 0, collapse noise 2\n    broken:   outcome 1 None, health 0.0, damage 60.0, Zenny 100, residue 0; collapsed 1, impacts 2, neutralized 0, defeated 1, resolved 0, collapse noise 2' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-14.58.34"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CollapseDamagesCreaturesThroughTheSameModel",
+			"fullTestPath": "Gridlands.Game.Structure.CollapseDamagesCreaturesThroughTheSameModel",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 0.4639662504196167,
+			"dateTime": "2026.10.04-14.58.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CollapsePersistsThroughStreamingSavesAndRestart",
+			"fullTestPath": "Gridlands.Game.Structure.CollapsePersistsThroughStreamingSavesAndRestart",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 3.6713676452636719,
+			"dateTime": "2026.10.04-14.58.36",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "east deck rested at V(X=49200.00, Y=2000.00)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-14.58.39"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "EveryAuthoredStructureStandsOnItsGround",
+			"fullTestPath": "Gridlands.Game.Structure.EveryAuthoredStructureStandsOnItsGround",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 0.96248966455459595,
+			"dateTime": "2026.10.04-14.58.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TreeFellsThroughTheStructuralPipelineAndPersists",
+			"fullTestPath": "Gridlands.Game.Structure.TreeFellsThroughTheStructuralPipelineAndPersists",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 1.8507137298583984,
+			"dateTime": "2026.10.04-14.58.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WrongSupportCollapsesAndHurtsZenny",
+			"fullTestPath": "Gridlands.Game.Structure.WrongSupportCollapsesAndHurtsZenny",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1076A703E77BD8F199CF140F14999"
+			],
+			"duration": 0.92642009258270264,
+			"dateTime": "2026.10.04-14.58.42",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

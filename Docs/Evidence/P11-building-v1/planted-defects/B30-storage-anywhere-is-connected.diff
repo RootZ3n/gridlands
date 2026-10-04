@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -85,6 +85,7 @@
+ 	Sources.Personal = Who ? const_cast<AActor*>(Who)->FindComponentByClass<UGLInventoryComponent>() : nullptr;
+ 	const TArray<FGLClaim> AllClaims = Claims();
+ 	const FGLClaim* Claim = Who ? GLClaimRules::ClaimAt(AllClaims, FVector2D(Who->GetActorLocation())) : nullptr;
++	static FGLClaim Everywhere; Everywhere.Areas = { { FVector2D::ZeroVector, 1e9, 0 } }; Claim = &Everywhere; // DEFECT: every crate in the world
+ 	if (Claim && Claim->Contains(FVector2D(At)))
+ 	{
+ 		// Eligible storage: player-built, intact (a falling piece is debris the moment its support failed), storage-capable,

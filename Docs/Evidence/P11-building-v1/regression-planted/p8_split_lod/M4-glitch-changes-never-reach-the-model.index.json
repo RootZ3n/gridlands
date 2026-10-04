@@ -1,0 +1,844 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A10796C0297C3F8C033457B0585C4D",
+			"instanceName": "Pehverse-1528391",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.10.04-15.45.34",
+	"succeeded": 20,
+	"succeededWithWarnings": 0,
+	"failed": 7,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 37.686943054199219,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "PresentedActorsWriteThroughToTheirModels",
+			"fullTestPath": "Gridlands.Game.ActorPresentation.PresentedActorsWriteThroughToTheirModels",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 0.5469743013381958,
+			"dateTime": "2026.10.04-15.44.56",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(354): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.44.57"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "a scan of the presented lamp is its record's state: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-15.44.57"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'a save reads all three from the models' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLActorPresentationTests.cpp",
+					"lineNumber": 168,
+					"timestamp": "2026.10.04-15.44.57"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RetiredActorsAreInertAtOnce",
+			"fullTestPath": "Gridlands.Game.ActorPresentation.RetiredActorsAreInertAtOnce",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 0.59589701890945435,
+			"dateTime": "2026.10.04-15.44.57",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SavedStateResolvesBeforeAnyGameplayActor",
+			"fullTestPath": "Gridlands.Game.ActorPresentation.SavedStateResolvesBeforeAnyGameplayActor",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 1.0805935859680176,
+			"dateTime": "2026.10.04-15.44.58",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(371): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.44.59"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "  the lamp is detected: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-15.44.59"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '  already detected (never latent first)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLActorPresentationTests.cpp",
+					"lineNumber": 206,
+					"timestamp": "2026.10.04-15.44.59"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UnloadBeforePresentationCancelsCleanly",
+			"fullTestPath": "Gridlands.Game.ActorPresentation.UnloadBeforePresentationCancelsCleanly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 1.4892616271972656,
+			"dateTime": "2026.10.04-15.44.59",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PlayerConstructionStreamsWholeAndAFallResumes",
+			"fullTestPath": "Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 1.8180875778198242,
+			"dateTime": "2026.10.04-15.45.00",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RapidReversalMidLoadKeepsEverything",
+			"fullTestPath": "Gridlands.Game.Grid.RapidReversalMidLoadKeepsEverything",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 3.0657107830047607,
+			"dateTime": "2026.10.04-15.45.02",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "the jukebox is still repaired (a cancelled load never overwrote the kept state): The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-15.45.04"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.05"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "restart: jukebox repaired: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-15.45.05"
+				}
+			],
+			"warnings": 1,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RetiredPlayerCollisionIsInertAndAlwaysRemoved",
+			"fullTestPath": "Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 2.251293420791626,
+			"dateTime": "2026.10.04-15.45.05",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SaveInTheSecondCellAndRestart",
+			"fullTestPath": "Gridlands.Game.Grid.SaveInTheSecondCellAndRestart",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 2.3774974346160889,
+			"dateTime": "2026.10.04-15.45.07",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "with the jukebox repaired: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-15.45.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "walking home: the origin's lamp is repaired: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-15.45.10"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaleAsyncWorkNeverLandsAndZennyNeverFalls",
+			"fullTestPath": "Gridlands.Game.Grid.StaleAsyncWorkNeverLandsAndZennyNeverFalls",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 1.1658436059951782,
+			"dateTime": "2026.10.04-15.45.10",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "first frame: trace hit 1 at z -96.0 (GLTerrainChunk_256), field -96.0, lots ground 1, chunks 1",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.10"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "stale results dropped: 8, emergency chunks: 6, emergency fields: 4",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.11"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaticDepthAndEraAreIndependentPerCell",
+			"fullTestPath": "Gridlands.Game.Grid.StaticDepthAndEraAreIndependentPerCell",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 1.3885934352874756,
+			"dateTime": "2026.10.04-15.45.11",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'repairing its glitch calms it (1.00 -> 1.00)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-15.45.12"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'and NICE still counts that repair (1.000 -> 1.000 -> 1.000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-15.45.12"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StreamingNeverLosesDuplicatesOrReplays",
+			"fullTestPath": "Gridlands.Game.Grid.StreamingNeverLosesDuplicatesOrReplays",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 6.0879974365234375,
+			"dateTime": "2026.10.04-15.45.12",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "A: lamp repaired: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-15.45.13"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "B: jukebox repaired: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-15.45.13"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "live objects: 1151 classes after round 1, 1151 after round 5",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.17"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "A: lamp still repaired: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-15.45.17"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "B: jukebox still repaired: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-15.45.18"
+				}
+			],
+			"warnings": 0,
+			"errors": 4,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CullDistancesComeFromData",
+			"fullTestPath": "Gridlands.Game.Lod.CullDistancesComeFromData",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 0.027448829263448715,
+			"dateTime": "2026.10.04-15.45.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "EveryVisualMeshHoldsItsLodBudget",
+			"fullTestPath": "Gridlands.Game.Lod.EveryVisualMeshHoldsItsLodBudget",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 0.019463147968053818,
+			"dateTime": "2026.10.04-15.45.18",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "27 visuals, 81 LOD levels within budget",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.18"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LodLevelNeverChangesGameplay",
+			"fullTestPath": "Gridlands.Game.Lod.LodLevelNeverChangesGameplay",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 0.4501822292804718,
+			"dateTime": "2026.10.04-15.45.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CorruptionIsSparseAndPrecise",
+			"fullTestPath": "Gridlands.Game.Presentation.CorruptionIsSparseAndPrecise",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 0.45866388082504272,
+			"dateTime": "2026.10.04-15.45.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DefeatedCreatureDerezzesThenIsGone",
+			"fullTestPath": "Gridlands.Game.Presentation.DefeatedCreatureDerezzesThenIsGone",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 0.030312931165099144,
+			"dateTime": "2026.10.04-15.45.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DirectorLinesBecomeSubtitles",
+			"fullTestPath": "Gridlands.Game.Presentation.DirectorLinesBecomeSubtitles",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 0.026783617213368416,
+			"dateTime": "2026.10.04-15.45.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SubtitleTimelineFollowsTheDirector",
+			"fullTestPath": "Gridlands.Game.Presentation.SubtitleTimelineFollowsTheDirector",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 0.0082824863493442535,
+			"dateTime": "2026.10.04-15.45.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "VegetationFollowsTheGround",
+			"fullTestPath": "Gridlands.Game.Presentation.VegetationFollowsTheGround",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 0.48492178320884705,
+			"dateTime": "2026.10.04-15.45.20",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "tufts: 400 before the pit, 338 after",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.20"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "VisualsCarryNoCollisionAndFollowCollapse",
+			"fullTestPath": "Gridlands.Game.Presentation.VisualsCarryNoCollisionAndFollowCollapse",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 0.48875054717063904,
+			"dateTime": "2026.10.04-15.45.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ACollapseDecidedBeforePresentationShowsTheDecision",
+			"fullTestPath": "Gridlands.Game.Streaming.ACollapseDecidedBeforePresentationShowsTheDecision",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 1.0465861558914185,
+			"dateTime": "2026.10.04-15.45.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DenseFixtureStandsAndPresentsCompletely",
+			"fullTestPath": "Gridlands.Game.Streaming.DenseFixtureStandsAndPresentsCompletely",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 1.0281506776809692,
+			"dateTime": "2026.10.04-15.45.22",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "dense fixture: 84 structures, 308 parts, 12 vegetation patches in the lots",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.23"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PresentationNeverRunsAheadOfSavedState",
+			"fullTestPath": "Gridlands.Game.Streaming.PresentationNeverRunsAheadOfSavedState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 2.8004209995269775,
+			"dateTime": "2026.10.04-15.45.23",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "presented over 357 frames at 0.05 ms per frame",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.24"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UnloadDuringPresentationCancelsCleanly",
+			"fullTestPath": "Gridlands.Game.Streaming.UnloadDuringPresentationCancelsCleanly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 3.4751548767089844,
+			"dateTime": "2026.10.04-15.45.25",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "cycle 0: 21 actors made before the unload, 21 retired in the unload frame",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.27"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "cycle 0: retired actors destroyed over 60 frames at 0.05 ms",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.27"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "cycle 1: 20 actors made before the unload, 20 retired in the unload frame",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.27"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "cycle 1: retired actors destroyed over 60 frames at 0.05 ms",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.28"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "cycle 2: 18 actors made before the unload, 18 retired in the unload frame",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.28"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "cycle 2: retired actors destroyed over 60 frames at 0.05 ms",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.28"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CancellationAndReversalNeverDuplicateOrLeak",
+			"fullTestPath": "Gridlands.Game.TownBlock.CancellationAndReversalNeverDuplicateOrLeak",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 1.8689675331115723,
+			"dateTime": "2026.10.04-15.45.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SaveMidPresentationAndRestartKeepEveryFact",
+			"fullTestPath": "Gridlands.Game.TownBlock.SaveMidPresentationAndRestartKeepEveryFact",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 2.5423178672790527,
+			"dateTime": "2026.10.04-15.45.31",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the town has changed facts to keep' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTownBlockTests.cpp",
+					"lineNumber": 382,
+					"timestamp": "2026.10.04-15.45.32"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "town presented over 520 frames at 0.05 ms per frame",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.32"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StandsOnTheRouteAndPresentsCompletely",
+			"fullTestPath": "Gridlands.Game.TownBlock.StandsOnTheRouteAndPresentsCompletely",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10796C0297C3F8C033457B0585C4D"
+			],
+			"duration": 1.0627816915512085,
+			"dateTime": "2026.10.04-15.45.33",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "town block: 72 structures, 442 parts, 12 salvage nodes, 3 creatures, 6 glitches, 12 vegetation patches (3735 instances)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.45.34"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+@@ -366,7 +366,7 @@
+ 	for (const FGLPlacedPiece& Other : Existing)
+ 	{
+ 		const FGLBuildPieceDef* OtherDef = Content.Find<FGLBuildPieceDef>(Other.Def);
+-		if (OtherDef && Mine.Overlaps(Footprint(*OtherDef, Other), OverlapShrinkCm))
++		if (OtherDef && Bounds(*Def, Candidate).ExpandBy(-OverlapShrinkCm).Intersect(Bounds(*OtherDef, Other).ExpandBy(-OverlapShrinkCm))) // DEFECT
+ 		{
+ 			Check.Refusal = EGLBuildRefusal::Overlaps;
+ 			Check.Reason = TEXT("something is already there");

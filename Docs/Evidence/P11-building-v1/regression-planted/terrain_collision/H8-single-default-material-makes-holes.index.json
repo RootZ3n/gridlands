@@ -1,0 +1,1340 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A107B0837E7AFB92BA13DEF56E1B27",
+			"instanceName": "Pehverse-1663643",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.10.04-16.13.22",
+	"succeeded": 8,
+	"succeededWithWarnings": 0,
+	"failed": 9,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 17.002506256103516,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BuiltOnlyAroundInvokersAndFollowsEdits",
+			"fullTestPath": "Gridlands.Game.Navigation.BuiltOnlyAroundInvokersAndFollowsEdits",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 1.4792062044143677,
+			"dateTime": "2026.10.04-16.13.04",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(354): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.05"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "active tiles around Zenny: 3 (a whole 1 km cell: 10816)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.05"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'navigation exists around Zenny' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLLocalizedNavigationTests.cpp",
+					"lineNumber": 151,
+					"timestamp": "2026.10.04-16.13.05"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "active tiles after the walk: 1; old place on navigation: no",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.06"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'navigation where Zenny now is' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLLocalizedNavigationTests.cpp",
+					"lineNumber": 159,
+					"timestamp": "2026.10.04-16.13.06"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "stale tiles (built, not active): 0; swept so far: 1",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.06"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the spot is navigable before' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsCore/Public/Terrain/GLHeightfield.h",
+					"lineNumber": 45,
+					"timestamp": "2026.10.04-16.13.06"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the mound is navigable' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLLocalizedNavigationTests.cpp",
+					"lineNumber": 188,
+					"timestamp": "2026.10.04-16.13.06"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "navmesh at the mound: 0 -> 0 cm (ground 300)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.06"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the navmesh rose with the ground (well over a metre)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLLocalizedNavigationTests.cpp",
+					"lineNumber": 191,
+					"timestamp": "2026.10.04-16.13.06"
+				}
+			],
+			"warnings": 0,
+			"errors": 5,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CreaturesPathFarFromThePlayer",
+			"fullTestPath": "Gridlands.Game.Navigation.CreaturesPathFarFromThePlayer",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 0.61466395854949951,
+			"dateTime": "2026.10.04-16.13.06",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'navigation around the creature, far from Zenny' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Math/Vector2D.h",
+					"lineNumber": 866,
+					"timestamp": "2026.10.04-16.13.06"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the creature can path across its reach (16 m)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Math/Vector2D.h",
+					"lineNumber": 833,
+					"timestamp": "2026.10.04-16.13.06"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CrossesBoundariesAndUnloadsCleanly",
+			"fullTestPath": "Gridlands.Game.Navigation.CrossesBoundariesAndUnloadsCleanly",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 1.7302141189575195,
+			"dateTime": "2026.10.04-16.13.06",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'a path crosses the boundary' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLLocalizedNavigationTests.cpp",
+					"lineNumber": 229,
+					"timestamp": "2026.10.04-16.13.08"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'navigation under Zenny in the lots' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLLocalizedNavigationTests.cpp",
+					"lineNumber": 240,
+					"timestamp": "2026.10.04-16.13.08"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'navigation at home again' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLLocalizedNavigationTests.cpp",
+					"lineNumber": 250,
+					"timestamp": "2026.10.04-16.13.08"
+				}
+			],
+			"warnings": 0,
+			"errors": 3,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AIWalksAroundARaisedRidge",
+			"fullTestPath": "Gridlands.Game.Terrain.AIWalksAroundARaisedRidge",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 0.19959403574466705,
+			"dateTime": "2026.10.04-16.13.08",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the move is accepted' to be 2, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 801,
+					"timestamp": "2026.10.04-16.13.08"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the walker arrives (10800 cm from B after 0 ticks)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.08"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'it crossed the ridge line through the gap (y = -1000000000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.08"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'it went out of its way to do so' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainNavigationTests.cpp",
+					"lineNumber": 238,
+					"timestamp": "2026.10.04-16.13.08"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "walker: arrived 10800 cm from B in 0 ticks, crossed x = 64 m at y = -1000000000, max y -1000000000000, max z -1000000000000",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.08"
+				}
+			],
+			"warnings": 0,
+			"errors": 4,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NavigationFollowsRuntimeEdits",
+			"fullTestPath": "Gridlands.Game.Terrain.NavigationFollowsRuntimeEdits",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 0.52274340391159058,
+			"dateTime": "2026.10.04-16.13.08",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "navigable bounds from the cell: IsValid=true, Min=(X=0.000 Y=0.000 Z=-3900.000), Max=(X=12800.000 Y=6400.000 Z=3900.000)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.08"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the cell's runtime bounds produced a navmesh on the ground' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Templates/SharedPointerInternals.h",
+					"lineNumber": 614,
+					"timestamp": "2026.10.04-16.13.08"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'before: a complete path' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainNavigationTests.cpp",
+					"lineNumber": 123,
+					"timestamp": "2026.10.04-16.13.08"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'before: the path goes straight across (crosses at y = -1000000000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.08"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'after: still reachable' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainNavigationTests.cpp",
+					"lineNumber": 123,
+					"timestamp": "2026.10.04-16.13.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'after: the path detours through the gap (crosses at y = -1000000000, gap from 5000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "path crossings of x = 64 m: before y = -1000000000, after the ridge y = -1000000000",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'flattened: the direct route is back (crosses at y = -1000000000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.09"
+				}
+			],
+			"warnings": 0,
+			"errors": 6,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaleNavigationIsDetectedControl",
+			"fullTestPath": "Gridlands.Game.Terrain.StaleNavigationIsDetectedControl",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 0.19098855555057526,
+			"dateTime": "2026.10.04-16.13.09",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'stale navigation still offers the straight route over the ridge (y = -1000000000)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "control (navigation not told): path crosses x = 64 m at y = -1000000000, straight over the ridge",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.09"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TerraformConservesProtectsAndPersists",
+			"fullTestPath": "Gridlands.Game.Terrain.TerraformConservesProtectsAndPersists",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 0.08157658576965332,
+			"dateTime": "2026.10.04-16.13.09",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "EditedCollisionSurvivesSaveRestoreAndStreaming",
+			"fullTestPath": "Gridlands.Game.TerrainCollision.EditedCollisionSurvivesSaveRestoreAndStreaming",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 1.2331160306930542,
+			"dateTime": "2026.10.04-16.13.09",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] restored (flushed): 2491 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.02 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 2442; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.004 cm (1152 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'restored (flushed): overlaps touch the surface exactly' to be 0, but it was 2442.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.10"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] restored (streamed, reused chunks): 2491 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.02 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 2442; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.004 cm (1152 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'restored (streamed, reused chunks): overlaps touch the surface exactly' to be 0, but it was 2442.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.10"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] restored in place to the base: 2491 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 2442; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.000 cm (1152 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'restored in place to the base: overlaps touch the surface exactly' to be 0, but it was 2442.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.10"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] restored in place with the edits: 2491 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.02 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 2442; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.004 cm (1152 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.10"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'restored in place with the edits: overlaps touch the surface exactly' to be 0, but it was 2442.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.10"
+				}
+			],
+			"warnings": 0,
+			"errors": 4,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NaturalTerrainIsOneSurface",
+			"fullTestPath": "Gridlands.Game.TerrainCollision.NaturalTerrainIsOneSurface",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 1.8442347049713135,
+			"dateTime": "2026.10.04-16.13.10",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "steepest natural slope 31.9 deg at vertex (838, 390)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.11"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] rolling natural terrain: 5363 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 5348; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.009 cm (2592 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rolling natural terrain: overlaps touch the surface exactly' to be 0, but it was 5348.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.11"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] steepest natural slope: 5363 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 5318; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.009 cm (2592 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'steepest natural slope: overlaps touch the surface exactly' to be 0, but it was 5318.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.11"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "placement.diner_lots.: the whole natural cell moved by at most 16.864 cm (old bilinear vs the one surface)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.12"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "authored placement.diner_lots.slice_boulder_01: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.500 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.12"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "authored placement.diner_lots.slice_boulder_02: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.250 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.12"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "authored placement.diner_lots.slice_phone_table: its base (the ground at its origin) moved -0.000 cm; ground within 5 m moved by at most 0.225 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.12"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "authored placement.diner_lots.slice_phone_table_glitched: its base (the ground at its origin) moved +0.100 cm; ground within 5 m moved by at most 0.225 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.12"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "authored placement.diner_lots.slice_pine_01: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.500 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.12"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "authored placement.diner_lots.slice_pine_02: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 10.750 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.12"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "authored placement.diner_lots.slice_storefront: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.250 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.12"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "placement.origin.: the whole natural cell moved by at most 0.000 cm (old bilinear vs the one surface)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.12"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "authored placement.origin.structure_carport_01: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.000 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.12"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "authored placement.origin.structure_carport_edge: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.000 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.12"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "authored placement.origin.structure_pine_01: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.000 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.12"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "authored placement.origin.structure_pine_edge: its base (the ground at its origin) moved +0.000 cm; ground within 5 m moved by at most 0.000 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.12"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StructuresAndBuildingStandOnTheVisibleGround",
+			"fullTestPath": "Gridlands.Game.TerrainCollision.StructuresAndBuildingStandOnTheVisibleGround",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 1.3653178215026855,
+			"dateTime": "2026.10.04-16.13.12",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "placement: a snapped floor vs visible 0.000 cm, vs collision 0.002 cm (the old interpolation: up to 60.8 cm)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.13"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "placement rules on 858 candidates: 0 decisions differ from the visible ground (the old interpolation: 10)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.13"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "authored structure base at the worst point: vs visible 0.000 cm, vs collision 0.001 cm (the old interpolation: 60.8 cm off)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.13"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "VisibleAndCollisionSurfacesAgreeUnderDeformation",
+			"fullTestPath": "Gridlands.Game.TerrainCollision.VisibleAndCollisionSurfacesAgreeUnderDeformation",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 1.4371950626373291,
+			"dateTime": "2026.10.04-16.13.14",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] untouched: 5363 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 5313; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.000 cm (2592 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'untouched: overlaps touch the surface exactly' to be 0, but it was 5313.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.14"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] small dig: 619 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 591; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.000 cm (200 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'small dig: overlaps touch the surface exactly' to be 0, but it was 591.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.14"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] steep dig (4 m in 1.2 m): 619 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 619; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.002 cm (200 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'steep dig (4 m in 1.2 m): overlaps touch the surface exactly' to be 0, but it was 619.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.14"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] steep raise: 619 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 619; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.000 cm (200 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.14"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'steep raise: overlaps touch the surface exactly' to be 0, but it was 619.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.14"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] 10 repeated digs: 1166 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 1119; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.002 cm (512 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '10 repeated digs: overlaps touch the surface exactly' to be 0, but it was 1119.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] neighbouring vertices edited: 1391 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.00 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 1386; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.004 cm (576 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'neighbouring vertices edited: overlaps touch the surface exactly' to be 0, but it was 1386.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] edit on an X seam, both sides: 1166 probes; worst |trace-visible| 0.00 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 1151; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.005 cm (512 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'edit on an X seam, both sides: overlaps touch the surface exactly' to be 0, but it was 1151.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] edit on a chunk corner (four chunks): 1794 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 1744; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.005 cm (800 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'edit on a chunk corner (four chunks): overlaps touch the surface exactly' to be 0, but it was 1744.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] flatten: 799 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 799; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.006 cm (288 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'flatten: overlaps touch the surface exactly' to be 0, but it was 799.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] 4 m dig limit: 799 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.02 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 799; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.006 cm (288 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '4 m dig limit: overlaps touch the surface exactly' to be 0, but it was 799.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] edit crossing the west X seam: 1327 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 1312; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.005 cm (512 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'edit crossing the west X seam: overlaps touch the surface exactly' to be 0, but it was 1312.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] edit crossing the north Y seam: 1327 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.01 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 1312; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.008 cm (512 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'edit crossing the north Y seam: overlaps touch the surface exactly' to be 0, but it was 1312.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "[heightfield] 30 rapid edits in one frame: 6635 probes; worst |trace-visible| 0.01 cm, |sweep-visible| 0.05 cm, |visible-field| 0.00 cm; missing 0 (capsule 0, 34 cm sphere 0); overlap wrong 6585; GAMEPLAY (HeightAt) vs visible 0.000 cm, vs collision 0.008 cm (3200 per-quad probes)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '30 rapid edits in one frame: overlaps touch the surface exactly' to be 0, but it was 6585.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-16.13.15"
+				}
+			],
+			"warnings": 0,
+			"errors": 13,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CancellationNeverHandsOutAHalfResetChunk",
+			"fullTestPath": "Gridlands.Game.TerrainPool.CancellationNeverHandsOutAHalfResetChunk",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 0.96524447202682495,
+			"dateTime": "2026.10.04-16.13.15",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PooledChunksLeaveNavigation",
+			"fullTestPath": "Gridlands.Game.TerrainPool.PooledChunksLeaveNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 1.1889235973358154,
+			"dateTime": "2026.10.04-16.13.16",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "pooled 256 (in navigation 0), live 256 (missing from navigation 0)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.17"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoolStaysInsideItsBound",
+			"fullTestPath": "Gridlands.Game.TerrainPool.PoolStaysInsideItsBound",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 1.3891401290893555,
+			"dateTime": "2026.10.04-16.13.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReusedChunksAreRebornCleanInAnotherCell",
+			"fullTestPath": "Gridlands.Game.TerrainPool.ReusedChunksAreRebornCleanInAnotherCell",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 0.95099067687988281,
+			"dateTime": "2026.10.04-16.13.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaleMeshWorkNeverLandsOnAReassignedChunk",
+			"fullTestPath": "Gridlands.Game.TerrainPool.StaleMeshWorkNeverLandsOnAReassignedChunk",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 1.2099859714508057,
+			"dateTime": "2026.10.04-16.13.20",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "stale mesh results dropped: 64",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.13.21"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StreamedReusedChunksCollideAsTheirNewCell",
+			"fullTestPath": "Gridlands.Game.TerrainPool.StreamedReusedChunksCollideAsTheirNewCell",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A107B0837E7AFB92BA13DEF56E1B27"
+			],
+			"duration": 0.59937137365341187,
+			"dateTime": "2026.10.04-16.13.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

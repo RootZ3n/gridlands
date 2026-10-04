@@ -4,10 +4,37 @@
 #include "Content/GLContentDefinitions.h"
 #include "Knowledge/GLKnowledge.h"
 #include "Events/GLEventSubsystem.h"
-#include "GameFramework/Character.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "GameplayTagsManager.h"
 #include "Salvage/GLSalvageRules.h"
+
+UGLInventoryComponent::UGLInventoryComponent()
+	: Inventory(32) // P11 provisional; BeginPlay applies the tuned count (tuning.world.physical building.personalSlots)
+{
+}
+
+void UGLInventoryComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	const int32 Slots = GLContent::Tuning().Building.PersonalSlots;
+	if (Slots > 0 && Slots != Inventory.GetMaxSlots())
+	{
+		const FGLInventory Before = Inventory;
+		Inventory = FGLInventory(Slots);
+		for (const FGLInventoryStack& Stack : Before.GetStacks())
+		{
+			Inventory.ForceAdd(GLContent::Get(), Stack.Item, Stack.Count);
+		}
+	}
+}
+
+void UGLInventoryComponent::AnnounceFull(FName Subject)
+{
+	FGLGameplayEvent Event;
+	Event.Tag = UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Player.InventoryFull"));
+	Event.Subject = Subject;
+	Event.Instigator = GetOwner();
+	UGLEventSubsystem::Emit(this, MoveTemp(Event));
+}
 
 int32 UGLInventoryComponent::AddItem(FName Item, int32 Count)
 {
@@ -20,7 +47,10 @@ int32 UGLInventoryComponent::AddItem(FName Item, int32 Count)
 		Event.Instigator = GetOwner();
 		Event.Numbers.Add(TEXT("count"), Added);
 		UGLEventSubsystem::Emit(this, MoveTemp(Event));
-		UpdateEncumbrance();
+	}
+	if (Added < Count)
+	{
+		AnnounceFull(Item);
 	}
 	return Added;
 }
@@ -37,29 +67,26 @@ FGLCraftCheck UGLInventoryComponent::Craft(FName RecipeId, const FGLKnowledge& K
 		Event.Instigator = GetOwner();
 		Event.Numbers.Add(TEXT("count"), Recipe->Output.Count);
 		UGLEventSubsystem::Emit(this, MoveTemp(Event));
-		UpdateEncumbrance();
+	}
+	else if (Result.Block == EGLCraftBlock::NoRoomForOutput)
+	{
+		AnnounceFull(RecipeId);
 	}
 	return Result;
 }
 
 void UGLInventoryComponent::RestoreContents(const TArray<TPair<FName, int32>>& Items)
 {
-	Inventory = FGLInventory(Inventory.GetMaxSlots(), Inventory.GetMaxWeight());
+	Inventory = FGLInventory(Inventory.GetMaxSlots());
 	for (const TPair<FName, int32>& Item : Items)
 	{
-		Inventory.Add(GLContent::Get(), Item.Key, Item.Value);
+		Inventory.ForceAdd(GLContent::Get(), Item.Key, Item.Value); // a save is never truncated (P11)
 	}
-	UpdateEncumbrance(/*bAnnounce*/ false); // a load is not a new moment to announce
 }
 
 bool UGLInventoryComponent::RemoveItem(FName Item, int32 Count)
 {
-	const bool bRemoved = Inventory.Remove(Item, Count);
-	if (bRemoved)
-	{
-		UpdateEncumbrance();
-	}
-	return bRemoved;
+	return Inventory.Remove(Item, Count);
 }
 
 const FGLItemDef* UGLInventoryComponent::BestToolFor(const FGLSalvageDef& Salvage) const
@@ -80,31 +107,4 @@ const FGLItemDef* UGLInventoryComponent::BestToolFor(const FGLSalvageDef& Salvag
 		}
 	}
 	return Best;
-}
-
-void UGLInventoryComponent::UpdateEncumbrance(bool bAnnounce)
-{
-	const bool bNow = Inventory.IsOverencumbered(GLContent::Get());
-	if (bNow == bOverencumbered)
-	{
-		return;
-	}
-	bOverencumbered = bNow;
-	if (ACharacter* Character = Cast<ACharacter>(GetOwner()))
-	{
-		UCharacterMovementComponent* Movement = Character->GetCharacterMovement();
-		if (NormalWalkSpeed < 0.f)
-		{
-			NormalWalkSpeed = Movement->MaxWalkSpeed;
-		}
-		Movement->MaxWalkSpeed = bOverencumbered ? NormalWalkSpeed * OverencumberedSpeedFactor : NormalWalkSpeed;
-	}
-	if (bOverencumbered && bAnnounce)
-	{
-		FGLGameplayEvent Event;
-		Event.Tag = UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Event.Player.Overencumbered"));
-		Event.Instigator = GetOwner();
-		Event.Numbers.Add(TEXT("weight"), Inventory.TotalWeight(GLContent::Get()));
-		UGLEventSubsystem::Emit(this, MoveTemp(Event));
-	}
 }

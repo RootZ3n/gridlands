@@ -1,0 +1,927 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A106F45CD575B0A226B7D632F089A5",
+			"instanceName": "Pehverse-753093",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.10.04-12.47.40",
+	"succeeded": 37,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 5.4674496650695801,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "GroundDecidesWhereFloorsGo",
+			"fullTestPath": "Gridlands.Core.Building.GroundDecidesWhereFloorsGo",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.010055218823254108,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "KnowledgeItemsAndSnapping",
+			"fullTestPath": "Gridlands.Core.Building.KnowledgeItemsAndSnapping",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0077971508726477623,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemovingASupportCollapsesWhatItHeld",
+			"fullTestPath": "Gridlands.Core.Building.RemovingASupportCollapsesWhatItHeld",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0079377042129635811,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShelterStandsAndEveryPlacementIsValid",
+			"fullTestPath": "Gridlands.Core.Building.ShelterStandsAndEveryPlacementIsValid",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0078761428594589233,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SupportWeakensUpAndOut",
+			"fullTestPath": "Gridlands.Core.Building.SupportWeakensUpAndOut",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0078030899167060852,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ACollapseAtAngleUsesThePiecesOwnAxes",
+			"fullTestPath": "Gridlands.Core.BuildingV1.ACollapseAtAngleUsesThePiecesOwnAxes",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.010420484468340874,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AngledPolygonsCloseBySnappingAlone",
+			"fullTestPath": "Gridlands.Core.BuildingV1.AngledPolygonsCloseBySnappingAlone",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0081457793712615967,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "APlanRebuiltAt45DegreesIsTheSameBuilding",
+			"fullTestPath": "Gridlands.Core.BuildingV1.APlanRebuiltAt45DegreesIsTheSameBuilding",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0082917250692844391,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CarefulBeatsDestructiveBeatsCollapse",
+			"fullTestPath": "Gridlands.Core.BuildingV1.CarefulBeatsDestructiveBeatsCollapse",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0085325445979833603,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClaimsAreDerivedAndRenewalNeverTouchesPlayerConstruction",
+			"fullTestPath": "Gridlands.Core.BuildingV1.ClaimsAreDerivedAndRenewalNeverTouchesPlayerConstruction",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0077695213258266449,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FacingSocketsLinkOnlyWhenTheyFaceEachOther",
+			"fullTestPath": "Gridlands.Core.BuildingV1.FacingSocketsLinkOnlyWhenTheyFaceEachOther",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0081005776301026344,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FrameThenFinishAndElectricalIsRegisteredNotBuilt",
+			"fullTestPath": "Gridlands.Core.BuildingV1.FrameThenFinishAndElectricalIsRegisteredNotBuilt",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0077404128387570381,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MaterialPoolIsOrderedAndAllOrNothing",
+			"fullTestPath": "Gridlands.Core.BuildingV1.MaterialPoolIsOrderedAndAllOrNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0081341518089175224,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OverlapAndFootprintsAreOriented",
+			"fullTestPath": "Gridlands.Core.BuildingV1.OverlapAndFootprintsAreOriented",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0083114262670278549,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PreviewIsTheCommitsOwnRule",
+			"fullTestPath": "Gridlands.Core.BuildingV1.PreviewIsTheCommitsOwnRule",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.008022417314350605,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Version2SavesMigrateToVersion3Deterministically",
+			"fullTestPath": "Gridlands.Core.BuildingV1.Version2SavesMigrateToVersion3Deterministically",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0080320378765463829,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "YawIsAnIntegerIn2p5DegreeSteps",
+			"fullTestPath": "Gridlands.Core.BuildingV1.YawIsAnIntegerIn2p5DegreeSteps",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0080178678035736084,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StacksAndCapacity",
+			"fullTestPath": "Gridlands.Core.Inventory.StacksAndCapacity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.010226128622889519,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CodecRoundTripAndVersions",
+			"fullTestPath": "Gridlands.Core.Save.CodecRoundTripAndVersions",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.008058902807533741,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Version1MigratesToCellRecords",
+			"fullTestPath": "Gridlands.Core.Save.Version1MigratesToCellRecords",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.0079112611711025238,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PiecesBlockNavigation",
+			"fullTestPath": "Gridlands.Game.Building.PiecesBlockNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.13736099004745483,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "wall line with a gap: path crosses the wall line x = 65 m at y = 5047",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.34"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PreviewColoursAndRemovalPredictionsAreTheCommitsOwn",
+			"fullTestPath": "Gridlands.Game.Building.PreviewColoursAndRemovalPredictionsAreTheCommitsOwn",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.033555157482624054,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RefusalsChangeNothing",
+			"fullTestPath": "Gridlands.Game.Building.RefusalsChangeNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.058534000068902969,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemovalCollapsesByTheCanonicalRulesAsPredicted",
+			"fullTestPath": "Gridlands.Game.Building.RemovalCollapsesByTheCanonicalRulesAsPredicted",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.060636486858129501,
+			"dateTime": "2026.10.04-12.47.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShelterFromInventoryPersistsAcrossReload",
+			"fullTestPath": "Gridlands.Game.Building.ShelterFromInventoryPersistsAcrossReload",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.061745919287204742,
+			"dateTime": "2026.10.04-12.47.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ABasementIsAnOpenPitThenAStructure",
+			"fullTestPath": "Gridlands.Game.BuildingV1.ABasementIsAnOpenPitThenAStructure",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.1092265397310257,
+			"dateTime": "2026.10.04-12.47.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BaseStorageClaimsAndContainersNeverLoseAnything",
+			"fullTestPath": "Gridlands.Game.BuildingV1.BaseStorageClaimsAndContainersNeverLoseAnything",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.058617632836103439,
+			"dateTime": "2026.10.04-12.47.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StoringAndTakingMoveOnlyWhatFits",
+			"fullTestPath": "Gridlands.Game.BuildingV1.StoringAndTakingMoveOnlyWhatFits",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.026584366336464882,
+			"dateTime": "2026.10.04-12.47.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StoringAndTakingNeverLosesAnything",
+			"fullTestPath": "Gridlands.Game.BuildingV1.StoringAndTakingNeverLosesAnything",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.024858705699443817,
+			"dateTime": "2026.10.04-12.47.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ThreeHundredPiecesScaleLinearly",
+			"fullTestPath": "Gridlands.Game.BuildingV1.ThreeHundredPiecesScaleLinearly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.11021720618009567,
+			"dateTime": "2026.10.04-12.47.35",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "309 pieces: 1300 instances in 6 components",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "617 pieces: 2600 instances in 6 components",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "supportMs: 309 pieces 1.102 ms, 617 pieces 2.302 ms (x2.09)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "previewMs: 309 pieces 1.128 ms, 617 pieces 2.311 ms (x2.05)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "removalPredictionMs: 309 pieces 1.224 ms, 617 pieces 2.180 ms (x1.78)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "captureMs: 309 pieces 0.026 ms, 617 pieces 0.042 ms (x1.64)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "restoreMs: 309 pieces 0.458 ms, 617 pieces 0.921 ms (x2.01)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "presentMs: 309 pieces 9.553 ms, 617 pieces 16.504 ms (x1.73)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "lookupMsPerTrace: 309 pieces 0.003 ms, 617 pieces 0.003 ms (x1.03)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WinchesterHouseFrameFinishCollapseAndPersistence",
+			"fullTestPath": "Gridlands.Game.BuildingV1.WinchesterHouseFrameFinishCollapseAndPersistence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.11736354231834412,
+			"dateTime": "2026.10.04-12.47.35",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS pad levelled by ordinary flatten strokes: worst 0.00 cm from 0 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS a base core establishes one claim: 1 claim(s), radius 32 m",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS materials placed primarily in shared storage: crates hold stud 103, cut_stone 3, timber_log 26, timber_plank 83; Zenny carries 12 studs",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS 45 degree bay snapped from socket data: yaw steps 0 126 126 0 0 18 18",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS FRAME first: stud walls, doorways and rafters visibly framed: 24 showing framing, 28 complete as built",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS every frame placed, PREVIEW == REALITY: 52 placements so far, 0 mismatches (GREEN 52, YELLOW 0, RED 0)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS storage supplied the construction (before Zenny's own): studs from storage 103, from Zenny 12",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS raw log -> sawing at the sawhorse -> studs (the log from base storage): studs 0 -> 4, Zenny's logs 0 -> 0",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS FINISH applied afterwards (clapboard, shingles): 24/24 installed; 24 finished, 0 still framed",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS finishing changed no support: ",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS architectural vocabularies mixed on purpose: eras era.memory.modern_day era.memory.victorian era.memory.roman; log wing yes; Roman column yes",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS porch post out: predicted to stand, and it stands: predicted 0 falling, 0 fell",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS Roman column out: the predicted roof falls, by the canonical collapse: predicted [45], collapsed [45]",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS careful dismantle of the interior wall: intact studs (and its clapboard back as boards): stud 5, scrap_timber 2, timber_plank 2",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS smashing a bay wall: fewer studs, more scrap: stud 1, scrap_timber 4, timber_plank 1",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.47.35"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldRenewalNeverTouchesPlayerConstruction",
+			"fullTestPath": "Gridlands.Game.BuildingV1.WorldRenewalNeverTouchesPlayerConstruction",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.024777848273515701,
+			"dateTime": "2026.10.04-12.47.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PlayerConstructionStreamsWholeAndAFallResumes",
+			"fullTestPath": "Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 1.9756876230239868,
+			"dateTime": "2026.10.04-12.47.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RetiredPlayerCollisionIsInertAndAlwaysRemoved",
+			"fullTestPath": "Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 2.3186442852020264,
+			"dateTime": "2026.10.04-12.47.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InventoryFullIsAnnouncedNotWeight",
+			"fullTestPath": "Gridlands.Game.Inventory.InventoryFullIsAnnouncedNotWeight",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.028327137231826782,
+			"dateTime": "2026.10.04-12.47.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RestoreNeverDiscardsOverflow",
+			"fullTestPath": "Gridlands.Game.Inventory.RestoreNeverDiscardsOverflow",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.02852524071931839,
+			"dateTime": "2026.10.04-12.47.39",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'every stone restored' to be 3253, but it was 3200.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLM4Tests.cpp",
+					"lineNumber": 136,
+					"timestamp": "2026.10.04-12.47.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'and every bit of soil' to be 7, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLM4Tests.cpp",
+					"lineNumber": 137,
+					"timestamp": "2026.10.04-12.47.39"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InstancedPiecesKeepTheirIdentityThroughEveryChange",
+			"fullTestPath": "Gridlands.Game.PlayerPresentation.InstancedPiecesKeepTheirIdentityThroughEveryChange",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.032240718603134155,
+			"dateTime": "2026.10.04-12.47.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TheWinchesterHouseIsOneBatchThatFollowsTheModel",
+			"fullTestPath": "Gridlands.Game.PlayerPresentation.TheWinchesterHouseIsOneBatchThatFollowsTheModel",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106F45CD575B0A226B7D632F089A5"
+			],
+			"duration": 0.093361161649227142,
+			"dateTime": "2026.10.04-12.47.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

@@ -159,6 +159,7 @@ namespace GLDemo
 		World->GetSubsystem<UGLKnowledgeSubsystem>()->Learn(TEXT("knowledge.style.modern_timber_frame"));
 		Zenny->GetInventory()->AddItem(TEXT("item.material.timber_plank"), 30);
 		Zenny->GetInventory()->AddItem(TEXT("item.material.timber_plank"), 2);
+		Zenny->GetInventory()->AddItem(TEXT("item.component.stud"), 70); // P11: frames are built from studs
 		const FVector C(2200, -1800, 0);
 		const FName Floor(TEXT("buildpiece.modern.timber_foundation")), Wall(TEXT("buildpiece.modern.timber_wall")),
 			Door(TEXT("buildpiece.modern.timber_doorway")), Roof(TEXT("buildpiece.modern.timber_roof"));
@@ -166,8 +167,8 @@ namespace GLDemo
 		const TArray<FGLPlacedPiece> Plan = {
 			{ 0, Floor, C + FVector(-100, -100, G) }, { 0, Floor, C + FVector(100, -100, G) }, { 0, Floor, C + FVector(-100, 100, G) }, { 0, Floor, C + FVector(100, 100, G) },
 			{ 0, Wall, C + FVector(-100, -200, G + 30) }, { 0, Door, C + FVector(100, -200, G + 30) }, { 0, Wall, C + FVector(-100, 200, G + 30) }, { 0, Wall, C + FVector(100, 200, G + 30) },
-			{ 0, Wall, C + FVector(-200, -100, G + 30), 1 }, { 0, Wall, C + FVector(-200, 100, G + 30), 1 }, { 0, Wall, C + FVector(200, -100, G + 30), 1 }, { 0, Wall, C + FVector(200, 100, G + 30), 1 },
-			{ 0, Roof, C + FVector(-100, -100, G + 280) }, { 0, Roof, C + FVector(100, -100, G + 280) }, { 0, Roof, C + FVector(-100, 100, G + 280), 2 }, { 0, Roof, C + FVector(100, 100, G + 280), 2 },
+			{ 0, Wall, C + FVector(-200, -100, G + 30), 36 }, { 0, Wall, C + FVector(-200, 100, G + 30), 36 }, { 0, Wall, C + FVector(200, -100, G + 30), 36 }, { 0, Wall, C + FVector(200, 100, G + 30), 36 },
+			{ 0, Roof, C + FVector(-100, -100, G + 280) }, { 0, Roof, C + FVector(100, -100, G + 280) }, { 0, Roof, C + FVector(-100, 100, G + 280), 72 }, { 0, Roof, C + FVector(100, 100, G + 280), 72 },
 		};
 		int32 Placed = 0;
 		for (const FGLPlacedPiece& Piece : Plan)

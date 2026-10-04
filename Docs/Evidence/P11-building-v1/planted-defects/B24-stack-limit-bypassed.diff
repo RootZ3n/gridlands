@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Inventory/GLInventory.cpp
++++ b/Source/GridlandsCore/Private/Inventory/GLInventory.cpp
+@@ -40,7 +40,7 @@
+ 	}
+ 	while (Remaining > 0 && Stacks.Num() < MaxSlots)
+ 	{
+-		const int32 Moved = FMath::Min(Remaining, Def->StackSize);
++		const int32 Moved = Remaining; // DEFECT: one unlimited stack
+ 		Stacks.Add({ Item, Moved });
+ 		Remaining -= Moved;
+ 	}

@@ -2,6 +2,15 @@
 
 > **Status: APPROVED by the operator (2026-10-03) as the P11 design, with the decisions in §17 resolved as recorded
 > there. Implementation is P11 (not merged until operator review).**
+>
+> **Implemented in the P11 candidate (branch `p11-building-v1`, [ADR-0039](ADR/0039-building-v1-canonical-structural-model.md)).**
+> Deviations from this design, each for a reason recorded in the evidence:
+> - claims are **derived** from base-core pieces, not saved as `FGLSavedClaim` records (one source of truth; an area
+>   list still leaves room for expansion);
+> - a storage crate **stands on a floor** (not grounded), so it can lose its support like anything else;
+> - the floor gained a centre socket (for furniture);
+> - log walls are 0.24 m thick (0.3 m overlapped at corners);
+> - debris returns its finish layers' collapse yields as well as its frame's.
 > - The operator decisions it relies on are quoted as decisions, with their date.
 > - Everything else is a recommendation.
 > - The open choices are listed in §17.

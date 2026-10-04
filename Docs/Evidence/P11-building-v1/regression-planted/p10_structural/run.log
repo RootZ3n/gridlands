@@ -1,0 +1,93 @@
+S1-victims-decided-at-support-failure CAUGHT (7 test(s) by assertion)
+     Gridlands.Game.Structural.AFallWaitsUntilTheCellsCreaturesCanMove: Expected 'half a second in, the east deck is still in flight' to be not null.
+     Gridlands.Game.Structural.ARestoredFallIsTheDecidedFallNotAReplan: Expected 'the resumed fall is the decided one (impact time, damage, volume, rest)' to be true.
+     Gridlands.Game.Structural.TheImpactDecidesFromWhereTargetsAreAtImpact: under it at failure, out before impact: NOT affected: The two values are not equal.
+     Gridlands.Game.Structural.TheOrdinaryCarportStandsFailsAndFallsByItsOwnRules: Expected 'a delay, then about a second's fall' to be true.
+S2-target-at-its-failure-position-hit-after-escaping CAUGHT (2 test(s) by assertion)
+     Gridlands.Game.Structural.AFallWaitsUntilTheCellsCreaturesCanMove: Expected 'the warden had its chance to move, and escaped' to be false.
+     Gridlands.Game.Structural.TheImpactDecidesFromWhereTargetsAreAtImpact: under it at failure, out before impact: NOT affected: The two values are not equal.
+S3-late-entrant-ignored-because-absent-at-failure CAUGHT (1 test(s) by assertion)
+     Gridlands.Game.Structural.TheImpactDecidesFromWhereTargetsAreAtImpact: outside at failure, in before impact: affected (pinned): The two values are not equal.
+S4-impact-volume-where-the-part-was-not-where-it-lands CAUGHT (7 test(s) by assertion)
+     Gridlands.Game.Structural.ANonSusceptibleTargetTakesOrdinaryDamageAndCanBeDefeated: Expected 'at full health: not neutralized, wounded by the structure's damage' to be 59.200000, but it was 0.000000 and outside tolerance
+     Gridlands.Game.Structural.APinnedCreatureStaysPinnedImmuneAndResolvedOnce: Expected 'pinned' to be true.
+     Gridlands.Game.Structural.ASusceptibleTargetUnderTheImpactIsPinnedNotDamaged: the warden is NEUTRALIZED: The two values are not equal.
+     Gridlands.Game.Structural.SaveRestartAtAnyMomentNeverChangesTheOutcome: Expected '(the pinned timeline pins)' to be Neutralize.Pinned, but it was None.
+S5-actorless-creature-immune-to-impacts CAUGHT (1 test(s) by assertion)
+     Gridlands.Game.Structural.ImpactsQueryCreatureModelsAndDamageThroughTheOneHealthPath: Expected 'an unpresented creature is still found under an impact (its model)' to be true.
+S6-non-susceptible-target-neutralized CAUGHT (3 test(s) by assertion)
+     Gridlands.Game.Structural.ANonSusceptibleTargetTakesOrdinaryDamageAndCanBeDefeated: Expected 'at full health: not neutralized, wounded by the structure's damage' to be 59.200000, but it was 0.000000 and outside tolerance
+     Gridlands.Game.Structural.SaveRestartAtAnyMomentNeverChangesTheOutcome: (the control timeline defeats): The two values are not equal.
+     Gridlands.Game.Structural.TheImpactDecidesFromWhereTargetsAreAtImpact: a late-entering (wounded) gremlin is defeated, not pinned: The two values are not equal.
+S7-severity-threshold-ignored CAUGHT (1 test(s) by assertion)
+     Gridlands.Core.Structure.ImpactSeverityIsPhysicalAndPinningIsTuning: Expected 'a 1.5 m fall does not pin' to be false.
+S8-neutralizable-target-damaged-and-neutralized CAUGHT (3 test(s) by assertion)
+     Gridlands.Game.Structural.ANonSusceptibleTargetTakesOrdinaryDamageAndCanBeDefeated: Expected 'at full health: not neutralized, wounded by the structure's damage' to be 59.200000, but it was 60.000000 and outside toleranc
+     Gridlands.Game.Structural.APinnedCreatureStaysPinnedImmuneAndResolvedOnce: Expected 'still full health' to be -1.000000, but it was 180.800000 and outside tolerance 0.000100.
+     Gridlands.Game.Structural.ASusceptibleTargetUnderTheImpactIsPinnedNotDamaged: Expected '  no damage at all' to be 0.000000, but it was 59.200000 and outside tolerance 0.000100.
+S9-defeated-and-neutralized-still-considered CAUGHT (1 test(s) by assertion)
+     Gridlands.Game.Structural.APinnedCreatureStaysPinnedImmuneAndResolvedOnce: Expected '  the neutralized and the defeated are not even considered (skipped, not merely immune)' to be true.
+S10-neutralized-target-takes-later-collapse-damage CAUGHT (1 test(s) by assertion)
+     Gridlands.Game.Structural.APinnedCreatureStaysPinnedImmuneAndResolvedOnce: Expected '  and neither pinned nor damaged anything' to be true.
+S11-one-impact-hits-a-creature-twice CAUGHT (1 test(s) by assertion)
+     Gridlands.Game.Structural.ANonSusceptibleTargetTakesOrdinaryDamageAndCanBeDefeated: Expected 'at full health: not neutralized, wounded by the structure's damage' to be 59.200000, but it was 60.000000 and outside toleranc
+S12-model-capsule-differs-from-the-actor CAUGHT (1 test(s) by assertion)
+     Gridlands.Game.Structural.ImpactsQueryCreatureModelsAndDamageThroughTheOneHealthPath: Expected '  by the shared capsule (touching the top of its head: found)' to be true.
+S13-in-flight-collapses-not-captured CAUGHT (5 test(s) by assertion)
+     Gridlands.Game.Structural.AFallWaitsUntilTheCellsCreaturesCanMove: Expected 'the fall waited: still in flight' to be not null.
+     Gridlands.Game.Structural.ARestoredFallIsTheDecidedFallNotAReplan: Expected 'the resumed fall is the decided one (impact time, damage, volume, rest)' to be true.
+     Gridlands.Game.Structural.SaveRestartAtAnyMomentNeverChangesTheOutcome: Expected 'Pinned: save/restart at 0.000 s gives the same outcome as no break
+    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zen
+     Gridlands.Game.Structural.UnloadingMidFallFreezesTheFallAndNeverChangesTheOutcome: Expected 'UnloadPinned: unload at 0.000 s gives the same outcome as no break
+    straight: outcome 2 Neutralize.Pinned, health -1.0, dama
+S14-file-save-drops-in-flight-collapses CAUGHT (3 test(s) by assertion)
+     Gridlands.Game.Structural.AFallWaitsUntilTheCellsCreaturesCanMove: Expected 'the fall waited: still in flight' to be not null.
+     Gridlands.Game.Structural.ARestoredFallIsTheDecidedFallNotAReplan: Expected 'the resumed fall is the decided one (impact time, damage, volume, rest)' to be true.
+     Gridlands.Game.Structural.SaveRestartAtAnyMomentNeverChangesTheOutcome: Expected 'Pinned: save/restart at 0.000 s gives the same outcome as no break
+    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zen
+S15-resumed-fall-presented-solid CAUGHT (1 test(s) by assertion)
+     Gridlands.Game.Structural.UnloadingMidFallFreezesTheFallAndNeverChangesTheOutcome: Expected '  not solid while it falls' to be false.
+S16-restored-with-elapsed-reset CAUGHT (2 test(s) by assertion)
+     Gridlands.Game.Structural.AFallWaitsUntilTheCellsCreaturesCanMove: Expected '  not a moment older' to be 0.500000, but it was 0.000000 and outside tolerance 0.000100.
+     Gridlands.Game.Structural.UnloadingMidFallFreezesTheFallAndNeverChangesTheOutcome: Expected '  from exactly where it stopped' to be 0.500000, but it was 0.000000 and outside tolerance 0.000100.
+S17-dormant-collapse-advances-while-its-target-is-frozen CAUGHT (1 test(s) by assertion)
+     Gridlands.Game.Structural.UnloadingMidFallFreezesTheFallAndNeverChangesTheOutcome: Expected '  from exactly where it stopped' to be 0.500000, but it was 10.500000 and outside tolerance 0.000100.
+S18-resumes-before-restored-creatures-can-move CAUGHT (1 test(s) by assertion)
+     Gridlands.Game.Structural.AFallWaitsUntilTheCellsCreaturesCanMove: Expected 'the fall waited: still in flight' to be not null.
+S19-restore-replans-in-the-current-world CAUGHT (1 test(s) by assertion)
+     Gridlands.Game.Structural.ARestoredFallIsTheDecidedFallNotAReplan: Expected 'the resumed fall is the decided one (impact time, damage, volume, rest)' to be true.
+S20-impacted-collapse-still-saved-as-pending CAUGHT (2 test(s) by assertion)
+     Gridlands.Game.Structural.SaveRestartAtAnyMomentNeverChangesTheOutcome: Expected 'Pinned: save/restart at 1.007 s gives the same outcome as no break
+    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zen
+     Gridlands.Game.Structural.UnloadingMidFallFreezesTheFallAndNeverChangesTheOutcome: Expected 'UnloadPinned: unload at 1.007 s gives the same outcome as no break
+    straight: outcome 2 Neutralize.Pinned, health -1.0, dama
+S21-credit-lost-after-reload CAUGHT (2 test(s) by assertion)
+     Gridlands.Game.Structural.SaveRestartAtAnyMomentNeverChangesTheOutcome: Expected 'Control: save/restart at 0.500 s gives the same outcome as no break
+    straight: outcome 1 None, health 0.0, damage 60.0, Zenny 100, resi
+     Gridlands.Game.Structural.UnloadingMidFallFreezesTheFallAndNeverChangesTheOutcome: Expected 'UnloadControl: unload at 0.500 s gives the same outcome as no break
+    straight: outcome 1 None, health 0.0, damage 60.0, Zenn
+S22-restore-replays-the-collapse-event CAUGHT (2 test(s) by assertion)
+     Gridlands.Game.Structural.SaveRestartAtAnyMomentNeverChangesTheOutcome: Expected 'Pinned: save/restart at 0.000 s gives the same outcome as no break
+    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zen
+     Gridlands.Game.Structural.UnloadingMidFallFreezesTheFallAndNeverChangesTheOutcome: Expected 'UnloadPinned: unload at 0.000 s gives the same outcome as no break
+    straight: outcome 2 Neutralize.Pinned, health -1.0, dama
+S23-restore-replays-the-impact-noise CAUGHT (2 test(s) by assertion)
+     Gridlands.Game.Structural.SaveRestartAtAnyMomentNeverChangesTheOutcome: Expected 'Pinned: save/restart at 0.000 s gives the same outcome as no break
+    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zen
+     Gridlands.Game.Structural.UnloadingMidFallFreezesTheFallAndNeverChangesTheOutcome: Expected 'UnloadPinned: unload at 0.000 s gives the same outcome as no break
+    straight: outcome 2 Neutralize.Pinned, health -1.0, dama
+S24-restore-replays-the-pinned-reward CAUGHT (2 test(s) by assertion)
+     Gridlands.Game.Structural.APinnedCreatureStaysPinnedImmuneAndResolvedOnce: Expected '  no event at all replays' to be 0, but it was 2.
+     Gridlands.Game.Structural.SaveRestartAtAnyMomentNeverChangesTheOutcome: Expected 'Pinned: save/restart at 1.258 s gives the same outcome as no break
+    straight: outcome 2 Neutralize.Pinned, health -1.0, damage 0.0, Zen
+S25-topple-reintegration-drifts CAUGHT (2 test(s) by assertion)
+     Gridlands.Core.Structure.APendingCollapseIsNeverReplanned: Expected 'and it is the collapse that was decided, not the re-plan' to be true.
+     Gridlands.Core.Structure.APendingCollapseRebuildsBitIdenticallyThroughTheSaveFormat: Expected 'record 2 is bit-identical to the plan (first difference: )' to be true.
+S26-rest-saved-through-a-rotator CAUGHT (2 test(s) by assertion)
+     Gridlands.Core.Structure.APendingCollapseIsNeverReplanned: Expected 'and it is the collapse that was decided, not the re-plan' to be true.
+     Gridlands.Core.Structure.APendingCollapseRebuildsBitIdenticallyThroughTheSaveFormat: Expected 'record 2 is bit-identical to the plan (first difference: )' to be true.
+S27-severity-not-physical CAUGHT (1 test(s) by assertion)
+     Gridlands.Core.Structure.ImpactSeverityIsPhysicalAndPinningIsTuning: Expected 'a heavier material hits harder' to be 4.000000, but it was 2.500000 and outside tolerance 0.000100.
+S28-structure-reach-lint-disabled CAUGHT (tooling assertion: FAIL: test_str4_structure_reach_inside_its_cell (test_gldata.RuleTests.test_str4_structure_reach_inside_its_cell))
+     FAIL: test_str4_structure_reach_inside_its_cell (test_gldata.RuleTests.test_str4_structure_reach_inside_its_cell)
+RESULT: PASS 28/28 planted defects caught by assertion

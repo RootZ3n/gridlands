@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLPlanRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLPlanRules.cpp
+@@ -27,7 +27,7 @@
+ 		Piece.Def = Entry.Def;
+ 		const FVector2D World = GLStructureRules::RotateXY(FVector2D(Entry.Offset), AnchorYawStep);
+ 		Piece.Location = AnchorLocation + FVector(World, Entry.Offset.Z);
+-		Piece.YawStep = GLStructureRules::NormalizeYawStep(Entry.YawStep + AnchorYawStep);
++		Piece.YawStep = GLStructureRules::NormalizeYawStep(Entry.YawStep); // DEFECT
+ 		Piece.Origin = Origin;
+ 		Piece.Layers = Entry.Layers;
+ 	}

@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -1213,7 +1213,7 @@
+ 				Problem(FString::Printf(TEXT("saved stored item %s no longer exists"), *Held.Id.ToString()));
+ 				continue;
+ 			}
+-			Part->Contents.ForceAdd(Content, Held.Id, Held.Count); // a save is never truncated
++			; // DEFECT
+ 		}
+ 		if (Entry.State == EGLStructurePartState::Debris)
+ 		{

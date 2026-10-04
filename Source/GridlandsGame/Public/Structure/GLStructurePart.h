@@ -2,6 +2,7 @@
 
 #include "Building/GLBuildPiece.h"
 #include "CoreMinimal.h"
+#include "Interaction/GLInteractable.h"
 #include "GLStructurePart.generated.h"
 
 class UGLSalvageableComponent;
@@ -12,12 +13,16 @@ class UGLSalvageableComponent;
  * authoritative state and moves it along the collapse plan (presentation follows the result).
  */
 UCLASS(NotPlaceable)
-class GRIDLANDSGAME_API AGLStructurePart : public AGLBuildPiece
+class GRIDLANDSGAME_API AGLStructurePart : public AGLBuildPiece, public IGLInteractable
 {
 	GENERATED_BODY()
 
 public:
 	AGLStructurePart();
+
+	/** P11: a player storage piece offers Store / Take; every part forwards to its salvage pipeline. */
+	virtual void GetInteractionOptions(const AActor* Interactor, TArray<FGLInteractionOption>& OutOptions) const override;
+	virtual bool Interact(AActor* Interactor, FGameplayTag Verb) override;
 
 	UGLSalvageableComponent* GetSalvageable() const { return Salvageable; }
 

@@ -1,0 +1,12 @@
+--- a/Source/GridlandsGame/Private/Mechanism/GLMechanismSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Mechanism/GLMechanismSubsystem.cpp
+@@ -143,7 +143,8 @@
+ 	}
+ 	Record->State = Saved.State;
+ 	Record->Switches = Saved.Switches;
+-	Record->SwitchedAt = -1e9; // at rest: nothing replays
++	UGLNoiseSubsystem::EmitAction(this, TEXT("Noise.Mechanism.Slam"), Record->Location, nullptr); // DEFECT
++	Record->SwitchedAt = -1e9;
+ 	if (AGLMechanism* Actor = Record->Actor.Get())
+ 	{
+ 		Actor->PresentState(*Record);

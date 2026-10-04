@@ -1,0 +1,12 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -549,8 +549,7 @@
+ 		{
+ 			// P11: a quiescent piece leaves its batch at support failure and falls as an actor along the plan (the model
+ 			// decided the fall; the impact decides its victims, P10). Its debris keeps that actor.
+-			Uninstance(Structure, *Part);
+-			SpawnPart(Structure, *Part);
++			SpawnPart(Structure, *Part); // DEFECT: its instances stay where it stood
+ 		}
+ 		if (AGLStructurePart* Actor = Part->Actor.Get())
+ 		{

@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
+@@ -239,7 +239,7 @@
+ 	for (const TPair<FName, FGLGlitchRecord>& Entry : World->GetSubsystem<UGLGlitchSubsystem>()->GetRecords())
+ 	{
+ 		const FGLGlitchRecord& Glitch = Entry.Value;
+-		if (UGLPlacementSubsystem::IsPlacementOfCell(Glitch.Placement, Cell))
++		if (UGLPlacementSubsystem::IsPlacementOfCell(Glitch.Placement, Cell) && Glitch.Actor.IsValid()) // DEFECT: from actors
+ 		{
+ 			Record.Glitches.Add({ Glitch.Placement, FGLGlitchLifecycle::ToPersistedState(Glitch.State), Glitch.ProgressSeconds, Glitch.bItemsDelivered });
+ 		}

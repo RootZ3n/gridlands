@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -1078,7 +1078,7 @@
+ 	FGLStructureRuntime* Structure = Structures.Find(PlayerKey(Part->Piece.Cell));
+ 	if (Part->bInstanced && Structure)
+ 	{
+-		Uninstance(*Structure, *Part);
++		Part->bInstanced = false; // DEFECT: re-presented without leaving the batch
+ 		if (!PresentInstanced(*Structure, *Part))
+ 		{
+ 			SpawnPart(*Structure, *Part);

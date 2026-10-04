@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -248,7 +248,7 @@
+ 		MakeDebris(Structure, Part); // at its authoritative rest, solid, salvageable as debris
+ 		return Part.Actor.IsValid();
+ 	}
+-	if (!Falling && PresentInstanced(Structure, Part))
++	if (!Falling && Structure.bPlayer && Part.State == EGLStructurePartState::Intact && AGLPlayerPieceBatch::CanInstance(Part.Piece) && (Part.bInstanced = true)) // DEFECT: never added
+ 	{
+ 		return true; // a quiescent player piece: its structure's batch draws and collides for it
+ 	}

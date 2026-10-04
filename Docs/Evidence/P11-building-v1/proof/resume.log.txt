@@ -1,0 +1,14 @@
+LogGridlands: Load: 2 cell records (0 loaded now, the rest when they stream in): 6 glitches, 0 salvaged placements, 50 build pieces, 0 edited ground vertices from ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json
+LogGridlands: gl.Building.Proof: PASS the fall resumes after the restart: 1 in flight
+LogGridlands: gl.Building.Proof: resume phase 1: waiting for the impact
+LogGridlands: Structures: player:cell.home.origin/p45 hit (66 damage, severity 2.80, 0 hit, 0 pinned, 0 damaged creatures; impact resolved in 0.075 ms)
+LogGridlands: gl.Building.Proof: PASS it lands exactly once: 1 impact(s)
+LogGridlands: gl.Building.Proof: resume screenshot 0 porch-debris
+LogGridlands: gl.Building.Proof: resume phase 2: landed
+LogGridlands: gl.Building.Proof: PASS collapse debris salvages into scrap, not pristine components: scrap +5, studs +0
+LogGridlands: gl.Building.Proof: PASS careful dismantle of the interior wall: intact studs (and its clapboard back as boards): stud 5, scrap_timber 2, timber_plank 2
+LogGridlands: gl.Building.Proof: PASS smashing a bay wall: fewer studs, more scrap: stud 1, scrap_timber 4, timber_plank 1
+LogGridlands: gl.Building.Proof: resume screenshot 1 after-salvage-south
+LogGridlands: gl.Building.Proof: resume phase 3: salvaged
+LogGridlands: gl.Building.Proof: resume RESULT PASS (5 checks)
+LogGridlands: Save: wrote ../../../../../repos/game-dev/gridlands/Saved/SaveGames/Gridlands/world.json

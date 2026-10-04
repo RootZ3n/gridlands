@@ -1,0 +1,20 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -600,7 +600,7 @@
+ 			Land(Active[I]);
+ 		}
+ 	}
+-	Active.RemoveAll([](const FGLActiveCollapse& Collapse) { return Collapse.bImpacted; });
++	Active.RemoveAll([](const FGLActiveCollapse& Collapse) { return Collapse.bImpacted && Collapse.Elapsed > Collapse.Outcome.ImpactSeconds + 1.0; }); // DEFECT: kept a while
+ 	for (const TWeakObjectPtr<AActor>& Actor : ToDestroy)
+ 	{
+ 		if (AActor* Live = Actor.Get())
+@@ -783,7 +783,7 @@
+ {
+ 	for (const FGLActiveCollapse& Collapse : Active)
+ 	{
+-		if (Collapse.Cell == Cell && !Collapse.bImpacted)
++		if (Collapse.Cell == Cell) // DEFECT
+ 		{
+ 			Out.Add(GLPendingCollapse::Capture(Collapse.Placement, Collapse.Part, Collapse.Outcome, Collapse.Elapsed, Collapse.Material, Collapse.Cause, Collapse.Credit));
+ 		}

@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Combat/GLCreature.cpp
++++ b/Source/GridlandsGame/Private/Combat/GLCreature.cpp
+@@ -160,7 +160,7 @@
+ 
+ void AGLCreature::HandleDamaged(double Taken, AActor* Instigator)
+ {
+-	WriteThrough(); // its health is a gameplay fact (P9: never restored to full by a reload)
++	// DEFECT
+ }
+ 
+ void AGLCreature::EndPlay(const EEndPlayReason::Type Reason)

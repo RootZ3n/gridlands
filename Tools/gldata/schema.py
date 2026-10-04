@@ -192,6 +192,7 @@ REQUIREMENT_KINDS_NEEDING_TARGET = {"Requirement.ObjectSalvaged": "salvage_node"
 
 COUNT = Int(1, 100000)
 ITEM_STACK = Obj({"item": Ref("item"), "count": COUNT}, required=("item", "count"))
+SALVAGE_YIELD = Obj({"item": Ref("item"), "count": COUNT, "yieldCategory": Ref("yield")}, required=("item", "count", "yieldCategory"))
 VEC3 = List(Num(), min_items=3)
 COLLAPSE = Obj({"motion": Enum("drop", "topple"), "direction": Enum("awayFromInstigator", "pieceForward", "pieceBackward")},
                required=("motion",))
@@ -235,8 +236,8 @@ SCHEMAS: dict[str, Obj] = {
     "item": kind(
         {
             "displayName": Str(),
+            # P11: slots and stack limits are the inventory limit; there is no carried weight.
             "stackSize": Int(1, 10000),
-            "weight": Num(0, 1000),
             "material": Ref("material"),
             "tool": Obj({"toolClass": Tag("Tool"), "tier": Int(1, 10)}, required=("toolClass", "tier")),
             # M11: Zenny can fight with it (Pehlichi never deals damage, ADR-0017). Metres, seconds.
@@ -246,7 +247,7 @@ SCHEMAS: dict[str, Obj] = {
             "sources": List(Tag("Source"), min_items=1, unique=True),
             "onAcquireUnlocks": List(Ref("knowledge"), unique=True),
         },
-        required=("displayName", "stackSize", "weight", "criticalPath", "sources"),
+        required=("displayName", "stackSize", "criticalPath", "sources"),
     ),
     "knowledge": kind(
         {"displayName": Str(), "category": Tag("Knowledge"), "criticalPath": Bool(), "sources": List(Tag("Source"), min_items=1, unique=True)},
@@ -269,8 +270,10 @@ SCHEMAS: dict[str, Obj] = {
             "integrity": Num(positive=True),
             "material": Ref("material"),
             "requiresTool": Tag("Tool"),
-            "yields": List(Obj({"item": Ref("item"), "count": COUNT, "yieldCategory": Ref("yield")},
-                               required=("item", "count", "yieldCategory")), min_items=1),
+            "yields": List(SALVAGE_YIELD, min_items=1),
+            # P11 (ADR-0039): yields by recovery path (careful dismantle, destructive smash, collapse debris).
+            "yieldsByPath": Obj({"careful": List(SALVAGE_YIELD, min_items=1), "destructive": List(SALVAGE_YIELD, min_items=1),
+                                 "collapse": List(SALVAGE_YIELD, min_items=1)}),
             "toolEfficiency": List(Obj({"toolClass": Tag("Tool"), "minTier": Int(1, 10), "multiplier": Num(positive=True)},
                                        required=("toolClass", "minTier", "multiplier"))),
             "onSalvageUnlocks": List(Ref("knowledge"), unique=True),
@@ -287,15 +290,17 @@ SCHEMAS: dict[str, Obj] = {
             "displayName": Str(),
             "era": Ref("era"),
             "material": Ref("material"),
-            "role": Enum("foundation", "wall", "doorway", "roof", "post", "beam", "floor", "stump", "trunk"),
+            "role": Enum("foundation", "wall", "doorway", "roof", "post", "beam", "floor", "stump", "trunk", "storage", "base_core", "station"),
             # May rest directly on terrain (foundations, posts); otherwise it needs another piece.
             "grounded": Bool(),
-            # Axis-aligned bounds in piece space (overlap tests, terrain protection).
+            # Bounds in piece space (P11: oriented with the piece's yaw for overlap, terrain protection, collapse).
             "size": VEC3,
             # Visual and collision boxes; pitch tilts a box about its local X axis (roofs).
             "shapes": List(Obj({"size": VEC3, "offset": VEC3, "pitch": Num(-89, 89)}, required=("size", "offset")), min_items=1),
             # bottom meets top: the upper piece rests on the lower; side meets side: a lateral link.
-            "sockets": List(Obj({"name": Str(max_len=64), "role": Enum("bottom", "top", "side"), "offset": VEC3},
+            # P11: an optional facing (degrees in the piece frame, 0 = +X, whole 2.5 degree steps, SOCK-1): facing side
+            # sockets must face each other to link, and a snap between them takes its yaw from the data.
+            "sockets": List(Obj({"name": Str(max_len=64), "role": Enum("bottom", "top", "side"), "offset": VEC3, "facing": Num(-360, 360)},
                                 required=("name", "role", "offset")), min_items=1),
             "cost": List(ITEM_STACK, min_items=1),
             "unlockedBy": List(Ref("knowledge"), unique=True),
@@ -305,6 +310,17 @@ SCHEMAS: dict[str, Obj] = {
             "collapse": COLLAPSE,
             # P7: how it looks (visual.*); collision and support stay on shapes/sockets.
             "visual": Ref("visual"),
+            # P11 (ADR-0039): construction phases accepted after FRAME, in canonical order (empty: complete as built).
+            "layers": List(Ref("phase"), unique=True),
+            # P11: the frame's look while it waits for its finish (presentation only).
+            "frameShapes": List(Obj({"size": VEC3, "offset": VEC3, "pitch": Num(-89, 89)}, required=("size", "offset"))),
+            # P11: what dismantling, smashing or salvaging its debris gives back.
+            "salvage": Ref("salvage"),
+            # P11: shared base storage capacity; a station it provides.
+            "storage": Obj({"slots": Int(1, 200)}, required=("slots",)),
+            "station": Tag("Station"),
+            # P11 save migration: layers a v0 piece of this id gets (MIG-1).
+            "legacyLayers": List(Ref("finish"), unique=True),
         },
         required=("displayName", "era", "material", "role", "grounded", "size", "shapes", "sockets"),
     ),
@@ -480,7 +496,8 @@ SCHEMAS: dict[str, Obj] = {
     "structure": kind(
         {
             "displayName": Str(),
-            "parts": List(Obj({"name": Str(max_len=32), "piece": Ref("buildpiece"), "location": VEC3, "yawQuarter": Int(0, 3),
+            # P11: yaw in degrees, a whole number of 2.5 degree steps (YAW-1).
+            "parts": List(Obj({"name": Str(max_len=32), "piece": Ref("buildpiece"), "location": VEC3, "yaw": Num(-360, 360),
                                "salvage": Ref("salvage"), "collapse": COLLAPSE},
                               required=("name", "piece", "location", "salvage")), min_items=1),
         },
@@ -522,8 +539,30 @@ SCHEMAS: dict[str, Obj] = {
                                       "damagePerMetreFallen", "damageMax", "toppleStartDegrees", "pinMinSeverity")),
             "noise": Obj({"investigateSeconds": Num(0, 600), "memorySeconds": Num(0, 600), "radius": Map(Num(0, 500))},
                          required=("investigateSeconds", "memorySeconds", "radius")),
+            # P11: building behaviour (provisional; claims may grow, connect and multiply later).
+            "building": Obj({"claimRadiusMetres": Num(1, 1000), "personalSlots": Int(1, 500)}, required=("claimRadiusMetres", "personalSlots")),
         },
         required=("displayName", "collapse", "noise"),
+    ),
+    # P11 (ADR-0039): a construction phase after FRAME (canonical order FRAME -> ELECTRICAL -> FINISH).
+    "phase": kind(
+        {"displayName": Str(), "order": Int(1, 100), "optional": Bool(), "implemented": Bool()},
+        required=("displayName", "order", "optional", "implemented"),
+    ),
+    # P11 (ADR-0039): a finish layer: real finishing material on a compatible frame; never changes support.
+    "finish": kind(
+        {
+            "displayName": Str(),
+            "era": Ref("era"),
+            "phase": Ref("phase"),
+            "fitsRoles": List(Enum("foundation", "wall", "doorway", "roof", "post", "beam", "floor"), min_items=1, unique=True),
+            "cost": List(ITEM_STACK, min_items=1),
+            "unlockedBy": List(Ref("knowledge"), unique=True),
+            "visual": Ref("visual"),
+            "tint": List(Num(0, 4), min_items=3),
+            "salvage": Ref("salvage"),
+        },
+        required=("displayName", "era", "phase", "fitsRoles", "cost", "salvage"),
     ),
     # ADR-0023: Zenny answers through gameplay. CONSTRUCT is reserved until building exists.
     "puzzle": kind(

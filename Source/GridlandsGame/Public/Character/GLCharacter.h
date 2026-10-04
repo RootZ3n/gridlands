@@ -54,6 +54,7 @@ private:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Interact();
+	void TakeAll();
 	/** Temporary until crafting UI exists: makes the first craftable recipe. */
 	void FabricateFirstAvailable();
 	/** Zenny never speaks; he commands (ADR-0005): Q scan, R repair, G follow/stay. */

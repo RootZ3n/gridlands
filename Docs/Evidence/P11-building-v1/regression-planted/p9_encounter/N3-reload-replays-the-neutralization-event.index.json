@@ -1,0 +1,603 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A1077F2A0D753AAB6762BCF4FBF1D4",
+			"instanceName": "Pehverse-1415634",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.10.04-15.19.36",
+	"succeeded": 28,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 25.988861083984375,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AmbientNoiseMasksHearingAtTheListener",
+			"fullTestPath": "Gridlands.Core.Combat.AmbientNoiseMasksHearingAtTheListener",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.008108123205602169,
+			"dateTime": "2026.10.04-15.19.10",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CreatureSeesOnlyWhatItShould",
+			"fullTestPath": "Gridlands.Core.Combat.CreatureSeesOnlyWhatItShould",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.008441440761089325,
+			"dateTime": "2026.10.04-15.19.10",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "HearingAndMemoryAreSeparateFromSight",
+			"fullTestPath": "Gridlands.Core.Combat.HearingAndMemoryAreSeparateFromSight",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.008006170392036438,
+			"dateTime": "2026.10.04-15.19.10",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LureBeatsChaseAttackRespectsCooldown",
+			"fullTestPath": "Gridlands.Core.Combat.LureBeatsChaseAttackRespectsCooldown",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.0082473801448941231,
+			"dateTime": "2026.10.04-15.19.10",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NeutralizedIsInertAliveAndNeedsNoNavigation",
+			"fullTestPath": "Gridlands.Core.Combat.NeutralizedIsInertAliveAndNeedsNoNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.0079276338219642639,
+			"dateTime": "2026.10.04-15.19.10",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PatrolWalksItsLoopAndReturnsToIt",
+			"fullTestPath": "Gridlands.Core.Combat.PatrolWalksItsLoopAndReturnsToIt",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.0082959039136767387,
+			"dateTime": "2026.10.04-15.19.10",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PresentedActorsWriteThroughToTheirModels",
+			"fullTestPath": "Gridlands.Game.ActorPresentation.PresentedActorsWriteThroughToTheirModels",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.54218584299087524,
+			"dateTime": "2026.10.04-15.19.10",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RetiredActorsAreInertAtOnce",
+			"fullTestPath": "Gridlands.Game.ActorPresentation.RetiredActorsAreInertAtOnce",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.59450984001159668,
+			"dateTime": "2026.10.04-15.19.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SavedStateResolvesBeforeAnyGameplayActor",
+			"fullTestPath": "Gridlands.Game.ActorPresentation.SavedStateResolvesBeforeAnyGameplayActor",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 1.0714319944381714,
+			"dateTime": "2026.10.04-15.19.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UnloadBeforePresentationCancelsCleanly",
+			"fullTestPath": "Gridlands.Game.ActorPresentation.UnloadBeforePresentationCancelsCleanly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 1.4983991384506226,
+			"dateTime": "2026.10.04-15.19.13",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GremlinCanBeAvoidedAndTheDrainFixedWithoutAFight",
+			"fullTestPath": "Gridlands.Game.Combat.GremlinCanBeAvoidedAndTheDrainFixedWithoutAFight",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.033421218395233154,
+			"dateTime": "2026.10.04-15.19.14",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PehlichiDistractionIsNonLethal",
+			"fullTestPath": "Gridlands.Game.Combat.PehlichiDistractionIsNonLethal",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.02363978698849678,
+			"dateTime": "2026.10.04-15.19.14",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ZennyCanFightTheGremlin",
+			"fullTestPath": "Gridlands.Game.Combat.ZennyCanFightTheGremlin",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.028805291280150414,
+			"dateTime": "2026.10.04-15.19.14",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AmbientMaskingAppliesToStepsAndLuresAlike",
+			"fullTestPath": "Gridlands.Game.Encounter.AmbientMaskingAppliesToStepsAndLuresAlike",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 1.0133762359619141,
+			"dateTime": "2026.10.04-15.19.14",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AnUnpresentedCreatureHearsByTheSameRule",
+			"fullTestPath": "Gridlands.Game.Encounter.AnUnpresentedCreatureHearsByTheSameRule",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 1.0980522632598877,
+			"dateTime": "2026.10.04-15.19.15",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AWoundedCreatureStaysWoundedAcrossStreamingAndRestart",
+			"fullTestPath": "Gridlands.Game.Encounter.AWoundedCreatureStaysWoundedAcrossStreamingAndRestart",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 2.672461986541748,
+			"dateTime": "2026.10.04-15.19.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ChaseAndSearchSurviveStreamingAndRestart",
+			"fullTestPath": "Gridlands.Game.Encounter.ChaseAndSearchSurviveStreamingAndRestart",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 2.5849096775054932,
+			"dateTime": "2026.10.04-15.19.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ContainmentReflectsTheWorldAtTheDecision",
+			"fullTestPath": "Gridlands.Game.Encounter.ContainmentReflectsTheWorldAtTheDecision",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 1.0051639080047607,
+			"dateTime": "2026.10.04-15.19.22",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DirectRouteDefeatsTheWardenThroughHealth",
+			"fullTestPath": "Gridlands.Game.Encounter.DirectRouteDefeatsTheWardenThroughHealth",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 2.034083366394043,
+			"dateTime": "2026.10.04-15.19.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "EnvironmentalRouteNeutralizesWithoutDamage",
+			"fullTestPath": "Gridlands.Game.Encounter.EnvironmentalRouteNeutralizesWithoutDamage",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 1.0186611413955688,
+			"dateTime": "2026.10.04-15.19.25",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "the cage dropped after 13.8 s; Zenny took 90 damage meanwhile",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.19.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "IdleCreaturesAddNoNavigation",
+			"fullTestPath": "Gridlands.Game.Encounter.IdleCreaturesAddNoNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 1.251731276512146,
+			"dateTime": "2026.10.04-15.19.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "tiles in the town with its idle creatures: 250",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.19.27"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NavigationScalesWithTheRegionNotTheCreatures",
+			"fullTestPath": "Gridlands.Game.Encounter.NavigationScalesWithTheRegionNotTheCreatures",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 1.2942914962768555,
+			"dateTime": "2026.10.04-15.19.27",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "tiles: region with the room's 5 creatures 164; with 16 more active ones 164 (16 active, 0 with their own navigation)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.19.28"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NeutralizedStaysContainedAndNothingReplays",
+			"fullTestPath": "Gridlands.Game.Encounter.NeutralizedStaysContainedAndNothingReplays",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 2.5871477127075195,
+			"dateTime": "2026.10.04-15.19.28",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'streamed back: nothing replays (operate, switch, neutralize, resolve)' to be 0, but it was 1.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-15.19.30"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'after restart: nothing replays (operate, switch, neutralize, resolve)' to be 0, but it was 1.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-15.19.31"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ProofRoomStandsAndSpawnsModelsFirst",
+			"fullTestPath": "Gridlands.Game.Encounter.ProofRoomStandsAndSpawnsModelsFirst",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.99827176332473755,
+			"dateTime": "2026.10.04-15.19.31",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BuiltOnlyAroundInvokersAndFollowsEdits",
+			"fullTestPath": "Gridlands.Game.Navigation.BuiltOnlyAroundInvokersAndFollowsEdits",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 1.313320517539978,
+			"dateTime": "2026.10.04-15.19.32",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "active tiles around Zenny: 163 (a whole 1 km cell: 10816)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.19.32"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "active tiles after the walk: 179; old place on navigation: yes",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.19.33"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "stale tiles (built, not active): 0; swept so far: 16",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.19.33"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "navmesh at the mound: 10 -> 175 cm (ground 300)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.19.33"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CreaturesPathFarFromThePlayer",
+			"fullTestPath": "Gridlands.Game.Navigation.CreaturesPathFarFromThePlayer",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.62646466493606567,
+			"dateTime": "2026.10.04-15.19.33",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CrossesBoundariesAndUnloadsCleanly",
+			"fullTestPath": "Gridlands.Game.Navigation.CrossesBoundariesAndUnloadsCleanly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 1.7291834354400635,
+			"dateTime": "2026.10.04-15.19.34",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CoverAfterDetectionLeavesALastKnownPosition",
+			"fullTestPath": "Gridlands.Game.Noise.CoverAfterDetectionLeavesALastKnownPosition",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.46461457014083862,
+			"dateTime": "2026.10.04-15.19.36",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "the mound between them: 400 cm above the creature's ground",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.19.36"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TerraformingIsHeardOnlyWithinHearing",
+			"fullTestPath": "Gridlands.Game.Noise.TerraformingIsHeardOnlyWithinHearing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A1077F2A0D753AAB6762BCF4FBF1D4"
+			],
+			"duration": 0.45570814609527588,
+			"dateTime": "2026.10.04-15.19.36",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "heard counts: near 1, far 0",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-15.19.36"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
++++ b/Source/GridlandsGame/Private/World/GLCreatureModels.cpp
+@@ -272,7 +272,7 @@
+ 			Heard += Creature->HearNoise(Noise) ? 1 : 0; // presented: its actor hears (same rule)
+ 			continue;
+ 		}
+-		// Waiting for presentation, or far: its model hears by the same rule, at its own position.
++		continue; // DEFECT
+ 		const FGLCreatureDef* Def = GLContent::Get().Find<FGLCreatureDef>(Model.Definition);
+ 		const double Mask = NoiseWorld ? NoiseWorld->MaskAt(Model.Location) : 0.0;
+ 		if (!Def || !GLCreatureRules::Hears(*Def, Model.Location, Noise.Location, Noise.RadiusCm, Mask))

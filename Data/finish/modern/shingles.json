@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "finish.modern.shingles",
+  "displayName": "Shingles",
+  "era": "era.memory.modern_day",
+  "phase": "phase.construction.finish",
+  "fitsRoles": [
+    "roof"
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 2
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "salvage": "salvage.finish.shingles",
+  "visual": "visual.kittimber.roof",
+  "notes": "P11: the M10 roof's look, now a finish on rafters (v0 roofs migrate to frame + this)."
+}

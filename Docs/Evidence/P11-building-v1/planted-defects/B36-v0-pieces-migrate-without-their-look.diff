@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Save/GLWorldSave.cpp
++++ b/Source/GridlandsCore/Private/Save/GLWorldSave.cpp
+@@ -40,7 +40,7 @@
+ 			{
+ 				if (const FGLBuildPieceDef* Form = Content->Find<FGLBuildPieceDef>(FName(*Def)))
+ 				{
+-					for (const FName& Layer : Form->LegacyLayers)
++					for (const FName& Layer : TArray<FName>()) // DEFECT
+ 					{
+ 						Layers.Add(MakeShared<FJsonValueString>(Layer.ToString()));
+ 					}

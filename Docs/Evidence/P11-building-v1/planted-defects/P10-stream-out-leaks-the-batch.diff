@@ -1,0 +1,12 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -732,8 +732,7 @@
+ 			TWeakObjectPtr<AGLPlayerPieceBatch> Batch;
+ 			if (Batches.RemoveAndCopyValue(It.Key(), Batch) && Batch.IsValid())
+ 			{
+-				Batch->Retire();
+-				RetiringBatchList.Add(Batch);
++				// DEFECT: forgotten, never retired
+ 			}
+ 			// Evidence (P11 density): making a player structure inert is synchronous in the unload frame.
+ 			UE_LOG(LogGridlands, Log, TEXT("Structures: %s retired %d player parts in %.2f ms"), *It.Key().ToString(), It.Value().Parts.Num(), (FPlatformTime::Seconds() - RetireStart) * 1000.0);

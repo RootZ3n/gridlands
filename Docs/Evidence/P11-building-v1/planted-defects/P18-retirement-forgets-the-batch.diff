@@ -1,0 +1,17 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -344,12 +344,8 @@
+ 	while (RetiringBatchList.Num() > 0 && BudgetSeconds >= 0.0 && (BudgetSeconds == 0.0 || FPlatformTime::Seconds() - Start < BudgetSeconds))
+ 	{
+ 		AGLPlayerPieceBatch* Batch = RetiringBatchList.Last().Get();
+-		if (!Batch || Batch->RetireStep(256))
+-		{
+-			if (Batch)
+-			{
+-				Batch->Destroy();
+-			}
++		if (true) // DEFECT: dropped from the list, never torn down: its collision stays
++		{
+ 			RetiringBatchList.Pop(EAllowShrinking::No);
+ 		}
+ 	}

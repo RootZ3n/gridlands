@@ -144,3 +144,10 @@ and only for parts that are no longer intact.
 - **Deterministic, persistent and stream-safe.** Tests can assert exact outcomes, and a
   telegraph can be drawn from the same impact volume.
 - **Visual quality is a presentation problem on top.** It is never a reason to let physics decide.
+
+## Amended by ADR-0039 (P11, 2026-10-03; candidate)
+- **Player construction shares this model in code:** each cell's player pieces are one structure (`player:<cell>`) in
+  `UGLStructureSubsystem`; collapse, debris, impact at impact time, in-flight persistence and streaming are the same.
+- **Debris salvages by the collapse path** (predominantly scrap, with any finish layers by the same path), replacing
+  "debris salvages as the part did (provisional)". Intact authored parts salvage by the careful path.
+- Landing surfaces, drop impacts and topple extents use the piece's **oriented footprint** (any whole 2.5 degree yaw).

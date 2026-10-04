@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -841,6 +841,7 @@
+ 			Resumed.Material = Flight->Material;
+ 			Resumed.Cause = Flight->Cause;
+ 			Resumed.Credit = Flight->Credit;
++			EmitStructureEvent(this, TEXT("Event.Structure.Collapsed"), Structure->Def, nullptr, 1); // DEFECT
+ 			if (AGLStructurePart* Actor = Part->Actor.Get())
+ 			{
+ 				Actor->SetSolid(false);

@@ -139,8 +139,8 @@ struct GRIDLANDSCORE_API FGLItemDef : public FGLDefinitionBase
 	GENERATED_BODY()
 
 	UPROPERTY() FString DisplayName;
+	/** Inventory limit per stack (P11: slots and stacks are the limit; there is no carried weight). */
 	UPROPERTY() int32 StackSize = 1;
-	UPROPERTY() double Weight = 0.0;
 	UPROPERTY() FName Material;
 	/** Optional. Absent means the item is not a tool (ToolClass is None). */
 	UPROPERTY() FGLToolDef Tool;
@@ -187,6 +187,21 @@ struct GRIDLANDSCORE_API FGLSalvageYieldDef
 	UPROPERTY() FName YieldCategory;
 };
 
+/**
+ * P11: salvage yields by recovery path. careful: dismantling (the most intact components); destructive: smashing
+ * (fewer components, more scrap); collapse: salvaging debris (predominantly scrap). An empty path falls back to Yields
+ * (trees: a felled trunk is gathered exactly as designed).
+ */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLSalvagePathsDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() TArray<FGLSalvageYieldDef> Careful;
+	UPROPERTY() TArray<FGLSalvageYieldDef> Destructive;
+	UPROPERTY() TArray<FGLSalvageYieldDef> Collapse;
+};
+
 USTRUCT()
 struct GRIDLANDSCORE_API FGLToolEfficiencyDef
 {
@@ -206,7 +221,10 @@ struct GRIDLANDSCORE_API FGLSalvageDef : public FGLDefinitionBase
 	UPROPERTY() double Integrity = 0.0;
 	UPROPERTY() FName Material;
 	UPROPERTY() FName RequiresTool;
+	/** What salvaging gives. P11: also the careful path when YieldsByPath has none. */
 	UPROPERTY() TArray<FGLSalvageYieldDef> Yields;
+	/** P11 (ADR-0039): how the material was recovered decides what comes back (distinct items, not stack quality). */
+	UPROPERTY() FGLSalvagePathsDef YieldsByPath;
 	UPROPERTY() TArray<FGLToolEfficiencyDef> ToolEfficiency;
 	UPROPERTY() TArray<FName> OnSalvageUnlocks;
 	/** Event.* tags emitted on completion, e.g. Event.Salvage.WireStripped. */
@@ -237,6 +255,21 @@ struct GRIDLANDSCORE_API FGLBuildSocketDef
 	/** bottom | top | side */
 	UPROPERTY() FName Role;
 	UPROPERTY() TArray<double> Offset;
+	/**
+	 * P11: optional facing in degrees in the piece's frame (0 = +X), a multiple of 2.5 (SOCK-1). Two side sockets that
+	 * both face must face each other to link, and a snap between them takes its yaw from the data (angled bays,
+	 * octagons). Absent: GLStructureRules::NoFacing.
+	 */
+	UPROPERTY() double Facing = 1.0e6;
+};
+
+/** P11: a storage piece's capacity (shared base storage). */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLStorageDef
+{
+	GENERATED_BODY()
+
+	UPROPERTY() int32 Slots = 0;
 };
 
 /** One cube of NICE's corruption on a visual (P7): unnaturally precise, and sparse (VIS-2). Metres, degrees. */
@@ -328,7 +361,7 @@ struct GRIDLANDSCORE_API FGLBuildPieceDef : public FGLDefinitionBase
 	UPROPERTY() FName Era;
 	/** Physics and capability come from the material. */
 	UPROPERTY() FName Material;
-	/** foundation | wall | doorway | roof | post | beam */
+	/** foundation | wall | doorway | roof | post | beam | floor | storage | base_core | station ... */
 	UPROPERTY() FName Role;
 	/** May rest directly on terrain. */
 	UPROPERTY() bool Grounded = false;
@@ -344,6 +377,62 @@ struct GRIDLANDSCORE_API FGLBuildPieceDef : public FGLDefinitionBase
 	UPROPERTY() FGLCollapseDef Collapse;
 	/** Optional (P7): how it looks (visual.*). Collision and support stay on the data shapes. */
 	UPROPERTY() FName Visual;
+	/**
+	 * P11 (ADR-0039): the construction phases this form accepts after FRAME, in order (phase.*). Empty: complete as
+	 * framed (a log wall, a Roman column: its form is its finish). A stud wall accepts [phase.electrical, phase.finish].
+	 */
+	UPROPERTY() TArray<FName> Layers;
+	/** P11: the frame's look while it still waits for an accepted finish (studs, plates). Presentation only. */
+	UPROPERTY() TArray<FGLBuildShapeDef> FrameShapes;
+	/** P11: what dismantling, smashing or salvaging its debris gives back (salvage.*, by path). */
+	UPROPERTY() FName Salvage;
+	/** P11: a storage piece (shared base storage). */
+	UPROPERTY() FGLStorageDef Storage;
+	/** P11: a station it provides when built (Station.*). */
+	UPROPERTY() FName Station;
+	/** P11 save migration (v2 -> v3, MIG-1): layers a v0 piece of this id gets, so old saves keep their look. */
+	UPROPERTY() TArray<FName> LegacyLayers;
+
+	bool AcceptsPhase(FName Phase) const { return Layers.Contains(Phase); }
+};
+
+/**
+ * P11 (ADR-0039): a construction phase after FRAME. The order is canonical: FRAME -> ELECTRICAL (optional) -> FINISH.
+ * An unimplemented phase is registered so the schema never needs replacing; content for it is refused (PH-2).
+ */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLPhaseDef : public FGLDefinitionBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString DisplayName;
+	UPROPERTY() int32 Order = 0;
+	UPROPERTY() bool Optional = true;
+	UPROPERTY() bool Implemented = false;
+};
+
+/**
+ * P11 (ADR-0039): a finish layer: real finishing material installed on a compatible frame. It changes appearance and
+ * salvage, never support. Appearance = component form + material + finish; any finish fits any form whose role it
+ * lists (no era-compatibility rules).
+ */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLFinishDef : public FGLDefinitionBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString DisplayName;
+	/** Look and knowledge only (ERA-1). */
+	UPROPERTY() FName Era;
+	UPROPERTY() FName Phase;
+	UPROPERTY() TArray<FName> FitsRoles;
+	UPROPERTY() TArray<FGLItemStackDef> Cost;
+	UPROPERTY() TArray<FName> UnlockedBy;
+	/** Optional: an imported look; otherwise the form's shapes painted with Tint. */
+	UPROPERTY() FName Visual;
+	UPROPERTY() TArray<double> Tint;
+	/** What stripping it (careful) or losing it with its frame gives back. */
+	UPROPERTY() FName Salvage;
 };
 
 /** One part of an authored structure (P6): a piece in the shared structural language, placed in structure space. */
@@ -357,7 +446,8 @@ struct GRIDLANDSCORE_API FGLStructurePartDef
 	UPROPERTY() FName Piece;
 	/** Structure-local metres (the structure's origin is its placement point). */
 	UPROPERTY() TArray<double> Location;
-	UPROPERTY() int32 YawQuarter = 0;
+	/** P11: degrees, a whole number of 2.5 degree steps (YAW-1). */
+	UPROPERTY() double Yaw = 0.0;
 	/** What salvaging it takes and gives (the same salvage pipeline as every other salvage). */
 	UPROPERTY() FName Salvage;
 	/** Optional: overrides the piece's collapse motion for this part. */
@@ -403,6 +493,18 @@ struct GRIDLANDSCORE_API FGLCollapseTuningDef
 	UPROPERTY() double PinMinSeverity = 0.0;
 };
 
+/** Provisional building tuning (P11). Behaviour of P11, not architecture: claims may grow, connect and multiply later. */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLBuildingTuningDef
+{
+	GENERATED_BODY()
+
+	/** Radius of the area one base core claims (P11: 32 m, provisional). */
+	UPROPERTY() double ClaimRadiusMetres = 32.0;
+	/** Personal inventory slots (P11: 32, provisional). */
+	UPROPERTY() int32 PersonalSlots = 32;
+};
+
 /** Provisional noise tuning (P6): one authoritative world-noise model. */
 USTRUCT()
 struct GRIDLANDSCORE_API FGLNoiseTuningDef
@@ -425,6 +527,7 @@ struct GRIDLANDSCORE_API FGLTuningDef : public FGLDefinitionBase
 	UPROPERTY() FString DisplayName;
 	UPROPERTY() FGLCollapseTuningDef Collapse;
 	UPROPERTY() FGLNoiseTuningDef Noise;
+	UPROPERTY() FGLBuildingTuningDef Building;
 };
 
 /** One stroke of a terraforming tool (ADR-0022). Metres. */

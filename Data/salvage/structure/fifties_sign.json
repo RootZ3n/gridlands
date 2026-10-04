@@ -11,5 +11,33 @@
       "yieldCategory": "yield.common.salvage"
     }
   ],
-  "notes": "P7 provisional yields (economy untuned)."
+  "notes": "P7 provisional yields (economy untuned). P11: by recovery path; debris (collapse) is mostly scrap.",
+  "yieldsByPath": {
+    "careful": [
+      {
+        "item": "item.material.copper_wire",
+        "count": 3,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ],
+    "destructive": [
+      {
+        "item": "item.material.copper_wire",
+        "count": 1,
+        "yieldCategory": "yield.common.salvage"
+      },
+      {
+        "item": "item.material.scrap_metal",
+        "count": 1,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ],
+    "collapse": [
+      {
+        "item": "item.material.scrap_metal",
+        "count": 2,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ]
+  }
 }

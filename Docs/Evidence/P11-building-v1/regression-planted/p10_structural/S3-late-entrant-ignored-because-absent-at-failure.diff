@@ -1,0 +1,27 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -74,6 +74,8 @@
+ 		return Text.StartsWith(TEXT("p")) ? FCString::Atoi(*Text.RightChop(1)) : 0;
+ 	}
+ 
++	TMap<FString, TArray<FName>> GAtFailure; // DEFECT: who was under it at failure
++
+ 	bool IsPresent(EGLStructurePartState State)
+ 	{
+ 		return State == EGLStructurePartState::Intact || State == EGLStructurePartState::Debris;
+@@ -567,6 +569,7 @@
+ 		Entry.Cause = IdentityOf(By);
+ 		Entry.Credit = Entry.Cause;
+ 		Entry.CreditActor = By;
++		GAtFailure.Add(FString::Printf(TEXT("%s/%s"), *Entry.Placement.ToString(), *Entry.Part.ToString()), GetWorld()->GetSubsystem<UGLPlacementSubsystem>()->ActiveCreaturesTouching(Outcome.Impact)); // DEFECT
+ 	}
+ 	UE_LOG(LogGridlands, Log, TEXT("Structures: %s lost support: %d part(s) collapse (decided in %.3f ms)"), *Structure.Placement.ToString(), Plan.Outcomes.Num(), (FPlatformTime::Seconds() - Began) * 1000.0);
+ 	if (!bSilent)
+@@ -633,6 +636,7 @@
+ 	{
+ 		for (const FName& Creature : Placements->ActiveCreaturesTouching(Outcome.Impact))
+ 		{
++			if (!GAtFailure.FindRef(FString::Printf(TEXT("%s/%s"), *Placement.ToString(), *PartName.ToString())).Contains(Creature)) { continue; } // DEFECT
+ 			FVector Feet;
+ 			Placements->CreatureLocation(Creature, Feet);
+ 			const FGLActorPlacement* Model = Placements->FindActorModel(Creature);

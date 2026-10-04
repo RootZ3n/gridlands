@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -185,7 +185,7 @@
+ 		const int32 Fits = Carrier->GetMutableInventory().Add(GLContent::Get(), Item, Held[Item]); // the rest stays in the crate
+ 		if (Fits > 0)
+ 		{
+-			verify(Crate->Remove(Item, Fits));
++			verify(Crate->Remove(Item, Held[Item])); // DEFECT: the rest vanishes
+ 			Delivered.Add(Item, Fits);
+ 			Moved += Fits;
+ 		}

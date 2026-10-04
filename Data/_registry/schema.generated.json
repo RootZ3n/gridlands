@@ -20,11 +20,18 @@
    "cost[].item",
    "displayName",
    "era",
+   "frameShapes",
+   "frameShapes[].offset",
+   "frameShapes[].pitch",
+   "frameShapes[].size",
    "grounded",
    "id",
+   "layers",
+   "legacyLayers",
    "material",
    "notes",
    "role",
+   "salvage",
    "schemaVersion",
    "shapes",
    "shapes[].offset",
@@ -32,9 +39,13 @@
    "shapes[].size",
    "size",
    "sockets",
+   "sockets[].facing",
    "sockets[].name",
    "sockets[].offset",
    "sockets[].role",
+   "station",
+   "storage",
+   "storage.slots",
    "unlockedBy",
    "visual"
   ],
@@ -136,6 +147,22 @@
    "trigger",
    "weight"
   ],
+  "finish": [
+   "cost",
+   "cost[].count",
+   "cost[].item",
+   "displayName",
+   "era",
+   "fitsRoles",
+   "id",
+   "notes",
+   "phase",
+   "salvage",
+   "schemaVersion",
+   "tint",
+   "unlockedBy",
+   "visual"
+  ],
   "glitch": [
    "detection",
    "detection.capability",
@@ -180,8 +207,7 @@
    "weapon",
    "weapon.cooldownSeconds",
    "weapon.damage",
-   "weapon.reach",
-   "weight"
+   "weapon.reach"
   ],
   "knowledge": [
    "category",
@@ -245,6 +271,15 @@
    "relevanceMargin",
    "schemaVersion"
   ],
+  "phase": [
+   "displayName",
+   "id",
+   "implemented",
+   "notes",
+   "optional",
+   "order",
+   "schemaVersion"
+  ],
   "placement": [
    "anchor",
    "bindings",
@@ -305,6 +340,19 @@
    "toolEfficiency[].multiplier",
    "toolEfficiency[].toolClass",
    "yields",
+   "yieldsByPath",
+   "yieldsByPath.careful",
+   "yieldsByPath.careful[].count",
+   "yieldsByPath.careful[].item",
+   "yieldsByPath.careful[].yieldCategory",
+   "yieldsByPath.collapse",
+   "yieldsByPath.collapse[].count",
+   "yieldsByPath.collapse[].item",
+   "yieldsByPath.collapse[].yieldCategory",
+   "yieldsByPath.destructive",
+   "yieldsByPath.destructive[].count",
+   "yieldsByPath.destructive[].item",
+   "yieldsByPath.destructive[].yieldCategory",
    "yields[].count",
    "yields[].item",
    "yields[].yieldCategory"
@@ -345,7 +393,7 @@
    "parts[].name",
    "parts[].piece",
    "parts[].salvage",
-   "parts[].yawQuarter",
+   "parts[].yaw",
    "schemaVersion"
   ],
   "terraform": [
@@ -365,6 +413,9 @@
    "yields[].item"
   ],
   "tuning": [
+   "building",
+   "building.claimRadiusMetres",
+   "building.personalSlots",
    "collapse",
    "collapse.damageBase",
    "collapse.damageMax",

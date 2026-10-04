@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -273,7 +273,7 @@
+ 	for (int32 I = RetiringBatchList.Num() - 1; I >= 0; --I)
+ 	{
+ 		AGLPlayerPieceBatch* Old = RetiringBatchList[I].Get();
+-		if (!Old || Old->StructureKey == Structure.Placement)
++		if (!Old) // DEFECT: the same structure's retiring batch stays
+ 		{
+ 			if (Old)
+ 			{

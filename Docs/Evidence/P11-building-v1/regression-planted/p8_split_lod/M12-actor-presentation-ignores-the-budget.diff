@@ -1,0 +1,14 @@
+--- a/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
++++ b/Source/GridlandsGame/Private/World/GLPlacementSubsystem.cpp
+@@ -460,10 +460,7 @@
+ 			}
+ 		}
+ 		const bool bNear = FVector::DistSquared2D(PendingActors[Nearest].Location, Where) <= NearCm * NearCm;
+-		if (!bNear && !HasBudget())
+-		{
+-			break;
+-		}
++		// DEFECT: everything at once, paused or not
+ 		const FGLPendingActor Next = PendingActors[Nearest];
+ 		PendingActors.RemoveAtSwap(Nearest);
+ 		Made += MakeActor(Next) ? 1 : 0;

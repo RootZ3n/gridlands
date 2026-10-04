@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -1204,7 +1204,7 @@
+ 		}
+ 		Piece.Origin = EGLPieceOrigin::Player;
+ 		Piece.Layers = Entry.Layers;
+-		AddPlayerPiece(Piece, true); // the pump presents it within the frame budget (P8 synchronous-restore debt)
++		AddPlayerPiece(Piece, false); // DEFECT
+ 		FGLStructurePartRuntime* Part = FindPlayerPieceMutable(Entry.Id);
+ 		for (const FGLSavedCount& Held : Entry.Contents)
+ 		{

@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.sawhorse",
+  "displayName": "Sawhorse",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "role": "station",
+  "grounded": true,
+  "size": [
+    1.2,
+    0.5,
+    0.8
+  ],
+  "shapes": [
+    {
+      "size": [
+        1.2,
+        0.5,
+        0.1
+      ],
+      "offset": [
+        0,
+        0,
+        0.75
+      ]
+    },
+    {
+      "size": [
+        0.08,
+        0.5,
+        0.7
+      ],
+      "offset": [
+        -0.5,
+        0,
+        0.35
+      ]
+    },
+    {
+      "size": [
+        0.08,
+        0.5,
+        0.7
+      ],
+      "offset": [
+        0.5,
+        0,
+        0.35
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "g0",
+      "role": "bottom",
+      "offset": [
+        -0.6,
+        -0.25,
+        0
+      ]
+    },
+    {
+      "name": "g1",
+      "role": "bottom",
+      "offset": [
+        0.6,
+        -0.25,
+        0
+      ]
+    },
+    {
+      "name": "g2",
+      "role": "bottom",
+      "offset": [
+        -0.6,
+        0.25,
+        0
+      ]
+    },
+    {
+      "name": "g3",
+      "role": "bottom",
+      "offset": [
+        0.6,
+        0.25,
+        0
+      ]
+    }
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 3
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "layers": [],
+  "salvage": "salvage.build.sawhorse",
+  "station": "Station.Saw",
+  "notes": "P11: a station: saws logs into studs."
+}

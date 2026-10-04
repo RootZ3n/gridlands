@@ -27,7 +27,12 @@
 #include "Save/GLSaveSubsystem.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "Terrain/GLTerrainChunk.h"
+#include "Tests/GLPlayerPresentationCheck.h"
+#include "Building/GLPlayerPieceBatch.h"
 #include "Tests/GLTestUtils.h"
+#include "World/GLWinchesterHouse.h"
+#include "Fabrication/GLFabricatorComponent.h"
+#include "Structure/GLStructureSubsystem.h"
 #include "World/GLGridSubsystem.h"
 #include "World/GLPlacementSubsystem.h"
 #include "World/GLStabilitySubsystem.h"
@@ -163,6 +168,7 @@ bool FGLGridTorture::RunTest(const FString& Parameters)
 	S.GoTo(GAtBoundary);
 	TestTrue(TEXT("boundary: both cells loaded"), S.Grid->IsLoaded(GOrigin) && S.Grid->IsLoaded(GLots));
 	S.Inventory->AddItem(TEXT("item.material.timber_plank"), 10);
+	S.Inventory->AddItem(TEXT("item.component.stud"), 12); // P11: walls are framed from studs
 	const FVector PieceAt(50900, 600, S.Terrain->HeightAt(FVector2D(50900, 600)));
 	TestTrue(TEXT("A: a floor 2 m from the boundary"), S.Building->Place(S.Zenny, GPiece(TEXT("buildpiece.modern.timber_foundation"), PieceAt)).IsAllowed());
 	TestTrue(TEXT("A: and a wall on it"), S.Building->Place(S.Zenny, GPiece(TEXT("buildpiece.modern.timber_wall"), PieceAt + FVector(0, 100, 30))).IsAllowed());
@@ -474,6 +480,175 @@ bool FGLGridStale::RunTest(const FString& Parameters)
 	TestTrue(FString::Printf(TEXT("pooled chunk actors were reused (%d)"), S.Terrain->GetStats().ChunksReused), S.Terrain->GetStats().ChunksReused > 0);
 	AddInfo(FString::Printf(TEXT("stale results dropped: %d, emergency chunks: %d, emergency fields: %d"),
 		S.Terrain->GetStats().StaleDropped, S.Terrain->GetStats().EmergencyChunks, S.Terrain->GetStats().EmergencyFields));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLGridPlayerStructureStreams, "Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes", GLTestUtils::Flags)
+bool FGLGridPlayerStructureStreams::RunTest(const FString& Parameters)
+{
+	// P11 (ADR-0039): the WINCHESTER house in the origin cell, its porch roof mid-fall, streamed out and back: every piece,
+	// 2.5 degree yaw, finish layer, stored item and owner returns exactly once, presented over frames, and the fall
+	// resumes where it froze (SUPPORT FAILURE != IMPACT across streaming, for player construction too).
+	FGridScene S(TEXT("GLGridPlayerStreams"));
+	UGLStructureSubsystem* Structures = S.Test.World->GetSubsystem<UGLStructureSubsystem>();
+	FGLWinchesterHouse House;
+	House.Anchor = FVector(18000, 18000, 0);
+	S.GoTo(House.Anchor + FVector(0, 0, 100));
+	NewObject<UGLFabricatorComponent>(S.Zenny)->RegisterComponent();
+	TestTrue(TEXT("pad"), House.PreparePad(S.Test.World));
+	TestTrue(TEXT("base"), House.EstablishBase(S.Test.World, S.Zenny));
+	TestTrue(TEXT("frame"), House.Frame(S.Test.World, S.Zenny));
+	TestTrue(TEXT("finish"), House.Finish(S.Test.World, S.Zenny));
+	TestTrue(TEXT("porch collapse decided"), House.PorchCollapse(S.Test.World, S.Zenny));
+	TestTrue(TEXT("every WINCHESTER check so far holds"), House.AllPassed());
+	const FString Before = House.Fingerprint(S.Test.World);
+	TestEqual(TEXT("the porch roof is in flight"), Structures->ActiveCollapses(), 1);
+	TestEqual(TEXT("presented exactly as the model (instanced, the fall an actor)"), FString::Join(GLPlayerPresentationCheck::Problems(S.Test.World, GOrigin), TEXT("; ")), FString());
+	const int32 ImpactsBefore = Structures->ImpactCount();
+	S.GoTo(GDeepInLots);
+	TestFalse(TEXT("away: the origin cell is unloaded"), S.Grid->IsLoaded(GOrigin));
+	TestEqual(TEXT("its player construction left with it"), S.Building->PiecesOfCell(GOrigin).Num(), 0);
+	TestNull(TEXT("its batch left whole (retired, one actor)"), Structures->BatchOf(GOrigin));
+	Structures->PumpPresentation(FVector::ZeroVector, 0.0);
+	int32 Batches = 0;
+	for (TActorIterator<AGLPlayerPieceBatch> It(S.Test.World); It; ++It)
+	{
+		Batches += IsValid(*It) && !It->IsActorBeingDestroyed() ? 1 : 0;
+	}
+	TestEqual(TEXT("and no batch lingers (no presentation leaked)"), Batches, 0);
+	TestEqual(TEXT("the fall is frozen with its cell"), Structures->ActiveCollapses(), 0);
+	Structures->Advance(10.0);
+	TestEqual(TEXT("nothing lands while dormant"), Structures->ImpactCount(), ImpactsBefore);
+	S.GoTo(House.Anchor + FVector(-500, 0, 100));
+	Structures->PumpPresentation(House.Anchor, 0.0);
+	TestEqual(TEXT("back: every piece, yaw, layer, content and owner exactly as left"), House.Fingerprint(S.Test.World), Before);
+	TestEqual(TEXT("back: one batch rebuilt from the model, nothing duplicated"), FString::Join(GLPlayerPresentationCheck::Problems(S.Test.World, GOrigin), TEXT("; ")), FString());
+	TestEqual(TEXT("the fall resumes"), Structures->ActiveCollapses(), 1);
+	Structures->Advance(6.0);
+	TestEqual(TEXT("it lands exactly once"), Structures->ImpactCount(), ImpactsBefore + 1);
+	S.GoTo(GDeepInLots);
+	S.GoTo(House.Anchor + FVector(-500, 0, 100));
+	Structures->PumpPresentation(House.Anchor, 0.0);
+	TestEqual(TEXT("a second round trip replays nothing"), Structures->ImpactCount(), ImpactsBefore + 1);
+	TestEqual(TEXT("no piece duplicated"), S.Building->PiecesOfCell(GOrigin).Num(), S.Building->GetPieces().Num());
+	TestEqual(TEXT("and no instance duplicated"), FString::Join(GLPlayerPresentationCheck::Problems(S.Test.World, GOrigin), TEXT("; ")), FString());
+	return true;
+}
+
+namespace GLGridTestsLocal
+{
+	/** Every player batch actor alive in the world (retired ones included) and the collision bodies they still hold. */
+	void GBatches(UWorld* World, int32& OutActors, int32& OutBodies, int32& OutRetired)
+	{
+		OutActors = OutBodies = OutRetired = 0;
+		for (TActorIterator<AGLPlayerPieceBatch> It(World); It; ++It)
+		{
+			if (!IsValid(*It) || It->IsActorBeingDestroyed())
+			{
+				continue;
+			}
+			++OutActors;
+			OutRetired += It->IsRetired() ? 1 : 0;
+			OutBodies += It->GetCollisionSet() ? It->GetCollisionSet()->GetInstanceCount() : 0;
+		}
+	}
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLGridRetiredCollision, "Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved", GLTestUtils::Flags)
+bool FGLGridRetiredCollision::RunTest(const FString& Parameters)
+{
+	// P11 (ADR-0039 §11, operator-approved): a retiring player batch is invisible and unreachable in the unload frame; its
+	// collision goes over the following frames. Gated: it answers no lookup, it is never within the unload margin of
+	// Zenny, all of it is removed, repeated stream cycles leak nothing, a return before it finished retiring duplicates
+	// nothing, and the pieces themselves are untouched.
+	using namespace GLGridTestsLocal;
+	FGridScene S(TEXT("GLGridRetiredCollision"));
+	UGLStructureSubsystem* Structures = S.Test.World->GetSubsystem<UGLStructureSubsystem>();
+	FGLWinchesterHouse House;
+	House.Anchor = FVector(18000, 18000, 0);
+	S.GoTo(House.Anchor + FVector(0, 0, 100));
+	NewObject<UGLFabricatorComponent>(S.Zenny)->RegisterComponent();
+	if (!TestTrue(TEXT("pad"), House.PreparePad(S.Test.World)) || !TestTrue(TEXT("base"), House.EstablishBase(S.Test.World, S.Zenny))
+		|| !TestTrue(TEXT("frame"), House.Frame(S.Test.World, S.Zenny)) || !TestTrue(TEXT("finish"), House.Finish(S.Test.World, S.Zenny)))
+	{
+		return false;
+	}
+	const FString Before = House.Fingerprint(S.Test.World);
+	const AGLPlayerPieceBatch* Live = Structures->BatchOf(GOrigin);
+	if (!TestNotNull(TEXT("the house is one batch"), Live))
+	{
+		return false;
+	}
+	const int32 Bodies = Live->GetCollisionSet()->GetInstanceCount();
+	const FVector Probe = House.Anchor + FVector(0, 0, 30); // a floor of room A: something of the house is under it
+	auto PieceUnder = [&S](const FVector& At, AActor** OutHit = nullptr)
+	{
+		FHitResult Hit;
+		FCollisionQueryParams Params(SCENE_QUERY_STAT(GLRetiredProbe), false, S.Zenny);
+		const bool bHit = S.Test.World->LineTraceSingleByChannel(Hit, At + FVector(0, 0, 900), At - FVector(0, 0, 300), ECC_Visibility, Params);
+		if (OutHit)
+		{
+			*OutHit = bHit ? Hit.GetActor() : nullptr;
+		}
+		return bHit ? S.Building->PieceIdAt(Hit) : 0;
+	};
+	const int32 ProbeId = PieceUnder(Probe);
+	TestTrue(TEXT("a trace finds a piece of the house"), ProbeId != 0);
+
+	// Away, one streaming step (no presentation pump yet): the batch is retired, not torn down.
+	S.Zenny->SetActorLocation(GDeepInLots);
+	S.Grid->Advance(GDeepInLots);
+	TestFalse(TEXT("away: the origin unloaded"), S.Grid->IsLoaded(GOrigin));
+	int32 Actors = 0, Held = 0, Retired = 0;
+	GBatches(S.Test.World, Actors, Held, Retired);
+	TestEqual(TEXT("one retired batch, its collision still there (it goes over the next frames)"), Retired, 1);
+	TestEqual(TEXT("holding the house's bodies"), Held, Bodies);
+	AActor* HitActor = nullptr;
+	TestEqual(TEXT("retired: a trace onto its collision finds no piece"), PieceUnder(Probe, &HitActor), 0);
+	TestTrue(TEXT("(the trace did reach the retired collision)"), Cast<AGLPlayerPieceBatch>(HitActor) != nullptr);
+	double Nearest = TNumericLimits<double>::Max();
+	for (TActorIterator<AGLPlayerPieceBatch> It(S.Test.World); It; ++It)
+	{
+		const UInstancedStaticMeshComponent* Set = It->GetCollisionSet();
+		for (int32 I = 0; Set && I < Set->GetInstanceCount(); ++I)
+		{
+			FTransform T;
+			Set->GetInstanceTransform(I, T, true);
+			Nearest = FMath::Min(Nearest, FVector::Dist(T.GetLocation(), S.Zenny->GetActorLocation()));
+		}
+	}
+	TestTrue(FString::Printf(TEXT("retired collision is beyond the unload margin of Zenny (%.0f m > %.0f m)"), Nearest / 100.0, S.Grid->UnloadMarginM),
+		Nearest > S.Grid->UnloadMarginM * 100.0);
+
+	// Back before it finished retiring (a teleport): the old batch goes as the new one is made; nothing doubles.
+	const FVector Back = House.Anchor + FVector(-500, 0, 100);
+	for (int32 Frame = 0; Frame < 600 && S.Building->PiecesOfCell(GOrigin).Num() == 0; ++Frame)
+	{
+		S.Step(Back);
+	}
+	TestTrue(TEXT("back: the house's record is in"), S.Building->PiecesOfCell(GOrigin).Num() > 0);
+	Structures->PumpPresentation(House.Anchor, -1.0, 1.0e9); // present every piece; no retirement step runs (budget < 0)
+	GBatches(S.Test.World, Actors, Held, Retired);
+	TestEqual(TEXT("back early: no retired batch left for the house"), Retired, 0);
+	TestEqual(TEXT("one batch"), Actors, 1);
+	TestEqual(TEXT("its bodies once, not twice"), Held, Bodies);
+	TestEqual(TEXT("the same piece is found where it was"), PieceUnder(Probe), ProbeId);
+	TestEqual(TEXT("presented exactly as the model"), FString::Join(GLPlayerPresentationCheck::Problems(S.Test.World, GOrigin), TEXT("; ")), FString());
+	TestEqual(TEXT("every piece, yaw, layer, content and owner untouched"), House.Fingerprint(S.Test.World), Before);
+
+	// Three ordinary round trips: retired collision is always removed and never accumulates.
+	for (int32 Round = 1; Round <= 3; ++Round)
+	{
+		S.GoTo(GDeepInLots);
+		GBatches(S.Test.World, Actors, Held, Retired);
+		TestEqual(FString::Printf(TEXT("round %d away: every retired body removed, no batch left"), Round), Actors + Held, 0);
+		S.GoTo(Back);
+		Structures->PumpPresentation(House.Anchor, 0.0);
+		GBatches(S.Test.World, Actors, Held, Retired);
+		TestTrue(FString::Printf(TEXT("round %d back: one batch with the house's bodies once (%d, %d)"), Round, Actors, Held), Actors == 1 && Held == Bodies && Retired == 0);
+		TestEqual(FString::Printf(TEXT("round %d: the same piece where it was"), Round), PieceUnder(Probe), ProbeId);
+	}
+	TestEqual(TEXT("after every cycle the pieces are untouched"), House.Fingerprint(S.Test.World), Before);
 	return true;
 }
 

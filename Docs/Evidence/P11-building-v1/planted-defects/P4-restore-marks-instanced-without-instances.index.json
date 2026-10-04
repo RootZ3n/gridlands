@@ -1,0 +1,1207 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A106FD62497E5EA944EBEC15096D6A",
+			"instanceName": "Pehverse-798560",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.10.04-12.57.31",
+	"succeeded": 31,
+	"succeededWithWarnings": 0,
+	"failed": 7,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 5.3553214073181152,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "GroundDecidesWhereFloorsGo",
+			"fullTestPath": "Gridlands.Core.Building.GroundDecidesWhereFloorsGo",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.010320663452148438,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "KnowledgeItemsAndSnapping",
+			"fullTestPath": "Gridlands.Core.Building.KnowledgeItemsAndSnapping",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0081692449748516083,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemovingASupportCollapsesWhatItHeld",
+			"fullTestPath": "Gridlands.Core.Building.RemovingASupportCollapsesWhatItHeld",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0078312838450074196,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShelterStandsAndEveryPlacementIsValid",
+			"fullTestPath": "Gridlands.Core.Building.ShelterStandsAndEveryPlacementIsValid",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0080350115895271301,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SupportWeakensUpAndOut",
+			"fullTestPath": "Gridlands.Core.Building.SupportWeakensUpAndOut",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0087191667407751083,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ACollapseAtAngleUsesThePiecesOwnAxes",
+			"fullTestPath": "Gridlands.Core.BuildingV1.ACollapseAtAngleUsesThePiecesOwnAxes",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0097127528861165047,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AngledPolygonsCloseBySnappingAlone",
+			"fullTestPath": "Gridlands.Core.BuildingV1.AngledPolygonsCloseBySnappingAlone",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0081126689910888672,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "APlanRebuiltAt45DegreesIsTheSameBuilding",
+			"fullTestPath": "Gridlands.Core.BuildingV1.APlanRebuiltAt45DegreesIsTheSameBuilding",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.007857954129576683,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CarefulBeatsDestructiveBeatsCollapse",
+			"fullTestPath": "Gridlands.Core.BuildingV1.CarefulBeatsDestructiveBeatsCollapse",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0079932967200875282,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClaimsAreDerivedAndRenewalNeverTouchesPlayerConstruction",
+			"fullTestPath": "Gridlands.Core.BuildingV1.ClaimsAreDerivedAndRenewalNeverTouchesPlayerConstruction",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.008028106763958931,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FacingSocketsLinkOnlyWhenTheyFaceEachOther",
+			"fullTestPath": "Gridlands.Core.BuildingV1.FacingSocketsLinkOnlyWhenTheyFaceEachOther",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0084540108218789101,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FrameThenFinishAndElectricalIsRegisteredNotBuilt",
+			"fullTestPath": "Gridlands.Core.BuildingV1.FrameThenFinishAndElectricalIsRegisteredNotBuilt",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0079729119315743446,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MaterialPoolIsOrderedAndAllOrNothing",
+			"fullTestPath": "Gridlands.Core.BuildingV1.MaterialPoolIsOrderedAndAllOrNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0093253990635275841,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OverlapAndFootprintsAreOriented",
+			"fullTestPath": "Gridlands.Core.BuildingV1.OverlapAndFootprintsAreOriented",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0083335023373365402,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PreviewIsTheCommitsOwnRule",
+			"fullTestPath": "Gridlands.Core.BuildingV1.PreviewIsTheCommitsOwnRule",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0082125123590230942,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Version2SavesMigrateToVersion3Deterministically",
+			"fullTestPath": "Gridlands.Core.BuildingV1.Version2SavesMigrateToVersion3Deterministically",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0079821888357400894,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "YawIsAnIntegerIn2p5DegreeSteps",
+			"fullTestPath": "Gridlands.Core.BuildingV1.YawIsAnIntegerIn2p5DegreeSteps",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0080067683011293411,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StacksAndCapacity",
+			"fullTestPath": "Gridlands.Core.Inventory.StacksAndCapacity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0096878129988908768,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CodecRoundTripAndVersions",
+			"fullTestPath": "Gridlands.Core.Save.CodecRoundTripAndVersions",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0082314405590295792,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Version1MigratesToCellRecords",
+			"fullTestPath": "Gridlands.Core.Save.Version1MigratesToCellRecords",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.0077044237405061722,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PiecesBlockNavigation",
+			"fullTestPath": "Gridlands.Game.Building.PiecesBlockNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.1384865939617157,
+			"dateTime": "2026.10.04-12.57.25",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "wall line with a gap: path crosses the wall line x = 65 m at y = 5047",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PreviewColoursAndRemovalPredictionsAreTheCommitsOwn",
+			"fullTestPath": "Gridlands.Game.Building.PreviewColoursAndRemovalPredictionsAreTheCommitsOwn",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.028443487361073494,
+			"dateTime": "2026.10.04-12.57.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RefusalsChangeNothing",
+			"fullTestPath": "Gridlands.Game.Building.RefusalsChangeNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.051644455641508102,
+			"dateTime": "2026.10.04-12.57.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemovalCollapsesByTheCanonicalRulesAsPredicted",
+			"fullTestPath": "Gridlands.Game.Building.RemovalCollapsesByTheCanonicalRulesAsPredicted",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.060305800288915634,
+			"dateTime": "2026.10.04-12.57.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShelterFromInventoryPersistsAcrossReload",
+			"fullTestPath": "Gridlands.Game.Building.ShelterFromInventoryPersistsAcrossReload",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.056479323655366898,
+			"dateTime": "2026.10.04-12.57.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the reloaded roof is solid too' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingTests.cpp",
+					"lineNumber": 142,
+					"timestamp": "2026.10.04-12.57.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ABasementIsAnOpenPitThenAStructure",
+			"fullTestPath": "Gridlands.Game.BuildingV1.ABasementIsAnOpenPitThenAStructure",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.09605821967124939,
+			"dateTime": "2026.10.04-12.57.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BaseStorageClaimsAndContainersNeverLoseAnything",
+			"fullTestPath": "Gridlands.Game.BuildingV1.BaseStorageClaimsAndContainersNeverLoseAnything",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.04913763701915741,
+			"dateTime": "2026.10.04-12.57.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StoringAndTakingMoveOnlyWhatFits",
+			"fullTestPath": "Gridlands.Game.BuildingV1.StoringAndTakingMoveOnlyWhatFits",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.030335331335663795,
+			"dateTime": "2026.10.04-12.57.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StoringAndTakingNeverLosesAnything",
+			"fullTestPath": "Gridlands.Game.BuildingV1.StoringAndTakingNeverLosesAnything",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.025165487080812454,
+			"dateTime": "2026.10.04-12.57.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ThreeHundredPiecesScaleLinearly",
+			"fullTestPath": "Gridlands.Game.BuildingV1.ThreeHundredPiecesScaleLinearly",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.078705638647079468,
+			"dateTime": "2026.10.04-12.57.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(355): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '50 units: one batch' to be 1, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "309 pieces: 0 instances in 0 components",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '50 units: every trace onto the base finds a piece' to be 309, but it was 18.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '50 units: 0 bodies retired in 0 budgeted steps' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '100 units: one batch' to be 1, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "617 pieces: 0 instances in 0 components",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '100 units: every trace onto the base finds a piece' to be 617, but it was 34.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected '100 units: 0 bodies retired in 0 budgeted steps' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "supportMs: 309 pieces 1.087 ms, 617 pieces 2.204 ms (x2.03)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "previewMs: 309 pieces 1.142 ms, 617 pieces 2.253 ms (x1.97)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "removalPredictionMs: 309 pieces 1.053 ms, 617 pieces 2.235 ms (x2.12)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "captureMs: 309 pieces 0.022 ms, 617 pieces 0.048 ms (x2.21)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "restoreMs: 309 pieces 0.524 ms, 617 pieces 0.951 ms (x1.82)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "presentMs: 309 pieces 3.238 ms, 617 pieces 3.127 ms (x0.97)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "lookupMsPerTrace: 309 pieces 0.001 ms, 617 pieces 0.001 ms (x0.88)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 6,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WinchesterHouseFrameFinishCollapseAndPersistence",
+			"fullTestPath": "Gridlands.Game.BuildingV1.WinchesterHouseFrameFinishCollapseAndPersistence",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.10355676710605621,
+			"dateTime": "2026.10.04-12.57.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the bay wall is presented finished' to be finish, but it was None.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingV1Tests.cpp",
+					"lineNumber": 143,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS pad levelled by ordinary flatten strokes: worst 0.00 cm from 0 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS a base core establishes one claim: 1 claim(s), radius 32 m",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS materials placed primarily in shared storage: crates hold stud 103, cut_stone 3, timber_log 26, timber_plank 83; Zenny carries 12 studs",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS 45 degree bay snapped from socket data: yaw steps 0 126 126 0 0 18 18",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS FRAME first: stud walls, doorways and rafters visibly framed: 24 showing framing, 28 complete as built",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS every frame placed, PREVIEW == REALITY: 52 placements so far, 0 mismatches (GREEN 52, YELLOW 0, RED 0)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS storage supplied the construction (before Zenny's own): studs from storage 103, from Zenny 12",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS raw log -> sawing at the sawhorse -> studs (the log from base storage): studs 0 -> 4, Zenny's logs 0 -> 0",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS FINISH applied afterwards (clapboard, shingles): 24/24 installed; 24 finished, 0 still framed",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS finishing changed no support: ",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS architectural vocabularies mixed on purpose: eras era.memory.modern_day era.memory.victorian era.memory.roman; log wing yes; Roman column yes",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS porch post out: predicted to stand, and it stands: predicted 0 falling, 0 fell",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS Roman column out: the predicted roof falls, by the canonical collapse: predicted [45], collapsed [45]",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS careful dismantle of the interior wall: intact studs (and its clapboard back as boards): stud 5, scrap_timber 2, timber_plank 2",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS smashing a bay wall: fewer studs, more scrap: stud 1, scrap_timber 4, timber_plank 1",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldRenewalNeverTouchesPlayerConstruction",
+			"fullTestPath": "Gridlands.Game.BuildingV1.WorldRenewalNeverTouchesPlayerConstruction",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.030279183760285378,
+			"dateTime": "2026.10.04-12.57.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PlayerConstructionStreamsWholeAndAFallResumes",
+			"fullTestPath": "Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 1.9788066148757935,
+			"dateTime": "2026.10.04-12.57.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(357): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-12.57.27"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'back: one batch rebuilt from the model, nothing duplicated' to be \"\", but it was \"intact 1 (buildpiece.modern.base_core): instanced 0, actor 0, flag 1; intact 2 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 3 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 6 (buildpiece.modern.sawhorse): instanced 0, actor 0, flag 1; intact 7 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 8 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 9 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 10 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 11 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 12 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 13 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 14 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 15 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 16 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 17 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 18 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 19 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 20 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 21 (buildpiece.modern.timber_doorway): instanced 0, actor 0, flag 1; intact 22 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 23 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 24 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 25 (buildpiece.modern.timber_doorway): instanced 0, actor 0, flag 1; intact 26 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 27 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 28 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 29 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 30 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 31 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 32 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 33 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 34 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 35 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 36 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 37 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 38 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 39 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 40 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 41 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 42 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 46 (buildpiece.modern.angle_post_r45): instanced 0, actor 0, flag 1; intact 47 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 48 (buildpiece.modern.angle_post_l45): instanced 0, actor 0, flag 1; intact 49 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 50 (buildpiece.modern.angle_post_l45): instanced 0, actor 0, flag 1; intact 51 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 52 (buildpiece.modern.angle_post_r45): instanced 0, actor 0, flag 1\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.28"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'and no instance duplicated' to be \"\", but it was \"intact 1 (buildpiece.modern.base_core): instanced 0, actor 0, flag 1; intact 2 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 3 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 6 (buildpiece.modern.sawhorse): instanced 0, actor 0, flag 1; intact 7 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 8 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 9 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 10 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 11 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 12 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 13 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 14 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 15 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 16 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 17 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 18 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 19 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 20 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 21 (buildpiece.modern.timber_doorway): instanced 0, actor 0, flag 1; intact 22 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 23 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 24 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 25 (buildpiece.modern.timber_doorway): instanced 0, actor 0, flag 1; intact 26 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 27 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 28 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 29 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 30 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 31 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 32 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 33 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 34 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 35 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 36 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 37 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 38 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 39 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 40 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 41 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 42 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 46 (buildpiece.modern.angle_post_r45): instanced 0, actor 0, flag 1; intact 47 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 48 (buildpiece.modern.angle_post_l45): instanced 0, actor 0, flag 1; intact 49 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 50 (buildpiece.modern.angle_post_l45): instanced 0, actor 0, flag 1; intact 51 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 52 (buildpiece.modern.angle_post_r45): instanced 0, actor 0, flag 1\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.28"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RetiredPlayerCollisionIsInertAndAlwaysRemoved",
+			"fullTestPath": "Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 2.2987117767333984,
+			"dateTime": "2026.10.04-12.57.28",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'back early: no retired batch left for the house' to be 0, but it was 1.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 633,
+					"timestamp": "2026.10.04-12.57.29"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the same piece is found where it was' to be 37, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLGridTests.cpp",
+					"lineNumber": 636,
+					"timestamp": "2026.10.04-12.57.29"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'presented exactly as the model' to be \"\", but it was \"intact 1 (buildpiece.modern.base_core): instanced 0, actor 0, flag 1; intact 2 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 3 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 6 (buildpiece.modern.sawhorse): instanced 0, actor 0, flag 1; intact 7 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 8 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 9 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 10 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 11 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 12 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 13 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 14 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 15 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 16 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 17 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 18 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 19 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 20 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 21 (buildpiece.modern.timber_doorway): instanced 0, actor 0, flag 1; intact 22 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 23 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 24 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 25 (buildpiece.modern.timber_doorway): instanced 0, actor 0, flag 1; intact 26 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 27 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 28 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 29 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 30 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 31 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 32 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 33 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 34 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 35 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 36 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 37 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 38 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 39 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 40 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 41 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 42 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 43 (buildpiece.roman.column): instanced 0, actor 0, flag 1; intact 44 (buildpiece.modern.porch_post): instanced 0, actor 0, flag 1; intact 45 (buildpiece.modern.porch_roof): instanced 0, actor 0, flag 1; intact 46 (buildpiece.modern.angle_post_r45): instanced 0, actor 0, flag 1; intact 47 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 48 (buildpiece.modern.angle_post_l45): instanced 0, actor 0, flag 1; intact 49 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 50 (buildpiece.modern.angle_post_l45): instanced 0, actor 0, flag 1; intact 51 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 52 (buildpiece.modern.angle_post_r45): instanced 0, actor 0, flag 1\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.29"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'round 1 back: one batch with the house's bodies once (0, 0)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Misc/AutomationTest.h",
+					"lineNumber": 2607,
+					"timestamp": "2026.10.04-12.57.30"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'round 1: the same piece where it was' to be 37, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.30"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'round 2 back: one batch with the house's bodies once (0, 0)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Misc/AutomationTest.h",
+					"lineNumber": 2607,
+					"timestamp": "2026.10.04-12.57.30"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'round 2: the same piece where it was' to be 37, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.30"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'round 3 back: one batch with the house's bodies once (0, 0)' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Misc/AutomationTest.h",
+					"lineNumber": 2607,
+					"timestamp": "2026.10.04-12.57.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'round 3: the same piece where it was' to be 37, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.31"
+				}
+			],
+			"warnings": 0,
+			"errors": 9,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InventoryFullIsAnnouncedNotWeight",
+			"fullTestPath": "Gridlands.Game.Inventory.InventoryFullIsAnnouncedNotWeight",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.021888822317123413,
+			"dateTime": "2026.10.04-12.57.31",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RestoreNeverDiscardsOverflow",
+			"fullTestPath": "Gridlands.Game.Inventory.RestoreNeverDiscardsOverflow",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.025984974578022957,
+			"dateTime": "2026.10.04-12.57.31",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InstancedPiecesKeepTheirIdentityThroughEveryChange",
+			"fullTestPath": "Gridlands.Game.PlayerPresentation.InstancedPiecesKeepTheirIdentityThroughEveryChange",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.027087274938821793,
+			"dateTime": "2026.10.04-12.57.31",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'presented exactly once, from the record' to be \"\", but it was \"intact 1 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 2 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 4 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 5 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 6 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'the dismantled floor is itself again' to be 1, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingV1Tests.cpp",
+					"lineNumber": 613,
+					"timestamp": "2026.10.04-12.57.31"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TheWinchesterHouseIsOneBatchThatFollowsTheModel",
+			"fullTestPath": "Gridlands.Game.PlayerPresentation.TheWinchesterHouseIsOneBatchThatFollowsTheModel",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A106FD62497E5EA944EBEC15096D6A"
+			],
+			"duration": 0.085553362965583801,
+			"dateTime": "2026.10.04-12.57.31",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'rebuilt from the model alone: exactly the model' to be \"\", but it was \"intact 1 (buildpiece.modern.base_core): instanced 0, actor 0, flag 1; intact 2 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 3 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 6 (buildpiece.modern.sawhorse): instanced 0, actor 0, flag 1; intact 7 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 8 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 9 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 10 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 11 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 12 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 13 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 14 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 15 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 16 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 17 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 18 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 19 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 20 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 21 (buildpiece.modern.timber_doorway): instanced 0, actor 0, flag 1; intact 22 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 23 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 24 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 25 (buildpiece.modern.timber_doorway): instanced 0, actor 0, flag 1; intact 26 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 27 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 28 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 29 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 30 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 31 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 32 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 33 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 34 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 35 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 36 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 37 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 38 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 39 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 40 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 41 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 42 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 46 (buildpiece.modern.angle_post_r45): instanced 0, actor 0, flag 1; intact 47 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 48 (buildpiece.modern.angle_post_l45): instanced 0, actor 0, flag 1; intact 49 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 50 (buildpiece.modern.angle_post_l45): instanced 0, actor 0, flag 1; intact 51 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 52 (buildpiece.modern.angle_post_r45): instanced 0, actor 0, flag 1\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'landed after the restart: exactly the model' to be \"\", but it was \"intact 1 (buildpiece.modern.base_core): instanced 0, actor 0, flag 1; intact 2 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 3 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 6 (buildpiece.modern.sawhorse): instanced 0, actor 0, flag 1; intact 7 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 8 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 9 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 10 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 11 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 12 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 13 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 14 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 15 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 16 (buildpiece.modern.timber_foundation): instanced 0, actor 0, flag 1; intact 17 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 18 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 19 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 20 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 21 (buildpiece.modern.timber_doorway): instanced 0, actor 0, flag 1; intact 22 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 23 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 24 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 25 (buildpiece.modern.timber_doorway): instanced 0, actor 0, flag 1; intact 26 (buildpiece.modern.timber_wall): instanced 0, actor 0, flag 1; intact 27 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 28 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 29 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 30 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 31 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 32 (buildpiece.modern.log_wall): instanced 0, actor 0, flag 1; intact 33 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 34 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 35 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 36 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 37 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 38 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 39 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 40 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 41 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 42 (buildpiece.modern.timber_roof): instanced 0, actor 0, flag 1; intact 46 (buildpiece.modern.angle_post_r45): instanced 0, actor 0, flag 1; intact 47 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 48 (buildpiece.modern.angle_post_l45): instanced 0, actor 0, flag 1; intact 49 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 50 (buildpiece.modern.angle_post_l45): instanced 0, actor 0, flag 1; intact 51 (buildpiece.modern.bay_wall): instanced 0, actor 0, flag 1; intact 52 (buildpiece.modern.angle_post_r45): instanced 0, actor 0, flag 1\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-12.57.31"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		}
+	]
+}

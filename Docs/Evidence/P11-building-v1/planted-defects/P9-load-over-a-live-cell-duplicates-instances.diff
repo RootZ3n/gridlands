@@ -1,0 +1,15 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -1172,11 +1172,7 @@
+ 		Active.RemoveAll([Key](const FGLActiveCollapse& C) { return C.Placement == Key; });
+ 		Pending.RemoveAll([Key](const TPair<FName, FName>& Entry) { return Entry.Key == Key; });
+ 		Structures.Remove(Key);
+-		TWeakObjectPtr<AGLPlayerPieceBatch> Batch;
+-		if (Batches.RemoveAndCopyValue(Key, Batch) && Batch.IsValid())
+-		{
+-			Batch->Destroy();
+-		}
++		// DEFECT: the live batch stays
+ 	}
+ 	TArray<FGLSavedStructurePart> Debris;
+ 	for (const FGLSavedPiece& Entry : Saved)

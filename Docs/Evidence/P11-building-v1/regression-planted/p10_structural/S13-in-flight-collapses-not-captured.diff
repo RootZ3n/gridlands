@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Save/GLSaveSubsystem.cpp
+@@ -291,7 +291,7 @@
+ 	if (const UGLStructureSubsystem* Structures = World->GetSubsystem<UGLStructureSubsystem>())
+ 	{
+ 		Structures->CaptureCell(Cell, Record.StructureParts);
+-		Structures->CaptureCollapses(Cell, Record.Collapses); // P10: in flight, frozen while the record waits
++		; // DEFECT
+ 	}
+ 	Record.Glitches.Sort([](const FGLSavedGlitch& A, const FGLSavedGlitch& B) { return A.Placement.LexicalLess(B.Placement); });
+ 	Record.SalvagedPlacements.Sort(FNameLexicalLess());

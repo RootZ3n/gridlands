@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -92,7 +92,7 @@
+ 		Sources.Claim = Claim->Id;
+ 		UGLStructureSubsystem* Structures = GetWorld()->GetSubsystem<UGLStructureSubsystem>();
+ 		TArray<TPair<double, int32>> Order;
+-		for (const FGLPlacedPiece& Piece : GetPieces())
++		for (const FGLPlacedPiece& Piece : Structures->PlayerPieces(NAME_None, true)) // DEFECT: debris too
+ 		{
+ 			const FGLBuildPieceDef* Def = GLContent::Get().Find<FGLBuildPieceDef>(Piece.Def);
+ 			if (Def && Def->Storage.Slots > 0 && Piece.Origin == EGLPieceOrigin::Player && Claim->Contains(FVector2D(Piece.Location)))
