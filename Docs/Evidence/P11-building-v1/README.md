@@ -351,6 +351,9 @@ revised candidate, because authored structures share the refactored `AGLBuildPie
 15. **An unattributed one-frame RHI stall** (27.6 ms on the RHI thread, 2.2 ms on the game thread, no GC, mid-walk at
     x = 316 m) appeared once in 8 instanced quiet runs and in none of the others. It is recorded, not explained; it is
     consistent with a one-time pipeline-state compile.
+16. **A density-test bound applied to the wrong quantity.** The first revised fresh clone (`ead19a1`) measured
+    presenting 309 pieces in one call at 10.13 ms against a generic 10 ms per-operation bound. The game spreads that work
+    over frames, so the test now bounds it per piece (under 0.1 ms; measured about 0.03–0.04).
 
 ## J. Remaining debt
 - **Pit edges.** A pit edge is a 1 m slope, not a vertical face, so a basement wall placed flush against it shows
@@ -382,3 +385,5 @@ revised candidate, because authored structures share the refactored `AGLBuildPie
   fresh clone is recorded below.
 - **Measurement vs commit:** the instanced perf runs (A/B, stress, six suites) were measured on the revised code before
   it was committed. The only changes after them are tests (the density timings and the P16 preview assertion).
+- **Final fresh clone (revised candidate):** PASS at `575f492` (180/180 from tracked inputs and the pinned engine). The
+  clone of `ead19a1` failed on item I.16 (a test bound). Only this docs line follows it.
