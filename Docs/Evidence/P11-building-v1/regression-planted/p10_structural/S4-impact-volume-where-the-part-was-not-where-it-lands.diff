@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -546,6 +546,7 @@
+@@ -561,6 +561,7 @@
  		Entry.Part = Part->Name;
  		Entry.Cell = Structure.Cell;
  		Entry.Outcome = Outcome;

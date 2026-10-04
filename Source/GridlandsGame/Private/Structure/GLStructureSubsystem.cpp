@@ -268,9 +268,24 @@ AGLPlayerPieceBatch* UGLStructureSubsystem::BatchFor(FGLStructureRuntime& Struct
 	{
 		return Batch;
 	}
+	// The same structure back before its retired batch finished retiring (a teleport, a resume): that batch goes now, so
+	// its lingering collision can never overlap the new presentation (rare: a walk back takes far longer than retiring).
+	for (int32 I = RetiringBatchList.Num() - 1; I >= 0; --I)
+	{
+		AGLPlayerPieceBatch* Old = RetiringBatchList[I].Get();
+		if (!Old || Old->StructureKey == Structure.Placement)
+		{
+			if (Old)
+			{
+				Old->Destroy();
+			}
+			RetiringBatchList.RemoveAt(I);
+		}
+	}
 	AGLPlayerPieceBatch* Batch = GetWorld()->SpawnActor<AGLPlayerPieceBatch>();
 	if (Batch)
 	{
+		Batch->StructureKey = Structure.Placement;
 		Batches.Add(Structure.Placement, Batch);
 	}
 	return Batch;

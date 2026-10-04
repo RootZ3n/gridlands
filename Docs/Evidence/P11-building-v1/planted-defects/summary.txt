@@ -2,7 +2,7 @@ B1-yaw-quantized-to-quarter-turns: CAUGHT (7 test(s) by assertion)
     Gridlands.Core.BuildingV1.AngledPolygonsCloseBySnappingAlone: Expected 'buildpiece.modern.angle_post_l45: the polygon closes (gap 40.0000 cm)' to be true.
     Gridlands.Core.BuildingV1.FacingSocketsLinkOnlyWhenTheyFaceEachOther: Expected 'taking its yaw from the data (45), not from the requested yaw' to be 18, but it was 36.
     Gridlands.Core.BuildingV1.YawIsAnIntegerIn2p5DegreeSteps: Expected '60 = 24 (hexagons)' to be 24, but it was 36.
-B2-oriented-overlap-falls-back-to-boxes: CAUGHT (4 test(s) by assertion)
+B2-oriented-overlap-falls-back-to-boxes: CAUGHT (5 test(s) by assertion)
     Gridlands.Core.BuildingV1.AngledPolygonsCloseBySnappingAlone: Expected 'buildpiece.modern.angle_post_l45: the polygon closes (gap 889.0353 cm)' to be true.
     Gridlands.Game.BuildingV1.WinchesterHouseFrameFinishCollapseAndPersistence: Expected 'framed (with the 45 degree bay)' to be true.
     Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes: Expected 'frame' to be true.
@@ -10,11 +10,11 @@ B3-terrain-footprint-is-the-box-not-the-piece: CAUGHT (1 test(s) by assertion)
     Gridlands.Core.BuildingV1.OverlapAndFootprintsAreOriented: Expected 'a corner of its enclosing box is not (it is outside the rotated square)' to be false.
 B4-socket-facing-ignored-when-linking: CAUGHT (1 test(s) by assertion)
     Gridlands.Core.BuildingV1.FacingSocketsLinkOnlyWhenTheyFaceEachOther: Expected 'but it does not link, so nothing holds it' to be true.
-B5-snap-ignores-socket-facing: CAUGHT (5 test(s) by assertion)
+B5-snap-ignores-socket-facing: CAUGHT (6 test(s) by assertion)
     Gridlands.Core.BuildingV1.AngledPolygonsCloseBySnappingAlone: Expected 'buildpiece.modern.angle_post_l45: the polygon closes (gap 960.0000 cm)' to be true.
     Gridlands.Core.BuildingV1.FacingSocketsLinkOnlyWhenTheyFaceEachOther: Expected 'taking its yaw from the data (45), not from the requested yaw' to be 18, but it was 0.
     Gridlands.Game.BuildingV1.WinchesterHouseFrameFinishCollapseAndPersistence: Expected 'framed (with the 45 degree bay)' to be true.
-B6-sockets-rotated-by-the-nearest-quarter-turn: CAUGHT (5 test(s) by assertion)
+B6-sockets-rotated-by-the-nearest-quarter-turn: CAUGHT (6 test(s) by assertion)
     Gridlands.Core.BuildingV1.AngledPolygonsCloseBySnappingAlone: Expected 'buildpiece.modern.angle_post_l225: the polygon closes (gap 1620.0000 cm)' to be true.
     Gridlands.Core.BuildingV1.APlanRebuiltAt45DegreesIsTheSameBuilding: Expected 'the same socket relationships (removing it drops the same pieces)' to be 9, but it was 0.
     Gridlands.Game.BuildingV1.WinchesterHouseFrameFinishCollapseAndPersistence: Expected 'framed (with the 45 degree bay)' to be true.
@@ -45,9 +45,10 @@ B15-player-fall-in-flight-not-saved: CAUGHT (3 test(s) by assertion)
 B16-player-origin-not-saved: CAUGHT (2 test(s) by assertion)
     Gridlands.Game.Building.ShelterFromInventoryPersistsAcrossReload: Expected 'no problems' to be 0, but it was 16.
     Gridlands.Game.BuildingV1.WinchesterHouseFrameFinishCollapseAndPersistence: Expected 'no load problems' to be "", but it was "saved player piece 1 has origin 0, not player-built: kept as the player's; saved player piece 2 has origin 0, not player-built: kept as the player's; saved player piece 3 has
-B17-layers-not-saved: CAUGHT (2 test(s) by assertion)
+B17-layers-not-saved: CAUGHT (3 test(s) by assertion)
     Gridlands.Game.BuildingV1.WinchesterHouseFrameFinishCollapseAndPersistence: Expected 'every piece, yaw, layer, content and owner is back exactly' to be "52 pieces (0 debris, 24 layers, 52 player-owned) crc cc183b2b", but it was "52 pieces (0 debris, 0 layers, 52 player-owned) crc 846e24e8".
     Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes: Expected 'back: every piece, yaw, layer, content and owner exactly as left' to be "50 pieces (1 debris, 24 layers, 50 player-owned) crc ceb54760", but it was "50 pieces (1 debris, 0 layers, 50 player-owned) crc b5ba4c9d".
+    Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved: Expected 'every piece, yaw, layer, content and owner untouched' to be "52 pieces (0 debris, 24 layers, 52 player-owned) crc 35a034a8", but it was "52 pieces (0 debris, 0 layers, 52 player-owned) crc 25cf0b21".
 B18-restore-presents-synchronously: CAUGHT (3 test(s) by assertion)
     Gridlands.Game.Building.ShelterFromInventoryPersistsAcrossReload: Expected 'P11: restored pieces are presented over frames, not synchronously' to be 0, but it was 16.
     Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes: Expected 'back: one batch rebuilt from the model, nothing duplicated' to be "", but it was "debris 45: instanced 1, actor 0 (an actor only); the batch holds 48 pieces, the model 47 instanced; 192 instances, the model's pieces need 19
@@ -79,7 +80,7 @@ B27-partial-consumption-on-a-refused-operation: CAUGHT (1 test(s) by assertion)
     Gridlands.Core.BuildingV1.MaterialPoolIsOrderedAndAllOrNothing: Expected 'and nothing was taken (all or nothing)' to be 17, but it was 0.
 B28-container-contents-lost-on-collapse: CAUGHT (1 test(s) by assertion)
     Gridlands.Game.BuildingV1.BaseStorageClaimsAndContainersNeverLoseAnything: Expected 'its contents stay with its debris' to be true.
-B29-container-contents-lost-on-restore: CAUGHT (3 test(s) by assertion)
+B29-container-contents-lost-on-restore: CAUGHT (4 test(s) by assertion)
     Gridlands.Game.BuildingV1.BaseStorageClaimsAndContainersNeverLoseAnything: Expected 'restored debris keeps its contents' to be true.
     Gridlands.Game.BuildingV1.WinchesterHouseFrameFinishCollapseAndPersistence: Expected 'every piece, yaw, layer, content and owner is back exactly' to be "52 pieces (0 debris, 24 layers, 52 player-owned) crc cc183b2b", but it was "52 pieces (0 debris, 24 layers, 52 player-owned) crc 6c49f7ce".
     Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes: Expected 'back: every piece, yaw, layer, content and owner exactly as left' to be "50 pieces (1 debris, 24 layers, 50 player-owned) crc ceb54760", but it was "50 pieces (1 debris, 24 layers, 50 player-owned) crc 732aaa36".
@@ -93,26 +94,26 @@ B40-storing-removes-what-did-not-fit: CAUGHT (1 test(s) by assertion)
     Gridlands.Game.BuildingV1.StoringAndTakingMoveOnlyWhatFits: Expected 'what did not fit stayed with Zenny' to be 50, but it was 0.
 B41-taking-leaves-nothing-behind: CAUGHT (1 test(s) by assertion)
     Gridlands.Game.BuildingV1.StoringAndTakingMoveOnlyWhatFits: Expected 'the other 50 stayed in the crate' to be 50, but it was 0.
-P1-piece-id-mapped-to-the-wrong-instance: CAUGHT (3 test(s) by assertion)
+P1-piece-id-mapped-to-the-wrong-instance: CAUGHT (4 test(s) by assertion)
     Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes: Expected 'presented exactly as the model (instanced, the fall an actor)' to be "", but it was "piece 1: collision instances are not its shapes at its transform (1 vs 1); piece 2: collision instances are not its shapes at its transfor
+    Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved: Expected 'the same piece is found where it was' to be 7, but it was 44.
     Gridlands.Game.PlayerPresentation.InstancedPiecesKeepTheirIdentityThroughEveryChange: Expected 'the presentation is exactly the model' to be "", but it was "piece 1: collision instances are not its shapes at its transform (1 vs 1); piece 2: collision instances are not its shapes at its transform (1 
-    Gridlands.Game.PlayerPresentation.TheWinchesterHouseIsOneBatchThatFollowsTheModel: Expected 'framed: exactly the model' to be "", but it was "piece 1: collision instances are not its shapes at its transform (1 vs 1); piece 2: collision instances are not its shapes at its transform (1 vs 1); piece 3:
-P2-removal-changes-another-pieces-identity: CAUGHT (3 test(s) by assertion)
+P2-removal-changes-another-pieces-identity: CAUGHT (4 test(s) by assertion)
     Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes: Expected 'presented exactly as the model (instanced, the fall an actor)' to be "", but it was "piece 17: collision instances are not its shapes at its transform (1 vs 1); piece 18: collision instances are not its shapes at its transf
+    Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved: Expected 'the same piece is found where it was' to be 31, but it was 37.
     Gridlands.Game.PlayerPresentation.InstancedPiecesKeepTheirIdentityThroughEveryChange: Expected 'still exactly the model' to be "", but it was "piece 4: collision instances are not its shapes at its transform (1 vs 1); piece 5: collision instances are not its shapes at its transform (1 vs 1); collisi
-    Gridlands.Game.PlayerPresentation.TheWinchesterHouseIsOneBatchThatFollowsTheModel: Expected 'finished: exactly the model (no frame left behind)' to be "", but it was "piece 17: collision instances are not its shapes at its transform (1 vs 1); piece 18: collision instances are not its shapes at its t
 P3-stale-instance-after-dismantling: CAUGHT (3 test(s) by assertion)
     Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes: Expected 'presented exactly as the model (instanced, the fall an actor)' to be "", but it was "the batch holds 49 pieces, the model 47 instanced; 198 instances, the model's pieces need 190; collision instance 64 says piece 43, but it
     Gridlands.Game.PlayerPresentation.InstancedPiecesKeepTheirIdentityThroughEveryChange: Expected 'still exactly the model' to be "", but it was "the batch holds 5 pieces, the model 4 instanced; 10 instances, the model's pieces need 8; collision instance 2 says piece 3, but it is not one of that piece'
     Gridlands.Game.PlayerPresentation.TheWinchesterHouseIsOneBatchThatFollowsTheModel: Expected 'mid-fall: exactly the model' to be "", but it was "the batch holds 49 pieces, the model 47 instanced; 198 instances, the model's pieces need 190; collision instance 64 says piece 43, but it is not one of tha
-P4-restore-marks-instanced-without-instances: CAUGHT (6 test(s) by assertion)
+P4-restore-marks-instanced-without-instances: CAUGHT (7 test(s) by assertion)
     Gridlands.Game.Building.ShelterFromInventoryPersistsAcrossReload: Expected 'the reloaded roof is solid too' to be true.
     Gridlands.Game.BuildingV1.ThreeHundredPiecesScaleLinearly: Expected '50 units: one batch' to be 1, but it was 0.
     Gridlands.Game.BuildingV1.WinchesterHouseFrameFinishCollapseAndPersistence: Expected 'the bay wall is presented finished' to be finish, but it was None.
-P5-finish-changes-the-model-not-the-presentation: CAUGHT (3 test(s) by assertion)
+P5-finish-changes-the-model-not-the-presentation: CAUGHT (4 test(s) by assertion)
     Gridlands.Game.BuildingV1.WinchesterHouseFrameFinishCollapseAndPersistence: Expected 'finished' to be true.
     Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes: Expected 'finish' to be true.
-    Gridlands.Game.PlayerPresentation.TheWinchesterHouseIsOneBatchThatFollowsTheModel: Expected 'finished' to be true.
+    Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved: Expected 'finish' to be true.
 P6-collapse-leaves-the-static-instance-behind: CAUGHT (2 test(s) by assertion)
     Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes: Expected 'presented exactly as the model (instanced, the fall an actor)' to be "", but it was "debris 45: instanced 1, actor 1 (an actor only); the batch holds 48 pieces, the model 47 instanced; 192 instances, the model's pieces need
     Gridlands.Game.PlayerPresentation.TheWinchesterHouseIsOneBatchThatFollowsTheModel: Expected 'the falling roof left the batch' to be false.
@@ -124,28 +125,41 @@ P8-a-transition-duplicates-the-presentation: CAUGHT (2 test(s) by assertion)
     Gridlands.Game.PlayerPresentation.TheWinchesterHouseIsOneBatchThatFollowsTheModel: Expected 'finished: exactly the model (no frame left behind)' to be "", but it was "intact 17 (buildpiece.modern.timber_wall): instanced 1, actor 1, flag 0; intact 18 (buildpiece.modern.timber_wall): instanced 1, acto
 P9-load-over-a-live-cell-duplicates-instances: CAUGHT (1 test(s) by assertion)
     Gridlands.Game.PlayerPresentation.InstancedPiecesKeepTheirIdentityThroughEveryChange: Expected 'presented exactly once, from the record' to be "", but it was "intact 2 (buildpiece.modern.timber_foundation): instanced 1, actor 1, flag 0; intact 4 (buildpiece.modern.timber_foundation): instanced 1, ac
-P10-stream-out-leaks-the-batch: CAUGHT (1 test(s) by assertion)
+P10-stream-out-leaks-the-batch: CAUGHT (3 test(s) by assertion)
+    Gridlands.Game.BuildingV1.ThreeHundredPiecesScaleLinearly: Expected '50 units: 300 bodies retired in 0 budgeted steps' to be true.
     Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes: Expected 'and no batch lingers (no presentation leaked)' to be 0, but it was 1.
-P11-interaction-selects-the-wrong-piece: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved: Expected 'one retired batch, its collision still there (it goes over the next frames)' to be 1, but it was 0.
+P11-interaction-selects-the-wrong-piece: CAUGHT (2 test(s) by assertion)
+    Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved: Expected 'the same piece is found where it was' to be 38, but it was 48.
     Gridlands.Game.PlayerPresentation.InstancedPiecesKeepTheirIdentityThroughEveryChange: Expected 'a trace at floor 0 (yaw step 0) finds that floor' to be 1, but it was 2.
-P12-rotated-piece-drawn-unrotated: CAUGHT (4 test(s) by assertion)
+P12-rotated-piece-drawn-unrotated: CAUGHT (5 test(s) by assertion)
     Gridlands.Game.Building.PiecesBlockNavigation: Expected 'the path passes the wall line through the gap (crosses at y = 3363)' to be true.
     Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes: Expected 'presented exactly as the model (instanced, the fall an actor)' to be "", but it was "piece 23: collision instances are not its shapes at its transform (1 vs 1); piece 24: collision instances are not its shapes at its transf
-    Gridlands.Game.PlayerPresentation.InstancedPiecesKeepTheirIdentityThroughEveryChange: Expected 'the presentation is exactly the model' to be "", but it was "piece 2: collision instances are not its shapes at its transform (1 vs 1); piece 3: collision instances are not its shapes at its transform (1 
-P13-renderer-order-becomes-identity: CAUGHT (3 test(s) by assertion)
+    Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved: Expected 'presented exactly as the model' to be "", but it was "piece 23: collision instances are not its shapes at its transform (1 vs 1); piece 24: collision instances are not its shapes at its transform (1 vs 1); piece 25: collisi
+P13-renderer-order-becomes-identity: CAUGHT (4 test(s) by assertion)
     Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes: Expected 'presented exactly as the model (instanced, the fall an actor)' to be "", but it was "piece 17: collision instances are not its shapes at its transform (1 vs 1); piece 18: collision instances are not its shapes at its transf
+    Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved: Expected 'the same piece is found where it was' to be 22, but it was 37.
     Gridlands.Game.PlayerPresentation.InstancedPiecesKeepTheirIdentityThroughEveryChange: Expected 'still exactly the model' to be "", but it was "piece 4: collision instances are not its shapes at its transform (1 vs 1); piece 5: collision instances are not its shapes at its transform (1 vs 1); collisi
-    Gridlands.Game.PlayerPresentation.TheWinchesterHouseIsOneBatchThatFollowsTheModel: Expected 'finished: exactly the model (no frame left behind)' to be "", but it was "piece 17: collision instances are not its shapes at its transform (1 vs 1); piece 18: collision instances are not its shapes at its t
 P14-storage-forced-into-the-batch: CAUGHT (4 test(s) by assertion)
     Gridlands.Game.BuildingV1.StoringAndTakingMoveOnlyWhatFits: Expected 'a crate' to be true.
     Gridlands.Game.BuildingV1.StoringAndTakingNeverLosesAnything: Expected 'a crate' to be true.
     Gridlands.Game.BuildingV1.ThreeHundredPiecesScaleLinearly: Expected '50 units: only storage keeps an actor' to be 9, but it was 0.
-P15-instances-do-not-collide: CAUGHT (4 test(s) by assertion)
+P15-instances-do-not-collide: CAUGHT (5 test(s) by assertion)
     Gridlands.Game.Building.PiecesBlockNavigation: Expected 'the path passes the wall line through the gap (crosses at y = 3200)' to be true.
     Gridlands.Game.Building.ShelterFromInventoryPersistsAcrossReload: Expected 'the roof is solid: a trace from the sky stops on it' to be true.
     Gridlands.Game.BuildingV1.ThreeHundredPiecesScaleLinearly: Expected '50 units: every trace onto the base finds a piece' to be 309, but it was 18.
 P16-removal-preview-not-drawn-on-instances: CAUGHT (1 test(s) by assertion)
     Gridlands.Game.PlayerPresentation.TheWinchesterHouseIsOneBatchThatFollowsTheModel: the removal preview is drawn over exactly the predicted instanced pieces: The two values are not equal.
+P17-interaction-trusts-a-retired-batch: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved: Expected 'retired: a trace onto its collision finds no piece' to be 0, but it was 37.
+P18-retirement-forgets-the-batch: CAUGHT (3 test(s) by assertion)
+    Gridlands.Game.BuildingV1.ThreeHundredPiecesScaleLinearly: Expected '50 units: 300 bodies retired in budgeted steps (3 calls), seen part-way' to be true.
+    Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes: Expected 'and no batch lingers (no presentation leaked)' to be 0, but it was 1.
+    Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved: Expected 'round 1 away: every retired body removed, no batch left' to be 0, but it was 101.
+P19-early-return-keeps-the-retiring-batch: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved: Expected 'back early: no retired batch left for the house' to be 0, but it was 1.
+P20-retirement-tears-everything-down-at-once: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.BuildingV1.ThreeHundredPiecesScaleLinearly: Expected '50 units: 300 bodies retired in budgeted steps (3 calls), seen part-way' to be true.
 B33-renewal-ignores-player-ownership: CAUGHT (1 test(s) by assertion)
     Gridlands.Core.BuildingV1.ClaimsAreDerivedAndRenewalNeverTouchesPlayerConstruction: Expected 'renewal never touches player construction, anywhere' to be false.
 B34-renewal-ignores-claims: CAUGHT (2 test(s) by assertion)
@@ -163,4 +177,4 @@ B38-salvage-quality-lint-disabled: CAUGHT (tooling assertion)
     FAIL: test_svq1_violence_never_recovers_more (test_gldata.RuleTests.test_svq1_violence_never_recovers_more)
 B39-unimplemented-phase-lint-disabled: CAUGHT (tooling assertion)
     FAIL: test_ph2_no_content_for_an_unimplemented_phase (test_gldata.RuleTests.test_ph2_no_content_for_an_unimplemented_phase)
-57/57 caught by assertion
+61/61 caught by assertion

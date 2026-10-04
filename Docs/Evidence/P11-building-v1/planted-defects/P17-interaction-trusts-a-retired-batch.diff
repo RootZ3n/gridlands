@@ -1,0 +1,25 @@
+--- a/Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp
++++ b/Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp
+@@ -193,10 +193,7 @@
+ 
+ int32 AGLPlayerPieceBatch::PieceIdAt(const UPrimitiveComponent* Component, int32 Item) const
+ {
+-	if (bRetired)
+-	{
+-		return 0; // its cell unloaded: nothing here is a piece any more
+-	}
++	// DEFECT: a retired batch still resolves hits
+ 	const TArray<int32>* Table = Owners.Find(Cast<UInstancedStaticMeshComponent>(Component));
+ 	return Table && Table->IsValidIndex(Item) ? (*Table)[Item] : 0;
+ }
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -1280,7 +1280,7 @@
+ 	{
+ 		Id = Actor->StructurePlacement.ToString().StartsWith(TEXT("player:")) ? Actor->GetPiece().Id : 0;
+ 	}
+-	return Id && FindPlayerPiece(Id) ? Id : 0;
++	return Id; // DEFECT: whatever the presentation says
+ }
+ 
+ FName UGLStructureSubsystem::ShownPhaseOf(int32 PieceId) const

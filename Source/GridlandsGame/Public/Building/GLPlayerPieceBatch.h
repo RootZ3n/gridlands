@@ -62,6 +62,8 @@ public:
 	 */
 	void Retire();
 	bool IsRetired() const { return bRetired; }
+	/** The player structure it presents (a retired batch keeps it, so a stream-in can find what is still retiring). */
+	FName StructureKey;
 	/** Tears down up to MaxBodies collision instances (from the end). True when nothing is left to tear down. */
 	bool RetireStep(int32 MaxBodies);
 

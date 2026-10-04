@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -1063,7 +1063,7 @@
+@@ -1078,7 +1078,7 @@
  	FGLStructureRuntime* Structure = Structures.Find(PlayerKey(Part->Piece.Cell));
  	if (Part->bInstanced && Structure)
  	{

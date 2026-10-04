@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -1040,8 +1040,7 @@
+@@ -1055,8 +1055,7 @@
  		return {};
  	}
  	const FVector Where = PartBox(*Part).GetCenter();

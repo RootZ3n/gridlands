@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -825,7 +825,7 @@
+@@ -840,7 +840,7 @@
  			Resumed.Elapsed = Flight->ElapsedSeconds;
  			Resumed.Material = Flight->Material;
  			Resumed.Cause = Flight->Cause;

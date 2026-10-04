@@ -9,10 +9,11 @@ Read in this order:
    `BUILDING-SALVAGE-TERRAIN`, `KNOWLEDGE-AND-DISCOVERY`, `DUNGEONS-AND-LEGENDARIES`.
 5. Presentation and content pipeline: `VISUAL-DIRECTION`, `ART-PIPELINE`, `STRUCTURE-AUTHORING`,
    `CONTENT-IDS-AND-TAGS`.
-6. `Docs/ADR/` (0001–0038; the later ADRs carry the streaming, navigation, structural and encounter decisions).
+6. `Docs/ADR/` (0001–0039; the later ADRs carry the streaming, navigation, structural and encounter decisions).
 7. `Docs/MILESTONES.md` and the newest milestone's `Docs/Evidence/<milestone>/README.md` (its "Remaining debt"
    section is the live debt list).
-8. Work in progress: `Docs/BUILDING-V1-DESIGN.md` (pre-P11 design gate, a proposal until the operator approves it).
+8. `Docs/BUILDING-V1-DESIGN.md` is the approved Building v1 design (P11 GREEN, ADR-0039 accepted). The next milestone is
+   decided by the operator after the post-P11 roadmap reconciliation; nothing after P11 is started.
 
 `DESIGN-RECONCILIATION.md` and `LEGACY-GODOT.md` are history: read them for why, not for what is current.
 
@@ -80,6 +81,7 @@ missing, wrong version). The last line of output is always
 24. **GAMEPLAY MODEL != PRESENTATION for player construction** (ADR-0039 §11): every piece stays its own record in
     `UGLStructureSubsystem`; quiescent pieces are drawn and collided by the cell's `AGLPlayerPieceBatch`. A hit maps to a
     piece only through the batch's owner table (`PlayerPieceAt`), never by instance order; nothing renderer-side is saved.
+    A retired batch's collision is removed incrementally on purpose (never synchronously in the unload frame).
 
 The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
 

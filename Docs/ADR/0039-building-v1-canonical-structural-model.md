@@ -1,7 +1,10 @@
 # ADR-0039: Building v1: player construction in the canonical structural model
 
-- Status: **Proposed (P11 candidate, awaiting operator review).** Built 2026-10-03 under the approved pre-P11 design
-  gate ([BUILDING-V1-DESIGN](../BUILDING-V1-DESIGN.md), decisions 1–8 of 2026-10-03). Not merged, not tagged.
+- Status: **Accepted** (operator, 2026-10-04: "P11 FINAL REVIEW: APPROVED GREEN"). Built 2026-10-03 under the approved
+  pre-P11 design gate ([BUILDING-V1-DESIGN](../BUILDING-V1-DESIGN.md)); revised 2026-10-04 with instanced presentation (§11,
+  operator decision). Provisional playtest values, not final balance: 32 personal slots, ordinary construction stacks of
+  100, a 32 m claim radius, and the inventory-full dialogue retarget. P11's one core / 32 m / no-overlap claim behaviour is
+  implementation behaviour, not a permanent topology restriction.
 - Date: 2026-10-03
 - Builds on:
   - [ADR-0024](0024-building-v0-structural-model.md): the support rule. **Amended here:** quarter-turn yaw becomes
@@ -132,7 +135,18 @@ the next GC. The operator chose instanced presentation, keeping **GAMEPLAY MODEL
   - A finish change re-presents the piece (re-instanced). Nothing churns per frame.
 - **Stream-out:** the batch is retired whole (hidden, no collision) and destroyed within the presentation budget: one actor
   per cell, whatever the piece count.
+- **Retired collision is removed incrementally, on purpose** (operator-approved, 2026-10-04; never reintroduce a
+  synchronous teardown for lifecycle neatness: it was a measured streaming regression).
+  - A retired batch answers no lookup (`PieceIdAt` returns 0), so it cannot be interacted with.
+  - It exists only while its cell is unloaded, which happens only beyond the 384 m unload margin.
+  - All of it is removed in budgeted steps.
+  - When the same structure returns before that is done (a teleport, a resume), the retiring batch is removed as the new
+    one is made, so collision never doubles.
+  - Gated by `Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved`, the density test (several budgeted
+    steps) and planted defects P17–P19.
 - `-GLActorPieces` (dev only) restores one actor per piece, for same-binary measurement.
+- **Not here:** authored structures remain one actor per part (recorded debt with a measured baseline; a candidate
+  future optimization, not a P11 requirement).
 
 ## Consequences
 - Authored and player structures share one structural language in code, not only in data.

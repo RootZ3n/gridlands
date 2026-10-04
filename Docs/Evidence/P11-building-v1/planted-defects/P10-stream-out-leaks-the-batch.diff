@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -717,8 +717,7 @@
+@@ -732,8 +732,7 @@
  			TWeakObjectPtr<AGLPlayerPieceBatch> Batch;
  			if (Batches.RemoveAndCopyValue(It.Key(), Batch) && Batch.IsValid())
  			{

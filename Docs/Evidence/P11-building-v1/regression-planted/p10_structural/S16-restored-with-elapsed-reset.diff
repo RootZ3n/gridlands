@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -822,7 +822,7 @@
+@@ -837,7 +837,7 @@
  			Resumed.Part = Name;
  			Resumed.Cell = Structure->Cell;
  			Resumed.Outcome = MoveTemp(Outcome);

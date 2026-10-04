@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -1259,7 +1259,7 @@
+@@ -1274,7 +1274,7 @@
  	int32 Id = 0;
  	if (const AGLPlayerPieceBatch* Batch = Cast<AGLPlayerPieceBatch>(Hit.GetActor()))
  	{

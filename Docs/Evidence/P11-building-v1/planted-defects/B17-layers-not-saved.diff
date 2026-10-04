@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -1108,7 +1108,7 @@
+@@ -1123,7 +1123,7 @@
  		Saved.Location = Part.Piece.Location;
  		Saved.YawStep = Part.Piece.YawStep;
  		Saved.Origin = static_cast<uint8>(Part.Piece.Origin);

@@ -2,8 +2,8 @@
 	"devices": [
 		{
 			"deviceName": "Pehverse",
-			"instance": "01A1060ECD5D7167B7DD40544C07EBD9",
-			"instanceName": "Pehverse-3820868",
+			"instance": "01A107A41B357DF780BD734D1B43A4F0",
+			"instanceName": "Pehverse-1598506",
 			"platform": "LinuxEditor",
 			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
 			"model": "Default",
@@ -15,13 +15,13 @@
 			"appInstanceLog": ""
 		}
 	],
-	"reportCreatedOn": "2026.10.04-08.37.25",
+	"reportCreatedOn": "2026.10.04-16.00.09",
 	"succeeded": 24,
-	"succeededWithWarnings": 1,
+	"succeededWithWarnings": 2,
 	"failed": 1,
 	"notRun": 0,
 	"inProcess": 0,
-	"totalDuration": 35.469654083251953,
+	"totalDuration": 37.776206970214844,
 	"comparisonExported": false,
 	"comparisonExportDirectory": "",
 	"tests": [
@@ -31,10 +31,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 0.53860706090927124,
-			"dateTime": "2026.10.04-08.36.49",
+			"duration": 0.54430145025253296,
+			"dateTime": "2026.10.04-15.59.31",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -46,10 +46,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 0.59627151489257812,
-			"dateTime": "2026.10.04-08.36.50",
+			"duration": 0.57973331212997437,
+			"dateTime": "2026.10.04-15.59.32",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -61,10 +61,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 1.0623219013214111,
-			"dateTime": "2026.10.04-08.36.50",
+			"duration": 1.0959910154342651,
+			"dateTime": "2026.10.04-15.59.32",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -76,10 +76,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 1.4841632843017578,
-			"dateTime": "2026.10.04-08.36.52",
+			"duration": 1.4856867790222168,
+			"dateTime": "2026.10.04-15.59.34",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -91,10 +91,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 1.8278478384017944,
-			"dateTime": "2026.10.04-08.36.53",
+			"duration": 1.8509005308151245,
+			"dateTime": "2026.10.04-15.59.35",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -106,10 +106,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 3.0849902629852295,
-			"dateTime": "2026.10.04-08.36.55",
+			"duration": 3.0538756847381592,
+			"dateTime": "2026.10.04-15.59.37",
 			"entries": [
 				{
 					"event":
@@ -121,10 +121,25 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.36.58"
+					"timestamp": "2026.10.04-15.59.40"
 				}
 			],
 			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RetiredPlayerCollisionIsInertAndAlwaysRemoved",
+			"fullTestPath": "Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A107A41B357DF780BD734D1B43A4F0"
+			],
+			"duration": 2.2594621181488037,
+			"dateTime": "2026.10.04-15.59.40",
+			"entries": [],
+			"warnings": 0,
 			"errors": 0,
 			"artifacts": []
 		},
@@ -134,10 +149,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 2.3824601173400879,
-			"dateTime": "2026.10.04-08.36.58",
+			"duration": 2.3924670219421387,
+			"dateTime": "2026.10.04-15.59.42",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -149,10 +164,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 1.1717460155487061,
-			"dateTime": "2026.10.04-08.37.00",
+			"duration": 1.1852289438247681,
+			"dateTime": "2026.10.04-15.59.45",
 			"entries": [
 				{
 					"event":
@@ -164,7 +179,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.01"
+					"timestamp": "2026.10.04-15.59.45"
 				},
 				{
 					"event":
@@ -176,7 +191,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.02"
+					"timestamp": "2026.10.04-15.59.46"
 				}
 			],
 			"warnings": 0,
@@ -189,10 +204,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 1.4013054370880127,
-			"dateTime": "2026.10.04-08.37.02",
+			"duration": 1.462517261505127,
+			"dateTime": "2026.10.04-15.59.46",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -204,10 +219,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 6.1849398612976074,
-			"dateTime": "2026.10.04-08.37.03",
+			"duration": 6.1440243721008301,
+			"dateTime": "2026.10.04-15.59.47",
 			"entries": [
 				{
 					"event":
@@ -219,7 +234,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.08"
+					"timestamp": "2026.10.04-15.59.53"
 				}
 			],
 			"warnings": 0,
@@ -232,10 +247,10 @@
 			"tags": [],
 			"state": "Fail",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 0.031474769115447998,
-			"dateTime": "2026.10.04-08.37.09",
+			"duration": 0.02811262384057045,
+			"dateTime": "2026.10.04-15.59.54",
 			"entries": [
 				{
 					"event":
@@ -247,7 +262,7 @@
 					},
 					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLLodTests.cpp",
 					"lineNumber": 101,
-					"timestamp": "2026.10.04-08.37.09"
+					"timestamp": "2026.10.04-15.59.54"
 				}
 			],
 			"warnings": 0,
@@ -260,10 +275,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 0.020329397171735764,
-			"dateTime": "2026.10.04-08.37.09",
+			"duration": 0.018352383747696877,
+			"dateTime": "2026.10.04-15.59.54",
 			"entries": [
 				{
 					"event":
@@ -275,7 +290,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.09"
+					"timestamp": "2026.10.04-15.59.54"
 				}
 			],
 			"warnings": 0,
@@ -288,10 +303,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 0.4740709662437439,
-			"dateTime": "2026.10.04-08.37.09",
+			"duration": 0.45017445087432861,
+			"dateTime": "2026.10.04-15.59.54",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -303,10 +318,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 0.46458175778388977,
-			"dateTime": "2026.10.04-08.37.10",
+			"duration": 0.45592495799064636,
+			"dateTime": "2026.10.04-15.59.54",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -318,10 +333,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 0.031729955226182938,
-			"dateTime": "2026.10.04-08.37.10",
+			"duration": 0.030177041888237,
+			"dateTime": "2026.10.04-15.59.54",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -333,10 +348,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 0.027431273832917213,
-			"dateTime": "2026.10.04-08.37.10",
+			"duration": 0.026900496333837509,
+			"dateTime": "2026.10.04-15.59.55",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -348,10 +363,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 0.0078370319679379463,
-			"dateTime": "2026.10.04-08.37.10",
+			"duration": 0.008362744003534317,
+			"dateTime": "2026.10.04-15.59.55",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -363,10 +378,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 0.48547247052192688,
-			"dateTime": "2026.10.04-08.37.10",
+			"duration": 0.51011741161346436,
+			"dateTime": "2026.10.04-15.59.55",
 			"entries": [
 				{
 					"event":
@@ -378,7 +393,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.11"
+					"timestamp": "2026.10.04-15.59.55"
 				}
 			],
 			"warnings": 0,
@@ -391,10 +406,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 0.44420585036277771,
-			"dateTime": "2026.10.04-08.37.11",
+			"duration": 0.44989138841629028,
+			"dateTime": "2026.10.04-15.59.55",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -406,10 +421,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 1.0531328916549683,
-			"dateTime": "2026.10.04-08.37.11",
+			"duration": 1.0346169471740723,
+			"dateTime": "2026.10.04-15.59.56",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -421,10 +436,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 1.0284246206283569,
-			"dateTime": "2026.10.04-08.37.12",
+			"duration": 1.0439949035644531,
+			"dateTime": "2026.10.04-15.59.57",
 			"entries": [
 				{
 					"event":
@@ -436,7 +451,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.13"
+					"timestamp": "2026.10.04-15.59.58"
 				}
 			],
 			"warnings": 0,
@@ -449,22 +464,22 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 2.7491283416748047,
-			"dateTime": "2026.10.04-08.37.13",
+			"duration": 2.7719988822937012,
+			"dateTime": "2026.10.04-15.59.58",
 			"entries": [
 				{
 					"event":
 					{
 						"type": "Info",
-						"message": "presented over 359 frames at 0.05 ms per frame",
+						"message": "presented over 360 frames at 0.05 ms per frame",
 						"context": "",
 						"artifact": "00000000000000000000000000000000"
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.15"
+					"timestamp": "2026.10.04-15.59.59"
 				}
 			],
 			"warnings": 0,
@@ -477,22 +492,22 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 3.4513499736785889,
-			"dateTime": "2026.10.04-08.37.16",
+			"duration": 3.3945086002349854,
+			"dateTime": "2026.10.04-16.00.00",
 			"entries": [
 				{
 					"event":
 					{
 						"type": "Info",
-						"message": "cycle 0: 12 actors made before the unload, 12 retired in the unload frame",
+						"message": "cycle 0: 18 actors made before the unload, 18 retired in the unload frame",
 						"context": "",
 						"artifact": "00000000000000000000000000000000"
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.18"
+					"timestamp": "2026.10.04-16.00.02"
 				},
 				{
 					"event":
@@ -504,7 +519,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.18"
+					"timestamp": "2026.10.04-16.00.02"
 				},
 				{
 					"event":
@@ -516,7 +531,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.18"
+					"timestamp": "2026.10.04-16.00.02"
 				},
 				{
 					"event":
@@ -528,19 +543,19 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.18"
+					"timestamp": "2026.10.04-16.00.02"
 				},
 				{
 					"event":
 					{
 						"type": "Info",
-						"message": "cycle 2: 19 actors made before the unload, 19 retired in the unload frame",
+						"message": "cycle 2: 17 actors made before the unload, 17 retired in the unload frame",
 						"context": "",
 						"artifact": "00000000000000000000000000000000"
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.19"
+					"timestamp": "2026.10.04-16.00.03"
 				},
 				{
 					"event":
@@ -552,10 +567,22 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.19"
+					"timestamp": "2026.10.04-16.00.03"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogHttp: HTTP request timed out after 3.00 seconds URL=https://www.google.com/generate_204",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-16.00.03"
 				}
 			],
-			"warnings": 0,
+			"warnings": 1,
 			"errors": 0,
 			"artifacts": []
 		},
@@ -565,10 +592,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 1.87119460105896,
-			"dateTime": "2026.10.04-08.37.20",
+			"duration": 1.9045171737670898,
+			"dateTime": "2026.10.04-16.00.04",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -580,22 +607,22 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 2.5426838397979736,
-			"dateTime": "2026.10.04-08.37.21",
+			"duration": 2.5436170101165771,
+			"dateTime": "2026.10.04-16.00.06",
 			"entries": [
 				{
 					"event":
 					{
 						"type": "Info",
-						"message": "town presented over 515 frames at 0.05 ms per frame",
+						"message": "town presented over 513 frames at 0.05 ms per frame",
 						"context": "",
 						"artifact": "00000000000000000000000000000000"
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.23"
+					"timestamp": "2026.10.04-16.00.07"
 				}
 			],
 			"warnings": 0,
@@ -608,10 +635,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A1060ECD5D7167B7DD40544C07EBD9"
+				"01A107A41B357DF780BD734D1B43A4F0"
 			],
-			"duration": 1.0519536733627319,
-			"dateTime": "2026.10.04-08.37.24",
+			"duration": 1.0507489442825317,
+			"dateTime": "2026.10.04-16.00.08",
 			"entries": [
 				{
 					"event":
@@ -623,7 +650,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.04-08.37.25"
+					"timestamp": "2026.10.04-16.00.09"
 				}
 			],
 			"warnings": 0,

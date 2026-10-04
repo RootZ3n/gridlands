@@ -1,10 +1,8 @@
 # P11 Building v1: evidence
 
-**Status: REVISED CANDIDATE (2026-10-04), awaiting operator review.** Branch `p11-building-v1`; not merged, not tagged. The
-operator approved P11 architecturally on 2026-10-03 and required the scaling stop (G) to be fixed first. It is fixed by
-instanced presentation: see **G2**.
-Decision record: [ADR-0039](../../ADR/0039-building-v1-canonical-structural-model.md). Design:
-[BUILDING-V1-DESIGN](../../BUILDING-V1-DESIGN.md) (approved 2026-10-03, deviations listed there).
+**Status: GREEN (2026-10-04, operator: "P11 FINAL REVIEW: APPROVED GREEN"); tag `p11-building-v1`.** The first
+candidate (2026-10-03) was approved architecturally with its scaling stop (G) to be fixed first. It is fixed by instanced
+presentation (G2), and the retired-collision behaviour is gated (G3).
 
 ## A. What P11 proves
 Player construction is in the canonical structural model:
@@ -60,7 +58,7 @@ Player construction is in the canonical structural model:
 | Careful dismantle | the interior stud wall: 5 studs, 2 scrap, 2 planks (its clapboard back as boards) |
 | Smash | a bay wall: 1 stud, 4 scrap, 1 plank |
 
-## C. Automated proof (180/180 tests, 50 requirements; tooling 114)
+## C. Automated proof (181/181 tests, 50 requirements; tooling 114)
 - **Core (`Gridlands.Core.BuildingV1`, 12 tests):**
   - yaw units;
   - octagon, hexagon and 16-gon closing by snapping alone, each piece standing and overlapping nothing;
@@ -103,6 +101,8 @@ Player construction is in the canonical structural model:
     dismantling remove exactly their instances, and a mid-fall save rebuilds it all.
   - Streaming retires the batch whole and leaks nothing; stream-in duplicates nothing.
   - The 309- and 617-piece fixtures are one batch with only storage as actors; every trace onto the base finds a piece.
+    A retired 309-piece batch's bodies are seen part-way through a budgeted teardown.
+  - The retired-collision gates are in G3 (`Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved`).
 - **Tooling:** PH-1, PH-2, FIN-1, SV-Q1 (x3), YAW-1, SOCK-1, MIG-1, and STR-3 at 2.5 degrees.
 - **Fresh clone:** see the closure line at the end (the candidate head).
 
@@ -268,7 +268,21 @@ Worst frame / p99 / worst streaming frame (ms):
 - So the 309-piece base is about 66 UObjects, against about 3,950 with one actor per piece (63,261 - 59,305).
 - The GC frame that remains is the inherited streamed-level GC. It was not touched (operator instruction).
 
-## H. Planted defects ([`planted-defects/`](planted-defects/), `Tools/planted-defects/p11_building.py`): **57/57 caught by assertion** (revised candidate)
+## G3. Retired collision: intentional, gated (operator-approved 2026-10-04)
+In the unload frame a retiring batch becomes invisible and unreachable. Its collision bodies are removed over the
+following retirement frames. This is preserved as intentional behaviour: synchronous teardown was itself a measured
+streaming regression (G2), so it is never reintroduced for lifecycle neatness. Gates:
+
+| Invariant | Gate |
+|---|---|
+| Retired presentation cannot be interacted with | `Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved`: a trace that reaches the retired collision resolves to no piece (`PieceIdAt` 0). Planted defect P17. |
+| Retired collision cannot affect Zenny at legitimate streaming distances | The same test: every retired body is farther from Zenny than the 384 m unload margin. |
+| All collision is eventually removed | The same test: no batch and no body is left after the retirement frames. The density test: a 309-piece base's bodies (more than 256) go in several budgeted steps. Planted defect P18. |
+| No collision leaks across repeated stream cycles | The same test: three round trips, always one batch with the house's bodies once, and none away. |
+| Stream-in before retirement completes cannot duplicate or corrupt collision | The same test: back at once (a teleport) before any retirement step. The retiring batch is removed as the new one is made: one batch, its bodies once, the same piece found where it was, the presentation exactly the model. Planted defect P19. |
+| Authoritative piece identity and state are unaffected | The same test: the WINCHESTER fingerprint is unchanged after every cycle. |
+
+## H. Planted defects ([`planted-defects/`](planted-defects/), `Tools/planted-defects/p11_building.py`): **61/61 caught by assertion** (final)
 Each defect is a backup-protected source or data edit, built and tested on its own and restored (never with git
 checkout). A crashed, unbuildable or assertion-less run is **not** a catch. Only an assertion in a test report counts, or
 a FAIL in the tooling self-tests that `Tools/test.sh` runs first.
@@ -285,6 +299,7 @@ a FAIL in the tooling self-tests that `Tools/test.sh` runs first.
 | ownership, plans, migration | B33 renewal ignores player ownership · B34 renewal ignores claims · B35 plan rebuilt without the anchor turn · B36 v0 pieces migrate without their look · B37 v2 yaw not scaled |
 | tooling | B38 salvage-quality lint disabled · B39 unimplemented-phase lint disabled |
 | **instanced presentation** (revised candidate) | P1 piece id mapped to the wrong instance (owner table reversed) · P2 a removal changes another piece's identity (table swaps, instances shift) · P3 stale instances after dismantling · P4 restore marks pieces instanced without instances · P5 a finish changes the model, not the presentation · P6 collapse leaves the static instance behind · P7 collapse removes another piece's instances · P8 a re-presentation duplicates the presentation · P9 loading over a live cell keeps the old batch (duplicates) · P10 stream-out leaks the batch · P11 interaction selects the wrong piece (off by one instance) · P12 a rotated piece drawn unrotated · P13 renderer order becomes identity (remove-at-swap in the renderer) · P14 storage forced into the batch (loses Store / Take) · P15 instances do not collide · P16 the removal preview not drawn on instances |
+| **retired collision** (closure gates) | P17 interaction trusts a retired batch (both guard layers gone) · P18 retirement forgets the batch (never torn down) · P19 an early return keeps the retiring batch (doubled collision) · P20 retirement tears everything down at once (not incremental) |
 
 **The first run caught 34/41.** What the gate exposed, and how each was resolved (re-run, then caught):
 - **B1, B5 died instead of failing.** Each was caught by assertions, but a later test then indexed a house that had not
@@ -307,8 +322,17 @@ instanced pieces down, and P16 is caught by its assertion. Every other defect, t
 on the first run of the revised code (`run.log` is that run; `summary.txt` re-derives the verdicts after the P16
 re-run).
 
+**The closure run (final code): 58/60, then 61/61.** P17 survived first, and rightly: a retired batch is guarded twice
+(it answers no lookup, and a hit must name a piece the model still has), so removing one layer changes nothing. It now
+removes both, the realistic "interaction trusts the presentation" bug, and is caught. The first P18 made a retirement step
+that never progresses, which hangs the flushing pump: a dead run, not a catch. P18 is now "retirement forgets the batch"
+(a leak, caught by three tests), and the one-step teardown became P20. P20 exposed a weak assertion: "at least two pump
+calls" passed anyway, because crate actors spend the tiny budget first. The density test now requires seeing a batch's
+bodies part-way through retirement. `run.log` is the full 60-defect run; `summary.txt` re-derives the final 61.
+
 **Regression suites, all at the P11 head with nothing re-anchored except P10 S17 (before the run). Re-run against the
-revised candidate, because authored structures share the refactored `AGLBuildPiece`; the results are unchanged.**
+final code (after the closure gates and the I.17 fix), because authored structures share the refactored
+`AGLBuildPiece`; the results are unchanged.**
 ([`regression-planted/`](regression-planted/)):
 
 | Suite | Result |
@@ -348,12 +372,15 @@ revised candidate, because authored structures share the refactored `AGLBuildPie
     309 pieces; one quiet run at 12.6 ms). The teardown is now deferred into budgeted steps (G2).
 14. **A vacuous removal-preview assertion** (an empty prediction compared with an empty highlight), found by planted
     defect P16.
-15. **An unattributed one-frame RHI stall** (27.6 ms on the RHI thread, 2.2 ms on the game thread, no GC, mid-walk at
-    x = 316 m) appeared once in 8 instanced quiet runs and in none of the others. It is recorded, not explained; it is
-    consistent with a one-time pipeline-state compile.
+15. **Observation, not a diagnosed defect: a one-frame RHI stall.** 27.6 ms on the RHI thread, 2.2 ms on the game
+    thread, no GC, mid-walk at x = 316 m, away from any unload. It appeared once in 8 instanced quiet runs and in none of
+    the others. Its cause is not established by the evidence.
 16. **A density-test bound applied to the wrong quantity.** The first revised fresh clone (`ead19a1`) measured
     presenting 309 pieces in one call at 10.13 ms against a generic 10 ms per-operation bound. The game spreads that work
     over frames, so the test now bounds it per piece (under 0.1 ms; measured about 0.03–0.04).
+17. **A return before retirement finished overlapped collision.** Writing the closure gate showed that streaming back at
+    once (a teleport, a resume) built the new batch while the retiring one still held its invisible collision, so aim
+    could hit a stale collider. The retiring batch of the same structure is now removed as the new one is made (P19).
 
 ## J. Remaining debt
 - **Pit edges.** A pit edge is a 1 m slope, not a vertical face, so a basement wall placed flush against it shows
@@ -366,24 +393,39 @@ revised candidate, because authored structures share the refactored `AGLBuildPie
 - **Claim UI.** A claim has no visualization yet.
 - **Knowledge for new styles.** Log walls and clapboard are unlocked by the existing timber-frame knowledge (their own
   discovery is content work). The Roman column uses Roman masonry.
-- **Inherited GC hitch.** The ~31–42 ms reversal GC hitch remains inherited debt (see F); the budget is unchanged.
+- **OPEN INHERITED ENGINE/GC DEBT.** The 40 ms reversal budget stays canonical and is not re-baselined.
+  - Towndense breaches it (40.6 ms at the revised candidate; unchanged P10 also breaches it, F).
+  - Towndense contains no player construction, so the breach is independent of P11's player-building presentation.
+  - P11 materially reduced the player-construction contribution to GC and object pressure: the 309-piece base is about
+    66 UObjects, down from about 3,950 (G2).
+  - The remaining streamed-level GC behaviour is not a P11 blocker.
 - **Retired batch collision.** It lives for a few frames after its cell unloads, then is torn down within budget (G2).
   It is safe while Zenny is beyond the 384 m unload margin. A creature of a neighbouring cell standing at the boundary
   could touch it for those frames.
-- **Authored structures are still one actor per part.** The dense town's unload despawn (~6 ms) and most of its GC are
-  inherited, and instancing authored parts is not in P11's scope.
+- **DEFERRED: authored structures remain one actor per part** (operator, 2026-10-04: not a P11 requirement; a candidate
+  future optimization, not to be done speculatively). The measured baseline is preserved for a future change to beat
+  ([`instanced/perf/`](instanced/perf/), quiet suites at the revised candidate):
+
+  | Suite (no player construction) | Authored actors despawned at the lots unload | Despawn | Reversal GC: live objects before -> after (the unload's GC) | Live objects at the end |
+  |---|---|---|---|---|
+  | town | 118 | 3.9–4.3 ms | 59,985 -> 57,417 (2,568 reclaimed) | 57,657 |
+  | towndense | 210 | 6.0–6.1 ms | 63,286 -> 59,003 (4,283 reclaimed) | 59,305 |
+
+  The same model-first, instanced approach may reduce the town's unload despawn, its actor and object counts, and the
+  streamed-level GC pressure after it. That is unmeasured until it is built.
 - **Debris stays an actor** (few, interactive). It does not return to the batch.
 - **Assigning the NICE overencumbrance lines' new wording** is provisional (operator-approved approach).
 
 ## K. Closure
-- **Branch:** `p11-building-v1` (PR #34). The revised candidate is not merged and not tagged (operator instruction), and
-  P12 has not been started.
+- **Branch:** `p11-building-v1` (PR #34). The operator approved P11 GREEN on 2026-10-04. P12 has not been started.
 - **First candidate:** its gate (fresh clone, six perf suites, A/B, five planted suites) ran at `a040a29`; that evidence is
   in E, F, G and `perf/`, `ab/`.
-- **Revised candidate:** the instanced-presentation evidence (G2, `instanced/`), the planted re-runs (H), the real-game
-  WINCHESTER proof (`proof/`, re-run: build 11/11, restart 6/6, resume 5/5) and 180/180 tests are at its head. The final
-  fresh clone is recorded below.
-- **Measurement vs commit:** the instanced perf runs (A/B, stress, six suites) were measured on the revised code before
-  it was committed. The only changes after them are tests (the density timings and the P16 preview assertion).
-- **Final fresh clone (revised candidate):** PASS at `575f492` (180/180 from tracked inputs and the pinned engine). The
-  clone of `ead19a1` failed on item I.16 (a test bound). Only this docs line follows it.
+- **Revised candidate:** the instanced-presentation evidence is in G2 and `instanced/`.
+- **Closure (final code):**
+  - the retired-collision gates (G3), and the I.17 fix they exposed;
+  - 181/181 tests, 50 requirements, 114 tooling tests;
+  - planted 61/61 by assertion, with the regression suites P10 28/28, P9 22/22, P8 19/19, terrain 27/27;
+  - the real-game WINCHESTER proof (`proof/`: build 11/11, restart 6/6, resume 5/5) at the revised candidate.
+- **Measurement vs code:** the instanced perf runs (A/B, stress, six suites) were measured on the revised code before the
+  closure gates. The only production change after them is I.17, which runs only when a structure returns before its
+  retired batch finished retiring (none of the measured runs do).

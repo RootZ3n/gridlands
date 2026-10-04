@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -585,7 +585,7 @@
+@@ -600,7 +600,7 @@
  			Land(Active[I]);
  		}
  	}
@@ -9,7 +9,7 @@
  	for (const TWeakObjectPtr<AActor>& Actor : ToDestroy)
  	{
  		if (AActor* Live = Actor.Get())
-@@ -768,7 +768,7 @@
+@@ -783,7 +783,7 @@
  {
  	for (const FGLActiveCollapse& Collapse : Active)
  	{

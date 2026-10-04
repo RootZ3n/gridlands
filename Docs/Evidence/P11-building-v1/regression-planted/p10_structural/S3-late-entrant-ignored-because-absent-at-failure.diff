@@ -9,7 +9,7 @@
  	bool IsPresent(EGLStructurePartState State)
  	{
  		return State == EGLStructurePartState::Intact || State == EGLStructurePartState::Debris;
-@@ -552,6 +554,7 @@
+@@ -567,6 +569,7 @@
  		Entry.Cause = IdentityOf(By);
  		Entry.Credit = Entry.Cause;
  		Entry.CreditActor = By;
@@ -17,7 +17,7 @@
  	}
  	UE_LOG(LogGridlands, Log, TEXT("Structures: %s lost support: %d part(s) collapse (decided in %.3f ms)"), *Structure.Placement.ToString(), Plan.Outcomes.Num(), (FPlatformTime::Seconds() - Began) * 1000.0);
  	if (!bSilent)
-@@ -618,6 +621,7 @@
+@@ -633,6 +636,7 @@
  	{
  		for (const FName& Creature : Placements->ActiveCreaturesTouching(Outcome.Impact))
  		{

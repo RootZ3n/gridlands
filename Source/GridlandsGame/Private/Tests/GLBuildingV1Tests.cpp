@@ -8,6 +8,7 @@
 #include "Content/GLContent.h"
 #include "Content/GLContentDefinitions.h"
 #include "Dialogue/GLDialogueDirector.h"
+#include "EngineUtils.h"
 #include "Events/GLEventSubsystem.h"
 #include "Fabrication/GLFabricatorComponent.h"
 #include "HAL/FileManager.h"
@@ -410,6 +411,24 @@ bool FGLV1Density::RunTest(const FString& Parameters)
 		}
 		Out.Add(TEXT("lookupMsPerTrace"), (FPlatformTime::Seconds() - T) * 1000.0 / FMath::Max(1, Pieces.Num()));
 		TestEqual(FString::Printf(TEXT("%d units: every trace onto the base finds a piece"), Units), Found, Pieces.Num());
+		// Retirement is incremental: the batch's collision goes in budgeted steps (several for a base this size), then
+		// the batch; nothing about it waits on the piece count in one call.
+		const int32 Bodies = S.Structures->BatchOf(Cell) && S.Structures->BatchOf(Cell)->GetCollisionSet() ? S.Structures->BatchOf(Cell)->GetCollisionSet()->GetInstanceCount() : 0;
+		S.Structures->RemoveCell(Cell);
+		int32 Steps = 0;
+		bool bPartial = false; // seen part of the bodies gone and part still there: the teardown really is in steps
+		while (S.Structures->RetiringBatches() > 0 && Steps < 1000)
+		{
+			S.Structures->PumpPresentation(FVector::ZeroVector, 1e-4); // a 0.1 ms budget per call
+			++Steps;
+			for (TActorIterator<AGLPlayerPieceBatch> It(S.Test.World); It; ++It)
+			{
+				const int32 Left = IsValid(*It) && !It->IsActorBeingDestroyed() && It->IsRetired() && It->GetCollisionSet() ? It->GetCollisionSet()->GetInstanceCount() : -1;
+				bPartial |= Left > 0 && Left < Bodies;
+			}
+		}
+		TestEqual(FString::Printf(TEXT("%d units: the retired batch is gone"), Units), S.Structures->RetiringBatches(), 0);
+		TestTrue(FString::Printf(TEXT("%d units: %d bodies retired in budgeted steps (%d calls), seen part-way"), Units, Bodies, Steps), Bodies > 256 && bPartial);
 		TestEqual(FString::Printf(TEXT("%d units: capture keeps every piece"), Units), Captured.Num(), Saved.Num());
 		TestEqual(FString::Printf(TEXT("%d units: every piece stands"), Units), Standing, Pieces.Num());
 		TestTrue(FString::Printf(TEXT("%d units: the preview still answers"), Units), Check.IsAllowed());

@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -1189,7 +1189,7 @@
+@@ -1204,7 +1204,7 @@
  		}
  		Piece.Origin = EGLPieceOrigin::Player;
  		Piece.Layers = Entry.Layers;

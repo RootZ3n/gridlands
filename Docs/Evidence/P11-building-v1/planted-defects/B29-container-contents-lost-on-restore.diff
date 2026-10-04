@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -1198,7 +1198,7 @@
+@@ -1213,7 +1213,7 @@
  				Problem(FString::Printf(TEXT("saved stored item %s no longer exists"), *Held.Id.ToString()));
  				continue;
  			}

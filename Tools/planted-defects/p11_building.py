@@ -35,7 +35,7 @@ PHASE = 'Data/phase/construction/electrical.json'
 VALIDATE = 'Tools/gldata/validate.py'
 TESTS = ('Gridlands.Core.BuildingV1+Gridlands.Game.BuildingV1+Gridlands.Core.Building+Gridlands.Game.Building+Gridlands.Core.Inventory'
          '+Gridlands.Game.Inventory+Gridlands.Core.Save+Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes'
-         '+Gridlands.Game.PlayerPresentation')
+         '+Gridlands.Game.Grid.RetiredPlayerCollisionIsInertAndAlwaysRemoved+Gridlands.Game.PlayerPresentation')
 
 POOL_CONSUME = ('\tTaken.Reset();\n\tTaken.SetNum(Sources.Num());\n\tif (!CanConsume(Cost))\n\t{\n\t\treturn false;\n\t}\n'
                 '\tverify(ConsumeInto(Sources, Cost, &Taken));\n\treturn true;')
@@ -146,6 +146,15 @@ DEFECTS = [
         '\tif (!Def || !GLPiecePresentation::Describe(Piece, Look)) // DEFECT: a crate loses its actor (Store / Take)')]),
     ('P15-instances-do-not-collide', [(BATCH, '\t\tCollision = NewSet(LoadObject<UStaticMesh>(nullptr, BatchCubePath), true);', '\t\tCollision = NewSet(LoadObject<UStaticMesh>(nullptr, BatchCubePath), false); // DEFECT')]),
     ('P16-removal-preview-not-drawn-on-instances', [(STRUCT, '\t\t\tBatch->SetHighlighted(PieceIds); // it shows those it presents', '\t\t\tBatch->SetHighlighted({}); // DEFECT')]),
+    # Retired presentation is guarded twice (the batch answers nothing, and a hit must name a piece the model still has):
+    # the realistic bug is interaction trusting the presentation, both layers gone.
+    ('P17-interaction-trusts-a-retired-batch', [(BATCH, '\tif (bRetired)\n\t{\n\t\treturn 0; // its cell unloaded: nothing here is a piece any more\n\t}',
+        '\t// DEFECT: a retired batch still resolves hits'),
+        (STRUCT, '\treturn Id && FindPlayerPiece(Id) ? Id : 0;', '\treturn Id; // DEFECT: whatever the presentation says')]),
+    ('P18-retirement-forgets-the-batch', [(STRUCT, '\t\tif (!Batch || Batch->RetireStep(256))\n\t\t{\n\t\t\tif (Batch)\n\t\t\t{\n\t\t\t\tBatch->Destroy();\n\t\t\t}',
+        '\t\tif (true) // DEFECT: dropped from the list, never torn down: its collision stays\n\t\t{')]),
+    ('P19-early-return-keeps-the-retiring-batch', [(STRUCT, '\t\tif (!Old || Old->StructureKey == Structure.Placement)', '\t\tif (!Old) // DEFECT: the same structure\'s retiring batch stays')]),
+    ('P20-retirement-tears-everything-down-at-once', [(STRUCT, '\t\tif (!Batch || Batch->RetireStep(256))', '\t\tif (true) // DEFECT: the whole batch in one step (not incremental)')]),
     # --- ownership, plans, migration
     ('B33-renewal-ignores-player-ownership', [(CLAIMS, '\tif (Origin == EGLPieceOrigin::Player)\n\t{\n\t\treturn false;\n\t}', '\t// DEFECT: ownership ignored')]),
     ('B34-renewal-ignores-claims', [(CLAIMS, '\treturn ClaimAt(Claims, Location) == nullptr;', '\treturn true; // DEFECT')]),
