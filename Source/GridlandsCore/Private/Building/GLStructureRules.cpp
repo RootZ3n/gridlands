@@ -351,6 +351,25 @@ EGLPreview GLStructureRules::PreviewOf(const FGLBuildCheck& Check)
 	return Check.Support <= Check.VerticalStep + 1e-9 ? EGLPreview::Yellow : EGLPreview::Green;
 }
 
+bool GLStructureRules::OverlapsAny(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing, const FGLBuildPieceDef& Def,
+	const FGLPlacedPiece& Candidate, int32* OutBlocking)
+{
+	const FGLFootprint Mine = Footprint(Def, Candidate);
+	for (const FGLPlacedPiece& Other : Existing)
+	{
+		const FGLBuildPieceDef* OtherDef = Content.Find<FGLBuildPieceDef>(Other.Def);
+		if (OtherDef && Mine.Overlaps(Footprint(*OtherDef, Other), OverlapShrinkCm))
+		{
+			if (OutBlocking)
+			{
+				*OutBlocking = Other.Id;
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
 FGLBuildCheck GLStructureRules::CheckPlacement(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing,
 	const FGLPlacedPiece& Candidate, FGroundHeight Ground)
 {
@@ -364,17 +383,13 @@ FGLBuildCheck GLStructureRules::CheckPlacement(const FGLContentRegistry& Content
 	}
 	Check.VerticalStep = VerticalStepOf(Content, *Def);
 	Check.Material = Def->Material;
-	const FGLFootprint Mine = Footprint(*Def, Candidate);
-	for (const FGLPlacedPiece& Other : Existing)
+	int32 Blocking = 0;
+	if (OverlapsAny(Content, Existing, *Def, Candidate, &Blocking))
 	{
-		const FGLBuildPieceDef* OtherDef = Content.Find<FGLBuildPieceDef>(Other.Def);
-		if (OtherDef && Mine.Overlaps(Footprint(*OtherDef, Other), OverlapShrinkCm))
-		{
-			Check.Refusal = EGLBuildRefusal::Overlaps;
-			Check.BlockingPieceId = Other.Id;
-			Check.Reason = TEXT("something is already there");
-			return Check;
-		}
+		Check.Refusal = EGLBuildRefusal::Overlaps;
+		Check.BlockingPieceId = Blocking;
+		Check.Reason = TEXT("something is already there");
+		return Check;
 	}
 	for (const FGLWorldSocket& Socket : Sockets(*Def, Candidate))
 	{
@@ -555,7 +570,7 @@ bool GLStructureRules::Snap(const FGLContentRegistry& Content, TConstArrayView<F
 				const int32 Rests = bSide ? 0 : RestingSockets(Content, Existing, *Def, Candidate);
 				const double AwayScore = Away.IsZero() ? 0.0 : FMath::RoundToDouble(FVector2D::DotProduct((FVector2D(Candidate.Location) - FVector2D(Theirs.Location)).GetSafeNormal(), Away) * 1000.0);
 				const bool bBetter = Rests != BestRests ? Rests > BestRests : AwayScore != BestAway ? AwayScore > BestAway : Centre < BestCentre;
-				if ((bThisSocket && !bBetter) || CheckPlacement(Content, Existing, Candidate, Ground).Refusal == EGLBuildRefusal::Overlaps)
+				if ((bThisSocket && !bBetter) || OverlapsAny(Content, Existing, *Def, Candidate)) // the overlap test alone (no support solve per candidate)
 				{
 					continue;
 				}

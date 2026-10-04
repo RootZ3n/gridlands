@@ -1,0 +1,10 @@
+First quiet run (before Snap stopped solving support per candidate), same fixture and method:
+normal: GT mean 2.00 ms
+place: GT mean 4.50 (incremental +2.50), build tick mean 2.779 p99 3.141 worst 3.718 ms   -> TARGET BREACHED
+buildCamera: GT mean 4.82 (incremental +2.82), build tick mean 2.935 ms                    -> TARGET BREACHED
+browser: GT mean 1.96 (-0.03)
+removePrediction: GT mean 3.23 (+1.24), build tick mean 1.407 ms
+repeatedPlacement: GT mean 3.09 p99 13.69 worst 26.29 ms (+1.09); build tick worst 23.585 ms; 6 commits mean 6.65 worst 9.40 ms
+Cause: GLStructureRules::Snap ran the full CheckPlacement (oriented overlap, buried, and the whole-structure support solve)
+for every candidate socket only to ask "does it overlap?". Fix: the overlap test is now its own function (OverlapsAny),
+used by both Snap and CheckPlacement (one test, no divergence). Snap fell from ~1.2 ms to 0.12 ms per frame.

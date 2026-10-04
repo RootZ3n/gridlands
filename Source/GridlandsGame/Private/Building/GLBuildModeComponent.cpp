@@ -14,6 +14,7 @@
 #include "HAL/FileManager.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
+#include "Misc/ScopeExit.h"
 #include "Serialization/JsonReader.h"
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonWriter.h"
@@ -541,6 +542,8 @@ bool UGLBuildModeComponent::Aim(FHitResult& OutHit, FVector& OutStart, FVector& 
 void UGLBuildModeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	const double TickStart = FPlatformTime::Seconds();
+	ON_SCOPE_EXIT { LastTickMs = (FPlatformTime::Seconds() - TickStart) * 1000.0; };
 	RefreshView();
 	if (State == EGLBuildState::Remove)
 	{

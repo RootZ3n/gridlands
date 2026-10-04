@@ -1,0 +1,21 @@
+ata set : commandline="" /pehverse/repos/game-dev/gridlands/Gridlands.uproject -game -GLNewWorld -GLPlayerDense -RenderOffscreen -ResX=1920 -ResY=1080 -ForceRes -nosound -unattended -NoP4 -ExecCmds=gl.Perf.BuildMode""
+orld -GLPlayerDense -RenderOffscreen -ResX=1920 -ResY=1080 -ForceRes -nosound -unattended -NoP4 -ExecCmds=gl.Perf.BuildMode -game
+LogGridlands: gl.Perf.BuildMode started (7 states)
+LogGridlands: gl.Perf.BuildMode: dense base presented (309 pieces)
+LogGridlands: gl.Perf.BuildMode: state normal
+LogGridlands: gl.Perf.BuildMode normal: GT mean 2.07 p99 2.75 worst 3.32 ms (incremental +0.00); build tick mean 0.005 p99 0.010 worst 0.086 ms; 
+LogGridlands: gl.Perf.BuildMode: state place
+LogGridlands: gl.Perf.BuildMode place: GT mean 3.44 p99 4.39 worst 4.89 ms (incremental +1.37); build tick mean 1.537 p99 2.098 worst 2.382 ms; [BUILD] Stud wall [+] OK: Stands, with margin
+LogGridlands: gl.Perf.BuildMode: state buildCamera
+LogGridlands: gl.Perf.BuildMode buildCamera: GT mean 3.45 p99 4.19 worst 5.26 ms (incremental +1.38); build tick mean 1.548 p99 1.868 worst 2.730 ms; [BUILD] Stud wall [+] OK: Stands, with margin
+LogGridlands: gl.Perf.BuildMode: state browser
+LogGridlands: gl.Perf.BuildMode browser: GT mean 2.01 p99 2.65 worst 4.02 ms (incremental -0.06); build tick mean 0.058 p99 0.099 worst 0.773 ms; [BUILD] choose a piece
+LogGridlands: gl.Perf.BuildMode: state removePrediction
+LogGridlands: gl.Perf.BuildMode removePrediction: GT mean 3.28 p99 4.16 worst 5.07 ms (incremental +1.21); build tick mean 1.426 p99 1.705 worst 2.163 ms; [REMOVE careful] nothing else falls; recovers 5 Stud, 2 Scrap timber, 2 Timber plank
+LogGridlands: gl.Perf.BuildMode: state repeatedPlacement
+LogGridlands: gl.Perf.BuildMode repeatedPlacement: GT mean 2.59 p99 4.45 worst 11.61 ms (incremental +0.52); build tick mean 0.625 p99 2.146 worst 2.648 ms; 6 commits, mean 3.70 worst 4.41 ms; [BUILD] Timber floor - Aim at the ground or a free socket
+LogGridlands: gl.Perf.BuildMode: state placeBreakdown
+LogGridlands: gl.Perf.BuildMode breakdown: snap 0.120, check 1.416, cost view 0.040, removal prediction 1.306 ms (means)
+LogGridlands: gl.Perf.BuildMode placeBreakdown: GT mean 6.07 p99 7.13 worst 8.92 ms (incremental +4.00); build tick mean 1.477 p99 1.657 worst 1.918 ms; [BUILD] Stud wall [+] OK: Stands, with margin
+LogGridlands: gl.Perf.BuildMode done: ../../../../../repos/game-dev/gridlands/Saved/Perf/buildmode.json
+attempt=1 load start=2.82 end=3.76

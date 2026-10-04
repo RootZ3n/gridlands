@@ -177,6 +177,9 @@ namespace GLStructureRules
 	GRIDLANDSCORE_API TMap<int32, double> ComputeSupport(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Pieces, FGroundHeight Ground);
 
 	/** Geometry and structure only (overlap, buried, support), with the preview colour of the result. */
+	/** Does the candidate's oriented footprint overlap an existing piece (the first one's id in OutBlocking)? CheckPlacement's own test. */
+	GRIDLANDSCORE_API bool OverlapsAny(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing, const FGLBuildPieceDef& Def,
+		const FGLPlacedPiece& Candidate, int32* OutBlocking = nullptr);
 	GRIDLANDSCORE_API FGLBuildCheck CheckPlacement(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing,
 		const FGLPlacedPiece& Candidate, FGroundHeight Ground);
 	/** Everything: knowledge, items (counted in Available), then CheckPlacement. */

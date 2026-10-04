@@ -168,6 +168,8 @@ public:
 	/** How many intents of each kind (and in all) the player has issued: the interaction counts of the daily-driver proof. */
 	const TMap<FName, int32>& GetIntentCounts() const { return IntentCounts; }
 	int32 GetIntentTotal() const { return IntentTotal; }
+	/** The game-thread cost of this component's last tick (the view, ghost, markers' inputs): the build-mode perf measure. */
+	double GetLastTickMs() const { return LastTickMs; }
 	void ResetIntentCounts() { IntentCounts.Reset(); IntentTotal = 0; }
 
 	// ---- settings (playtest profile, never world saves) ----
@@ -191,6 +193,7 @@ public:
 	void RefreshView();
 
 private:
+	double LastTickMs = 0.0;
 	bool Aim(FHitResult& OutHit, FVector& OutStart, FVector& OutEnd) const;
 	void Count(const TCHAR* Intent);
 	void SetState(EGLBuildState InState);
