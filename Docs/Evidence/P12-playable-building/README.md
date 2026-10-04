@@ -208,4 +208,5 @@ New in P12 (all required, `Tools/required-tests.txt`):
   per part.
 
 ## I. Fresh clone
-TODO
+`Tools/verify-fresh-clone.sh` of `9e8af97` (the candidate's code, before this evidence-only commit) built from tracked
+inputs and the pinned engine, with adaptive unity off: **PASS, 199/199 tests, 52 requirements.**
