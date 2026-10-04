@@ -1,0 +1,383 @@
+{
+	"profile": "buildpiece.modern.timber_foundation",
+	"fingerprintAtEnd": "1 buildpiece.modern.base_core V(X=16945.36, Y=17474.89) 0 \n2 buildpiece.modern.timber_foundation V(X=17243.10, Y=17529.74) 0 \n3 buildpiece.modern.storage_crate V(X=17243.10, Y=17529.74, Z=30.00) 0 \n4 buildpiece.modern.timber_foundation V(X=17458.83, Y=17989.76) 0 \n5 buildpiece.modern.timber_foundation V(X=17658.83, Y=17989.76) 0 \n6 buildpiece.modern.timber_foundation V(X=17858.83, Y=17989.76) 0 \n7 buildpiece.modern.timber_foundation V(X=18058.83, Y=17989.76) 0 \n8 buildpiece.modern.timber_foundation V(X=18258.83, Y=17989.76) 0 \n9 buildpiece.modern.timber_foundation V(X=18458.83, Y=17989.76) 0 \n10 buildpiece.modern.timber_foundation V(X=18658.83, Y=17989.76) 0 \n11 buildpiece.modern.timber_foundation V(X=18858.83, Y=17989.76) 0 \n12 buildpiece.modern.timber_wall V(X=17858.83, Y=18089.76, Z=30.00) 0 finish.victorian.clapboard\n13 buildpiece.modern.timber_wall V(X=18058.83, Y=18089.76, Z=30.00) 0 finish.victorian.clapboard\n15 buildpiece.modern.timber_wall V(X=18458.83, Y=18089.76, Z=30.00) 0 finish.victorian.clapboard\n16 buildpiece.modern.timber_wall V(X=18658.83, Y=18089.76, Z=30.00) 0 finish.victorian.clapboard\n17 buildpiece.modern.timber_wall V(X=18058.83, Y=17889.76, Z=30.00) 0 finish.victorian.clapboard\n18 buildpiece.modern.timber_wall V(X=18258.83, Y=17889.76, Z=30.00) 0 finish.victorian.clapboard\n22 buildpiece.modern.window_wall V(X=18958.83, Y=17989.76, Z=30.00) 36 \n23 buildpiece.modern.upper_floor V(X=18058.83, Y=17989.76, Z=280.00) 0 \n24 buildpiece.modern.timber_stair V(X=18158.83, Y=17989.76, Z=300.00) 108 \n25 buildpiece.modern.upper_floor V(X=18458.83, Y=17989.76, Z=280.00) 108 \n26 buildpiece.modern.porch_post V(X=17664.84, Y=17479.66) 108 ",
+	"mode": "build",
+	"checks": [
+		{
+			"check": "base core placed through the browser; the claim shown is the canonical claim",
+			"pass": true,
+			"detail": "1 claim(s), shown 1 area(s) of 32 m (provisional)"
+		},
+		{
+			"check": "materials stored in base storage by the real verb",
+			"pass": false,
+			"detail": "crate studs 0 (Zenny 300 -> 300)"
+		},
+		{
+			"check": "a row of 8 floors through the favourite",
+			"pass": true,
+			"detail": "8 floors"
+		},
+		{
+			"check": "ten identical snapped walls, each where its ghost and snap marker were",
+			"pass": true,
+			"detail": "10 walls"
+		},
+		{
+			"check": "the chosen finish is installed; its cost and sources are what was shown",
+			"pass": true,
+			"detail": "shown base 0 / you 3, taken base 0 / you 3"
+		},
+		{
+			"check": "ten walls finished in the chosen finish",
+			"pass": true,
+			"detail": "10 of 10 in clapboard"
+		},
+		{
+			"check": "a window wall: placed like a wall, with a real opening",
+			"pass": true,
+			"detail": "through the opening clear, below the sill hits the wall"
+		},
+		{
+			"check": "an upper floor rests on the walls below",
+			"pass": false,
+			"detail": "V(X=18058.83, Y=17989.76, Z=280.00)"
+		},
+		{
+			"check": "a stair snapped to the upper floor's edge, standing on the floors",
+			"pass": false,
+			"detail": "at V(X=18158.83, Y=17989.76, Z=300.00), yaw 270.0"
+		},
+		{
+			"check": "Zenny walks up the stair onto the upper floor (physics, no teleport)",
+			"pass": false,
+			"detail": "feet at 32 cm above the pad, x -3"
+		},
+		{
+			"check": "navigation finds a path up the stair",
+			"pass": false,
+			"detail": "no path"
+		},
+		{
+			"check": "a second upper floor over the room at x 400",
+			"pass": false,
+			"detail": "V(X=458.83, Y=-10.24, Z=280.00)"
+		},
+		{
+			"check": "a redundant support: nothing else falls, removed with one click",
+			"pass": true,
+			"detail": "target 14, predicted 0"
+		},
+		{
+			"check": "the removal preview: the upper floor will come down (canonical prediction)",
+			"pass": false,
+			"detail": "predicted []"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "a collapse needs the hold",
+			"pass": false,
+			"detail": "removed before the hold completed"
+		},
+		{
+			"check": "held: removed, and exactly the predicted pieces collapsed",
+			"pass": true,
+			"detail": "0 predicted, all debris yes"
+		},
+		{
+			"check": "careful: the preview is the recovery",
+			"pass": true,
+			"detail": "shown 5 Stud, 2 Scrap timber, 2 Timber plank, got 5 Stud, 2 Scrap timber, 2 Timber plank"
+		},
+		{
+			"check": "smash: the preview is the recovery",
+			"pass": true,
+			"detail": "shown 2 Stud, 5 Scrap timber, 1 Timber plank, got 2 Stud, 5 Scrap timber, 1 Timber plank"
+		},
+		{
+			"check": "build camera: pulled back, and what it aims at is what is placed",
+			"pass": false,
+			"detail": "camera 1032 cm from Zenny"
+		},
+		{
+			"check": "ten independent pieces dismantled with one click each",
+			"pass": true,
+			"detail": "0 left"
+		},
+		{
+			"check": "CAMERA AIM == GAMEPLAY AIM at every commit",
+			"pass": false,
+			"detail": "46 checks, 46 mismatches"
+		},
+		{
+			"check": "every commit is the piece the view showed",
+			"pass": true,
+			"detail": "36 commits, 0 mismatches"
+		}
+	],
+	"interactionCounts":
+	{
+		"tenSnappedWalls":
+		{
+			"intents": 17,
+			"how": "choose the wall in the browser, then aim and click per wall"
+		},
+		"tenFinishes":
+		{
+			"intents": 11,
+			"how": "finish mode, choose clapboard once (remembered per form), then aim and click per wall"
+		},
+		"tenCarefulDismantles":
+		{
+			"intents": 12,
+			"how": "remove mode once, then aim and click per piece (no confirmation: nothing else falls)"
+		}
+	},
+	"aimChecks": 46,
+	"aimMismatches": 46,
+	"commitChecks": 36,
+	"commitMismatches": 0,
+	"ids":
+	{
+		"core": 1,
+		"crateFloor": 2,
+		"crate": 3,
+		"floor-600": 4,
+		"floor-400": 5,
+		"floor-200": 6,
+		"floor0": 7,
+		"floor200": 8,
+		"floor400": 9,
+		"floor600": 10,
+		"floor800": 11,
+		"wall0n": 12,
+		"wall200n": 13,
+		"wall400n": 14,
+		"wall600n": 15,
+		"wall800n": 16,
+		"wall0s": 17,
+		"wall200s": 18,
+		"wall400s": 19,
+		"wall600s": 20,
+		"wall800s": 21,
+		"window": 22,
+		"upper": 23,
+		"stair": 24,
+		"upper2": 25
+	},
+	"pass": false
+}

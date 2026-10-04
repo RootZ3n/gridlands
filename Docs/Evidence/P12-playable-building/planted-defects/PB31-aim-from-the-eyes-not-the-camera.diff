@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -521,7 +521,7 @@
+ 	// targets (CAMERA AIM == GAMEPLAY AIM). A pawn nobody controls (a test world) aims from its eyes.
+ 	if (const AController* Controller = Owner->GetController())
+ 	{
+-		Controller->GetPlayerViewPoint(Eye, ViewRot);
++		Owner->GetActorEyesViewPoint(Eye, ViewRot); (void)Controller; // DEFECT
+ 	}
+ 	else
+ 	{

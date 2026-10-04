@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+@@ -436,7 +436,7 @@
+ 			Check.Refusal = EGLBuildRefusal::MissingItems;
+ 			Check.MissingItem = Cost.Item;
+ 			Check.MissingNeeded = Cost.Count;
+-			Check.MissingHave = Available(Cost.Item);
++			Check.MissingHave = Cost.Count; // DEFECT
+ 			Check.Material = Def->Material;
+ 			Check.Reason = FString::Printf(TEXT("needs %d x %s"), Cost.Count, *Cost.Item.ToString());
+ 			return Check;

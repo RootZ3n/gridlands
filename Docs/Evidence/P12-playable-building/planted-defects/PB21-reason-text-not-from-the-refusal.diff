@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildText.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildText.cpp
+@@ -42,7 +42,7 @@
+ 	case EGLBuildRefusal::Overlaps:
+ 		return BlockingName.IsEmpty() ? FString(TEXT("Something is in the way")) : FString::Printf(TEXT("The %s is in the way"), *BlockingName);
+ 	case EGLBuildRefusal::Buried: return TEXT("The ground is in the way (flatten it first)");
+-	case EGLBuildRefusal::Unsupported: return TEXT("Nothing holds it up");
++	case EGLBuildRefusal::Unsupported: return TEXT("Something is in the way"); // DEFECT
+ 	case EGLBuildRefusal::OutsideClaim: return TEXT("Too close to another base (base areas may not overlap)");
+ 	}
+ 	return TEXT("");

@@ -1,0 +1,136 @@
+test_no_uproperty_stores_a_derived_value (test_architecture_rules.DerivedValuesAreNeverStored.test_no_uproperty_stores_a_derived_value) ... ok
+test_the_rule_can_fail (test_architecture_rules.DerivedValuesAreNeverStored.test_the_rule_can_fail) ... ok
+test_no_gameplay_code_includes_the_director (test_architecture_rules.DialogueIsEventDriven.test_no_gameplay_code_includes_the_director) ... ok
+test_the_rule_can_fail (test_architecture_rules.DialogueIsEventDriven.test_the_rule_can_fail) ... ok
+test_no_dialogue_code_calls_solve (test_architecture_rules.DialogueNeverSolvesPuzzles.test_no_dialogue_code_calls_solve) ... ok
+test_only_puzzle_sites_and_tests_call_solve (test_architecture_rules.DialogueNeverSolvesPuzzles.test_only_puzzle_sites_and_tests_call_solve) ... ok
+test_every_state_mutator_takes_an_authority (test_architecture_rules.OnlyPehlichiRepairs.test_every_state_mutator_takes_an_authority) ... ok
+test_passkeys_are_private_and_befriend_one_class (test_architecture_rules.OnlyPehlichiRepairs.test_passkeys_are_private_and_befriend_one_class) ... ok
+test_there_is_no_player_authority (test_architecture_rules.OnlyPehlichiRepairs.test_there_is_no_player_authority) ... ok
+test_no_damage_calls_in_pehlichi_code (test_architecture_rules.PehlichiDealsNoDamage.test_no_damage_calls_in_pehlichi_code) ... ok
+test_glitch_storms_are_harmless (test_architecture_rules.ThreatComesFromPlaces.test_glitch_storms_are_harmless) ... ok
+test_only_the_placement_subsystem_spawns_creatures (test_architecture_rules.ThreatComesFromPlaces.test_only_the_placement_subsystem_spawns_creatures) ... ok
+test_all_success_with_requirement_met_passes (test_automation_report.EvaluateTests.test_all_success_with_requirement_met_passes) ... ok
+test_any_failure_fails (test_automation_report.EvaluateTests.test_any_failure_fails) ... ok
+test_missing_tests_list_fails (test_automation_report.EvaluateTests.test_missing_tests_list_fails) ... ok
+test_not_run_fails (test_automation_report.EvaluateTests.test_not_run_fails) ... ok
+test_prefix_matches_on_segment_boundary_only (test_automation_report.EvaluateTests.test_prefix_matches_on_segment_boundary_only) ... ok
+test_required_prefix_absent_fails_even_if_others_pass (test_automation_report.EvaluateTests.test_required_prefix_absent_fails_even_if_others_pass) ... ok
+test_required_prefix_below_minimum_fails (test_automation_report.EvaluateTests.test_required_prefix_below_minimum_fails) ... ok
+test_summary_disagreeing_with_list_fails (test_automation_report.EvaluateTests.test_summary_disagreeing_with_list_fails) ... ok
+test_warnings_pass_but_are_reported (test_automation_report.EvaluateTests.test_warnings_pass_but_are_reported) ... ok
+test_zero_tests_fails (test_automation_report.EvaluateTests.test_zero_tests_fails) ... ok
+test_empty_required_list_is_refused (test_automation_report.FileTests.test_empty_required_list_is_refused) ... ok
+test_garbage_report_fails (test_automation_report.FileTests.test_garbage_report_fails) ... ok
+test_missing_report_fails (test_automation_report.FileTests.test_missing_report_fails) ... ok
+test_reads_utf16_with_bom (test_automation_report.FileTests.test_reads_utf16_with_bom) ... ok
+test_reads_utf8_with_bom (test_automation_report.FileTests.test_reads_utf8_with_bom) ... ok
+test_repo_required_list_is_well_formed (test_automation_report.FileTests.test_repo_required_list_is_well_formed) ... ok
+test_all_ten_eras_are_data (test_gldata.CleanDataTests.test_all_ten_eras_are_data) ... ok
+test_repository_data_is_valid (test_gldata.CleanDataTests.test_repository_data_is_valid) ... ok
+test_sandbox_copy_is_valid (test_gldata.CleanDataTests.test_sandbox_copy_is_valid) ... ok
+test_validation_is_deterministic (test_gldata.CleanDataTests.test_validation_is_deterministic) ... ok
+test_generated_tag_file_is_in_sync (test_gldata.GenerateTests.test_generated_tag_file_is_in_sync) ... ok
+test_generated_tags_cover_eras_bands_yields (test_gldata.GenerateTests.test_generated_tags_cover_eras_bands_yields) ... ok
+test_schema_export_in_sync_and_nonempty (test_gldata.GenerateTests.test_schema_export_in_sync_and_nonempty) ... ok
+test_bad_ids (test_gldata.GrammarTests.test_bad_ids) ... ok
+test_good_ids (test_gldata.GrammarTests.test_good_ids) ... ok
+test_shared_id_corpus (test_gldata.GrammarTests.test_shared_id_corpus) ... ok
+test_tags (test_gldata.GrammarTests.test_tags) ... ok
+test_lod_is_required (test_gldata.LodRuleTests.test_lod_is_required) ... ok
+test_real_data_is_clean (test_gldata.LodRuleTests.test_real_data_is_clean) ... ok
+test_vis3_at_most_four_lods (test_gldata.LodRuleTests.test_vis3_at_most_four_lods) ... ok
+test_vis3_lod0_starts_at_full_size (test_gldata.LodRuleTests.test_vis3_lod0_starts_at_full_size) ... ok
+test_vis3_one_screen_size_per_lod (test_gldata.LodRuleTests.test_vis3_one_screen_size_per_lod) ... ok
+test_vis3_reduced_lod_at_or_above_reducer_floor (test_gldata.LodRuleTests.test_vis3_reduced_lod_at_or_above_reducer_floor) ... ok
+test_vis3_triangles_must_decrease (test_gldata.LodRuleTests.test_vis3_triangles_must_decrease) ... ok
+test_vis4_grass_needs_a_cull_distance (test_gldata.LodRuleTests.test_vis4_grass_needs_a_cull_distance) ... ok
+test_vis5_one_mesh_one_budget (test_gldata.LodRuleTests.test_vis5_one_mesh_one_budget) ... ok
+test_bld1_piece_material_must_be_structural (test_gldata.RuleTests.test_bld1_piece_material_must_be_structural) ... ok
+test_bld2_piece_must_rest_on_something (test_gldata.RuleTests.test_bld2_piece_must_rest_on_something) ... ok
+test_bld3_socket_names_unique (test_gldata.RuleTests.test_bld3_socket_names_unique) ... ok
+test_bld4_socket_inside_bounds (test_gldata.RuleTests.test_bld4_socket_inside_bounds) ... ok
+test_cat1_a_role_falls_back_into_one_category (test_gldata.RuleTests.test_cat1_a_role_falls_back_into_one_category) ... ok
+test_cat1_an_explicit_category_must_exist (test_gldata.RuleTests.test_cat1_an_explicit_category_must_exist) ... ok
+test_cat1_every_buildable_piece_has_a_category (test_gldata.RuleTests.test_cat1_every_buildable_piece_has_a_category) ... ok
+test_cat2_category_orders_are_unique (test_gldata.RuleTests.test_cat2_category_orders_are_unique) ... ok
+test_construct_is_reserved (test_gldata.RuleTests.test_construct_is_reserved) ... ok
+test_cr1_creature_drops_are_combat_sources (test_gldata.RuleTests.test_cr1_creature_drops_are_combat_sources) ... ok
+test_cr2_creatures_come_from_places (test_gldata.RuleTests.test_cr2_creatures_come_from_places) ... ok
+test_dlg1_zenny_is_silent (test_gldata.RuleTests.test_dlg1_zenny_is_silent) ... ok
+test_e1_glitch_item_reward_must_use_non_scaling_category (test_gldata.RuleTests.test_e1_glitch_item_reward_must_use_non_scaling_category) ... ok
+test_e1_glitch_reward_category_must_not_scale (test_gldata.RuleTests.test_e1_glitch_reward_category_must_not_scale) ... ok
+test_e1_repeatable_rare_must_scale (test_gldata.RuleTests.test_e1_repeatable_rare_must_scale) ... ok
+test_era1_no_power_on_eras (test_gldata.RuleTests.test_era1_no_power_on_eras) ... ok
+test_fin1_a_finish_must_fit_some_form (test_gldata.RuleTests.test_fin1_a_finish_must_fit_some_form) ... ok
+test_gen1_stale_generated_tags (test_gldata.RuleTests.test_gen1_stale_generated_tags) ... ok
+test_grid1_one_pitch (test_gldata.RuleTests.test_grid1_one_pitch) ... ok
+test_grid2_unique_coords (test_gldata.RuleTests.test_grid2_unique_coords) ... ok
+test_grid3_terrain_tiles_the_cell (test_gldata.RuleTests.test_grid3_terrain_tiles_the_cell) ... ok
+test_id10_placement_in_unknown_cell (test_gldata.RuleTests.test_id10_placement_in_unknown_cell) ... ok
+test_id1_bad_id (test_gldata.RuleTests.test_id1_bad_id) ... ok
+test_id2_kind_mismatch (test_gldata.RuleTests.test_id2_kind_mismatch) ... ok
+test_id3_duplicate (test_gldata.RuleTests.test_id3_duplicate) ... ok
+test_id4_path_must_mirror_id (test_gldata.RuleTests.test_id4_path_must_mirror_id) ... ok
+test_id5_dangling_reference (test_gldata.RuleTests.test_id5_dangling_reference) ... ok
+test_id5_wrong_kind_reference (test_gldata.RuleTests.test_id5_wrong_kind_reference) ... ok
+test_id6_alias_to_nothing (test_gldata.RuleTests.test_id6_alias_to_nothing) ... ok
+test_id8_missing_schema_version (test_gldata.RuleTests.test_id8_missing_schema_version) ... ok
+test_id9_unregistered_kind_folder (test_gldata.RuleTests.test_id9_unregistered_kind_folder) ... ok
+test_kn1_declared_source_must_be_backed (test_gldata.RuleTests.test_kn1_declared_source_must_be_backed) ... ok
+test_kn2_every_knowledge_has_a_book (test_gldata.RuleTests.test_kn2_every_knowledge_has_a_book) ... ok
+test_kn3_blueprints_come_from_ofi (test_gldata.RuleTests.test_kn3_blueprints_come_from_ofi) ... ok
+test_mig1_legacy_layers_must_fit (test_gldata.RuleTests.test_mig1_legacy_layers_must_fit) ... ok
+test_nc2_combat_source_alongside_non_combat_is_fine (test_gldata.RuleTests.test_nc2_combat_source_alongside_non_combat_is_fine) ... ok
+test_nc2_critical_path_needs_non_combat_source (test_gldata.RuleTests.test_nc2_critical_path_needs_non_combat_source) ... ok
+test_p3_pehlichi_deals_zero_damage (test_gldata.RuleTests.test_p3_pehlichi_deals_zero_damage) ... ok
+test_ph1_layers_in_canonical_order (test_gldata.RuleTests.test_ph1_layers_in_canonical_order) ... ok
+test_ph2_no_content_for_an_unimplemented_phase (test_gldata.RuleTests.test_ph2_no_content_for_an_unimplemented_phase) ... ok
+test_plc1_placement_definition_kind (test_gldata.RuleTests.test_plc1_placement_definition_kind) ... ok
+test_plc2_binding_to_wrong_placement_kind (test_gldata.RuleTests.test_plc2_binding_to_wrong_placement_kind) ... ok
+test_plc2_missing_requirement_binding (test_gldata.RuleTests.test_plc2_missing_requirement_binding) ... ok
+test_plc3_known_anchor_resolves (test_gldata.RuleTests.test_plc3_known_anchor_resolves) ... ok
+test_plc3_unknown_anchor (test_gldata.RuleTests.test_plc3_unknown_anchor) ... ok
+test_puzzles_cannot_be_answered_by_text_or_choice (test_gldata.RuleTests.test_puzzles_cannot_be_answered_by_text_or_choice) ... ok
+test_pz1_present_answer_needs_item (test_gldata.RuleTests.test_pz1_present_answer_needs_item) ... ok
+test_schema_closed_objects (test_gldata.RuleTests.test_schema_closed_objects) ... ok
+test_schema_kind_without_schema_is_refused (test_gldata.RuleTests.test_schema_kind_without_schema_is_refused) ... ok
+test_sock1_facing_in_whole_steps (test_gldata.RuleTests.test_sock1_facing_in_whole_steps) ... ok
+test_storm_must_say_whether_it_harms (test_gldata.RuleTests.test_storm_must_say_whether_it_harms) ... ok
+test_str3_structure_yaw_in_whole_steps (test_gldata.RuleTests.test_str3_structure_yaw_in_whole_steps) ... ok
+test_str4_structure_reach_inside_its_cell (test_gldata.RuleTests.test_str4_structure_reach_inside_its_cell) ... FAIL
+test_svq1_buildable_piece_needs_paths (test_gldata.RuleTests.test_svq1_buildable_piece_needs_paths) ... ok
+test_svq1_collapse_never_returns_the_careful_kit (test_gldata.RuleTests.test_svq1_collapse_never_returns_the_careful_kit) ... ok
+test_svq1_violence_never_recovers_more (test_gldata.RuleTests.test_svq1_violence_never_recovers_more) ... ok
+test_tag2_unregistered_namespace (test_gldata.RuleTests.test_tag2_unregistered_namespace) ... ok
+test_tag3_undeclared_tag (test_gldata.RuleTests.test_tag3_undeclared_tag) ... ok
+test_tf1_raising_is_never_free (test_gldata.RuleTests.test_tf1_raising_is_never_free) ... ok
+test_yaw1_structure_yaw_in_whole_steps (test_gldata.RuleTests.test_yaw1_structure_yaw_in_whole_steps) ... ok
+test_breadth (test_gldata.SliceDialogueTests.test_breadth) ... ok
+test_every_exchange_is_rate_limited (test_gldata.SliceDialogueTests.test_every_exchange_is_rate_limited) ... ok
+test_vis1_unknown_mesh (test_gldata.VisualRuleTests.test_vis1_unknown_mesh) ... ok
+test_vis2_cube_too_big (test_gldata.VisualRuleTests.test_vis2_cube_too_big) ... ok
+test_vis2_too_many_cubes (test_gldata.VisualRuleTests.test_vis2_too_many_cubes) ... ok
+test_a_round_trip_leak_breaches (test_perf_budgets.PerfBudgets.test_a_round_trip_leak_breaches) ... ok
+test_a_worse_unload_hitch_breaches (test_perf_budgets.PerfBudgets.test_a_worse_unload_hitch_breaches) ... ok
+test_accepted_p5_evidence_is_within_budget (test_perf_budgets.PerfBudgets.test_accepted_p5_evidence_is_within_budget) ... ok
+test_whole_cell_navigation_breaches (test_perf_budgets.PerfBudgets.test_whole_cell_navigation_breaches) ... ok
+test_config_generates_only_around_invokers (test_perf_budgets.WholeCellNavigationIsProhibited.test_config_generates_only_around_invokers) ... ok
+
+======================================================================
+FAIL: test_str4_structure_reach_inside_its_cell (test_gldata.RuleTests.test_str4_structure_reach_inside_its_cell)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/pehverse/repos/game-dev/gridlands/Tools/tests/test_gldata.py", line 110, in test_str4_structure_reach_inside_its_cell
+    self.assertRule("STR-4")
+    ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/pehverse/repos/game-dev/gridlands/Tools/tests/test_gldata.py", line 104, in assertRule
+    self.assertIn(rule, rules, f"expected {rule}, got {sorted(rules)}")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'STR-4' not found in set() : expected STR-4, got []
+
+----------------------------------------------------------------------
+Ran 118 tests in 3.136s
+
+FAILED (failures=1)
+RESULT: FAIL tooling unit tests

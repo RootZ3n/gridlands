@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -158,7 +158,7 @@
+ 	TArray<TSharedPtr<FJsonValue>> Favs, Recent;
+ 	for (const FName& Id : Favorites)
+ 	{
+-		Favs.Add(MakeShared<FJsonValueString>(Id.IsNone() ? FString() : Id.ToString()));
++		Favs.Add(MakeShared<FJsonValueString>(FString())); (void)Id; // DEFECT
+ 	}
+ 	for (const FName& Id : Recents)
+ 	{

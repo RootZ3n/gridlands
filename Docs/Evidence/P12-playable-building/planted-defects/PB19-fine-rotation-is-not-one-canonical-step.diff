@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -430,7 +430,7 @@
+ void UGLBuildModeComponent::RotateFine(int32 Direction)
+ {
+ 	Count(TEXT("RotateFine"));
+-	YawStep = GLStructureRules::NormalizeYawStep(YawStep + (Direction >= 0 ? 1 : -1)); // one canonical 2.5 degree step
++	YawStep = GLStructureRules::NormalizeYawStep(YawStep + (Direction >= 0 ? 2 : -2)); // DEFECT
+ 	ClearGhost();
+ }
+ 

@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -374,7 +374,7 @@
+ 	if (List.Num() > 0)
+ 	{
+ 		const int32 At = FMath::Max(0, List.IndexOfByKey(Piece));
+-		SelectPiece(List[((At + Delta) % List.Num() + List.Num()) % List.Num()]);
++		SelectPiece(List[0]); // DEFECT
+ 	}
+ }
+ 

@@ -9,11 +9,13 @@ Read in this order:
    `BUILDING-SALVAGE-TERRAIN`, `KNOWLEDGE-AND-DISCOVERY`, `DUNGEONS-AND-LEGENDARIES`.
 5. Presentation and content pipeline: `VISUAL-DIRECTION`, `ART-PIPELINE`, `STRUCTURE-AUTHORING`,
    `CONTENT-IDS-AND-TAGS`.
-6. `Docs/ADR/` (0001–0039; the later ADRs carry the streaming, navigation, structural and encounter decisions).
+6. `Docs/ADR/` (0001–0040; the later ADRs carry the streaming, navigation, structural, encounter and building decisions).
 7. `Docs/MILESTONES.md` and the newest milestone's `Docs/Evidence/<milestone>/README.md` (its "Remaining debt"
    section is the live debt list).
-8. `Docs/BUILDING-V1-DESIGN.md` is the approved Building v1 design (P11 GREEN, ADR-0039 accepted). The next milestone is
-   decided by the operator after the post-P11 roadmap reconciliation; nothing after P11 is started.
+8. `Docs/BUILDING-V1-DESIGN.md` is the approved Building v1 design (P11 GREEN, ADR-0039 accepted). P12 (playable
+   building, ADR-0040) is a candidate on branch `p12-playable-building`: not merged or tagged without operator review.
+   It has two gates: ENGINEERING GREEN, then DAILY-DRIVER ACCEPTED (the operator plays
+   `Docs/Evidence/P12-playable-building/operator-session.md`). **P13 does not start before the operator's session.**
 
 `DESIGN-RECONCILIATION.md` and `LEGACY-GODOT.md` are history: read them for why, not for what is current.
 
@@ -38,6 +40,9 @@ Read in this order:
 | `Tools/build.sh` | yes | compiles `GridlandsEditor` (Linux, Development) |
 | `Tools/test.sh` | yes | tooling self-tests, data validation, build, then headless automation; pass only by parsed report (ADR-0008) |
 | `Tools/verify-fresh-clone.sh [ref]` | yes | clone, build and test from tracked inputs + pinned engine only |
+| `Tools/p12-intent-proof.sh` | yes | P12 real-game proof through build mode's public intents (camera aim == commit aim at every placement); the operator's own world save is set aside and restored |
+| `Tools/perf/p12-build-mode.sh` | yes | quiet build-mode measurement beside the 309-piece player base (`Saved/Perf/buildmode.json`) |
+| `Tools/planted-defects/p12_playable.py` | yes | P12 planted defects (strict: assertion or completed proof check only) |
 
 Exit codes: 0 pass, 1 check failed, 2 environment/usage problem (engine
 missing, wrong version). The last line of output is always

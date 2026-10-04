@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -792,7 +792,7 @@
+ 		}
+ 		return;
+ 	}
+-	RefreshView(); // the commit re-aims and re-checks now: nothing shown earlier is trusted
++	// DEFECT: the view shown last frame is committed
+ 	UGLBuildingSubsystem* Building = GetWorld()->GetSubsystem<UGLBuildingSubsystem>();
+ 	switch (State)
+ 	{

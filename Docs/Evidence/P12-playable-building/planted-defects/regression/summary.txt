@@ -1,0 +1,32 @@
+P12 regression re-run: every earlier planted defect whose edit touches a file P12 changed
+(GLStructureRules.cpp, GLBuildingSubsystem.cpp, GLMaterialPool.cpp, GLConstructionRules.cpp, validate.py, schema.py),
+rerun against the P12 candidate. The other defects of those suites touch no file P12 changed.
+
+P11 B1-yaw-quantized-to-quarter-turns: CAUGHT (assertion)
+P11 B10-removal-preview-misses-transitive-dependents: CAUGHT (assertion)
+P11 B11-finish-changes-support: CAUGHT (assertion)
+P11 B12-finish-on-a-form-that-refuses-it: CAUGHT (assertion)
+P11 B19-careful-dismantle-pays-the-collapse-path: CAUGHT (assertion)
+P11 B2-oriented-overlap-falls-back-to-boxes: CAUGHT (assertion)
+P11 B21-smash-equals-careful: CAUGHT (assertion)
+P11 B23-removal-return-overflow-silently-lost: CAUGHT (assertion)
+P11 B26-personal-inventory-consumed-before-storage: CAUGHT (assertion)
+P11 B27-partial-consumption-on-a-refused-operation: CAUGHT (assertion)
+P11 B3-terrain-footprint-is-the-box-not-the-piece: CAUGHT (assertion)
+P11 B30-storage-anywhere-is-connected: CAUGHT (assertion)
+P11 B31-a-falling-container-still-supplies: CAUGHT (assertion)
+P11 B32-overlapping-claims-allowed: CAUGHT (assertion)
+P11 B38-salvage-quality-lint-disabled: CAUGHT (tooling assertion)
+P11 B39-unimplemented-phase-lint-disabled: CAUGHT (tooling assertion)
+P11 B4-socket-facing-ignored-when-linking: CAUGHT (assertion)
+P11 B40-storing-removes-what-did-not-fit: CAUGHT (assertion)
+P11 B41-taking-leaves-nothing-behind: CAUGHT (assertion)
+P11 B5-snap-ignores-socket-facing: CAUGHT (assertion)
+P11 B6-sockets-rotated-by-the-nearest-quarter-turn: CAUGHT (assertion)
+P11 B8-preview-is-a-parallel-two-state-estimate: CAUGHT (assertion)
+P11 B9-yellow-threshold-off-by-one-step: CAUGHT (assertion)
+P10 S28-structure-reach-lint-disabled: CAUGHT (tooling assertion)
+terrain S6-building-bypasses-the-terrain-query: CAUGHT (assertion)
+
+25/25 caught
+B2 was re-expressed for OverlapsAny (the overlap loop moved there in P12; same defect, same semantics): its first form no longer compiled.

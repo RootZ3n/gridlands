@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+@@ -302,7 +302,7 @@
+ 		const FGLBuildPieceDef* Def = Content.Find<FGLBuildPieceDef>(Pieces[I].Def);
+ 		const FGLMaterialDef* Material = Def ? Content.Find<FGLMaterialDef>(Def->Material) : nullptr;
+ 		const bool bStructural = Material && Material->IsStructural() && Material->Support.MaxStack > 0 && Material->Support.MaxHorizontalSpan > 0.0;
+-		Strength.Add(bStructural ? Material->Support.Strength : 0.0);
++		Strength.Add(bStructural ? Material->Support.Strength + Pieces[I].Layers.Num() : 0.0); // DEFECT
+ 		VerticalLoss.Add(bStructural ? Material->Support.Strength / Material->Support.MaxStack : 0.0);
+ 		LossPerMetre.Add(bStructural ? Material->Support.Strength / Material->Support.MaxHorizontalSpan : 0.0);
+ 		if (bStructural && RestsOnGround(*Def, Pieces[I], Ground))

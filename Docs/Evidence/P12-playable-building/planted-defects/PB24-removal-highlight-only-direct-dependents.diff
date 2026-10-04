@@ -1,0 +1,12 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -748,7 +748,8 @@
+ 		}
+ 		else
+ 		{
+-			Now = Building->PreviewRemoval(View.RemoveTarget); // the commit's own function: what is shown is what will fall
++			Now = Building->PreviewRemoval(View.RemoveTarget);
++			if (Now.Num() > 1) { Now.SetNum(1); } // DEFECT: direct dependents only
+ 			View.Predicted = Now;
+ 			View.bNeedsConfirm = Now.Num() > 0; // collateral collapse, not the piece's importance, decides
+ 			View.Yield = Building->RemovalYield(View.RemoveTarget, Path);

@@ -1,0 +1,13 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -307,7 +307,9 @@
+ 	{
+ 		return {};
+ 	}
+-	return GLStructureRules::CollapsesAfterRemoving(GLContent::Get(), Structures->PlayerStructureOf(PieceId), PieceId, [this](const FVector2D& At) { return GroundAt(At); });
++	TArray<int32> All = GLStructureRules::CollapsesAfterRemoving(GLContent::Get(), Structures->PlayerStructureOf(PieceId), PieceId, [this](const FVector2D& At) { return GroundAt(At); });
++	if (All.Num() > 1) { All.SetNum(1); } // DEFECT: direct dependents only
++	return All;
+ }
+ 
+ TMap<FName, int32> UGLBuildingSubsystem::ScaledYield(const FGLPlacedPiece& Piece, EGLSalvagePath Path) const

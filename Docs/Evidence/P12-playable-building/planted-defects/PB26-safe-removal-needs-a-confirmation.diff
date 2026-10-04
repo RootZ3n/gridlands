@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -819,7 +819,7 @@
+ 		{
+ 			return;
+ 		}
+-		if (!View.bNeedsConfirm)
++		if (false && !View.bNeedsConfirm) // DEFECT
+ 		{
+ 			ConfirmTarget = View.RemoveTarget;
+ 			CommitRemoval(); // a safe removal is one click

@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -717,7 +717,7 @@
+ 	View.FinishRole = Def->Role;
+ 	View.FinishChoices = Building->FinishesFor(Target);
+ 	const FName* Remembered = FinishByRole.Find(Def->Role);
+-	View.Finish = Remembered && View.FinishChoices.Contains(*Remembered) ? *Remembered : (View.FinishChoices.Num() ? View.FinishChoices[0] : NAME_None);
++	View.Finish = View.FinishChoices.Num() ? View.FinishChoices[0] : NAME_None; (void)Remembered; // DEFECT
+ 	if (View.Finish.IsNone())
+ 	{
+ 		Status = FString::Printf(TEXT("[FINISH] %s: no finish fits (complete as built, or already finished)"), *Def->DisplayName);

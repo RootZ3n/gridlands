@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildText.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildText.cpp
+@@ -6,7 +6,7 @@
+ 
+ FString GLBuildText::StateWord(EGLPreview Preview)
+ {
+-	return Preview == EGLPreview::Green ? TEXT("OK") : Preview == EGLPreview::Yellow ? TEXT("LIMIT") : TEXT("NO");
++	return Preview != EGLPreview::Red ? TEXT("OK") : TEXT("NO"); // DEFECT
+ }
+ 
+ FString GLBuildText::StateIcon(EGLPreview Preview)

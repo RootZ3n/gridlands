@@ -1,0 +1,12 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -235,7 +235,8 @@
+ 
+ void UGLBuildModeComponent::SelectPiece(FName InPiece)
+ {
+-	if (CategoryIndexOf(InPiece) == INDEX_NONE)
++	const FGLBuildPieceDef* EraDef = GLContent::Get().Find<FGLBuildPieceDef>(InPiece);
++	if (CategoryIndexOf(InPiece) == INDEX_NONE || (!EraFilter.IsNone() && EraDef && EraDef->Era != EraFilter)) // DEFECT: a filter locks
+ 	{
+ 		return;
+ 	}

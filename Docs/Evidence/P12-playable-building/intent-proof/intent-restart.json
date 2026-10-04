@@ -1,0 +1,63 @@
+{
+	"fingerprintBefore": "1 buildpiece.modern.base_core V(X=17000.40, Y=17450.98) 0 \n2 buildpiece.modern.timber_foundation V(X=17299.57, Y=17550.44) 0 \n3 buildpiece.modern.storage_crate V(X=17299.57, Y=17550.44, Z=30.00) 0 \n4 buildpiece.modern.timber_foundation V(X=17399.76, Y=18000.43) 0 \n5 buildpiece.modern.timber_foundation V(X=17599.76, Y=18000.43) 0 \n6 buildpiece.modern.timber_foundation V(X=17799.76, Y=18000.43) 0 \n7 buildpiece.modern.timber_foundation V(X=17999.76, Y=18000.43) 0 \n8 buildpiece.modern.timber_foundation V(X=18199.76, Y=18000.43) 0 \n9 buildpiece.modern.timber_foundation V(X=18399.76, Y=18000.43) 0 \n10 buildpiece.modern.timber_foundation V(X=18599.76, Y=18000.43) 0 \n11 buildpiece.modern.timber_foundation V(X=18799.76, Y=18000.43) 0 \n12 buildpiece.modern.timber_wall V(X=17999.76, Y=18100.43, Z=30.00) 0 finish.victorian.clapboard\n13 buildpiece.modern.timber_wall V(X=18199.76, Y=18100.43, Z=30.00) 0 finish.victorian.clapboard\n15 buildpiece.modern.timber_wall V(X=18599.76, Y=18100.43, Z=30.00) 0 finish.victorian.clapboard\n16 buildpiece.modern.timber_wall V(X=18799.76, Y=18100.43, Z=30.00) 0 finish.victorian.clapboard\n17 buildpiece.modern.timber_wall V(X=17999.76, Y=17900.43, Z=30.00) 0 finish.victorian.clapboard\n18 buildpiece.modern.timber_wall V(X=18199.76, Y=17900.43, Z=30.00) 0 finish.victorian.clapboard\n22 buildpiece.modern.window_wall V(X=18899.76, Y=18000.43, Z=30.00) 36 \n23 buildpiece.modern.upper_floor V(X=17999.76, Y=18000.43, Z=280.00) 0 \n24 buildpiece.modern.timber_stair V(X=17699.76, Y=18000.43, Z=30.00) 108 \n26 buildpiece.modern.porch_post V(X=17299.57, Y=17650.44, Z=30.00) 108 ",
+	"fingerprintAtEnd": "1 buildpiece.modern.base_core V(X=17000.40, Y=17450.98) 0 \n2 buildpiece.modern.timber_foundation V(X=17299.57, Y=17550.44) 0 \n3 buildpiece.modern.storage_crate V(X=17299.57, Y=17550.44, Z=30.00) 0 \n4 buildpiece.modern.timber_foundation V(X=17399.76, Y=18000.43) 0 \n5 buildpiece.modern.timber_foundation V(X=17599.76, Y=18000.43) 0 \n6 buildpiece.modern.timber_foundation V(X=17799.76, Y=18000.43) 0 \n7 buildpiece.modern.timber_foundation V(X=17999.76, Y=18000.43) 0 \n8 buildpiece.modern.timber_foundation V(X=18199.76, Y=18000.43) 0 \n9 buildpiece.modern.timber_foundation V(X=18399.76, Y=18000.43) 0 \n10 buildpiece.modern.timber_foundation V(X=18599.76, Y=18000.43) 0 \n11 buildpiece.modern.timber_foundation V(X=18799.76, Y=18000.43) 0 \n12 buildpiece.modern.timber_wall V(X=17999.76, Y=18100.43, Z=30.00) 0 finish.victorian.clapboard\n13 buildpiece.modern.timber_wall V(X=18199.76, Y=18100.43, Z=30.00) 0 finish.victorian.clapboard\n15 buildpiece.modern.timber_wall V(X=18599.76, Y=18100.43, Z=30.00) 0 finish.victorian.clapboard\n16 buildpiece.modern.timber_wall V(X=18799.76, Y=18100.43, Z=30.00) 0 finish.victorian.clapboard\n17 buildpiece.modern.timber_wall V(X=17999.76, Y=17900.43, Z=30.00) 0 finish.victorian.clapboard\n18 buildpiece.modern.timber_wall V(X=18199.76, Y=17900.43, Z=30.00) 0 finish.victorian.clapboard\n22 buildpiece.modern.window_wall V(X=18899.76, Y=18000.43, Z=30.00) 36 \n23 buildpiece.modern.upper_floor V(X=17999.76, Y=18000.43, Z=280.00) 0 \n24 buildpiece.modern.timber_stair V(X=17699.76, Y=18000.43, Z=30.00) 108 \n26 buildpiece.modern.porch_post V(X=17299.57, Y=17650.44, Z=30.00) 108 \n37 buildpiece.modern.timber_wall V(X=18799.76, Y=17900.43, Z=30.00) 0 ",
+	"mode": "restart",
+	"checks": [
+		{
+			"check": "restart: the house is back exactly (stair, window wall, finishes, debris)",
+			"pass": true,
+			"detail": "21 pieces"
+		},
+		{
+			"check": "restart: the favourite persists (playtest profile)",
+			"pass": true,
+			"detail": "buildpiece.modern.timber_foundation"
+		},
+		{
+			"check": "streamed away and back: still exactly the house",
+			"pass": true,
+			"detail": ""
+		},
+		{
+			"check": "and building continues (a wall where one was smashed)",
+			"pass": true,
+			"detail": "wall 37"
+		}
+	],
+	"interactionCounts":
+	{
+	},
+	"aimChecks": 1,
+	"aimMismatches": 0,
+	"commitChecks": 1,
+	"commitMismatches": 0,
+	"ids":
+	{
+		"core": 1,
+		"crateFloor": 2,
+		"crate": 3,
+		"floor-600": 4,
+		"floor-400": 5,
+		"floor-200": 6,
+		"floor0": 7,
+		"floor200": 8,
+		"floor400": 9,
+		"floor600": 10,
+		"floor800": 11,
+		"wall0n": 12,
+		"wall200n": 13,
+		"wall400n": 14,
+		"wall600n": 15,
+		"wall800n": 16,
+		"wall0s": 17,
+		"wall200s": 18,
+		"wall400s": 19,
+		"wall600s": 20,
+		"wall800s": 21,
+		"window": 22,
+		"upper": 23,
+		"stair": 24,
+		"upper2": 25
+	},
+	"pass": true
+}

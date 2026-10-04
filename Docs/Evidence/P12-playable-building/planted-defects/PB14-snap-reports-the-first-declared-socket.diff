@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+@@ -585,7 +585,7 @@
+ 				Info.TargetPieceId = Other.Id;
+ 				Info.TargetSocket = Theirs.Name;
+ 				Info.TargetLocation = Theirs.Location;
+-				Info.OwnSocket = FName(*OursDef.Name);
++				Info.OwnSocket = FName(*Def->Sockets[0].Name); // DEFECT
+ 				Info.bYawFromData = bSide && bOursFaces && Theirs.bHasFacing;
+ 				if (bSide)
+ 				{

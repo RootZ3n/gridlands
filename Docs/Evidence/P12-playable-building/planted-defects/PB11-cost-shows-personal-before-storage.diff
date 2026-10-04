@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -449,7 +449,7 @@
+ 			const int32 Have = Sources.Inventories[I] ? Sources.Inventories[I]->CountOf(Item) : 0;
+ 			const int32 Take = Plan.IsValidIndex(I) ? Plan[I].FindRef(Item) : 0;
+ 			(I < Storage ? Line.InStorage : Line.Personal) += Have;
+-			(I < Storage ? Line.FromStorage : Line.FromPersonal) += Take;
++			(I >= Storage ? Line.FromStorage : Line.FromPersonal) += Take; // DEFECT
+ 		}
+ 	}
+ 	return View;

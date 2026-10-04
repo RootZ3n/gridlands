@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -336,7 +336,7 @@
+ 	if (State == EGLBuildState::Browse && List.IsValidIndex(BrowseIndex))
+ 	{
+ 		SelectPiece(List[BrowseIndex]);
+-		SetState(EGLBuildState::Place); // predictable: a selection always returns to placing
++		// DEFECT: the browser stays open
+ 	}
+ }
+ 

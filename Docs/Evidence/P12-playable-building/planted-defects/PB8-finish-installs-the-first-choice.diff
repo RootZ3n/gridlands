@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -811,7 +811,7 @@
+ 	case EGLBuildState::Finish:
+ 		if (View.FinishTarget && !View.Finish.IsNone())
+ 		{
+-			Building->InstallFinish(GetOwner(), View.FinishTarget, View.Finish);
++			Building->InstallFinish(GetOwner(), View.FinishTarget, View.FinishChoices[0]); // DEFECT
+ 		}
+ 		return;
+ 	case EGLBuildState::Remove:

@@ -1,0 +1,12 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -798,7 +798,8 @@
+ 	{
+ 	case EGLBuildState::Browse:
+ 		BrowseSelect();
+-		return;
++		RefreshView();
++		[[fallthrough]]; // DEFECT
+ 	case EGLBuildState::Place:
+ 		if (View.bHasCandidate && Building->Place(GetOwner(), View.Candidate).IsAllowed())
+ 		{

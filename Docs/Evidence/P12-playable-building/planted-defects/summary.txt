@@ -1,0 +1,94 @@
+PB1-browser-commits-the-next-row: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.BrowserSelectionCommitsTheIntendedPiece: Expected 'with the chosen piece' to be buildpiece.modern.porch_post, but it was buildpiece.modern.angle_post_l225.
+PB2-browser-stays-open-after-a-choice: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.BrowserSelectionCommitsTheIntendedPiece: the browser returns to placing: The two values are not equal.
+PB3-browser-click-also-places: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.BrowserSelectionCommitsTheIntendedPiece: Expected 'LMB in the browser placed nothing' to be 0, but it was 1.
+PB4-variant-cycles-to-the-category-head: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.BrowserSelectionCommitsTheIntendedPiece: Expected 'the wheel selects the previous variant in its category' to be buildpiece.roman.column, but it was buildpiece.modern.angle_post_l225.
+PB5-era-filter-locks-pieces: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.TheBrowserIsDataDrivenAndErasAreFiltersNotLocks: Expected 'and never locks: a log wall is still chosen under a Roman filter' to be buildpiece.modern.log_wall, but it was buildpiece.modern.timber_foundation.
+PB6-catalogue-ignores-explicit-category: CAUGHT (1 test(s) by assertion)
+    Gridlands.Core.PlayableBuilding.TheCatalogueIsTotalOrderedAndDataDriven: Expected 'valid data leaves nothing in Other' to be false.
+PB7-validator-lets-a-piece-have-no-category: CAUGHT (tooling assertion)
+    FAIL: test_cat1_every_buildable_piece_has_a_category (test_gldata.RuleTests.test_cat1_every_buildable_piece_has_a_category)
+PB8-finish-installs-the-first-choice: CAUGHT (2 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.AWindowWallIsAnOrdinaryComponentWithAnOpening: Expected 'finished in clapboard' to be true.
+    Gridlands.Game.PlayableBuilding.TheChosenFinishIsTheOneInstalledAndRemembered: Expected 'the chosen finish is installed' to be true.
+PB9-finish-choice-not-remembered: CAUGHT (2 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.AWindowWallIsAnOrdinaryComponentWithAnOpening: Expected 'finished in clapboard' to be true.
+    Gridlands.Game.PlayableBuilding.TheChosenFinishIsTheOneInstalledAndRemembered: Expected 'the chosen finish is installed' to be true.
+PB10-finishes-offered-without-the-install-rule: CAUGHT (2 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.AWindowWallIsAnOrdinaryComponentWithAnOpening: Expected 'its finishes: clapboard and window boards, not the solid wall's boards' to be true.
+    Gridlands.Game.PlayableBuilding.TheChosenFinishIsTheOneInstalledAndRemembered: Expected 'a window-wall finish is not offered on a solid wall' to be false.
+PB11-cost-shows-personal-before-storage: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.CostAndSourceShownAreTheCommitsConsumption: Expected 'shown: base storage first (4), then you (2)' to be true.
+PB12-cost-ignores-base-storage: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.CostAndSourceShownAreTheCommitsConsumption: Expected 'shown: 6 studs, 4 in base storage, the rest yours' to be true.
+PB13-snap-marker-is-the-piece-centre: CAUGHT (1 test(s) by assertion)
+    Gridlands.Core.PlayableBuilding.SnapReportsWhatItConnectedAndTheAimChoosesTheRestingSocket: Expected 'the marker is the wall top it rests on, not the floor's centre' to be true.
+PB14-snap-reports-the-first-declared-socket: CAUGHT (2 test(s) by assertion)
+    Gridlands.Core.PlayableBuilding.SnapReportsWhatItConnectedAndTheAimChoosesTheRestingSocket: Expected 'by the matching edge' to be true.
+    Gridlands.Game.PlayableBuilding.AStraightStairIsAnOrdinaryStructuralComponent: Expected 'the stair's head snaps to the upper floor's edge' to be true.
+PB15-resting-choice-by-data-order: CAUGHT (1 test(s) by assertion)
+    Gridlands.Core.PlayableBuilding.SnapReportsWhatItConnectedAndTheAimChoosesTheRestingSocket: Expected 'centred over the room, not a metre off by data order' to be true.
+PB16-resting-choice-ignores-the-viewer: CAUGHT (1 test(s) by assertion)
+    Gridlands.Core.PlayableBuilding.SnapReportsWhatItConnectedAndTheAimChoosesTheRestingSocket: Expected 'a wall row: the floor extends away from the viewer, over the room' to be true.
+PB17-yaw-shown-is-not-the-yaw-held: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.SnapMarkerAndYawShownAreWhatIsCommitted: Expected 'the yaw shown is 12.5 degrees (90 held + 15 - 2.5 - 90)' to be 12.500000, but it was 15.000000 and outside tolerance 0.000100.
+PB18-shift-z-also-turns-plus-90: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.SnapMarkerAndYawShownAreWhatIsCommitted: Expected 'the yaw shown is 12.5 degrees (90 held + 15 - 2.5 - 90)' to be 12.500000, but it was 192.500000 and outside tolerance 0.000100.
+PB19-fine-rotation-is-not-one-canonical-step: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.SnapMarkerAndYawShownAreWhatIsCommitted: Expected 'the yaw shown is 12.5 degrees (90 held + 15 - 2.5 - 90)' to be 12.500000, but it was 10.000000 and outside tolerance 0.000100.
+PB20-limit-shown-as-ok: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.StructuralStateAndReasonAreTheCanonicalCheck: Expected 'the third wall: LIMIT, a word and an icon too' to be true.
+PB21-reason-text-not-from-the-refusal: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.StructuralStateAndReasonAreTheCanonicalCheck: Expected 'the fourth: NO, nothing holds it up' to be true.
+PB22-overlap-loses-the-blocking-piece: CAUGHT (2 test(s) by assertion)
+    Gridlands.Core.PlayableBuilding.RefusalsCarryTheirMachineReadableDetail: Expected 'an overlap names the piece in the way' to be true.
+    Gridlands.Game.PlayableBuilding.StructuralStateAndReasonAreTheCanonicalCheck: Expected 'NO: the post is in the way, by its id' to be true.
+PB23-shortfall-reports-the-need-as-the-have: CAUGHT (1 test(s) by assertion)
+    Gridlands.Core.PlayableBuilding.RefusalsCarryTheirMachineReadableDetail: Expected 'a shortfall names the item, the need and what is there' to be true.
+PB24-removal-highlight-only-direct-dependents: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.RemovalPreviewAndConfirmationFollowTheCanonicalPrediction: the prediction shown is the canonical one: The two values are not equal.
+PB25-confirmation-by-piece-importance: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.RemovalPreviewAndConfirmationFollowTheCanonicalPrediction: Expected 'the base core: nothing else falls, no confirmation' to be true.
+PB26-safe-removal-needs-a-confirmation: CAUGHT (2 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.RemovalPreviewAndConfirmationFollowTheCanonicalPrediction: Expected 'removed with one click' to be null.
+    Gridlands.Game.PlayableBuilding.SalvagePreviewIsTheRecovery: Expected 'careful: recovered exactly what was shown' to be "5 Stud, 1 Scrap timber", but it was "nothing".
+PB27-a-collapse-removes-on-one-click: CAUGHT (2 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.ModesNeverCommitTheWrongActionAndTheUIIsNotAuthority: Expected 'leaving REMOVE cancelled the hold' to be true.
+    Gridlands.Game.PlayableBuilding.RemovalPreviewAndConfirmationFollowTheCanonicalPrediction: Expected 'a press is not a confirmation: it still stands' to be not null.
+PB28-a-hold-transfers-to-another-piece: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.RemovalPreviewAndConfirmationFollowTheCanonicalPrediction: Expected 'a hold never transfers to another piece' to be true.
+PB29-salvage-preview-is-always-careful: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.SalvagePreviewIsTheRecovery: Expected 'both paths' yields are shown' to be true.
+PB30-claim-drawn-around-zenny: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.TheClaimShownIsTheCanonicalClaim: Expected 'its areas are the canonical claim's' to be true.
+PB31-aim-from-the-eyes-not-the-camera: CAUGHT (53 proof check(s))
+    materials stored in base storage by the real verb: crate studs 0 (Zenny 300 -> 300)
+    an upper floor rests on the walls below: V(X=18058.83, Y=17989.76, Z=280.00)
+    a stair snapped to the upper floor's edge, standing on the floors: at V(X=18158.83, Y=17989.76, Z=300.00), yaw 270.0
+    Zenny walks up the stair onto the upper floor (physics, no teleport): feet at 32 cm above the pad, x -3
+PB32-favorites-not-saved: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.FavoritesPersistAndRecentsAreDeterministic: Expected 'the favorite persists' to be buildpiece.modern.timber_stair, but it was None.
+PB33-recents-appended-not-most-recent-first: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.FavoritesPersistAndRecentsAreDeterministic: recents: most recent first, no repeats: The two values are not equal.
+PB34-recents-repeat: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.FavoritesPersistAndRecentsAreDeterministic: recents: most recent first, no repeats: The two values are not equal.
+PB35-an-empty-click-in-remove-places: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.ModesNeverCommitTheWrongActionAndTheUIIsNotAuthority: Expected 'no placement from REMOVE or FINISH' to be 3, but it was 4.
+PB36-commit-trusts-the-last-view: CAUGHT (4 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.AWindowWallIsAnOrdinaryComponentWithAnOpening: Expected 'placed on the floor's edge like a wall' to be true.
+    Gridlands.Game.PlayableBuilding.FavoritesPersistAndRecentsAreDeterministic: recents: most recent first, no repeats: The two values are not equal.
+    Gridlands.Game.PlayableBuilding.ModesNeverCommitTheWrongActionAndTheUIIsNotAuthority: Expected 'placed where Zenny aims at the click, not where an old view said' to be true.
+    Gridlands.Game.PlayableBuilding.TheBrowserIsDataDrivenAndErasAreFiltersNotLocks: Expected 'a Roman column beside a modern foundation is placed' to be buildpiece.roman.column, but it was buildpiece.modern.timber_foundation.
+PB37-stair-without-treads: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.Building.StairsAreNavigable: Expected 'with the stair a complete path reaches the upper floor (2 points, ends at z 22)' to be true.
+PB38-stair-head-misses-the-floor: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.AStraightStairIsAnOrdinaryStructuralComponent: Expected 'its feet land on the floors below' to be true.
+PB39-window-opening-closed: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.AWindowWallIsAnOrdinaryComponentWithAnOpening: Expected 'through the window opening: nothing' to be false.
+PB40-window-boards-fit-solid-walls: CAUGHT (1 test(s) by assertion)
+    Gridlands.Game.PlayableBuilding.TheChosenFinishIsTheOneInstalledAndRemembered: Expected 'a window-wall finish is not offered on a solid wall' to be false.
+40/40 caught by assertion

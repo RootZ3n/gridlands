@@ -64,10 +64,21 @@ the commit does and why, from the commit's own results.
 - **Salvage preview.** `RemovalYield` is the commit's own scaled yield, for each path.
 - **Snap info.** `FGLSnapInfo` reports what the snap connected (target piece and socket, own socket, yaw from data), and
   the marker draws exactly that.
-- **Resting snaps choose by aim.** When a piece has several bottom sockets that could rest on the same socket (an upper
-  floor's four edge midpoints on a wall top), the one that puts the piece's centre nearest the aim wins. Data order no
-  longer decides: before P12, an upper floor aimed between two walls snapped a metre off. Side links keep their first
-  match, so angled construction is unchanged.
+- **Resting snaps: most supports, then away from the viewer, then the aim** (a change to the canonical snap, flagged for
+  review). When a piece has several bottom sockets that could rest on the same socket (an upper floor's four edge
+  midpoints on a wall top; a porch roof's two post sockets), the choice is, in order:
+  1. the way that sits on the most supports (an upper floor over the room rests on both walls, not straddling one);
+  2. among equals, the one that extends away from the viewer, along the aim ray (seen from outside a row of walls,
+     resting along the row is "supported twice" too; the viewer's direction decides, not a centimetre of aim);
+  3. then the one whose centre is nearest the aim point.
+
+  Data order no longer decides. Before P12, an upper floor aimed at a wall top snapped a metre off, outside the room.
+  Side links keep their first match, so angled construction is unchanged. The P11 WINCHESTER proof and every P11 test
+  pass unchanged with the new rule.
+- **Snap tests overlap only.** Snap used to run the whole placement check (including the support solve over the entire
+  structure) for every candidate socket, only to ask whether it overlapped. The overlap test is now one function
+  (`OverlapsAny`) used by both Snap and the placement check, so they cannot diverge. It was the measured build-mode cost
+  (see the evidence's performance section).
 - **Finish choices.** `FinishesFor` lists the finishes the install rule itself accepts. The chosen finish is the one
   installed, and the last choice is remembered per role.
 
@@ -89,6 +100,12 @@ the commit does and why, from the commit's own results.
   - Shift+wheel adjusts the height by ±3 m;
   - spring-arm collision stays on;
   - no free flight.
+- **Accessibility settings** (console; saved in the playtest profile, never in a world save):
+  - `gl.Build.CameraMode hold|toggle`;
+  - `gl.Build.ConfirmMode hold|toggle` (toggle: press twice within 3 s, on the same piece and prediction);
+  - `gl.Build.TextScale`.
+
+  There is no remapping screen (out of scope).
 
 ### 6. Rotation
 - Rotation stays canonical 2.5 degree steps (Z6):
@@ -109,6 +126,8 @@ the commit does and why, from the commit's own results.
 - **Straight stair** (`buildpiece.modern.timber_stair`, category Stairs):
   - an ordinary structural component: support, preview, removal prediction, salvage, ownership, claims, persistence,
     presentation and plans as for any piece;
+  - its head is a side socket that snaps to an upper floor's edge; its feet rest on the floors below. Like any piece
+    that reaches another, it also holds up what it reaches;
   - 1.4 m wide (navigation's agent radius needs it), a 4 m run and a 2.7 m rise, from a foundation top to an upper floor;
   - 12 solid treads: Zenny climbs them physically and navigation reads them. There is no special case.
   - No families, landings or railings.

@@ -48,7 +48,7 @@ DEFECTS = [
     ('B1-yaw-quantized-to-quarter-turns', [(RULES, '\treturn NormalizeYawStep(FMath::RoundToInt(Wrap360(Degrees) / YawStepDegrees));',
         '\treturn NormalizeYawStep(FMath::RoundToInt(Wrap360(Degrees) / 90.0) * QuarterTurnSteps); // DEFECT')]),
     ('B2-oriented-overlap-falls-back-to-boxes', [(RULES, '\t\tif (OtherDef && Mine.Overlaps(Footprint(*OtherDef, Other), OverlapShrinkCm))',
-        '\t\tif (OtherDef && Bounds(*Def, Candidate).ExpandBy(-OverlapShrinkCm).Intersect(Bounds(*OtherDef, Other).ExpandBy(-OverlapShrinkCm))) // DEFECT')]),
+        '\t\tif (OtherDef && Bounds(Def, Candidate).ExpandBy(-OverlapShrinkCm).Intersect(Bounds(*OtherDef, Other).ExpandBy(-OverlapShrinkCm))) // DEFECT (P12: the test lives in OverlapsAny)')]),
     ('B3-terrain-footprint-is-the-box-not-the-piece', [(RULES, '\t\tif (Def && Def->Grounded && Footprint(*Def, Piece).ContainsXY(World, MarginCm))',
         '\t\tif (Def && Def->Grounded && Bounds(*Def, Piece).ExpandBy(FVector(MarginCm, MarginCm, 0.0)).IsInsideOrOnXY(FVector(World, 0.0))) // DEFECT'),
         (STRUCT, '\t\t\tFGLFootprint Footprint = PartFootprint(Part);\n\t\t\tFootprint.Half += FVector2D(MarginCm, MarginCm);',

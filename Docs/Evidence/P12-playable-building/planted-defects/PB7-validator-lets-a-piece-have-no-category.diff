@@ -1,0 +1,11 @@
+--- a/Tools/gldata/validate.py
++++ b/Tools/gldata/validate.py
+@@ -688,7 +688,7 @@
+         if not e.data.get("buildable", True) or e.data.get("category"):
+             continue
+         if e.data.get("role") not in owner:
+-            ds.problem("CAT-1", e.file, ".role", f"no category: give it a category, or add {e.data.get('role')} to a category's fallbackRoles")
++            pass  # DEFECT
+ 
+ 
+ def check_grid(ds: Dataset) -> None:
