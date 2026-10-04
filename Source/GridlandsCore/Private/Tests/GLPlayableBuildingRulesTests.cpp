@@ -52,6 +52,7 @@ bool FGLPRCatalog::RunTest(const FString& Parameters)
 			TestTrue(FString::Printf(TEXT("%s: by display name"), *C.Id.ToString()), A < B || (A == B && C.Pieces[I - 1].LexicalLess(C.Pieces[I])));
 		}
 	}
+	// The window wall's role falls back nowhere: only its explicit category (author intent, Z8) puts it in the browser.
 	TestEqual(TEXT("an explicit category wins"), GLBuildCatalog::CategoryOf(Content, TEXT("buildpiece.modern.window_wall")), FName(TEXT("buildcategory.building.walls_openings")));
 	TestEqual(TEXT("the upper floor falls back by its role"), GLBuildCatalog::CategoryOf(Content, TEXT("buildpiece.modern.upper_floor")), FName(TEXT("buildcategory.building.foundations_floors")));
 	TestEqual(TEXT("a world-only piece has no category"), GLBuildCatalog::CategoryOf(Content, TEXT("buildpiece.modern.timber_post")), FName());
@@ -76,6 +77,7 @@ bool FGLPRSnap::RunTest(const FString& Parameters)
 	}
 	TestTrue(TEXT("centred over the room, not a metre off by data order"), Upper.Location.Equals(FVector(0, 0, 280), 0.5));
 	TestTrue(TEXT("it reports what it connected"), Info.bSnapped && (Info.TargetPieceId == 2 || Info.TargetPieceId == 3) && Info.TargetSocket == FName(TEXT("top")));
+	TestTrue(TEXT("the marker is the wall top it rests on, not the floor's centre"), Info.TargetLocation.Equals(FVector(Info.TargetPieceId == 2 ? 100 : -100, 0, 280), 0.5));
 	TestTrue(TEXT("by the matching edge"), (Info.TargetPieceId == 2 && Info.OwnSocket == FName(TEXT("rest_e"))) || (Info.TargetPieceId == 3 && Info.OwnSocket == FName(TEXT("rest_w"))));
 	TArray<FGLPlacedPiece> WithUpper = Room;
 	Upper.Id = 4;

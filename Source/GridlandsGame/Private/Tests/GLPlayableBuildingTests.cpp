@@ -229,6 +229,26 @@ bool FGLPBBrowser::RunTest(const FString& Parameters)
 	S.Build->Primary();
 	TestEqual(TEXT("one piece placed"), S.Count(), Before + 1);
 	TestEqual(TEXT("exactly the chosen variant"), S.NewestDef(), PBPost);
+	// The wheel: the next variant in the same category is the one committed, and back again.
+	const TArray<FName> Variants = S.Build->PiecesOf(S.Build->GetCatalog().IndexOfByPredicate([](const FGLCatalogCategory& C) { return C.Pieces.Contains(PBPost); }));
+	const int32 At = Variants.IndexOfByKey(PBPost);
+	if (!TestTrue(TEXT("the posts category has variants"), Variants.Num() > 2 && At != INDEX_NONE))
+	{
+		return true;
+	}
+	S.Inventory->AddItem(TEXT("item.material.cut_stone"), 20);
+	S.Build->CycleVariant(-1);
+	const FName Previous = Variants[(At - 1 + Variants.Num()) % Variants.Num()];
+	TestEqual(TEXT("the wheel selects the previous variant in its category"), S.Build->GetSelectedPiece(), Previous);
+	S.AimAt(FVector(-200, 0, 0));
+	S.Build->Primary();
+	TestEqual(TEXT("and that variant is the one committed"), S.NewestDef(), Previous);
+	if (S.NewestDef() != Previous)
+	{
+		AddInfo(S.Build->StatusLine());
+	}
+	S.Build->CycleVariant(1);
+	TestEqual(TEXT("and forward again"), S.Build->GetSelectedPiece(), PBPost);
 	return true;
 }
 
@@ -308,10 +328,11 @@ bool FGLPBSnap::RunTest(const FString& Parameters)
 	S.Build->RotateQuarter(-1);
 	S.Build->RotateQuarter(1); // the wall's quarter turn from before is still held (persistent rotation)
 	S.Build->RotateQuarter(-1);
+	S.Build->RotateQuarter(-1); // Shift+Z: -90 (an odd number of quarter turns, so +90 cannot pass for it)
 	S.AimAt(FVector(-400, -300, 0));
 	S.Build->RefreshView();
 	const int32 Shown = S.Build->GetView().YawStep;
-	TestEqual(TEXT("the yaw shown is 102.5 degrees (90 held + 15 - 2.5)"), GLStructureRules::YawDegrees(Shown), 102.5);
+	TestEqual(TEXT("the yaw shown is 12.5 degrees (90 held + 15 - 2.5 - 90)"), GLStructureRules::YawDegrees(Shown), 12.5);
 	S.Build->Primary();
 	if (!TestEqual(TEXT("a post placed"), S.NewestDef(), PBPost))
 	{
