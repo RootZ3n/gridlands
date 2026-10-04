@@ -27,23 +27,66 @@ The game loads `Saved/SaveGames/Gridlands/world.json` if it exists. To start a n
 | G | Pehlichi follows / stays |
 | H | ask Pehlichi for a hint on NICE's current puzzle (escalating; capped by his Analysis) |
 | F5 / F9 | quick save / quick load |
-| B | build mode on/off. The ghost is GREEN (fits, with margin), YELLOW (fits, but at its material's limit: nothing more of that material can stand on it) or RED (won't stand, or something is in the way); the bottom line says why. Aiming at one of your pieces highlights in red everything that would fall if you took it out |
-| mouse wheel | choose a piece (floors, stud walls and doorways, roof frames, log walls, Roman columns and walls, posts, porch roofs, angle posts and bay walls, storage crates, base core, sawhorse) |
-| Z / C | rotate the piece a quarter turn / by 15 degrees (an angled wall snapped to an angle post takes its angle from the post) |
-| left mouse | place the piece (build mode) or use the shovel (terraform mode) |
-| X | dismantle the piece you're aiming at, carefully: you get its components back intact (studs). Anything it held up collapses for real and lies as debris (salvage that for scrap). A crate with something in it refuses: empty it first |
-| N | smash the piece instead: quicker, but fewer studs and more scrap |
-| Y | finish the frame you're aiming at (clapboard, boards, shingles): it stops looking like framing. Finishes never change what holds up |
+| B | build mode on/off (see **Build mode** below) |
+| left mouse | in build mode: what the build bar's mode says (place, choose, finish, remove). Terraform mode: use the shovel |
 | T | terraform mode: dig, then raise, then flatten, then off (needs a shovel) |
 | left mouse (no tool out) | swing at a creature in front of you (best weapon you carry: pry bar > shovel > fists) |
 | V | Pehlichi makes a glitchy noise where he is; creatures nearby go and look (he never hurts anything) |
 
-Building and terraforming bindings are provisional; tell me what feels wrong.
+Building and terraforming bindings are provisional; tell me what feels wrong (F8, below).
+
+## Build mode
+(P12 candidate. Numbers are provisional.) Press B. The build bar at the bottom always says which of four modes you are
+in, what the piece is, its angle, what it costs and where that comes from, and the structural state as a word, an icon
+and a colour: **OK [+]** (green, stands with margin), **LIMIT [!]** (yellow, stands but at its material's limit),
+**NO [x]** (red). The line under it says why, in the same words the game used to decide.
+
+| Key | PLACE (default) | BROWSE (Tab) | FINISH (Y) | REMOVE (X) |
+|---|---|---|---|---|
+| left mouse | place the piece | choose the highlighted piece, back to placing | install the chosen finish on the frame you aim at | take the piece apart (if others would fall: hold it, see below) |
+| mouse wheel | next/previous piece in this category | move down/up the list | next/previous finish that fits | - |
+| Shift+wheel | next/previous category | next/previous category | - | - |
+| Esc / right mouse | leave build mode | back to placing | back to placing | back to placing |
+
+Everywhere in build mode:
+
+| Key | What it does |
+|---|---|
+| Z / Shift+Z | rotate +90 / -90 degrees |
+| C | rotate +15 degrees |
+| Ctrl+wheel | rotate 2.5 degrees (the finest step; every angle is a multiple of it) |
+| Tab | open/close the piece browser (categories; the era filter only narrows the list, it never forbids anything) |
+| 1-8 / Ctrl+1-8 | pick / pin a favorite. The browser also shows your recent pieces |
+| X / Y | remove mode / finish mode on and off |
+| N | in remove mode: careful (components back) or smash (quicker, fewer studs, more scrap). Both yields are shown before you click |
+| Alt (hold) | build camera: pulled back and up around Zenny. Shift+wheel raises or lowers it. You still aim with the centre of the screen |
+| F8 | note what's annoying (see below) |
+
+- **Snapping.** A small marker shows the socket the piece is snapping to; the build bar says "angle from the socket" when the
+  socket sets the angle (angle posts). Snapped and placed are the same position.
+- **Removing.** The piece and everything that would fall with it are highlighted in red, with what you'd get back. If
+  nothing else falls, one click removes it. If something else would fall, hold the button until the ring fills.
+- **Base area.** In build mode a ring shows your base area (32 m around the base core, provisional).
+- **Accessibility.** In the console (`~`): `gl.Build.CameraMode toggle` makes Alt a toggle; `gl.Build.ConfirmMode toggle`
+  turns the hold into press-twice; `gl.Build.TextScale 1.5` enlarges the build text. Saved in `Saved/Profile/build-profile.json`
+  with your favorites, recents and finish choices (not in the world save).
+- **New pieces:** a straight timber stair (Stairs), a window wall (a stud wall with an opening, finished like any wall) and an
+  upper floor that rests on wall tops.
+
+### F8: the friction log
+F8 opens a small picker: choose what grated (CAMERA, SNAP, ROTATION, BROWSER, PIECE_FIND, FINISH, STRUCTURE_FEEDBACK,
+REMOVAL, SALVAGE, RESOURCE, CLAIM, INPUT, REPETITION, VISIBILITY, OTHER), optionally type a note, Enter. From the
+console: `gl.Friction SNAP walls jump at the corner`. Each note is one line in `Saved/Playtest/friction.jsonl` with the
+build context (mode, piece, finish, angle, snapped, structural state, reason, time) and nothing else. It is not a save.
+
+### Dev only: the starter kit
+`gl.Dev.BuildingStarterKit` (console) teaches every building knowledge and gives 300 studs, 300 planks, 30 logs and 30 cut
+stone, so a session can test building rather than gathering. It does not exist in a shipping build.
 
 Zenny never talks. Pehlichi is the only one who repairs anything; you make repairs possible.
 
 ## Building a shelter
-(P11 candidate, Building v1. Numbers are provisional.)
+(Building v1, P11; build mode, P12 candidate. Numbers are provisional.)
 1. Learn timber framing. Salvage a backyard fence panel, or let Pehlichi fix the dead transformer.
 2. Floors cost planks; walls, doorways and roof frames are framed from **studs**. Fell a pine for logs and saw them into
    studs at a sawhorse (F), or dismantle framing carefully to get studs back. Finishes (clapboard, boards, shingles) cost planks.
@@ -52,7 +95,7 @@ Zenny never talks. Pehlichi is the only one who repairs anything; you make repai
    There is no carrying weight: only slots and stacks (100 of most building materials per stack).
 4. Put floors down on level ground. On a slope the bottom line says "not on firm, level ground",
    so flatten it with the shovel first. Walls snap to floor edges and roof slopes snap to wall
-   tops. Rotate with Z.
+   tops. A stair stands on a floor and reaches a wall-top upper floor 2.7 m up.
 5. Support weakens as you build up and out. Timber stands a floor plus three walls high, and a
    floor can hang one piece out over a drop.
 

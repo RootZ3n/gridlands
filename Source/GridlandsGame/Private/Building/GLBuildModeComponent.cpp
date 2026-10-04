@@ -8,6 +8,9 @@
 #include "Engine/World.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/Pawn.h"
+#include "GameFramework/PlayerController.h"
+#include "GridlandsGame.h"
+#include "HAL/IConsoleManager.h"
 #include "HAL/FileManager.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
@@ -876,4 +879,31 @@ void UGLBuildModeComponent::ClearGhost()
 		Ghost->Destroy();
 		Ghost = nullptr;
 	}
+}
+
+namespace GLBuildModeSettings
+{
+	// Accessibility (ADR-0040): the build camera and the removal confirmation are hold by default; either can be a toggle.
+	// Saved in the playtest profile, never in a world save.
+	void SetHoldMode(UWorld* World, const TArray<FString>& Args, bool bCamera)
+	{
+		APlayerController* PC = World ? World->GetFirstPlayerController() : nullptr;
+		UGLBuildModeComponent* Build = PC && PC->GetPawn() ? PC->GetPawn()->FindComponentByClass<UGLBuildModeComponent>() : nullptr;
+		const TCHAR* Command = bCamera ? TEXT("gl.Build.CameraMode") : TEXT("gl.Build.ConfirmMode");
+		if (!Build || Args.Num() != 1 || (Args[0] != TEXT("hold") && Args[0] != TEXT("toggle")))
+		{
+			UE_LOG(LogGridlands, Display, TEXT("%s: usage: %s hold|toggle"), Command, Command);
+			return;
+		}
+		const EGLHoldMode Mode = Args[0] == TEXT("toggle") ? EGLHoldMode::Toggle : EGLHoldMode::Hold;
+		bCamera ? Build->SetCameraMode(Mode) : Build->SetConfirmMode(Mode);
+		UE_LOG(LogGridlands, Display, TEXT("%s: %s"), Command, *Args[0]);
+	}
+
+	FAutoConsoleCommandWithWorldAndArgs CameraModeCommand(TEXT("gl.Build.CameraMode"),
+		TEXT("Build camera (Alt): hold (default) or toggle."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic([](const TArray<FString>& Args, UWorld* World) { SetHoldMode(World, Args, true); }));
+	FAutoConsoleCommandWithWorldAndArgs ConfirmModeCommand(TEXT("gl.Build.ConfirmMode"),
+		TEXT("Removal that brings other pieces down: hold (default) or toggle (press twice)."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic([](const TArray<FString>& Args, UWorld* World) { SetHoldMode(World, Args, false); }));
 }

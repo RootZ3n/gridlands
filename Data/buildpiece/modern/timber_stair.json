@@ -11,14 +11,14 @@
   "category": "buildcategory.building.vertical_access",
   "grounded": true,
   "size": [
-    1.0,
+    1.4,
     4.0,
     2.7
   ],
   "shapes": [
     {
       "size": [
-        1.0,
+        1.4,
         0.3333,
         0.225
       ],
@@ -30,7 +30,7 @@
     },
     {
       "size": [
-        1.0,
+        1.4,
         0.3333,
         0.225
       ],
@@ -42,7 +42,7 @@
     },
     {
       "size": [
-        1.0,
+        1.4,
         0.3333,
         0.225
       ],
@@ -54,7 +54,7 @@
     },
     {
       "size": [
-        1.0,
+        1.4,
         0.3333,
         0.225
       ],
@@ -66,7 +66,7 @@
     },
     {
       "size": [
-        1.0,
+        1.4,
         0.3333,
         0.225
       ],
@@ -78,7 +78,7 @@
     },
     {
       "size": [
-        1.0,
+        1.4,
         0.3333,
         0.225
       ],
@@ -90,7 +90,7 @@
     },
     {
       "size": [
-        1.0,
+        1.4,
         0.3333,
         0.225
       ],
@@ -102,7 +102,7 @@
     },
     {
       "size": [
-        1.0,
+        1.4,
         0.3333,
         0.225
       ],
@@ -114,7 +114,7 @@
     },
     {
       "size": [
-        1.0,
+        1.4,
         0.3333,
         0.225
       ],
@@ -126,7 +126,7 @@
     },
     {
       "size": [
-        1.0,
+        1.4,
         0.3333,
         0.225
       ],
@@ -138,7 +138,7 @@
     },
     {
       "size": [
-        1.0,
+        1.4,
         0.3333,
         0.225
       ],
@@ -150,7 +150,7 @@
     },
     {
       "size": [
-        1.0,
+        1.4,
         0.3333,
         0.225
       ],
@@ -204,5 +204,5 @@
     "motion": "drop"
   },
   "salvage": "salvage.build.timber_stair",
-  "notes": "P12 (ADR-0040): one boring, correct straight stair. An ordinary structural component: it rests on a foundation or floor (foot), links laterally to a deck edge at the top (head: a deck's side socket, 2.9 m above the foundation top), and is climbed physically (12 solid treads, 22.5 cm rise; navigation reads them). No landings, railings or families. Complete as built (its treads are its look)."
+  "notes": "P12 (ADR-0040): one boring, correct straight stair. An ordinary structural component: it rests on a foundation or floor (foot), links laterally to a deck edge at the top (head: a deck's side socket, 2.9 m above the foundation top), and is climbed physically (12 solid treads 1.4 m wide (wide enough for navigation's agent radius), 22.5 cm rise; navigation reads them). No landings, railings or families. Complete as built (its treads are its look)."
 }

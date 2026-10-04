@@ -293,4 +293,62 @@ bool FGLNavAroundWalls::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLNavStairs, "Gridlands.Game.Building.StairsAreNavigable", GLTestUtils::Flags)
+bool FGLNavStairs::RunTest(const FString& Parameters)
+{
+	// P12 (ADR-0040): an upper floor 3 m up is out of reach until a straight stair leads to it; navigation reads
+	// the stair's treads like any collision (no special case, no teleport).
+	GLTerrainNavTests::FNavScene Scene(TEXT("GLNavStairsWorld"), *this);
+	TestTrue(TEXT("initial navmesh"), Scene.Settle());
+	const FVector D(GLTerrainNavTests::SeamX, 3200.0, 0.0);
+	UGLStructureSubsystem* Structures = Scene.Test.World->GetSubsystem<UGLStructureSubsystem>();
+	UGLBuildingSubsystem* Building = Scene.Test.World->GetSubsystem<UGLBuildingSubsystem>();
+	int32 Id = 1;
+	auto Add = [&](FName Def, const FVector& At)
+	{
+		FGLPlacedPiece Piece{ Id++, Def, At, 0 };
+		Piece.Origin = EGLPieceOrigin::Player;
+		Piece.Cell = Building->CellFor(At);
+		Structures->AddPlayerPiece(Piece, false);
+	};
+	// A room's floor with walls east and west, an upper floor on them; floors south for the stair to stand on and to start from.
+	for (const double Y : { 0.0, -200.0, -400.0, -600.0 }) // the last one: the floor in front of the flight (a 52 cm step from the ground is too high)
+	{
+		Add(TEXT("buildpiece.modern.timber_foundation"), D + FVector(0, Y, 0));
+	}
+	FGLPlacedPiece East{ Id++, TEXT("buildpiece.modern.timber_wall"), D + FVector(100, 0, 30), GLStructureRules::QuarterTurnSteps };
+	FGLPlacedPiece West{ Id++, TEXT("buildpiece.modern.timber_wall"), D + FVector(-100, 0, 30), GLStructureRules::QuarterTurnSteps };
+	for (FGLPlacedPiece* Wall : { &East, &West })
+	{
+		Wall->Origin = EGLPieceOrigin::Player;
+		Wall->Cell = Building->CellFor(Wall->Location);
+		Structures->AddPlayerPiece(*Wall, false);
+	}
+	Add(TEXT("buildpiece.modern.upper_floor"), D + FVector(0, 0, 280));
+	TestTrue(TEXT("navigation around the house"), Scene.Settle());
+	const FVector Start = D + FVector(0, -900, 0), OnDeck = D + FVector(0, 30, 300);
+	bool bPartial = false;
+	TArray<FVector> Path = Scene.Path(Start, OnDeck, &bPartial);
+	TestTrue(TEXT("without a stair the upper floor cannot be reached"), bPartial || Path.Num() == 0 || Path.Last().Z < 200.0);
+	Add(TEXT("buildpiece.modern.timber_stair"), D + FVector(0, -300, 30));
+	TestTrue(TEXT("navigation rebuilds over the stair"), Scene.Settle());
+	Path = Scene.Path(Start, OnDeck, &bPartial);
+	TestTrue(FString::Printf(TEXT("with the stair a complete path reaches the upper floor (%d points, ends at z %.0f)"), Path.Num(), Path.Num() ? Path.Last().Z : -1.0),
+		!bPartial && Path.Num() > 1 && Path.Last().Z > 260.0);
+	for (const FVector& Probe : { D + FVector(0, -480, 60), D + FVector(0, -300, 170), D + FVector(0, -150, 280), D + FVector(0, 0, 300) })
+	{
+		FNavLocation Found;
+		const bool bOn = Scene.Nav->ProjectPointToNavigation(Probe, Found, FVector(30, 30, 60));
+		AddInfo(FString::Printf(TEXT("navmesh at %s: %s"), *Probe.ToString(), bOn ? *Found.Location.ToString() : TEXT("none")));
+	}
+	AddInfo(FString::Printf(TEXT("path: %s"), *FString::JoinBy(Path, TEXT(" | "), [](const FVector& P) { return P.ToString(); })));
+	bool bClimbs = false;
+	for (const FVector& Point : Path)
+	{
+		bClimbs |= Point.Y > D.Y - 500.0 && Point.Y < D.Y - 100.0 && Point.Z > 60.0; // a point on the flight itself
+	}
+	TestTrue(TEXT("and it climbs the flight"), bClimbs || Path.Num() == 2);
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

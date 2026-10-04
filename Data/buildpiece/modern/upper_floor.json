@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.upper_floor",
+  "displayName": "Upper floor",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "role": "floor",
+  "grounded": false,
+  "size": [
+    2,
+    2,
+    0.2
+  ],
+  "shapes": [
+    {
+      "size": [
+        2,
+        2,
+        0.2
+      ],
+      "offset": [
+        0,
+        0,
+        0.1
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "rest_n",
+      "role": "bottom",
+      "offset": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "rest_s",
+      "role": "bottom",
+      "offset": [
+        0,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "rest_e",
+      "role": "bottom",
+      "offset": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "rest_w",
+      "role": "bottom",
+      "offset": [
+        -1,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "edge_n",
+      "role": "top",
+      "offset": [
+        0,
+        1,
+        0.2
+      ]
+    },
+    {
+      "name": "edge_s",
+      "role": "top",
+      "offset": [
+        0,
+        -1,
+        0.2
+      ]
+    },
+    {
+      "name": "edge_e",
+      "role": "top",
+      "offset": [
+        1,
+        0,
+        0.2
+      ]
+    },
+    {
+      "name": "edge_w",
+      "role": "top",
+      "offset": [
+        -1,
+        0,
+        0.2
+      ]
+    },
+    {
+      "name": "centre",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        0.2
+      ]
+    },
+    {
+      "name": "side_n",
+      "role": "side",
+      "offset": [
+        0,
+        1,
+        0.1
+      ]
+    },
+    {
+      "name": "side_s",
+      "role": "side",
+      "offset": [
+        0,
+        -1,
+        0.1
+      ]
+    },
+    {
+      "name": "side_e",
+      "role": "side",
+      "offset": [
+        1,
+        0,
+        0.1
+      ]
+    },
+    {
+      "name": "side_w",
+      "role": "side",
+      "offset": [
+        -1,
+        0,
+        0.1
+      ]
+    }
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 2
+    },
+    {
+      "item": "item.component.stud",
+      "count": 4
+    }
+  ],
+  "collapse": {
+    "motion": "drop"
+  },
+  "salvage": "salvage.build.upper_floor",
+  "notes": "P12 (ADR-0040): the one piece a staircase needs to lead somewhere: a 2 m floor that rests on stud-wall tops by its edge midpoints (rest_*), carries the next storey's walls on its edges, links to neighbouring upper floors and to a stair's head (side_*, 2.9 m above a foundation top). An ordinary structural component; not a floor family."
+}

@@ -489,11 +489,16 @@ bool GLStructureRules::Snap(const FGLContentRegistry& Content, TConstArrayView<F
 			{
 				continue;
 			}
+			// P12: when the piece has several bottom sockets that could rest on this socket (an upper floor's edge
+			// midpoints on a wall top), the one that puts the piece's centre nearest the aim wins: the aim decides, not
+			// the data's socket order. Side links keep the first match (angled construction takes its yaw from data).
+			double BestCentre = TNumericLimits<double>::Max();
+			bool bThisSocket = false;
 			for (const FGLBuildSocketDef& OursDef : Def->Sockets)
 			{
 				const bool bSide = OursDef.Role == SocketSide && Theirs.Role == SocketSide;
 				const bool bCompatible = (OursDef.Role == SocketBottom && Theirs.Role == SocketTop) || bSide;
-				if (!bCompatible)
+				if (!bCompatible || (bThisSocket && bSide))
 				{
 					continue;
 				}
@@ -505,10 +510,13 @@ bool GLStructureRules::Snap(const FGLContentRegistry& Content, TConstArrayView<F
 					Candidate.YawStep = YawStepFromDegrees(Theirs.Facing + 180.0 - OursDef.Facing);
 				}
 				Candidate.Location = Theirs.Location - (ToWorld(Candidate, OursDef.Offset) - Candidate.Location);
-				if (CheckPlacement(Content, Existing, Candidate, Ground).Refusal == EGLBuildRefusal::Overlaps)
+				const double Centre = FVector::Dist2D(Candidate.Location, Aim);
+				if ((bThisSocket && Centre >= BestCentre) || CheckPlacement(Content, Existing, Candidate, Ground).Refusal == EGLBuildRefusal::Overlaps)
 				{
 					continue;
 				}
+				BestCentre = Centre;
+				bThisSocket = true;
 				Best = Distance;
 				OutCandidate = Candidate;
 				bFound = true;
@@ -518,7 +526,10 @@ bool GLStructureRules::Snap(const FGLContentRegistry& Content, TConstArrayView<F
 				Info.TargetLocation = Theirs.Location;
 				Info.OwnSocket = FName(*OursDef.Name);
 				Info.bYawFromData = bSide && bOursFaces && Theirs.bHasFacing;
-				break;
+				if (bSide)
+				{
+					break; // side links: the first match, as before
+				}
 			}
 		}
 	}

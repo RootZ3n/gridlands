@@ -277,8 +277,6 @@ FGLBuildCheck UGLBuildingSubsystem::Place(AActor* Builder, const FGLPlacedPiece&
 		return Result;
 	}
 	const FGLBuildPieceDef* Def = GLContent::Get().Find<FGLBuildPieceDef>(Candidate.Def);
-	FGLMaterialSources Sources = SourcesFor(Builder, Candidate.Location);
-	FGLMaterialPool Pool = Sources.Pool();
 	FGLPlacedPiece Placed = Candidate;
 	Placed.Id = NextId++;
 	Placed.Cell = CellFor(Placed.Location);
@@ -292,6 +290,10 @@ FGLBuildCheck UGLBuildingSubsystem::Place(AActor* Builder, const FGLPlacedPiece&
 		Refused.Preview = EGLPreview::Red;
 		return Refused; // nothing was paid
 	}
+	// The sources are taken now, after the add: base storage lives in the player structure's parts, and adding a part may
+	// have moved them (P12: sources taken before the add pointed into freed memory once the parts array grew).
+	FGLMaterialSources Sources = SourcesFor(Builder, Candidate.Location);
+	FGLMaterialPool Pool = Sources.Pool();
 	verify(Pool.Consume(Def->Cost)); // Check() proved every cost is available: all or nothing
 	Emit(TEXT("Event.Building.Placed"), Placed.Def, Builder, { { TEXT("support"), Result.Support }, { TEXT("fromStorage"), static_cast<double>(Sources.Containers.Num()) } });
 	UGLNoiseSubsystem::EmitAction(this, TEXT("Noise.Build.Place"), GLStructureRules::Bounds(*Def, Placed).GetCenter(), Builder, Def->Material);
