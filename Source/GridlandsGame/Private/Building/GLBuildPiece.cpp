@@ -2,7 +2,7 @@
 
 #include "Presentation/GLVisuals.h"
 
-#include "Building/GLConstructionRules.h"
+#include "Building/GLPiecePresentation.h"
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Content/GLContent.h"
@@ -15,35 +15,6 @@ namespace
 {
 	const TCHAR* CubePath = TEXT("/Engine/BasicShapes/Cube.Cube");
 	const TCHAR* ShapeMaterialPath = TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial");
-
-	/** Blockout colour by material family (look only; ERA-1). */
-	FLinearColor ColourFor(const FGLBuildPieceDef& Def)
-	{
-		const FGLMaterialDef* Material = GLContent::Get().Find<FGLMaterialDef>(Def.Material);
-		if (Material && Material->Tags.Contains(FName(TEXT("Material.Masonry"))))
-		{
-			return FLinearColor(0.55f, 0.53f, 0.5f);
-		}
-		return FLinearColor(0.45f, 0.3f, 0.16f); // timber
-	}
-
-	/** A raw-framing colour: unfinished timber reads as framing at a glance. */
-	const FLinearColor FrameColour(0.82f, 0.66f, 0.42f);
-
-	double Axis(const TArray<double>& V, int32 I) { return V.IsValidIndex(I) ? V[I] : 0.0; }
-
-	/** The last installed finish (the visible surface), or null. */
-	const FGLFinishDef* VisibleFinish(const FGLPlacedPiece& Piece)
-	{
-		for (int32 I = Piece.Layers.Num() - 1; I >= 0; --I)
-		{
-			if (const FGLFinishDef* Finish = GLContent::Get().Find<FGLFinishDef>(Piece.Layers[I]))
-			{
-				return Finish;
-			}
-		}
-		return nullptr;
-	}
 }
 
 AGLBuildPiece::AGLBuildPiece()
@@ -53,10 +24,10 @@ AGLBuildPiece::AGLBuildPiece()
 
 bool AGLBuildPiece::Setup(const FGLPlacedPiece& InPiece, bool bGhost)
 {
-	const FGLBuildPieceDef* Def = GLContent::Get().Find<FGLBuildPieceDef>(InPiece.Def);
 	UStaticMesh* Cube = LoadObject<UStaticMesh>(nullptr, CubePath);
 	UMaterialInterface* ShapeMaterial = LoadObject<UMaterialInterface>(nullptr, ShapeMaterialPath);
-	if (!Def || !Cube)
+	FGLPieceLook Look;
+	if (!Cube || !GLPiecePresentation::Describe(InPiece, Look, bGhost))
 	{
 		return false;
 	}
@@ -66,34 +37,24 @@ bool AGLBuildPiece::Setup(const FGLPlacedPiece& InPiece, bool bGhost)
 	{
 		Box->DestroyComponent();
 	}
-	for (UStaticMeshComponent* Look : Looks)
+	for (UStaticMeshComponent* Box : Looks)
 	{
-		Look->DestroyComponent();
+		Box->DestroyComponent();
 	}
 	Boxes.Reset();
 	Looks.Reset();
 	GLVisuals::Detach(this);
-	SetActorLocationAndRotation(Piece.Location, FRotator(0.0, GLStructureRules::YawDegrees(Piece.YawStep), 0.0));
-	// P11: what to show follows the fact. A frame waiting for its finish shows its frame; a finished piece its finish;
-	// a piece complete as built its own look. P7: an authored look replaces the blockout boxes; the boxes keep the
-	// authoritative collision. Decided first, so hidden boxes are registered hidden and unpainted.
-	const bool bFrame = !bGhost && GLConstructionRules::ShowsFrame(GLContent::Get(), Piece);
-	const FGLFinishDef* Finish = bGhost ? nullptr : VisibleFinish(Piece);
-	FName LookVisual = bFrame ? NAME_None : (Finish ? Finish->Visual : Def->Visual);
-	const FGLVisualDef* Look = bGhost || LookVisual.IsNone() ? nullptr : GLContent::Get().Find<FGLVisualDef>(LookVisual);
-	const bool bLooked = Look && GLVisuals::LoadMesh(Look->Mesh);
-	const bool bTinted = !bFrame && !bLooked && Finish && Finish->Tint.Num() >= 3;
-	Shown = bFrame ? FName(TEXT("frame")) : (Finish ? FName(TEXT("finish")) : FName(TEXT("complete")));
-	const bool bHideBoxes = bLooked || bFrame;
-	auto MakeBox = [&](const FGLBuildShapeDef& Shape, bool bCollides, bool bVisible, const FLinearColor& Colour) -> UStaticMeshComponent*
+	SetActorTransform(GLPiecePresentation::PieceTransform(Piece));
+	// P11: what to show follows the fact (GLPiecePresentation, shared with the instanced batch of a player structure).
+	// P7: an authored look replaces the blockout boxes; the boxes keep the authoritative collision. Decided first, so
+	// hidden boxes are registered hidden and unpainted.
+	Shown = Look.Shown;
+	auto MakeBox = [&](const FGLPieceBox& Shape, bool bCollides) -> UStaticMeshComponent*
 	{
 		UStaticMeshComponent* Box = NewObject<UStaticMeshComponent>(this);
 		Box->SetStaticMesh(Cube);
 		Box->SetupAttachment(GetRootComponent());
-		// The engine cube is 100 cm on a side, centred on its origin.
-		Box->SetRelativeScale3D(FVector(Axis(Shape.Size, 0), Axis(Shape.Size, 1), Axis(Shape.Size, 2)));
-		const FQuat Tilt(FVector::XAxisVector, FMath::DegreesToRadians(Shape.Pitch)); // positive lifts +Y
-		Box->SetRelativeLocationAndRotation(FVector(Axis(Shape.Offset, 0), Axis(Shape.Offset, 1), Axis(Shape.Offset, 2)) * 100.0, Tilt);
+		Box->SetRelativeTransform(Shape.Local);
 		if (bCollides && !bGhost)
 		{
 			Box->SetCollisionProfileName(TEXT("BlockAll"));
@@ -108,36 +69,32 @@ bool AGLBuildPiece::Setup(const FGLPlacedPiece& InPiece, bool bGhost)
 		{
 			Box->SetCastShadow(false);
 		}
-		if (!bVisible)
+		if (!Shape.bVisible)
 		{
 			Box->SetVisibility(false);
 			Box->SetCastShadow(false);
 		}
 		Box->RegisterComponent();
-		if (ShapeMaterial && bVisible)
+		if (ShapeMaterial && Shape.bVisible)
 		{
 			if (UMaterialInstanceDynamic* Paint = Box->CreateDynamicMaterialInstance(0, ShapeMaterial))
 			{
-				Paint->SetVectorParameterValue(TEXT("Color"), Colour);
+				Paint->SetVectorParameterValue(TEXT("Color"), Shape.Colour);
 			}
 		}
 		return Box;
 	};
-	const FLinearColor BodyColour = bTinted ? FLinearColor(Finish->Tint[0], Finish->Tint[1], Finish->Tint[2]) : ColourFor(*Def);
-	for (const FGLBuildShapeDef& Shape : Def->Shapes)
+	for (const FGLPieceBox& Shape : Look.Shapes)
 	{
-		Boxes.Add(MakeBox(Shape, true, !bHideBoxes, BodyColour));
+		Boxes.Add(MakeBox(Shape, true));
 	}
-	if (bFrame)
+	for (const FGLPieceBox& Shape : Look.Frame)
 	{
-		for (const FGLBuildShapeDef& Shape : Def->FrameShapes)
-		{
-			Looks.Add(MakeBox(Shape, false, true, FrameColour));
-		}
+		Looks.Add(MakeBox(Shape, false));
 	}
-	if (bLooked)
+	if (!Look.Visual.IsNone())
 	{
-		GLVisuals::Attach(this, GetRootComponent(), LookVisual);
+		GLVisuals::Attach(this, GetRootComponent(), Look.Visual);
 	}
 	if (bHighlighted)
 	{

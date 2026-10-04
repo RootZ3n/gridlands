@@ -77,6 +77,9 @@ missing, wrong version). The last line of output is always
 21. **A finish never changes support; electrical gets no content until it is built** (PH-2).
 22. **World renewal never touches player construction or anything inside a claim** (`GLClaimRules::MayRenew`).
 23. **Nothing is silently destroyed** (no salvage, refund or restore loses items; consumption is all-or-nothing).
+24. **GAMEPLAY MODEL != PRESENTATION for player construction** (ADR-0039 §11): every piece stays its own record in
+    `UGLStructureSubsystem`; quiescent pieces are drawn and collided by the cell's `AGLPlayerPieceBatch`. A hit maps to a
+    piece only through the batch's owner table (`PlayerPieceAt`), never by instance order; nothing renderer-side is saved.
 
 The full invariant table is in `Docs/ARCHITECTURE.md` section 8.
 

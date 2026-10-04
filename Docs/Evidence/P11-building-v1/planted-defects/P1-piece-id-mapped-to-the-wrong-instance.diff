@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp
++++ b/Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp
+@@ -115,7 +115,7 @@
+ 	if (Set)
+ 	{
+ 		Set->AddInstance(World, /*bWorldSpace=*/true);
+-		Owners.FindOrAdd(Set).Add(PieceId);
++		Owners.FindOrAdd(Set).Insert(PieceId, 0); // DEFECT: the owner table runs the other way
+ 	}
+ }
+ 

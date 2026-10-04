@@ -119,9 +119,8 @@ bool FGLBuildShelter::RunTest(const FString& Parameters)
 		TestEqual(TEXT("exactly the studs were spent, none duplicated or lost"), Scene.Inventory->CountOf(Stud), 0);
 		TestEqual(TEXT("and the planks"), Scene.Inventory->CountOf(Plank), 0);
 		const int32 AWall = Scene.IdAt(Wall, FVector(-100, 200, 30));
-		TestEqual(TEXT("P11: a wall is placed as its FRAME and shows its framing"), Scene.Building->FindActor(AWall) ? Scene.Building->FindActor(AWall)->ShownPhase() : FName(), FName(TEXT("frame")));
-		const AGLBuildPiece* AFloor = Scene.Building->FindActor(Scene.IdAt(Floor, FVector(-100, -100, 0)));
-		TestEqual(TEXT("a floor is complete as built"), AFloor ? AFloor->ShownPhase() : FName(), FName(TEXT("complete")));
+		TestEqual(TEXT("P11: a wall is placed as its FRAME and shows its framing"), Scene.Building->ShownPhaseOf(AWall), FName(TEXT("frame")));
+		TestEqual(TEXT("a floor is complete as built"), Scene.Building->ShownPhaseOf(Scene.IdAt(Floor, FVector(-100, -100, 0))), FName(TEXT("complete")));
 		double RoofZ = 0.0;
 		TestTrue(TEXT("the roof is solid: a trace from the sky stops on it"), Scene.Trace(FVector2D(-100, -150), RoofZ) && RoofZ > 280.0);
 		TestTrue(TEXT("Event.Building.Placed per piece"), Scene.Events.FilterByPredicate([](FName E) { return E == TEXT("Event.Building.Placed"); }).Num() == 16);
@@ -134,9 +133,9 @@ bool FGLBuildShelter::RunTest(const FString& Parameters)
 	TestTrue(TEXT("loaded"), Reloaded.Test.World->GetSubsystem<UGLSaveSubsystem>()->LoadFromSlot(BuildSlot, &Problems));
 	TestEqual(TEXT("no problems"), Problems.Num(), 0);
 	TestEqual(TEXT("all 16 pieces are back"), Reloaded.Building->GetPieces().Num(), 16);
-	TestEqual(TEXT("P11: restored pieces are presented over frames, not synchronously"), Reloaded.Building->GetPieces().FilterByPredicate([&](const FGLPlacedPiece& Piece) { return Reloaded.Building->FindActor(Piece.Id) != nullptr; }).Num(), 0);
+	TestEqual(TEXT("P11: restored pieces are presented over frames, not synchronously"), Reloaded.Building->GetPieces().FilterByPredicate([&](const FGLPlacedPiece& Piece) { return Reloaded.Building->IsPresented(Piece.Id); }).Num(), 0);
 	Reloaded.PresentAll();
-	TestEqual(TEXT("each with its actor"), Reloaded.Building->GetPieces().FilterByPredicate([&](const FGLPlacedPiece& Piece) { return Reloaded.Building->FindActor(Piece.Id) != nullptr; }).Num(), 16);
+	TestEqual(TEXT("each presented again"), Reloaded.Building->GetPieces().FilterByPredicate([&](const FGLPlacedPiece& Piece) { return Reloaded.Building->IsPresented(Piece.Id); }).Num(), 16);
 	TestTrue(TEXT("support is recomputed identically (derived, not saved)"), Reloaded.Building->Support().OrderIndependentCompareEqual(SupportBefore));
 	double RoofZ = 0.0;
 	TestTrue(TEXT("the reloaded roof is solid too"), Reloaded.Trace(FVector2D(-100, -150), RoofZ) && RoofZ > 280.0);
@@ -208,7 +207,7 @@ bool FGLBuildDemolish::RunTest(const FString& Parameters)
 	TestTrue(TEXT("the floor stands"), FloorId != 0);
 	TestEqual(TEXT("refused when the planks would not fit"), Full.Building->Dismantle(Full.Zenny, FloorId).Refusal, EGLDemolishRefusal::NoRoomForRefund);
 	TestEqual(TEXT("the floor still stands"), Full.Building->GetPieces().Num(), 1);
-	TestNotNull(TEXT("with its actor"), Full.Building->FindActor(FloorId));
+	TestTrue(TEXT("and is still presented"), Full.Building->IsPresented(FloorId));
 	return true;
 }
 

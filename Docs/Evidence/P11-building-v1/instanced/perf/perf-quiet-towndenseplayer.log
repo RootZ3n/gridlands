@@ -1,0 +1,18 @@
+  towndenseplayer-crossing-straight.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndenseplayer-*)
+group=[straight] attempt=1 load start=2.83 end=6.01 gpu-before=0
+  towndenseplayer-crossing-reversal.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndenseplayer-*)
+group=[reversal] attempt=1 load start=2.69 end=6.31 gpu-before=0
+  towndenseplayer-crossing-sprint.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndenseplayer-*)
+group=[sprint] attempt=1 load start=2.47 end=4.00 gpu-before=0
+  towndenseplayer-crossing-teleport.json: done
+  towndenseplayer-crossing-resume.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndenseplayer-*)
+group=[teleport resume] attempt=1 load start=2.65 end=4.92 gpu-before=0
+  towndenseplayer-roundtrips.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/towndenseplayer-*)
+group=[roundtrips] attempt=1 load start=2.37 end=4.22 gpu-before=0
+  6 result(s) checked against budgets.json: within budget
+QUIETDONE PASS

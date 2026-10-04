@@ -451,6 +451,32 @@ int32 UGLBuildingSubsystem::PieceIdOf(const AActor* Actor) const
 	return Part->GetPiece().Id;
 }
 
+int32 UGLBuildingSubsystem::PieceIdAt(const FHitResult& Hit) const
+{
+	const UGLStructureSubsystem* Structures = GetWorld()->GetSubsystem<UGLStructureSubsystem>();
+	return Structures ? Structures->PlayerPieceAt(Hit) : 0;
+}
+
+FName UGLBuildingSubsystem::ShownPhaseOf(int32 PieceId) const
+{
+	const UGLStructureSubsystem* Structures = GetWorld()->GetSubsystem<UGLStructureSubsystem>();
+	return Structures ? Structures->ShownPhaseOf(PieceId) : NAME_None;
+}
+
+bool UGLBuildingSubsystem::IsPresented(int32 PieceId) const
+{
+	const UGLStructureSubsystem* Structures = GetWorld()->GetSubsystem<UGLStructureSubsystem>();
+	return Structures && Structures->IsPresented(PieceId);
+}
+
+void UGLBuildingSubsystem::SetRemovalHighlight(const TArray<int32>& PieceIds)
+{
+	if (UGLStructureSubsystem* Structures = GetWorld()->GetSubsystem<UGLStructureSubsystem>())
+	{
+		Structures->SetRemovalHighlight(PieceIds);
+	}
+}
+
 FName UGLBuildingSubsystem::CellFor(const FVector& Location) const
 {
 	FName Cell;

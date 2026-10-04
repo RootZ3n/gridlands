@@ -32,6 +32,7 @@
 #include "Terrain/GLTerrainCollision.h"
 #include "Chaos/HeightField.h"
 #include "UObject/GarbageCollection.h"
+#include "UObject/UObjectArray.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "World/GLGridSubsystem.h"
 #include "World/GLPlacementSubsystem.h"
@@ -425,6 +426,9 @@ namespace GLPerf
 		bool bArrivalLogged = false;
 		TArray<TSharedPtr<FJsonValue>> Hitches;
 		int32 GcCount = 0;
+		/** P11 scaling evidence: live UObjects before and after each garbage collection (what a GC had to walk and free). */
+		int32 GcLiveBefore = 0;
+		TArray<TSharedPtr<FJsonValue>> GcObjects;
 		FFrameAttribution Attribution;
 		/** P7 multi-frame presentation: per-frame presentation work, the authoritative layer's frames, and the queue. */
 		TArray<double> PresentMs;
@@ -623,6 +627,8 @@ namespace GLPerf
 					O->SetNumberField(TEXT("markCm"), Terrain->HeightAt(Mark));
 				}
 				O->SetNumberField(TEXT("garbageCollections"), Crossing.GcCount);
+				O->SetArrayField(TEXT("gcObjects"), Crossing.GcObjects);
+				O->SetNumberField(TEXT("liveObjectsAtEnd"), GUObjectArray.GetObjectArrayNumMinusAvailable());
 				FString Text;
 				FJsonSerializer::Serialize(O, TJsonWriterFactory<>::Create(&Text));
 				FFileHelper::SaveStringToFile(Text, *(FPaths::ProjectSavedDir() / TEXT("Perf") / FString::Printf(TEXT("crossing-%s.json"), *Crossing.Mode)));
@@ -1371,7 +1377,19 @@ namespace GLPerf
 				Zenny->SetActorLocation(FVector(0.0, Crossing.RouteY, 300.0));
 				Zenny->DisableInput(nullptr);
 			}
-			FCoreUObjectDelegates::GetPreGarbageCollectDelegate().AddLambda([] { ++Crossing.GcCount; });
+			FCoreUObjectDelegates::GetPreGarbageCollectDelegate().AddLambda([]
+			{
+				++Crossing.GcCount;
+				Crossing.GcLiveBefore = GUObjectArray.GetObjectArrayNumMinusAvailable();
+			});
+			FCoreUObjectDelegates::GetPostGarbageCollect().AddLambda([]
+			{
+				TSharedPtr<FJsonObject> Gc = MakeShared<FJsonObject>();
+				Gc->SetNumberField(TEXT("liveBefore"), Crossing.GcLiveBefore);
+				Gc->SetNumberField(TEXT("liveAfter"), GUObjectArray.GetObjectArrayNumMinusAvailable());
+				Crossing.GcObjects.Add(MakeShared<FJsonValueObject>(Gc));
+				UE_LOG(LogGridlands, Log, TEXT("Perf: GC %d: live UObjects %d -> %d"), Crossing.GcCount, Crossing.GcLiveBefore, GUObjectArray.GetObjectArrayNumMinusAvailable());
+			});
 			Crossing.Ticker = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateStatic(&CrossingTick));
 		}));
 

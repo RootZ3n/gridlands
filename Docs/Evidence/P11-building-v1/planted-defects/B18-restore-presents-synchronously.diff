@@ -1,8 +1,8 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -1078,7 +1078,7 @@
- 		Piece.Cell = Cell;
- 		Piece.Origin = Entry.Origin == static_cast<uint8>(EGLPieceOrigin::Authored) ? EGLPieceOrigin::Authored : EGLPieceOrigin::Player;
+@@ -1189,7 +1189,7 @@
+ 		}
+ 		Piece.Origin = EGLPieceOrigin::Player;
  		Piece.Layers = Entry.Layers;
 -		AddPlayerPiece(Piece, true); // the pump presents it within the frame budget (P8 synchronous-restore debt)
 +		AddPlayerPiece(Piece, false); // DEFECT

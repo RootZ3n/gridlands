@@ -103,8 +103,17 @@ public:
 	/** Intact player pieces in loaded cells, sorted by id. */
 	TArray<FGLPlacedPiece> GetPieces() const;
 	TArray<FGLPlacedPiece> PiecesOfCell(FName Cell) const;
+	/** A piece's own actor, when it has one (storage, falling, debris); a quiescent piece is instanced and has none. */
 	AGLBuildPiece* FindActor(int32 PieceId) const;
 	int32 PieceIdOf(const AActor* Actor) const;
+	/** The player piece a hit belongs to (an instanced piece through its batch's owner table, or a piece's actor). */
+	int32 PieceIdAt(const FHitResult& Hit) const;
+	/** "frame", "finish" or "complete" as presented now (None while not presented). */
+	FName ShownPhaseOf(int32 PieceId) const;
+	/** Presented now (instanced or by its actor). */
+	bool IsPresented(int32 PieceId) const;
+	/** The removal preview: exactly these pieces shown red. */
+	void SetRemovalHighlight(const TArray<int32>& PieceIds);
 
 	/** Streaming / load (P3, P11): adds a cell's saved player pieces silently (presented over frames). */
 	void RestoreCell(FName Cell, const TArray<FGLSavedPiece>& Saved, const TArray<FGLSavedCollapse>& InFlight, TArray<FString>* OutProblems = nullptr);

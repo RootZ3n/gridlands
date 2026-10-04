@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp
++++ b/Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp
+@@ -39,7 +39,7 @@
+ 	UInstancedStaticMeshComponent* Set = NewObject<UInstancedStaticMeshComponent>(this);
+ 	Set->SetStaticMesh(Mesh);
+ 	Set->SetupAttachment(GetRootComponent());
+-	Set->bSupportRemoveAtSwap = false; // instances keep their order on removal: the owner tables mirror it exactly
++	Set->bSupportRemoveAtSwap = true; // DEFECT: the renderer reorders, the owner table does not // instances keep their order on removal: the owner tables mirror it exactly
+ 	if (bCollides)
+ 	{
+ 		Set->SetCollisionProfileName(TEXT("BlockAll"));

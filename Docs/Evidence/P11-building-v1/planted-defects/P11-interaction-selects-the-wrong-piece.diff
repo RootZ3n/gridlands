@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -1259,7 +1259,7 @@
+ 	int32 Id = 0;
+ 	if (const AGLPlayerPieceBatch* Batch = Cast<AGLPlayerPieceBatch>(Hit.GetActor()))
+ 	{
+-		Id = Batch->PieceIdAt(Hit.GetComponent(), Hit.Item); // the batch's owner table, never the renderer order
++		Id = Batch->PieceIdAt(Hit.GetComponent(), Hit.Item + 1); // DEFECT: off by one instance // the batch's owner table, never the renderer order
+ 	}
+ 	else if (const AGLStructurePart* Actor = Cast<AGLStructurePart>(Hit.GetActor()); Actor && !Actor->bRetired)
+ 	{

@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -73,6 +73,8 @@
+@@ -74,6 +74,8 @@
  		return Text.StartsWith(TEXT("p")) ? FCString::Atoi(*Text.RightChop(1)) : 0;
  	}
  
@@ -9,7 +9,7 @@
  	bool IsPresent(EGLStructurePartState State)
  	{
  		return State == EGLStructurePartState::Intact || State == EGLStructurePartState::Debris;
-@@ -473,6 +475,7 @@
+@@ -552,6 +554,7 @@
  		Entry.Cause = IdentityOf(By);
  		Entry.Credit = Entry.Cause;
  		Entry.CreditActor = By;
@@ -17,7 +17,7 @@
  	}
  	UE_LOG(LogGridlands, Log, TEXT("Structures: %s lost support: %d part(s) collapse (decided in %.3f ms)"), *Structure.Placement.ToString(), Plan.Outcomes.Num(), (FPlatformTime::Seconds() - Began) * 1000.0);
  	if (!bSilent)
-@@ -539,6 +542,7 @@
+@@ -618,6 +621,7 @@
  	{
  		for (const FName& Creature : Placements->ActiveCreaturesTouching(Outcome.Impact))
  		{

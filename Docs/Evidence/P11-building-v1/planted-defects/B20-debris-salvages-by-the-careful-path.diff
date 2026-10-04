@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -360,7 +360,7 @@
+@@ -432,7 +432,7 @@
  		Actor->SetSolid(true);
  		Actor->SetActorHiddenInGame(false);
  		// P11: debris salvages by the collapse path (predominantly scrap), and gives back a storage piece's contents with it.

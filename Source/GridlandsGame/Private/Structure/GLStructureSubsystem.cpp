@@ -1,6 +1,7 @@
 #include "Structure/GLStructureSubsystem.h"
 
 #include "Building/GLPendingCollapse.h"
+#include "Building/GLPlayerPieceBatch.h"
 #include "Character/GLCharacter.h"
 #include "Combat/GLCreature.h"
 #include "Combat/GLCreatureRules.h"
@@ -214,7 +215,7 @@ bool UGLStructureSubsystem::PresentPart(FName Placement, FName PartName)
 	}
 	FGLStructureRuntime* Structure = Structures.Find(Placement);
 	FGLStructurePartRuntime* Part = Structure ? Structure->Find(PartName) : nullptr;
-	if (Part && !Part->Actor.IsValid())
+	if (Part && !Part->Actor.IsValid() && !Part->bInstanced)
 	{
 		Present(*Structure, *Part);
 	}
@@ -234,18 +235,22 @@ bool UGLStructureSubsystem::IsCellPresented(FName Cell) const
 	return true;
 }
 
-AGLStructurePart* UGLStructureSubsystem::Present(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part)
+bool UGLStructureSubsystem::Present(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part)
 {
-	if (Part.Actor.IsValid() || !IsPresent(Part.State))
+	if (Part.Actor.IsValid() || Part.bInstanced || !IsPresent(Part.State))
 	{
-		return Part.Actor.Get(); // already made (a landing made it), or gone for good: never made
+		return false; // already presented (a landing made it), or gone for good: never made
 	}
 	const FName Placement = Structure.Placement, Name = Part.Name;
 	const FGLActiveCollapse* Falling = Active.FindByPredicate([Placement, Name](const FGLActiveCollapse& C) { return C.Placement == Placement && C.Part == Name; });
 	if (Part.State == EGLStructurePartState::Debris && !Falling)
 	{
 		MakeDebris(Structure, Part); // at its authoritative rest, solid, salvageable as debris
-		return Part.Actor.Get();
+		return Part.Actor.IsValid();
+	}
+	if (!Falling && PresentInstanced(Structure, Part))
+	{
+		return true; // a quiescent player piece: its structure's batch draws and collides for it
 	}
 	AGLStructurePart* Actor = SpawnPart(Structure, Part);
 	if (Actor && Falling)
@@ -254,7 +259,57 @@ AGLStructurePart* UGLStructureSubsystem::Present(FGLStructureRuntime& Structure,
 		Actor->SetSolid(false);
 		Actor->SetActorTransform(GLCollapseRules::Motion(Falling->Outcome, Falling->Elapsed));
 	}
-	return Actor;
+	return Actor != nullptr;
+}
+
+AGLPlayerPieceBatch* UGLStructureSubsystem::BatchFor(FGLStructureRuntime& Structure)
+{
+	if (AGLPlayerPieceBatch* Batch = Batches.FindRef(Structure.Placement).Get())
+	{
+		return Batch;
+	}
+	AGLPlayerPieceBatch* Batch = GetWorld()->SpawnActor<AGLPlayerPieceBatch>();
+	if (Batch)
+	{
+		Batches.Add(Structure.Placement, Batch);
+	}
+	return Batch;
+}
+
+bool UGLStructureSubsystem::PresentInstanced(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part)
+{
+	if (!Structure.bPlayer || Part.State != EGLStructurePartState::Intact || Part.Actor.IsValid() || !AGLPlayerPieceBatch::CanInstance(Part.Piece))
+	{
+		return false;
+	}
+#if !UE_BUILD_SHIPPING
+	// Evidence only (-GLActorPieces): the pre-instancing presentation, one actor per piece, for a same-binary A/B.
+	static const bool bActorPieces = FParse::Param(FCommandLine::Get(), TEXT("GLActorPieces"));
+	if (bActorPieces)
+	{
+		return false;
+	}
+#endif
+	AGLPlayerPieceBatch* Batch = BatchFor(Structure);
+	if (!Batch || !Batch->Add(Part.Piece))
+	{
+		return false;
+	}
+	Part.bInstanced = true;
+	return true;
+}
+
+void UGLStructureSubsystem::Uninstance(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part)
+{
+	if (!Part.bInstanced)
+	{
+		return;
+	}
+	if (AGLPlayerPieceBatch* Batch = Batches.FindRef(Structure.Placement).Get())
+	{
+		Batch->Remove(Part.Piece.Id);
+	}
+	Part.bInstanced = false;
 }
 
 int32 UGLStructureSubsystem::PumpPresentation(const FVector& Where, double BudgetSeconds, double NearCm)
@@ -267,6 +322,20 @@ int32 UGLStructureSubsystem::PumpPresentation(const FVector& Where, double Budge
 		if (AGLStructurePart* Actor = Retiring.Pop(EAllowShrinking::No).Get())
 		{
 			Actor->Destroy();
+		}
+	}
+	// A retired batch's collision goes in steps of a few hundred bodies, then the batch (one actor for a whole player
+	// structure): the unload frame never pays for its piece count.
+	while (RetiringBatchList.Num() > 0 && BudgetSeconds >= 0.0 && (BudgetSeconds == 0.0 || FPlatformTime::Seconds() - Start < BudgetSeconds))
+	{
+		AGLPlayerPieceBatch* Batch = RetiringBatchList.Last().Get();
+		if (!Batch || Batch->RetireStep(256))
+		{
+			if (Batch)
+			{
+				Batch->Destroy();
+			}
+			RetiringBatchList.Pop(EAllowShrinking::No);
 		}
 	}
 	// P11: one pass to find every waiting part (parts indexed by name once per structure), then nearest first. The
@@ -307,7 +376,7 @@ int32 UGLStructureSubsystem::PumpPresentation(const FVector& Where, double Budge
 		const TPair<FName, FName>& Entry = Pending[Next.Value];
 		FGLStructureRuntime* Structure = Structures.Find(Entry.Key);
 		FGLStructurePartRuntime* Part = Structure ? Index.FindRef(Entry.Key).FindRef(Entry.Value) : nullptr;
-		if (Part && !Part->Actor.IsValid() && Present(*Structure, *Part))
+		if (Part && !Part->Actor.IsValid() && !Part->bInstanced && Present(*Structure, *Part))
 		{
 			++Made;
 		}
@@ -330,7 +399,9 @@ AGLStructurePart* UGLStructureSubsystem::SpawnPart(FGLStructureRuntime& Structur
 	// P11: an intact player piece is taken apart by the building verbs (dismantle, smash), never by the salvage
 	// interaction; its debris salvages like any debris (MakeDebris).
 	const bool bSalvageable = !(Part.IsPlayer() && Part.State == EGLStructurePartState::Intact);
-	if (!Actor || !Actor->Setup(Part.Piece) || (bSalvageable && !Actor->GetSalvageable()->Setup(Part.Salvage)))
+	// A falling player piece (it left its batch when its support failed) salvages by the collapse path, as its debris will.
+	const EGLSalvagePath Path = Part.IsPlayer() ? EGLSalvagePath::Collapse : EGLSalvagePath::Careful;
+	if (!Actor || !Actor->Setup(Part.Piece) || (bSalvageable && !Actor->GetSalvageable()->Setup(Part.Salvage, nullptr, Path)))
 	{
 		UE_LOG(LogGridlands, Error, TEXT("Structures: could not spawn %s/%s"), *Structure.Placement.ToString(), *Part.Name.ToString());
 		if (Actor)
@@ -349,6 +420,7 @@ AGLStructurePart* UGLStructureSubsystem::SpawnPart(FGLStructureRuntime& Structur
 
 void UGLStructureSubsystem::MakeDebris(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part)
 {
+	Uninstance(Structure, Part); // debris keeps an actor: it is salvaged by interaction (and a crate's contents ride with it)
 	AGLStructurePart* Actor = Part.Actor.Get();
 	if (!Actor)
 	{
@@ -458,6 +530,13 @@ TArray<int32> UGLStructureSubsystem::Collapse(FGLStructureRuntime& Structure, AA
 		// The outcome is final now: a save, an unload or a restart from here keeps the debris where it rests.
 		Part->State = EGLStructurePartState::Debris;
 		Part->Rest = Outcome.Rest;
+		if (Part->bInstanced)
+		{
+			// P11: a quiescent piece leaves its batch at support failure and falls as an actor along the plan (the model
+			// decided the fall; the impact decides its victims, P10). Its debris keeps that actor.
+			Uninstance(Structure, *Part);
+			SpawnPart(Structure, *Part);
+		}
 		if (AGLStructurePart* Actor = Part->Actor.Get())
 		{
 			Actor->SetSolid(false);
@@ -633,6 +712,13 @@ int32 UGLStructureSubsystem::RemoveCell(FName Cell)
 			for (const FGLStructurePartRuntime& Part : It.Value().Parts)
 			{
 				PlayerPieceCells.Remove(Part.Piece.Id);
+			}
+			// The instanced presentation leaves whole: one actor hidden and without collision, destroyed later.
+			TWeakObjectPtr<AGLPlayerPieceBatch> Batch;
+			if (Batches.RemoveAndCopyValue(It.Key(), Batch) && Batch.IsValid())
+			{
+				Batch->Retire();
+				RetiringBatchList.Add(Batch);
 			}
 			// Evidence (P11 density): making a player structure inert is synchronous in the unload frame.
 			UE_LOG(LogGridlands, Log, TEXT("Structures: %s retired %d player parts in %.2f ms"), *It.Key().ToString(), It.Value().Parts.Num(), (FPlatformTime::Seconds() - RetireStart) * 1000.0);
@@ -898,9 +984,9 @@ bool UGLStructureSubsystem::AddPlayerPiece(const FGLPlacedPiece& InPiece, bool b
 	{
 		Pending.Add({ Key, Part.Name });
 	}
-	else
+	else if (!PresentInstanced(Structure, Part))
 	{
-		SpawnPart(Structure, Part);
+		SpawnPart(Structure, Part); // storage (interaction) and other pieces that need an actor
 	}
 	return true;
 }
@@ -954,6 +1040,7 @@ TArray<int32> UGLStructureSubsystem::RemovePlayerPiece(int32 PieceId, AActor* By
 		return {};
 	}
 	const FVector Where = PartBox(*Part).GetCenter();
+	Uninstance(*Structure, *Part);
 	ToDestroy.Add(Part->Actor);
 	Part->Actor = nullptr;
 	Pending.Remove(TPair<FName, FName>(Structure->Placement, Part->Name));
@@ -972,9 +1059,19 @@ bool UGLStructureSubsystem::SetPlayerLayers(int32 PieceId, const TArray<FName>& 
 		return false;
 	}
 	Part->Piece.Layers = Layers;
-	if (AGLStructurePart* Actor = Part->Actor.Get())
+	// Presentation follows the fact: the frame becomes a finished wall (re-instanced, or its actor rebuilt).
+	FGLStructureRuntime* Structure = Structures.Find(PlayerKey(Part->Piece.Cell));
+	if (Part->bInstanced && Structure)
 	{
-		Actor->Setup(Part->Piece); // presentation follows the fact: the frame becomes a finished wall
+		Uninstance(*Structure, *Part);
+		if (!PresentInstanced(*Structure, *Part))
+		{
+			SpawnPart(*Structure, *Part);
+		}
+	}
+	else if (AGLStructurePart* Actor = Part->Actor.Get())
+	{
+		Actor->Setup(Part->Piece);
 	}
 	return true;
 }
@@ -1060,6 +1157,11 @@ void UGLStructureSubsystem::RestorePlayerCell(FName Cell, const TArray<FGLSavedP
 		Active.RemoveAll([Key](const FGLActiveCollapse& C) { return C.Placement == Key; });
 		Pending.RemoveAll([Key](const TPair<FName, FName>& Entry) { return Entry.Key == Key; });
 		Structures.Remove(Key);
+		TWeakObjectPtr<AGLPlayerPieceBatch> Batch;
+		if (Batches.RemoveAndCopyValue(Key, Batch) && Batch.IsValid())
+		{
+			Batch->Destroy();
+		}
 	}
 	TArray<FGLSavedStructurePart> Debris;
 	for (const FGLSavedPiece& Entry : Saved)
@@ -1148,4 +1250,106 @@ UGLStructureSubsystem::ERenewal UGLStructureSubsystem::Renew(FName Placement, TC
 	}
 	UE_LOG(LogGridlands, Log, TEXT("Structures: %s renewed (all parts intact)"), *Placement.ToString());
 	return ERenewal::Renewed;
+}
+
+// ---- P11 scaling: player pieces' presentation (GAMEPLAY MODEL != PRESENTATION) ----
+
+int32 UGLStructureSubsystem::PlayerPieceAt(const FHitResult& Hit) const
+{
+	int32 Id = 0;
+	if (const AGLPlayerPieceBatch* Batch = Cast<AGLPlayerPieceBatch>(Hit.GetActor()))
+	{
+		Id = Batch->PieceIdAt(Hit.GetComponent(), Hit.Item); // the batch's owner table, never the renderer order
+	}
+	else if (const AGLStructurePart* Actor = Cast<AGLStructurePart>(Hit.GetActor()); Actor && !Actor->bRetired)
+	{
+		Id = Actor->StructurePlacement.ToString().StartsWith(TEXT("player:")) ? Actor->GetPiece().Id : 0;
+	}
+	return Id && FindPlayerPiece(Id) ? Id : 0;
+}
+
+FName UGLStructureSubsystem::ShownPhaseOf(int32 PieceId) const
+{
+	const FGLStructurePartRuntime* Part = FindPlayerPiece(PieceId);
+	if (!Part)
+	{
+		return NAME_None;
+	}
+	if (Part->bInstanced)
+	{
+		const AGLPlayerPieceBatch* Batch = Batches.FindRef(PlayerKey(Part->Piece.Cell)).Get();
+		return Batch ? Batch->ShownPhaseOf(PieceId) : NAME_None;
+	}
+	const AGLStructurePart* Actor = Part->Actor.Get();
+	return Actor ? Actor->ShownPhase() : NAME_None;
+}
+
+bool UGLStructureSubsystem::IsPresented(int32 PieceId) const
+{
+	const FGLStructurePartRuntime* Part = FindPlayerPiece(PieceId);
+	return Part && (Part->bInstanced || Part->Actor.IsValid());
+}
+
+bool UGLStructureSubsystem::IsInstanced(int32 PieceId) const
+{
+	const FGLStructurePartRuntime* Part = FindPlayerPiece(PieceId);
+	return Part && Part->bInstanced;
+}
+
+void UGLStructureSubsystem::SetRemovalHighlight(const TArray<int32>& PieceIds)
+{
+	for (const int32 Id : HighlightedActors)
+	{
+		const FGLStructurePartRuntime* Part = FindPlayerPiece(Id);
+		if (AGLStructurePart* Actor = Part ? Part->Actor.Get() : nullptr)
+		{
+			Actor->SetRemovalHighlight(false);
+		}
+	}
+	HighlightedActors.Reset();
+	for (const TPair<FName, TWeakObjectPtr<AGLPlayerPieceBatch>>& Entry : Batches)
+	{
+		if (AGLPlayerPieceBatch* Batch = Entry.Value.Get())
+		{
+			Batch->SetHighlighted(PieceIds); // it shows those it presents
+		}
+	}
+	for (const int32 Id : PieceIds)
+	{
+		const FGLStructurePartRuntime* Part = FindPlayerPiece(Id);
+		if (AGLStructurePart* Actor = Part ? Part->Actor.Get() : nullptr)
+		{
+			Actor->SetRemovalHighlight(true);
+			HighlightedActors.Add(Id);
+		}
+	}
+}
+
+AGLPlayerPieceBatch* UGLStructureSubsystem::BatchOf(FName Cell) const
+{
+	return Batches.FindRef(PlayerKey(Cell)).Get();
+}
+
+UGLStructureSubsystem::FPlayerPresentation UGLStructureSubsystem::PlayerPresentation(FName Cell) const
+{
+	FPlayerPresentation Out;
+	for (const TPair<FName, FGLStructureRuntime>& Entry : Structures)
+	{
+		if (!Entry.Value.bPlayer || (!Cell.IsNone() && Entry.Value.Cell != Cell))
+		{
+			continue;
+		}
+		for (const FGLStructurePartRuntime& Part : Entry.Value.Parts)
+		{
+			Out.Instanced += Part.bInstanced ? 1 : 0;
+			Out.Actors += Part.Actor.IsValid() ? 1 : 0;
+		}
+		if (const AGLPlayerPieceBatch* Batch = Batches.FindRef(Entry.Key).Get())
+		{
+			Out.Instances += Batch->NumInstances();
+			Out.Components += Batch->NumComponents();
+			++Out.Batches;
+		}
+	}
+	return Out;
 }

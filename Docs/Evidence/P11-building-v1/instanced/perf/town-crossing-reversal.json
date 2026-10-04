@@ -1,0 +1,150 @@
+{
+	"mode": "reversal",
+	"speedMetresPerSecond": 12,
+	"frames": 35777,
+	"worstFrameMs": 36.753110121935606,
+	"frameMsMean": 3.9590015405397039,
+	"frameMsP99": 5.1890059839934111,
+	"streamingGameThreadMsWorst": 8.8065459858626127,
+	"streamingGameThreadMsMean": 0.03037339273951499,
+	"gameThreadMsMean": 1.7720475721130011,
+	"denseProof": false,
+	"townBlock": true,
+	"presentationBudgetMs": 1.5,
+	"presentationFrames": 212,
+	"presentationUnits": 1521,
+	"presentationMsWorst": 2.2930118720978498,
+	"presentationMsMean": 1.6106013549087603,
+	"presentationPendingPeak": 507,
+	"authoritativeLayerMsWorst": 3.8827189709991217,
+	"gpuMsMean": 3.5015450704789806,
+	"memStartMb": 2851.9296875,
+	"memPeakMb": 3742.703125,
+	"navActiveTilesPeak": 273,
+	"navPendingTasksPeak": 196,
+	"navInvokersOnly": true,
+	"endNavActiveTiles": 227,
+	"endNavTileMb": 0.1203155517578125,
+	"endNavPendingTasks": 0,
+	"emergencyChunks": 0,
+	"terrainMeshChunksAtEnd": 256,
+	"terrainMeshPooledAtEnd": 256,
+	"terrainMeshTrianglesAtEnd": 2097152,
+	"terrainMeshCpuMbAtEnd": 196,
+	"terrainMeshGpuMbAtEnd": 264,
+	"staleResultsDropped": 0,
+	"chunksReused": 512,
+	"chunksSpawned": 512,
+	"chunksPooledAtEnd": 256,
+	"terrainFirstBuildApplies": 508,
+	"terrainFirstBuildMsMean": 0.096225688475968796,
+	"terrainFirstBuildMsMax": 0.26330701075494289,
+	"terrainReusedApplies": 512,
+	"terrainReusedMsMean": 0.073510144829924684,
+	"terrainReusedMsMax": 0.57394499890506268,
+	"terrainPoolRejected": 0,
+	"terrainPoolOverflowDestroyed": 0,
+	"terrainCollisionMode": "heightfield",
+	"terrainCollisionWorkerBuildMsTotal": 61.700000000000003,
+	"terrainCollisionGameThreadBuildMsTotal": 0.19662524573504925,
+	"arrival": "crossed at frame 27927; lots ground ready, lots complete yes, emergency chunks so far 0",
+	"cellLoads": [
+		{
+			"cell": "cell.home.origin",
+			"epoch": 1,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.0061694271862506866,
+			"runtimeReadySeconds": 0.49018348613753915,
+			"presentedSeconds": 0.57726218900643289,
+			"cellCompleteSeconds": 0.78133441205136478
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 2,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.096532979048788548,
+			"runtimeReadySeconds": 0.10022544790990651,
+			"presentedSeconds": 0.6001718589104712,
+			"cellCompleteSeconds": 0.60017216601409018
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 3,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.097702814964577556,
+			"runtimeReadySeconds": 0.1015785220079124,
+			"presentedSeconds": 0.57600044109858572,
+			"cellCompleteSeconds": 0.57600104412995279
+		},
+		{
+			"cell": "cell.outer.diner_lots",
+			"epoch": 4,
+			"cancelledMidLoad": false,
+			"groundReadySeconds": 0.096893982030451298,
+			"runtimeReadySeconds": 0.10042356583289802,
+			"presentedSeconds": 0.53556731482967734,
+			"cellCompleteSeconds": 0.53556764405220747
+		}
+	],
+	"hitches": [
+		{
+			"frame": 8817,
+			"engineFrame": 8847,
+			"ms": 36.753110121935606,
+			"xMetres": 127.91082260850817,
+			"streamingMs": 2.2813579998910427,
+			"gameThreadMs": 38.583999633789062,
+			"renderThreadMs": 6.6479997634887695,
+			"rhiThreadMs": 2.0690000057220459,
+			"garbageCollected": true,
+			"levelStreamingPending": false,
+			"attribution": "v2-same-frame"
+		},
+		{
+			"frame": 16881,
+			"engineFrame": 16911,
+			"ms": 35.509187029674649,
+			"xMetres": 127.91354246716946,
+			"streamingMs": 2.4113880936056376,
+			"gameThreadMs": 36.977001190185547,
+			"renderThreadMs": 4.8470001220703125,
+			"rhiThreadMs": 1.4340000152587891,
+			"garbageCollected": true,
+			"levelStreamingPending": false,
+			"attribution": "v2-same-frame"
+		},
+		{
+			"frame": 31635,
+			"engineFrame": 31665,
+			"ms": 21.837614942342043,
+			"xMetres": 705.38531464058906,
+			"streamingMs": 0.017649028450250626,
+			"gameThreadMs": 21.190999984741211,
+			"renderThreadMs": 2.744999885559082,
+			"rhiThreadMs": 0.70999997854232788,
+			"garbageCollected": true,
+			"levelStreamingPending": false,
+			"attribution": "v2-same-frame"
+		}
+	],
+	"garbageCollections": 4,
+	"gcObjects": [
+		{
+			"liveBefore": 58051,
+			"liveAfter": 57319
+		},
+		{
+			"liveBefore": 59985,
+			"liveAfter": 57417
+		},
+		{
+			"liveBefore": 60083,
+			"liveAfter": 60083
+		},
+		{
+			"liveBefore": 57944,
+			"liveAfter": 57657
+		}
+	],
+	"liveObjectsAtEnd": 57657
+}

@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp
++++ b/Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp
+@@ -26,7 +26,7 @@
+ {
+ 	const FGLBuildPieceDef* Def = GLContent::Get().Find<FGLBuildPieceDef>(Piece.Def);
+ 	FGLPieceLook Look;
+-	if (!Def || Def->Storage.Slots > 0 || !GLPiecePresentation::Describe(Piece, Look))
++	if (!Def || !GLPiecePresentation::Describe(Piece, Look)) // DEFECT: a crate loses its actor (Store / Take)
+ 	{
+ 		return false;
+ 	}

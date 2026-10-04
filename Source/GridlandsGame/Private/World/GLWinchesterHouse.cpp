@@ -336,11 +336,9 @@ bool FGLWinchesterHouse::Frame(UWorld* World, AActor* Zenny)
 	UGLBuildingSubsystem* Building = World->GetSubsystem<UGLBuildingSubsystem>();
 	for (const FGLPlacedPiece& Piece : Building->GetPieces())
 	{
-		if (const AGLBuildPiece* Actor = Building->FindActor(Piece.Id))
-		{
-			Framed += Actor->ShownPhase() == FName(TEXT("frame")) ? 1 : 0;
-			Complete += Actor->ShownPhase() == FName(TEXT("complete")) ? 1 : 0;
-		}
+		const FName Shown = Building->ShownPhaseOf(Piece.Id); // as presented (instanced or by its actor)
+		Framed += Shown == FName(TEXT("frame")) ? 1 : 0;
+		Complete += Shown == FName(TEXT("complete")) ? 1 : 0;
 	}
 	Note(TEXT("FRAME first: stud walls, doorways and rafters visibly framed"), Framed == 10 + 3 + 11, FString::Printf(TEXT("%d showing framing, %d complete as built"), Framed, Complete));
 	Note(TEXT("every frame placed, PREVIEW == REALITY"), PreviewMismatches == 0 && Placements - PreviewMismatches - Before == Frames().Num() + UE_ARRAY_COUNT(BaySequence),
@@ -376,11 +374,9 @@ bool FGLWinchesterHouse::Finish(UWorld* World, AActor* Zenny)
 	int32 Framed = 0, Finished = 0;
 	for (const FGLPlacedPiece& Piece : Building->GetPieces())
 	{
-		if (const AGLBuildPiece* Actor = Building->FindActor(Piece.Id))
-		{
-			Framed += Actor->ShownPhase() == FName(TEXT("frame")) ? 1 : 0;
-			Finished += Actor->ShownPhase() == FName(TEXT("finish")) ? 1 : 0;
-		}
+		const FName Shown = Building->ShownPhaseOf(Piece.Id);
+		Framed += Shown == FName(TEXT("frame")) ? 1 : 0;
+		Finished += Shown == FName(TEXT("finish")) ? 1 : 0;
 	}
 	Note(TEXT("FINISH applied afterwards (clapboard, shingles)"), Installed == Wanted && Framed == 0, FString::Printf(TEXT("%d/%d installed; %d finished, %d still framed"), Installed, Wanted, Finished, Framed));
 	Note(TEXT("finishing changed no support"), Building->Support().OrderIndependentCompareEqual(SupportBefore));
@@ -426,7 +422,7 @@ bool FGLWinchesterHouse::PorchCollapse(UWorld* World, AActor* Zenny)
 	Stand(Zenny, At(500, -700));
 	const TArray<int32> PostPrediction = Building->PreviewRemoval(Post);
 	const FGLDemolishResult PostOut = Building->Dismantle(Zenny, Post);
-	Note(TEXT("porch post out: predicted to stand, and it stands"), PostOut.IsDone() && PostPrediction.Num() == 0 && PostOut.Collapsed.Num() == 0 && Building->FindActor(Roof) != nullptr,
+	Note(TEXT("porch post out: predicted to stand, and it stands"), PostOut.IsDone() && PostPrediction.Num() == 0 && PostOut.Collapsed.Num() == 0 && Building->IsPresented(Roof),
 		FString::Printf(TEXT("predicted %d falling, %d fell"), PostPrediction.Num(), PostOut.Collapsed.Num()));
 	const TArray<int32> ColumnPrediction = Building->PreviewRemoval(Column);
 	const FGLDemolishResult ColumnOut = Building->Dismantle(Zenny, Column);

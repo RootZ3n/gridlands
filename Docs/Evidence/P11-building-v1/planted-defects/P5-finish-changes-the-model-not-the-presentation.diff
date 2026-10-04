@@ -1,0 +1,15 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -1063,11 +1063,7 @@
+ 	FGLStructureRuntime* Structure = Structures.Find(PlayerKey(Part->Piece.Cell));
+ 	if (Part->bInstanced && Structure)
+ 	{
+-		Uninstance(*Structure, *Part);
+-		if (!PresentInstanced(*Structure, *Part))
+-		{
+-			SpawnPart(*Structure, *Part);
+-		}
++		// DEFECT: the batch keeps showing the frame
+ 	}
+ 	else if (AGLStructurePart* Actor = Part->Actor.Get())
+ 	{

@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -560,7 +560,7 @@
+@@ -639,7 +639,7 @@
  		const AGLCreature* AsCreature = Cast<AGLCreature>(*It);
  		if (AsCreature && Placements && Placements->FindActorModel(AsCreature->GetPlacementId()))
  		{

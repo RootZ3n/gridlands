@@ -10,6 +10,8 @@
 #include "GLStructureSubsystem.generated.h"
 
 class AGLStructurePart;
+class AGLPlayerPieceBatch;
+struct FHitResult;
 
 /** One part of a live structure: its piece in world space and what has happened to it. */
 struct GRIDLANDSGAME_API FGLStructurePartRuntime
@@ -26,6 +28,8 @@ struct GRIDLANDSGAME_API FGLStructurePartRuntime
 	/** P11: a storage piece's contents (kept with the piece, intact or as debris; never lost, never duplicated). */
 	FGLInventory Contents = FGLInventory(0);
 	TWeakObjectPtr<AGLStructurePart> Actor;
+	/** P11 scaling: presented by its structure's instanced batch (a quiescent player piece), not by an actor. */
+	bool bInstanced = false;
 
 	bool IsPlayer() const { return Piece.Origin == EGLPieceOrigin::Player; }
 };
@@ -126,6 +130,25 @@ public:
 	/** Replaces an intact player piece's layers (a finish installed) and re-presents it. Support is unchanged by layers. */
 	bool SetPlayerLayers(int32 PieceId, const TArray<FName>& Layers);
 	TSet<FName> CellsWithPlayerPieces() const;
+
+	// ---- P11 scaling: player pieces' presentation (GAMEPLAY MODEL != PRESENTATION) ----
+	/**
+	 * The player piece a hit belongs to (0: none): an instance of a player structure's batch (through the batch's owner
+	 * table, never its renderer order) or a player piece's own actor (storage, falling, debris).
+	 */
+	int32 PlayerPieceAt(const FHitResult& Hit) const;
+	/** "frame", "finish" or "complete" as presented now; None while it is not presented. */
+	FName ShownPhaseOf(int32 PieceId) const;
+	bool IsPresented(int32 PieceId) const;
+	bool IsInstanced(int32 PieceId) const;
+	/** The removal preview: exactly these pieces shown red (instanced or actor-presented), every other one not. */
+	void SetRemovalHighlight(const TArray<int32>& PieceIds);
+	/** A cell's player batch (null when it has no instanced piece yet). */
+	AGLPlayerPieceBatch* BatchOf(FName Cell) const;
+	int32 RetiringBatches() const { return RetiringBatchList.Num(); }
+	struct FPlayerPresentation { int32 Instanced = 0; int32 Actors = 0; int32 Instances = 0; int32 Components = 0; int32 Batches = 0; };
+	/** Evidence: how a cell's (or every cell's) player construction is presented now. */
+	FPlayerPresentation PlayerPresentation(FName Cell = NAME_None) const;
 	/** Save: a cell's player pieces (intact and debris, with layers and contents), sorted by id. */
 	void CapturePlayerCell(FName Cell, TArray<FGLSavedPiece>& Out) const;
 	/** Load/stream-in: a cell's saved player pieces, silently (presentation deferred); collapses in flight resume. */
@@ -196,8 +219,13 @@ private:
 	void Land(FGLActiveCollapse& Collapse);
 	AGLStructurePart* SpawnPart(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part);
 	void MakeDebris(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part);
-	/** Makes a deferred part's actor in its current authoritative state (or nothing, if it is gone). */
-	AGLStructurePart* Present(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part);
+	/** Presents a deferred part in its current authoritative state (instanced or an actor; nothing, if it is gone). */
+	bool Present(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part);
+	/** A quiescent intact player piece into its structure's batch. False: it needs an actor (or is not presentable). */
+	bool PresentInstanced(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part);
+	/** Out of the batch (it is about to fall, be re-presented or go): its instances only; the record is untouched. */
+	void Uninstance(FGLStructureRuntime& Structure, FGLStructurePartRuntime& Part);
+	AGLPlayerPieceBatch* BatchFor(FGLStructureRuntime& Structure);
 	bool IsPending(FName Placement, FName Part) const;
 	double GroundAt(const FVector2D& At) const;
 
@@ -208,6 +236,11 @@ private:
 	TArray<TPair<FName, FName>> Pending;
 	/** Retired part actors of unloaded cells, destroyed within the presentation budget. */
 	TArray<TWeakObjectPtr<AGLStructurePart>> Retiring;
+	/** P11: player structure -> its instanced batch; and retired batches of unloaded cells (one actor per cell). */
+	TMap<FName, TWeakObjectPtr<AGLPlayerPieceBatch>> Batches;
+	TArray<TWeakObjectPtr<AGLPlayerPieceBatch>> RetiringBatchList;
+	/** Actor-presented pieces shown red by the removal preview. */
+	TArray<int32> HighlightedActors;
 	TArray<FGLActiveCollapse> Active;
 	TArray<FGLImpactRecord> Impacts;
 	TArray<TWeakObjectPtr<AActor>> ToDestroy;

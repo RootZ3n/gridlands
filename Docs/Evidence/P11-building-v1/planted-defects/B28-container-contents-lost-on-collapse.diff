@@ -1,10 +1,10 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -457,6 +457,7 @@
+@@ -529,6 +529,7 @@
  		}
  		// The outcome is final now: a save, an unload or a restart from here keeps the debris where it rests.
  		Part->State = EGLStructurePartState::Debris;
 +		Part->Contents = FGLInventory(0); // DEFECT
  		Part->Rest = Outcome.Rest;
- 		if (AGLStructurePart* Actor = Part->Actor.Get())
+ 		if (Part->bInstanced)
  		{

@@ -108,10 +108,38 @@ model; terraforming under player structures still refused.
   their data's `legacyLayers` (the M10 timber wall becomes a stud frame + `finish.modern.timber_board_wall`).
   Inventory, terrain, debris and encounter state are untouched.
 
+### 11. Instanced presentation of player construction (operator decision 2026-10-03, option b)
+The candidate review found that unloading a player base made every piece inert in one frame and fed hundreds of actors to
+the next GC. The operator chose instanced presentation, keeping **GAMEPLAY MODEL != PRESENTATION**.
+- **The model is unchanged.** Every piece stays an individually authoritative record in `UGLStructureSubsystem`:
+  identity, ownership, layers, support, preview, removal prediction, salvage, contents, collapse, impact, save and plans.
+- **Quiescent intact pieces are drawn and collided by one `AGLPlayerPieceBatch` per player structure (cell).**
+  - Instanced static mesh sets keyed only by what instances share: the blockout box's colour, or the authored visual.
+  - One hidden collision set holds every piece's shapes. It is the authoritative envelope: blocking, and read by
+    navigation.
+  - One overlay set draws the removal preview.
+  - What a piece shows is decided once, in `GLPiecePresentation::Describe`, which a piece's own actor uses too.
+- **Identity.** Every set keeps an owner table (instance index -> piece id), mirrored on every add and removal. Instances
+  are removed in order, never swapped. A hit (aim, interaction, a footstep's floor) is translated through it
+  (`UGLStructureSubsystem::PlayerPieceAt`). Renderer order is never gameplay identity, and nothing about instances is
+  saved: the batch is rebuilt from the model on stream-in and load.
+- **Dynamic pieces keep, or acquire, an actor.**
+  - Storage keeps its actor (Store / Take interaction).
+  - A look with lights or corruption cubes keeps one.
+  - A piece whose support fails leaves the batch and falls as an actor along the canonical plan. The impact is decided
+    at impact time (P10), and its debris keeps that actor (salvaged by interaction).
+  - Debris does not return to the batch (few, interactive).
+  - A finish change re-presents the piece (re-instanced). Nothing churns per frame.
+- **Stream-out:** the batch is retired whole (hidden, no collision) and destroyed within the presentation budget: one actor
+  per cell, whatever the piece count.
+- `-GLActorPieces` (dev only) restores one actor per piece, for same-binary measurement.
+
 ## Consequences
 - Authored and player structures share one structural language in code, not only in data.
 - The quarter-turn limitation is gone before content depends on it.
 - Player pieces restore over frames; the P8 synchronous-restore debt is closed.
+- A player base's presentation costs one actor and a handful of components, not one actor per piece: unloading it no
+  longer scales with destroying hundreds of actors in one frame, and the next GC walks far fewer objects (§11).
 - The density fixture found two scaling defects before content did (the presentation pump and a per-tuft query).
 
 ## Not changed / not built

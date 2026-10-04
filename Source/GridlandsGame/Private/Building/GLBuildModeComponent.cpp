@@ -218,7 +218,7 @@ void UGLBuildModeComponent::Demolish()
 		return;
 	}
 	UGLBuildingSubsystem* Building = GetWorld()->GetSubsystem<UGLBuildingSubsystem>();
-	if (const int32 Id = Building->PieceIdOf(Hit.GetActor()))
+	if (const int32 Id = Building->PieceIdAt(Hit))
 	{
 		const FGLDemolishResult Result = Building->Dismantle(GetOwner(), Id);
 		if (!Result.IsDone())
@@ -236,7 +236,7 @@ void UGLBuildModeComponent::Smash()
 		return;
 	}
 	UGLBuildingSubsystem* Building = GetWorld()->GetSubsystem<UGLBuildingSubsystem>();
-	if (const int32 Id = Building->PieceIdOf(Hit.GetActor()))
+	if (const int32 Id = Building->PieceIdAt(Hit))
 	{
 		Building->Smash(GetOwner(), Id);
 	}
@@ -250,7 +250,7 @@ void UGLBuildModeComponent::InstallFinish()
 		return;
 	}
 	UGLBuildingSubsystem* Building = GetWorld()->GetSubsystem<UGLBuildingSubsystem>();
-	const int32 Id = Building->PieceIdOf(Hit.GetActor());
+	const int32 Id = Building->PieceIdAt(Hit);
 	if (!Id)
 	{
 		return;
@@ -281,7 +281,7 @@ void UGLBuildModeComponent::UpdateRemovalPreview(const FHitResult* Hit)
 	UGLBuildingSubsystem* Building = GetWorld() ? GetWorld()->GetSubsystem<UGLBuildingSubsystem>() : nullptr;
 	if (Hit && Building)
 	{
-		if (const int32 Id = Building->PieceIdOf(Hit->GetActor()))
+		if (const int32 Id = Building->PieceIdAt(*Hit))
 		{
 			Now = Building->PreviewRemoval(Id); // the commit's own function: what is shown is what will fall
 		}
@@ -290,19 +290,9 @@ void UGLBuildModeComponent::UpdateRemovalPreview(const FHitResult* Hit)
 	{
 		return;
 	}
-	for (const int32 Id : Highlighted)
+	if (Building)
 	{
-		if (AGLBuildPiece* Actor = Building ? Building->FindActor(Id) : nullptr)
-		{
-			Actor->SetRemovalHighlight(false);
-		}
-	}
-	for (const int32 Id : Now)
-	{
-		if (AGLBuildPiece* Actor = Building ? Building->FindActor(Id) : nullptr)
-		{
-			Actor->SetRemovalHighlight(true);
-		}
+		Building->SetRemovalHighlight(Now); // instanced pieces through their batch, actor-presented ones on their actor
 	}
 	Highlighted = Now;
 }

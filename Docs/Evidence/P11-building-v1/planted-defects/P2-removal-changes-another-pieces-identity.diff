@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp
++++ b/Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp
+@@ -176,7 +176,7 @@
+ 		const_cast<UInstancedStaticMeshComponent*>(Entry.Key)->RemoveInstances(Indices, /*bInstanceArrayAlreadySortedInReverseOrder=*/true);
+ 		for (const int32 I : Indices)
+ 		{
+-			Entry.Value.RemoveAt(I);
++			Entry.Value.RemoveAtSwap(I); // DEFECT: the table swaps while the instances shift
+ 		}
+ 	}
+ 	if (Highlighted.Remove(PieceId) > 0)

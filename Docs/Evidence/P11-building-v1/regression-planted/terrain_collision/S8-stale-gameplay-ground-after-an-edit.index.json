@@ -2,8 +2,8 @@
 	"devices": [
 		{
 			"deviceName": "Pehverse",
-			"instance": "01A10359ACB97E78BFD4A3EC50FA9FAC",
-			"instanceName": "Pehverse-2591007",
+			"instance": "01A10625879172109A0189DB0F15731D",
+			"instanceName": "Pehverse-3929592",
 			"platform": "LinuxEditor",
 			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
 			"model": "Default",
@@ -15,13 +15,13 @@
 			"appInstanceLog": ""
 		}
 	],
-	"reportCreatedOn": "2026.10.03-20.00.06",
+	"reportCreatedOn": "2026.10.04-09.02.00",
 	"succeeded": 12,
 	"succeededWithWarnings": 0,
 	"failed": 5,
 	"notRun": 0,
 	"inProcess": 0,
-	"totalDuration": 21.444353103637695,
+	"totalDuration": 21.172590255737305,
 	"comparisonExported": false,
 	"comparisonExportDirectory": "",
 	"tests": [
@@ -31,10 +31,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 1.5478997230529785,
-			"dateTime": "2026.10.03-19.59.45",
+			"duration": 1.5102062225341797,
+			"dateTime": "2026.10.04-09.01.39",
 			"entries": [
 				{
 					"event":
@@ -46,31 +46,31 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.45"
+					"timestamp": "2026.10.04-09.01.39"
 				},
 				{
 					"event":
 					{
 						"type": "Info",
-						"message": "active tiles after the walk: 177; old place on navigation: yes",
+						"message": "active tiles after the walk: 179; old place on navigation: yes",
 						"context": "",
 						"artifact": "00000000000000000000000000000000"
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.46"
+					"timestamp": "2026.10.04-09.01.40"
 				},
 				{
 					"event":
 					{
 						"type": "Info",
-						"message": "stale tiles (built, not active): 0; swept so far: 14",
+						"message": "stale tiles (built, not active): 0; swept so far: 16",
 						"context": "",
 						"artifact": "00000000000000000000000000000000"
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.46"
+					"timestamp": "2026.10.04-09.01.40"
 				},
 				{
 					"event":
@@ -82,7 +82,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.46"
+					"timestamp": "2026.10.04-09.01.40"
 				}
 			],
 			"warnings": 0,
@@ -95,10 +95,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 0.65527921915054321,
-			"dateTime": "2026.10.03-19.59.46",
+			"duration": 0.61303228139877319,
+			"dateTime": "2026.10.04-09.01.40",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -110,10 +110,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 1.7686132192611694,
-			"dateTime": "2026.10.03-19.59.47",
+			"duration": 1.7291644811630249,
+			"dateTime": "2026.10.04-09.01.41",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -125,10 +125,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 0.2317180335521698,
-			"dateTime": "2026.10.03-19.59.49",
+			"duration": 0.22090539336204529,
+			"dateTime": "2026.10.04-09.01.43",
 			"entries": [
 				{
 					"event":
@@ -140,7 +140,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.49"
+					"timestamp": "2026.10.04-09.01.43"
 				}
 			],
 			"warnings": 0,
@@ -153,10 +153,10 @@
 			"tags": [],
 			"state": "Fail",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 0.54058593511581421,
-			"dateTime": "2026.10.03-19.59.49",
+			"duration": 0.53977680206298828,
+			"dateTime": "2026.10.04-09.01.43",
 			"entries": [
 				{
 					"event":
@@ -168,7 +168,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.49"
+					"timestamp": "2026.10.04-09.01.43"
 				},
 				{
 					"event":
@@ -180,7 +180,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.49"
+					"timestamp": "2026.10.04-09.01.43"
 				},
 				{
 					"event":
@@ -192,7 +192,7 @@
 					},
 					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainNavigationTests.cpp",
 					"lineNumber": 179,
-					"timestamp": "2026.10.03-19.59.49"
+					"timestamp": "2026.10.04-09.01.43"
 				}
 			],
 			"warnings": 0,
@@ -205,10 +205,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 0.19911478459835052,
-			"dateTime": "2026.10.03-19.59.50",
+			"duration": 0.2076357901096344,
+			"dateTime": "2026.10.04-09.01.43",
 			"entries": [
 				{
 					"event":
@@ -220,7 +220,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.50"
+					"timestamp": "2026.10.04-09.01.44"
 				}
 			],
 			"warnings": 0,
@@ -233,10 +233,10 @@
 			"tags": [],
 			"state": "Fail",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 0.074418053030967712,
-			"dateTime": "2026.10.03-19.59.50",
+			"duration": 0.074740581214427948,
+			"dateTime": "2026.10.04-09.01.44",
 			"entries": [
 				{
 					"event":
@@ -247,8 +247,8 @@
 						"artifact": "00000000000000000000000000000000"
 					},
 					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingTests.cpp",
-					"lineNumber": 279,
-					"timestamp": "2026.10.03-19.59.50"
+					"lineNumber": 278,
+					"timestamp": "2026.10.04-09.01.44"
 				},
 				{
 					"event":
@@ -260,7 +260,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.50"
+					"timestamp": "2026.10.04-09.01.44"
 				},
 				{
 					"event":
@@ -271,8 +271,8 @@
 						"artifact": "00000000000000000000000000000000"
 					},
 					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingTests.cpp",
-					"lineNumber": 296,
-					"timestamp": "2026.10.03-19.59.50"
+					"lineNumber": 295,
+					"timestamp": "2026.10.04-09.01.44"
 				},
 				{
 					"event":
@@ -283,8 +283,8 @@
 						"artifact": "00000000000000000000000000000000"
 					},
 					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingTests.cpp",
-					"lineNumber": 296,
-					"timestamp": "2026.10.03-19.59.50"
+					"lineNumber": 295,
+					"timestamp": "2026.10.04-09.01.44"
 				},
 				{
 					"event":
@@ -295,8 +295,8 @@
 						"artifact": "00000000000000000000000000000000"
 					},
 					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingTests.cpp",
-					"lineNumber": 302,
-					"timestamp": "2026.10.03-19.59.50"
+					"lineNumber": 301,
+					"timestamp": "2026.10.04-09.01.44"
 				},
 				{
 					"event":
@@ -308,7 +308,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1240,
-					"timestamp": "2026.10.03-19.59.50"
+					"timestamp": "2026.10.04-09.01.44"
 				},
 				{
 					"event":
@@ -319,8 +319,8 @@
 						"artifact": "00000000000000000000000000000000"
 					},
 					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingTests.cpp",
-					"lineNumber": 307,
-					"timestamp": "2026.10.03-19.59.50"
+					"lineNumber": 306,
+					"timestamp": "2026.10.04-09.01.44"
 				}
 			],
 			"warnings": 0,
@@ -333,10 +333,10 @@
 			"tags": [],
 			"state": "Fail",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 1.2695518732070923,
-			"dateTime": "2026.10.03-19.59.50",
+			"duration": 1.2504533529281616,
+			"dateTime": "2026.10.04-09.01.44",
 			"entries": [
 				{
 					"event":
@@ -348,7 +348,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.51"
+					"timestamp": "2026.10.04-09.01.45"
 				},
 				{
 					"event":
@@ -360,7 +360,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.51"
+					"timestamp": "2026.10.04-09.01.45"
 				},
 				{
 					"event":
@@ -372,7 +372,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.51"
+					"timestamp": "2026.10.04-09.01.45"
 				},
 				{
 					"event":
@@ -384,7 +384,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.51"
+					"timestamp": "2026.10.04-09.01.45"
 				},
 				{
 					"event":
@@ -396,7 +396,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.51"
+					"timestamp": "2026.10.04-09.01.45"
 				},
 				{
 					"event":
@@ -408,7 +408,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.51"
+					"timestamp": "2026.10.04-09.01.45"
 				}
 			],
 			"warnings": 0,
@@ -421,10 +421,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 5.9333810806274414,
-			"dateTime": "2026.10.03-19.59.51",
+			"duration": 5.8245973587036133,
+			"dateTime": "2026.10.04-09.01.45",
 			"entries": [
 				{
 					"event":
@@ -436,7 +436,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.52"
+					"timestamp": "2026.10.04-09.01.46"
 				},
 				{
 					"event":
@@ -448,7 +448,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.52"
+					"timestamp": "2026.10.04-09.01.46"
 				},
 				{
 					"event":
@@ -460,7 +460,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.52"
+					"timestamp": "2026.10.04-09.01.46"
 				},
 				{
 					"event":
@@ -472,7 +472,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.54"
+					"timestamp": "2026.10.04-09.01.48"
 				},
 				{
 					"event":
@@ -484,7 +484,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.54"
+					"timestamp": "2026.10.04-09.01.48"
 				},
 				{
 					"event":
@@ -496,7 +496,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.54"
+					"timestamp": "2026.10.04-09.01.48"
 				},
 				{
 					"event":
@@ -508,7 +508,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.54"
+					"timestamp": "2026.10.04-09.01.48"
 				},
 				{
 					"event":
@@ -520,7 +520,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.54"
+					"timestamp": "2026.10.04-09.01.48"
 				},
 				{
 					"event":
@@ -532,7 +532,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.54"
+					"timestamp": "2026.10.04-09.01.48"
 				},
 				{
 					"event":
@@ -544,7 +544,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.54"
+					"timestamp": "2026.10.04-09.01.48"
 				},
 				{
 					"event":
@@ -556,7 +556,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.54"
+					"timestamp": "2026.10.04-09.01.48"
 				},
 				{
 					"event":
@@ -568,7 +568,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.57"
+					"timestamp": "2026.10.04-09.01.51"
 				},
 				{
 					"event":
@@ -580,7 +580,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.57"
+					"timestamp": "2026.10.04-09.01.51"
 				},
 				{
 					"event":
@@ -592,7 +592,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.57"
+					"timestamp": "2026.10.04-09.01.51"
 				},
 				{
 					"event":
@@ -604,7 +604,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.57"
+					"timestamp": "2026.10.04-09.01.51"
 				},
 				{
 					"event":
@@ -616,7 +616,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.57"
+					"timestamp": "2026.10.04-09.01.51"
 				}
 			],
 			"warnings": 0,
@@ -629,10 +629,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 1.4169613122940063,
-			"dateTime": "2026.10.03-19.59.57",
+			"duration": 1.3537319898605347,
+			"dateTime": "2026.10.04-09.01.51",
 			"entries": [
 				{
 					"event":
@@ -644,7 +644,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.58"
+					"timestamp": "2026.10.04-09.01.51"
 				},
 				{
 					"event":
@@ -656,7 +656,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.58"
+					"timestamp": "2026.10.04-09.01.51"
 				},
 				{
 					"event":
@@ -668,7 +668,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.58"
+					"timestamp": "2026.10.04-09.01.51"
 				}
 			],
 			"warnings": 0,
@@ -681,10 +681,10 @@
 			"tags": [],
 			"state": "Fail",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 1.4912976026535034,
-			"dateTime": "2026.10.03-19.59.58",
+			"duration": 1.5071817636489868,
+			"dateTime": "2026.10.04-09.01.52",
 			"entries": [
 				{
 					"event":
@@ -696,7 +696,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -708,7 +708,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -720,7 +720,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -732,7 +732,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -744,7 +744,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -756,7 +756,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -768,7 +768,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -780,7 +780,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -792,7 +792,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -804,7 +804,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -816,7 +816,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -828,7 +828,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -840,7 +840,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -852,7 +852,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -864,7 +864,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -876,7 +876,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -888,7 +888,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -900,7 +900,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -912,7 +912,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -924,7 +924,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -936,7 +936,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -948,7 +948,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -960,7 +960,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -972,7 +972,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-19.59.59"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -984,7 +984,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-20.00.00"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -996,7 +996,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-20.00.00"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -1008,7 +1008,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-20.00.00"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -1020,7 +1020,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-20.00.00"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -1032,7 +1032,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-20.00.00"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -1044,7 +1044,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-20.00.00"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -1056,7 +1056,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-20.00.00"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -1068,7 +1068,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-20.00.00"
+					"timestamp": "2026.10.04-09.01.53"
 				},
 				{
 					"event":
@@ -1080,7 +1080,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-20.00.00"
+					"timestamp": "2026.10.04-09.01.54"
 				},
 				{
 					"event":
@@ -1092,7 +1092,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-20.00.00"
+					"timestamp": "2026.10.04-09.01.54"
 				},
 				{
 					"event":
@@ -1104,7 +1104,7 @@
 					},
 					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
 					"lineNumber": 1244,
-					"timestamp": "2026.10.03-20.00.00"
+					"timestamp": "2026.10.04-09.01.54"
 				}
 			],
 			"warnings": 0,
@@ -1117,10 +1117,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 0.96538680791854858,
-			"dateTime": "2026.10.03-20.00.00",
+			"duration": 0.96758246421813965,
+			"dateTime": "2026.10.04-09.01.54",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -1132,10 +1132,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 1.2027933597564697,
-			"dateTime": "2026.10.03-20.00.01",
+			"duration": 1.1895856857299805,
+			"dateTime": "2026.10.04-09.01.55",
 			"entries": [
 				{
 					"event":
@@ -1147,7 +1147,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-20.00.02"
+					"timestamp": "2026.10.04-09.01.56"
 				}
 			],
 			"warnings": 0,
@@ -1160,10 +1160,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 1.3786450624465942,
-			"dateTime": "2026.10.03-20.00.02",
+			"duration": 1.373673677444458,
+			"dateTime": "2026.10.04-09.01.56",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,
@@ -1175,10 +1175,10 @@
 			"tags": [],
 			"state": "Fail",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 0.944618821144104,
-			"dateTime": "2026.10.03-20.00.04",
+			"duration": 0.95784986019134521,
+			"dateTime": "2026.10.04-09.01.57",
 			"entries": [
 				{
 					"event":
@@ -1190,7 +1190,7 @@
 					},
 					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
 					"lineNumber": 128,
-					"timestamp": "2026.10.03-20.00.04"
+					"timestamp": "2026.10.04-09.01.58"
 				},
 				{
 					"event":
@@ -1202,7 +1202,7 @@
 					},
 					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLTerrainPoolTests.cpp",
 					"lineNumber": 130,
-					"timestamp": "2026.10.03-20.00.04"
+					"timestamp": "2026.10.04-09.01.58"
 				}
 			],
 			"warnings": 0,
@@ -1215,10 +1215,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 1.2031190395355225,
-			"dateTime": "2026.10.03-20.00.05",
+			"duration": 1.2295708656311035,
+			"dateTime": "2026.10.04-09.01.58",
 			"entries": [
 				{
 					"event":
@@ -1230,7 +1230,7 @@
 					},
 					"filename": "",
 					"lineNumber": -1,
-					"timestamp": "2026.10.03-20.00.06"
+					"timestamp": "2026.10.04-09.01.59"
 				}
 			],
 			"warnings": 0,
@@ -1243,10 +1243,10 @@
 			"tags": [],
 			"state": "Success",
 			"deviceInstance": [
-				"01A10359ACB97E78BFD4A3EC50FA9FAC"
+				"01A10625879172109A0189DB0F15731D"
 			],
-			"duration": 0.62096905708312988,
-			"dateTime": "2026.10.03-20.00.06",
+			"duration": 0.62290281057357788,
+			"dateTime": "2026.10.04-09.02.00",
 			"entries": [],
 			"warnings": 0,
 			"errors": 0,

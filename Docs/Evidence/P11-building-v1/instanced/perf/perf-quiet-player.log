@@ -1,0 +1,18 @@
+  player-crossing-straight.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/player-*)
+group=[straight] attempt=1 load start=2.44 end=4.46 gpu-before=1
+  player-crossing-reversal.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/player-*)
+group=[reversal] attempt=1 load start=2.56 end=5.30 gpu-before=0
+  player-crossing-sprint.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/player-*)
+group=[sprint] attempt=1 load start=2.64 end=5.28 gpu-before=0
+  player-crossing-teleport.json: done
+  player-crossing-resume.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/player-*)
+group=[teleport resume] attempt=1 load start=2.44 end=7.53 gpu-before=0
+  player-roundtrips.json: done
+RESULT: PASS crossing runs finished (Saved/Perf/player-*)
+group=[roundtrips] attempt=1 load start=2.64 end=3.17 gpu-before=0
+  6 result(s) checked against budgets.json: within budget
+QUIETDONE PASS

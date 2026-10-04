@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp
++++ b/Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp
+@@ -132,7 +132,7 @@
+ 		Collision->SetVisibility(false); // the envelope collides and navigation reads it; what is seen is the look
+ 		Collision->SetCastShadow(false);
+ 	}
+-	const FTransform At = GLPiecePresentation::PieceTransform(Piece);
++	const FTransform At(Piece.Location); // DEFECT: no yaw
+ 	for (const FGLPieceBox& Shape : Look.Shapes)
+ 	{
+ 		AddInstance(Collision, Shape.Local * At, Piece.Id);

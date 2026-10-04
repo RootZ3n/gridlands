@@ -27,6 +27,7 @@
 #include "Save/GLSaveSubsystem.h"
 #include "Terrain/GLTerrainSubsystem.h"
 #include "Terrain/GLTerrainChunk.h"
+#include "Tests/GLPlayerPresentationCheck.h"
 #include "Tests/GLTestUtils.h"
 #include "World/GLWinchesterHouse.h"
 #include "Fabrication/GLFabricatorComponent.h"
@@ -501,16 +502,26 @@ bool FGLGridPlayerStructureStreams::RunTest(const FString& Parameters)
 	TestTrue(TEXT("every WINCHESTER check so far holds"), House.AllPassed());
 	const FString Before = House.Fingerprint(S.Test.World);
 	TestEqual(TEXT("the porch roof is in flight"), Structures->ActiveCollapses(), 1);
+	TestEqual(TEXT("presented exactly as the model (instanced, the fall an actor)"), FString::Join(GLPlayerPresentationCheck::Problems(S.Test.World, GOrigin), TEXT("; ")), FString());
 	const int32 ImpactsBefore = Structures->ImpactCount();
 	S.GoTo(GDeepInLots);
 	TestFalse(TEXT("away: the origin cell is unloaded"), S.Grid->IsLoaded(GOrigin));
 	TestEqual(TEXT("its player construction left with it"), S.Building->PiecesOfCell(GOrigin).Num(), 0);
+	TestNull(TEXT("its batch left whole (retired, one actor)"), Structures->BatchOf(GOrigin));
+	Structures->PumpPresentation(FVector::ZeroVector, 0.0);
+	int32 Batches = 0;
+	for (TActorIterator<AGLPlayerPieceBatch> It(S.Test.World); It; ++It)
+	{
+		Batches += IsValid(*It) && !It->IsActorBeingDestroyed() ? 1 : 0;
+	}
+	TestEqual(TEXT("and no batch lingers (no presentation leaked)"), Batches, 0);
 	TestEqual(TEXT("the fall is frozen with its cell"), Structures->ActiveCollapses(), 0);
 	Structures->Advance(10.0);
 	TestEqual(TEXT("nothing lands while dormant"), Structures->ImpactCount(), ImpactsBefore);
 	S.GoTo(House.Anchor + FVector(-500, 0, 100));
 	Structures->PumpPresentation(House.Anchor, 0.0);
 	TestEqual(TEXT("back: every piece, yaw, layer, content and owner exactly as left"), House.Fingerprint(S.Test.World), Before);
+	TestEqual(TEXT("back: one batch rebuilt from the model, nothing duplicated"), FString::Join(GLPlayerPresentationCheck::Problems(S.Test.World, GOrigin), TEXT("; ")), FString());
 	TestEqual(TEXT("the fall resumes"), Structures->ActiveCollapses(), 1);
 	Structures->Advance(6.0);
 	TestEqual(TEXT("it lands exactly once"), Structures->ImpactCount(), ImpactsBefore + 1);
@@ -519,6 +530,7 @@ bool FGLGridPlayerStructureStreams::RunTest(const FString& Parameters)
 	Structures->PumpPresentation(House.Anchor, 0.0);
 	TestEqual(TEXT("a second round trip replays nothing"), Structures->ImpactCount(), ImpactsBefore + 1);
 	TestEqual(TEXT("no piece duplicated"), S.Building->PiecesOfCell(GOrigin).Num(), S.Building->GetPieces().Num());
+	TestEqual(TEXT("and no instance duplicated"), FString::Join(GLPlayerPresentationCheck::Problems(S.Test.World, GOrigin), TEXT("; ")), FString());
 	return true;
 }
 

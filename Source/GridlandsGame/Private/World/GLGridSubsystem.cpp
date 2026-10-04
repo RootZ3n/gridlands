@@ -13,6 +13,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Save/GLSaveSubsystem.h"
 #include "Terrain/GLTerrainSubsystem.h"
+#include "UObject/UObjectArray.h"
 #include "World/GLGridBoundary.h"
 #include "World/GLGridCells.h"
 #include "World/GLPlacementSubsystem.h"
@@ -212,7 +213,9 @@ void UGLGridSubsystem::TryFinishRuntime(FName Cell, FGLLoadedCell& Entry)
 	if (!bPlayerDenseSeeded && Record.BuildPieces.Num() == 0 && Cell == FName(TEXT("cell.outer.diner_lots")) && FParse::Param(FCommandLine::Get(), TEXT("GLPlayerDense")))
 	{
 		bPlayerDenseSeeded = true;
-		Record.BuildPieces = FGLWinchesterHouse::DensePlayerBaseSaved(FVector(75000.0, -26000.0, 0.0), 50,
+		int32 Units = 50; // 309 pieces; -GLPlayerDenseUnits=100 is the ~600-piece stress (diagnostic, not a limit)
+		FParse::Value(FCommandLine::Get(), TEXT("GLPlayerDenseUnits="), Units);
+		Record.BuildPieces = FGLWinchesterHouse::DensePlayerBaseSaved(FVector(75000.0, -26000.0, 0.0), FMath::Clamp(Units, 1, 400),
 			[Terrain](const FVector2D& At) { return Terrain->HeightAt(At); }, 900000, Cell);
 		World->GetSubsystem<UGLBuildingSubsystem>()->SetNextId(900000 + Record.BuildPieces.Num());
 		UE_LOG(LogGridlands, Log, TEXT("Grid: DEV player-built density fixture seeded (%d pieces in %s)"), Record.BuildPieces.Num(), *Cell.ToString());
@@ -275,7 +278,7 @@ bool UGLGridSubsystem::UnloadCell(FName Cell)
 		Entry.Level->SetShouldBeLoaded(false);
 	}
 	++Unloads;
-	UE_LOG(LogGridlands, Log, TEXT("Grid: unloaded %s at frame %llu (epoch %d, %s)"), *Cell.ToString(), GFrameCounter, Entry.Epoch, Entry.bRuntime ? TEXT("was ready") : TEXT("cancelled mid-load"));
+	UE_LOG(LogGridlands, Log, TEXT("Grid: unloaded %s at frame %llu (epoch %d, %s; live UObjects %d)"), *Cell.ToString(), GFrameCounter, Entry.Epoch, Entry.bRuntime ? TEXT("was ready") : TEXT("cancelled mid-load"), GUObjectArray.GetObjectArrayNumMinusAvailable());
 	return true;
 }
 

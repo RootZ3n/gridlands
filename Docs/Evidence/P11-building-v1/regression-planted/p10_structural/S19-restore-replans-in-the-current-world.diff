@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -727,6 +727,7 @@
+@@ -816,6 +816,7 @@
  			// P10: still in flight. Silently resumed from where it was (no collapse event, no noise); its impact is to come.
  			Outcome.PieceId = Part->Piece.Id;
  			Outcome.Def = Part->Piece.Def;

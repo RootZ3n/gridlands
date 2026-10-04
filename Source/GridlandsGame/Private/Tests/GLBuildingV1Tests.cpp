@@ -18,6 +18,7 @@
 #include "Structure/GLStructurePart.h"
 #include "Structure/GLStructureSubsystem.h"
 #include "Terrain/GLTerrainSubsystem.h"
+#include "Tests/GLPlayerPresentationCheck.h"
 #include "Tests/GLTestUtils.h"
 #include "World/GLWinchesterHouse.h"
 
@@ -138,8 +139,7 @@ bool FGLV1Winchester::RunTest(const FString& Parameters)
 		TestEqual(TEXT("no load problems"), FString::Join(Problems, TEXT("; ")), FString());
 		R.PresentAll();
 		TestEqual(TEXT("every piece, yaw, layer, content and owner is back exactly"), House.Fingerprint(R.Test.World), Before);
-		const AGLBuildPiece* BayWall = House.BayIds.IsValidIndex(1) ? R.Building->FindActor(House.BayIds[1]) : nullptr;
-		TestEqual(TEXT("the bay wall is presented finished"), BayWall ? BayWall->ShownPhase() : FName(), FName(TEXT("finish")));
+		TestEqual(TEXT("the bay wall is presented finished"), House.BayIds.IsValidIndex(1) ? R.Building->ShownPhaseOf(House.BayIds[1]) : FName(), FName(TEXT("finish")));
 		TestEqual(TEXT("one claim again (derived from the core)"), R.Building->Claims().Num(), 1);
 		// Ownership is read back from the file, not inferred: every restored piece is player-built, and renewal (the one
 		// permission rule) still refuses each of them after the restart.
@@ -382,6 +382,34 @@ bool FGLV1Density::RunTest(const FString& Parameters)
 		T = FPlatformTime::Seconds();
 		S.Structures->CapturePlayerCell(Cell, Captured);
 		Out.Add(TEXT("captureMs"), (FPlatformTime::Seconds() - T) * 1000.0);
+		// P11 scaling: the presentation is built from the model (one batch), and a hit finds its piece through the batch.
+		T = FPlatformTime::Seconds();
+		S.Structures->PumpPresentation(FVector::ZeroVector, 0.0);
+		Out.Add(TEXT("presentMs"), (FPlatformTime::Seconds() - T) * 1000.0);
+		const UGLStructureSubsystem::FPlayerPresentation Shown = S.Structures->PlayerPresentation(Cell);
+		TestEqual(FString::Printf(TEXT("%d units: one batch"), Units), Shown.Batches, 1);
+		int32 Storage = 0;
+		for (const FGLPlacedPiece& Piece : Pieces)
+		{
+			const FGLBuildPieceDef* Def = GLContent::Get().Find<FGLBuildPieceDef>(Piece.Def);
+			Storage += Def && Def->Storage.Slots > 0 ? 1 : 0;
+		}
+		TestEqual(FString::Printf(TEXT("%d units: only storage keeps an actor"), Units), Shown.Actors, Storage);
+		TestEqual(FString::Printf(TEXT("%d units: every other piece instanced"), Units), Shown.Instanced, Pieces.Num() - Storage);
+		TestTrue(FString::Printf(TEXT("%d units: a handful of components (%d)"), Units, Shown.Components), Shown.Components <= 16);
+		AddInfo(FString::Printf(TEXT("%d pieces: %d instances in %d components"), Pieces.Num(), Shown.Instances, Shown.Components));
+		int32 Found = 0;
+		T = FPlatformTime::Seconds();
+		for (const FGLPlacedPiece& Piece : Pieces)
+		{
+			FHitResult Hit;
+			if (S.Test.World->LineTraceSingleByChannel(Hit, Piece.Location + FVector(0, 0, 2000), Piece.Location - FVector(0, 0, 100), ECC_Visibility))
+			{
+				Found += S.Building->PieceIdAt(Hit) != 0 ? 1 : 0;
+			}
+		}
+		Out.Add(TEXT("lookupUsPerTrace"), (FPlatformTime::Seconds() - T) * 1e6 / FMath::Max(1, Pieces.Num()));
+		TestEqual(FString::Printf(TEXT("%d units: every trace onto the base finds a piece"), Units), Found, Pieces.Num());
 		TestEqual(FString::Printf(TEXT("%d units: capture keeps every piece"), Units), Captured.Num(), Saved.Num());
 		TestEqual(FString::Printf(TEXT("%d units: every piece stands"), Units), Standing, Pieces.Num());
 		TestTrue(FString::Printf(TEXT("%d units: the preview still answers"), Units), Check.IsAllowed());
@@ -390,7 +418,7 @@ bool FGLV1Density::RunTest(const FString& Parameters)
 	Measure(50, A);
 	Measure(100, B);
 	TestTrue(FString::Printf(TEXT("at least 300 pieces (%.0f)"), A[TEXT("pieces")]), A[TEXT("pieces")] >= 300);
-	for (const TCHAR* Key : { TEXT("supportMs"), TEXT("previewMs"), TEXT("removalPredictionMs"), TEXT("captureMs"), TEXT("restoreMs") })
+	for (const TCHAR* Key : { TEXT("supportMs"), TEXT("previewMs"), TEXT("removalPredictionMs"), TEXT("captureMs"), TEXT("restoreMs"), TEXT("presentMs"), TEXT("lookupUsPerTrace") })
 	{
 		AddInfo(FString::Printf(TEXT("%s: %.0f pieces %.3f ms, %.0f pieces %.3f ms (x%.2f)"), Key, A[TEXT("pieces")], A[Key], B[TEXT("pieces")], B[Key], B[Key] / FMath::Max(1e-6, A[Key])));
 		TestTrue(FString::Printf(TEXT("%s at 300 pieces stays under 10 ms (%.3f)"), Key, A[Key]), A[Key] < 10.0);
@@ -480,6 +508,171 @@ bool FGLV1StoreTakePartial::RunTest(const FString& Parameters)
 	TestEqual(TEXT("the other 50 stayed in the crate"), Box->CountOf(V1GStud), 50);
 	TestEqual(TEXT("the scrap had no room and stayed whole"), Box->CountOf(ScrapMetal), ScrapInCrate);
 	TestEqual(TEXT("nothing lost or duplicated"), S.Inventory->CountOf(V1GStud) + Box->CountOf(V1GStud), 150);
+	return true;
+}
+
+// ---- P11 scaling: the instanced presentation of player construction (GAMEPLAY MODEL != PRESENTATION) ----
+
+namespace GLBuildingV1GameTests
+{
+	/** The piece a straight-down trace at XY finds (the interaction path: hit -> owner table -> piece id), or 0. */
+	int32 V1PieceBelow(const FV1Scene& S, const FVector2D& XY)
+	{
+		FHitResult Hit;
+		FCollisionQueryParams Params(SCENE_QUERY_STAT(GLV1PieceBelow), false, S.Zenny);
+		return S.Test.World->LineTraceSingleByChannel(Hit, FVector(XY, 900.0), FVector(XY, -200.0), ECC_Visibility, Params) ? S.Building->PieceIdAt(Hit) : 0;
+	}
+
+	FString V1Joined(const TArray<FString>& Problems)
+	{
+		return FString::Join(Problems, TEXT("; "));
+	}
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLPPIdentity, "Gridlands.Game.PlayerPresentation.InstancedPiecesKeepTheirIdentityThroughEveryChange", GLTestUtils::Flags)
+bool FGLPPIdentity::RunTest(const FString& Parameters)
+{
+	// Five floors at 0, 22.5, 45, 60 and 90 degrees: quiescent pieces, so one batch draws and collides for all of them and
+	// no piece has an actor. A real trace finds each one through the batch's owner table; removing the middle one shifts
+	// the renderer's instance indices, yet every other piece keeps its identity, collision and transform.
+	FV1Scene S(TEXT("GLPPIdentity"));
+	S.Inventory->AddItem(V1GPlank, 60);
+	S.Zenny->SetActorLocation(FVector(0, -900, 100));
+	const int32 Yaws[] = { 0, 9, 18, 24, 36 };
+	TArray<int32> Ids;
+	for (int32 I = 0; I < 5; ++I)
+	{
+		Ids.Add(S.Place(V1GFloor, FVector(-1200.0 + 600.0 * I, 0, 0), Yaws[I]));
+	}
+	if (!TestFalse(TEXT("five floors placed"), Ids.Contains(0)))
+	{
+		return false;
+	}
+	const FName Cell = S.Building->GetPieces()[0].Cell;
+	const UGLStructureSubsystem::FPlayerPresentation Shown = S.Structures->PlayerPresentation(Cell);
+	TestEqual(TEXT("one batch"), Shown.Batches, 1);
+	TestEqual(TEXT("every floor instanced"), Shown.Instanced, 5);
+	TestEqual(TEXT("no piece actor"), Shown.Actors, 0);
+	TestEqual(TEXT("the presentation is exactly the model"), V1Joined(GLPlayerPresentationCheck::Problems(S.Test.World, Cell)), FString());
+	for (int32 I = 0; I < 5; ++I)
+	{
+		TestEqual(FString::Printf(TEXT("a trace at floor %d (yaw step %d) finds that floor"), I, Yaws[I]), V1PieceBelow(S, FVector2D(-1200.0 + 600.0 * I, 0)), Ids[I]);
+	}
+	// A rotated floor is drawn and collides where it is: near its 45 degree corner (local (95, 95): 134 cm from its centre
+	// along the world Y axis) lies outside the same square at 0 degrees, and a point the unrotated square would hold is off it.
+	const FVector2D Corner = GLStructureRules::RotateXY(FVector2D(95, 95), 18);
+	TestTrue(TEXT("(that point is outside the unrotated square)"), FMath::Abs(Corner.Y) > 100.0);
+	TestEqual(TEXT("the 45 degree floor's own corner is it"), V1PieceBelow(S, Corner), Ids[2]);
+	TestEqual(TEXT("the unrotated square's corner is not"), V1PieceBelow(S, FVector2D(95, 95)), 0);
+	const TArray<FTransform> KeptBefore = S.Structures->BatchOf(Cell)->CollisionOf(Ids[4]);
+	const FGLDemolishResult Out = S.Building->Dismantle(S.Zenny, Ids[2]);
+	TestTrue(TEXT("the middle floor dismantled"), Out.IsDone());
+	TestEqual(TEXT("still exactly the model"), V1Joined(GLPlayerPresentationCheck::Problems(S.Test.World, Cell)), FString());
+	TestEqual(TEXT("nothing is found where it was"), V1PieceBelow(S, FVector2D(0, 0)), 0);
+	for (const int32 I : { 0, 1, 3, 4 })
+	{
+		TestEqual(FString::Printf(TEXT("floor %d keeps its identity"), I), V1PieceBelow(S, FVector2D(-1200.0 + 600.0 * I, 0)), Ids[I]);
+	}
+	const TArray<FTransform> KeptAfter = S.Structures->BatchOf(Cell)->CollisionOf(Ids[4]);
+	TestTrue(TEXT("and its collision, untouched"), KeptAfter.Num() == KeptBefore.Num() && KeptAfter.Num() > 0 && GLPlayerPresentationCheck::Same(KeptAfter[0], KeptBefore[0]));
+	const int32 Again = S.Place(V1GFloor, FVector(0, 0, 0), 18);
+	TestTrue(TEXT("a new floor where it was is a new piece"), Again != 0 && !Ids.Contains(Again));
+	TestEqual(TEXT("found as itself"), V1PieceBelow(S, FVector2D(0, 0)), Again);
+	TestEqual(TEXT("exactly the model again"), V1Joined(GLPlayerPresentationCheck::Problems(S.Test.World, Cell)), FString());
+	// Loading a save into this live world (the player loads a game): the record replaces the live construction, and its
+	// presentation is rebuilt from the record alone: no instance of the live house survives beside it.
+	UGLSaveSubsystem* Saves = S.Test.World->GetSubsystem<UGLSaveSubsystem>();
+	TestTrue(TEXT("saved"), Saves->SaveToSlot(V1Slot));
+	TestTrue(TEXT("a floor dismantled after the save"), S.Building->Dismantle(S.Zenny, Ids[0]).IsDone());
+	TArray<FString> Problems;
+	TestTrue(TEXT("the save loads into the live world"), Saves->LoadFromSlot(V1Slot, &Problems));
+	S.PresentAll();
+	TestEqual(TEXT("the saved five are back"), S.Building->GetPieces().Num(), 5);
+	TestEqual(TEXT("presented exactly once, from the record"), V1Joined(GLPlayerPresentationCheck::Problems(S.Test.World, Cell)), FString());
+	TestEqual(TEXT("the dismantled floor is itself again"), V1PieceBelow(S, FVector2D(-1200, 0)), Ids[0]);
+	IFileManager::Get().Delete(*UGLSaveSubsystem::SlotPath(V1Slot));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGLPPWinchester, "Gridlands.Game.PlayerPresentation.TheWinchesterHouseIsOneBatchThatFollowsTheModel", GLTestUtils::Flags)
+bool FGLPPWinchester::RunTest(const FString& Parameters)
+{
+	// The WINCHESTER house: every quiescent piece instanced (its frame, then its finish, the 45 degree bay at its yaw),
+	// storage keeping its actor; the removal preview over instances; support failure moving the falling piece out of the
+	// batch into an actor (and its debris keeping it); salvage and dismantling removing exactly their instances; a save and
+	// a restart rebuilding the same batch from the model alone.
+	FGLWinchesterHouse House;
+	House.Anchor = FVector(0, 0, 0);
+	FString Saved;
+	{
+		FV1Scene S(TEXT("GLPPWinchester"));
+		if (!TestTrue(TEXT("pad"), House.PreparePad(S.Test.World)) || !TestTrue(TEXT("base"), House.EstablishBase(S.Test.World, S.Zenny))
+			|| !TestTrue(TEXT("framed"), House.Frame(S.Test.World, S.Zenny)))
+		{
+			return false;
+		}
+		const FName Cell = S.Building->GetPieces()[0].Cell;
+		int32 Storage = 0;
+		for (const FGLPlacedPiece& Piece : S.Building->GetPieces())
+		{
+			const FGLBuildPieceDef* Def = GLContent::Get().Find<FGLBuildPieceDef>(Piece.Def);
+			Storage += Def && Def->Storage.Slots > 0 ? 1 : 0;
+		}
+		const UGLStructureSubsystem::FPlayerPresentation Framed = S.Structures->PlayerPresentation(Cell);
+		TestEqual(TEXT("framed: one batch"), Framed.Batches, 1);
+		TestEqual(TEXT("only the storage crates keep actors"), Framed.Actors, Storage);
+		TestEqual(TEXT("everything else is instanced"), Framed.Instanced, S.Building->GetPieces().Num() - Storage);
+		TestTrue(TEXT("a handful of components, not hundreds"), Framed.Components > 0 && Framed.Components <= 16);
+		TestEqual(TEXT("framed: exactly the model"), V1Joined(GLPlayerPresentationCheck::Problems(S.Test.World, Cell)), FString());
+		if (!TestTrue(TEXT("finished"), House.Finish(S.Test.World, S.Zenny)))
+		{
+			return false;
+		}
+		TestEqual(TEXT("finished: exactly the model (no frame left behind)"), V1Joined(GLPlayerPresentationCheck::Problems(S.Test.World, Cell)), FString());
+		const int32 Roof = House.Ids.FindRef(TEXT("porch_roof"));
+		// The removal preview over instances: the first piece whose removal brings instanced pieces down.
+		TArray<int32> Predicted, Drawn;
+		for (const FGLPlacedPiece& Piece : S.Building->GetPieces())
+		{
+			Predicted = S.Building->PreviewRemoval(Piece.Id);
+			Drawn = Predicted.FilterByPredicate([&S](int32 Id) { return S.Structures->IsInstanced(Id); });
+			if (Drawn.Num() > 0)
+			{
+				break;
+			}
+		}
+		TestTrue(TEXT("(a removal that brings instanced pieces down)"), Drawn.Num() > 0);
+		S.Building->SetRemovalHighlight(Predicted);
+		TestEqual(TEXT("the removal preview is drawn over exactly the predicted instanced pieces"), S.Structures->BatchOf(Cell)->GetHighlighted(), Drawn);
+		TestEqual(TEXT("highlighted: still exactly the model"), V1Joined(GLPlayerPresentationCheck::Problems(S.Test.World, Cell)), FString());
+		S.Building->SetRemovalHighlight({});
+		TestEqual(TEXT("and clears"), S.Structures->BatchOf(Cell)->GetHighlighted().Num(), 0);
+		if (!TestTrue(TEXT("porch collapse"), House.PorchCollapse(S.Test.World, S.Zenny)))
+		{
+			return false;
+		}
+		TestFalse(TEXT("the falling roof left the batch"), S.Structures->IsInstanced(Roof));
+		TestNotNull(TEXT("and falls as an actor"), S.Building->FindActor(Roof));
+		TestEqual(TEXT("mid-fall: exactly the model"), V1Joined(GLPlayerPresentationCheck::Problems(S.Test.World, Cell)), FString());
+		TestTrue(TEXT("saved mid-fall"), S.Test.World->GetSubsystem<UGLSaveSubsystem>()->SaveToSlot(V1Slot));
+		S.Structures->Advance(6.0);
+		TestEqual(TEXT("landed: debris keeps its actor, nothing instanced twice"), V1Joined(GLPlayerPresentationCheck::Problems(S.Test.World, Cell)), FString());
+		TestTrue(TEXT("careful dismantle and a smash"), House.Salvage(S.Test.World, S.Zenny));
+		TestEqual(TEXT("dismantled: exactly the model"), V1Joined(GLPlayerPresentationCheck::Problems(S.Test.World, Cell)), FString());
+	}
+	FV1Scene R(TEXT("GLPPWinchesterRestart"));
+	TArray<FString> Problems;
+	TestTrue(TEXT("the mid-fall save loads"), R.Test.World->GetSubsystem<UGLSaveSubsystem>()->LoadFromSlot(V1Slot, &Problems));
+	TestEqual(TEXT("before presentation nothing is drawn"), R.Structures->PlayerPresentation().Instanced + R.Structures->PlayerPresentation().Actors, 0);
+	R.PresentAll();
+	const FName Cell = R.Building->GetPieces().Num() ? R.Building->GetPieces()[0].Cell : NAME_None;
+	TestEqual(TEXT("rebuilt from the model alone: exactly the model"), V1Joined(GLPlayerPresentationCheck::Problems(R.Test.World, Cell)), FString());
+	const int32 Roof = House.Ids.FindRef(TEXT("porch_roof"));
+	TestTrue(TEXT("the restored fall is an actor, not an instance"), !R.Structures->IsInstanced(Roof) && R.Building->FindActor(Roof) != nullptr);
+	R.Structures->Advance(6.0);
+	TestEqual(TEXT("it lands once"), R.Structures->ImpactCount(), 1);
+	TestEqual(TEXT("landed after the restart: exactly the model"), V1Joined(GLPlayerPresentationCheck::Problems(R.Test.World, Cell)), FString());
+	IFileManager::Get().Delete(*UGLSaveSubsystem::SlotPath(V1Slot));
 	return true;
 }
 

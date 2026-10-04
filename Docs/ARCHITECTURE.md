@@ -299,6 +299,7 @@ performing.
 | BV-3 | A finish layer never changes support; electrical is registered, never given content until built | ADR-0039 |
 | BV-4 | World renewal never deletes or replaces player-built construction, nor anything inside a claim (`GLClaimRules::MayRenew`) | ADR-0039 |
 | BV-5 | Nothing is silently destroyed: a salvage, removal or craft whose whole result would not fit is refused; a restore keeps everything; storage consumption is all-or-nothing | ADR-0039 |
+| BV-6 | Player construction's presentation is derived from the model: quiescent pieces are one instanced batch per cell (dynamic ones keep an actor); identity is the batch's owner table, never renderer order; a base's unload never scales with its pieces | ADR-0039 §11 |
 
 *If a player can only advance by killing something, the non-combat path has failed.*
 

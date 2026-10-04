@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -957,8 +957,9 @@
+@@ -1047,8 +1047,9 @@
  	// Gone whole: a removed player piece leaves no fact behind.
  	Structure->Parts.RemoveAll([PieceId](const FGLStructurePartRuntime& P) { return P.Piece.Id == PieceId; });
  	PlayerPieceCells.Remove(PieceId);

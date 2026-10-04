@@ -1,0 +1,1034 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "Pehverse",
+			"instance": "01A10599E3E17A8EABB7C5ED6C742831",
+			"instanceName": "Pehverse-3288314",
+			"platform": "LinuxEditor",
+			"oSVersion": "Fedora Linux 44 (KDE Plasma Desktop Edition) 7.1.9-200.fc44.x86_64",
+			"model": "Default",
+			"gPU": "UnknownVendor",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+			"rAMInGB": 32,
+			"renderMode": "SM5",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.10.04-06.29.11",
+	"succeeded": 34,
+	"succeededWithWarnings": 0,
+	"failed": 3,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 3.0717580318450928,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "GroundDecidesWhereFloorsGo",
+			"fullTestPath": "Gridlands.Core.Building.GroundDecidesWhereFloorsGo",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.010155905038118362,
+			"dateTime": "2026.10.04-06.29.07",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "KnowledgeItemsAndSnapping",
+			"fullTestPath": "Gridlands.Core.Building.KnowledgeItemsAndSnapping",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0082833142951130867,
+			"dateTime": "2026.10.04-06.29.07",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemovingASupportCollapsesWhatItHeld",
+			"fullTestPath": "Gridlands.Core.Building.RemovingASupportCollapsesWhatItHeld",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0080583589151501656,
+			"dateTime": "2026.10.04-06.29.07",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShelterStandsAndEveryPlacementIsValid",
+			"fullTestPath": "Gridlands.Core.Building.ShelterStandsAndEveryPlacementIsValid",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0078865624964237213,
+			"dateTime": "2026.10.04-06.29.07",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SupportWeakensUpAndOut",
+			"fullTestPath": "Gridlands.Core.Building.SupportWeakensUpAndOut",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0078592449426651001,
+			"dateTime": "2026.10.04-06.29.07",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ACollapseAtAngleUsesThePiecesOwnAxes",
+			"fullTestPath": "Gridlands.Core.BuildingV1.ACollapseAtAngleUsesThePiecesOwnAxes",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0097772898152470589,
+			"dateTime": "2026.10.04-06.29.07",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AngledPolygonsCloseBySnappingAlone",
+			"fullTestPath": "Gridlands.Core.BuildingV1.AngledPolygonsCloseBySnappingAlone",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0079057402908802032,
+			"dateTime": "2026.10.04-06.29.07",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "APlanRebuiltAt45DegreesIsTheSameBuilding",
+			"fullTestPath": "Gridlands.Core.BuildingV1.APlanRebuiltAt45DegreesIsTheSameBuilding",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0078799519687891006,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CarefulBeatsDestructiveBeatsCollapse",
+			"fullTestPath": "Gridlands.Core.BuildingV1.CarefulBeatsDestructiveBeatsCollapse",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0082188723608851433,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClaimsAreDerivedAndRenewalNeverTouchesPlayerConstruction",
+			"fullTestPath": "Gridlands.Core.BuildingV1.ClaimsAreDerivedAndRenewalNeverTouchesPlayerConstruction",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0078296111896634102,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FacingSocketsLinkOnlyWhenTheyFaceEachOther",
+			"fullTestPath": "Gridlands.Core.BuildingV1.FacingSocketsLinkOnlyWhenTheyFaceEachOther",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0082781165838241577,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FrameThenFinishAndElectricalIsRegisteredNotBuilt",
+			"fullTestPath": "Gridlands.Core.BuildingV1.FrameThenFinishAndElectricalIsRegisteredNotBuilt",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0084854569286108017,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MaterialPoolIsOrderedAndAllOrNothing",
+			"fullTestPath": "Gridlands.Core.BuildingV1.MaterialPoolIsOrderedAndAllOrNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0079795215278863907,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OverlapAndFootprintsAreOriented",
+			"fullTestPath": "Gridlands.Core.BuildingV1.OverlapAndFootprintsAreOriented",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0079172579571604729,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PreviewIsTheCommitsOwnRule",
+			"fullTestPath": "Gridlands.Core.BuildingV1.PreviewIsTheCommitsOwnRule",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0081646405160427094,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Version2SavesMigrateToVersion3Deterministically",
+			"fullTestPath": "Gridlands.Core.BuildingV1.Version2SavesMigrateToVersion3Deterministically",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0074372868984937668,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "YawIsAnIntegerIn2p5DegreeSteps",
+			"fullTestPath": "Gridlands.Core.BuildingV1.YawIsAnIntegerIn2p5DegreeSteps",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0088789341971278191,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StacksAndCapacity",
+			"fullTestPath": "Gridlands.Core.Inventory.StacksAndCapacity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0098885251209139824,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CodecRoundTripAndVersions",
+			"fullTestPath": "Gridlands.Core.Save.CodecRoundTripAndVersions",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0071206996217370033,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Version1MigratesToCellRecords",
+			"fullTestPath": "Gridlands.Core.Save.Version1MigratesToCellRecords",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0070540392771363258,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PiecesBlockNavigation",
+			"fullTestPath": "Gridlands.Game.Building.PiecesBlockNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.13820762932300568,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "wall line with a gap: path crosses the wall line x = 65 m at y = 5047",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.08"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PreviewColoursAndRemovalPredictionsAreTheCommitsOwn",
+			"fullTestPath": "Gridlands.Game.Building.PreviewColoursAndRemovalPredictionsAreTheCommitsOwn",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.032619412988424301,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RefusalsChangeNothing",
+			"fullTestPath": "Gridlands.Game.Building.RefusalsChangeNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.052028525620698929,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemovalCollapsesByTheCanonicalRulesAsPredicted",
+			"fullTestPath": "Gridlands.Game.Building.RemovalCollapsesByTheCanonicalRulesAsPredicted",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.060320653021335602,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShelterFromInventoryPersistsAcrossReload",
+			"fullTestPath": "Gridlands.Game.Building.ShelterFromInventoryPersistsAcrossReload",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.060179136693477631,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ABasementIsAnOpenPitThenAStructure",
+			"fullTestPath": "Gridlands.Game.BuildingV1.ABasementIsAnOpenPitThenAStructure",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.090680666267871857,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BaseStorageClaimsAndContainersNeverLoseAnything",
+			"fullTestPath": "Gridlands.Game.BuildingV1.BaseStorageClaimsAndContainersNeverLoseAnything",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.049849160015583038,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StoringAndTakingMoveOnlyWhatFits",
+			"fullTestPath": "Gridlands.Game.BuildingV1.StoringAndTakingMoveOnlyWhatFits",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.024872947484254837,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StoringAndTakingNeverLosesAnything",
+			"fullTestPath": "Gridlands.Game.BuildingV1.StoringAndTakingNeverLosesAnything",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.0299190953373909,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ThreeHundredPiecesScaleLinearly",
+			"fullTestPath": "Gridlands.Game.BuildingV1.ThreeHundredPiecesScaleLinearly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.096506364643573761,
+			"dateTime": "2026.10.04-06.29.08",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "309 pieces: 1300 instances in 6 components",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.08"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "617 pieces: 2600 instances in 6 components",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "supportMs: 309 pieces 1.071 ms, 617 pieces 2.217 ms (x2.07)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "previewMs: 309 pieces 1.092 ms, 617 pieces 2.237 ms (x2.05)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "removalPredictionMs: 309 pieces 1.014 ms, 617 pieces 2.103 ms (x2.07)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "captureMs: 309 pieces 0.021 ms, 617 pieces 0.044 ms (x2.06)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "restoreMs: 309 pieces 0.404 ms, 617 pieces 0.840 ms (x2.08)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "presentMs: 309 pieces 8.656 ms, 617 pieces 15.756 ms (x1.82)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "lookupUsPerTrace: 309 pieces 2.485 ms, 617 pieces 2.441 ms (x0.98)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WinchesterHouseFrameFinishCollapseAndPersistence",
+			"fullTestPath": "Gridlands.Game.BuildingV1.WinchesterHouseFrameFinishCollapseAndPersistence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.11316069215536118,
+			"dateTime": "2026.10.04-06.29.09",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS pad levelled by ordinary flatten strokes: worst 0.00 cm from 0 cm",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS a base core establishes one claim: 1 claim(s), radius 32 m",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS materials placed primarily in shared storage: crates hold stud 103, cut_stone 3, timber_log 26, timber_plank 83; Zenny carries 12 studs",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS 45 degree bay snapped from socket data: yaw steps 0 126 126 0 0 18 18",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS FRAME first: stud walls, doorways and rafters visibly framed: 24 showing framing, 28 complete as built",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS every frame placed, PREVIEW == REALITY: 52 placements so far, 0 mismatches (GREEN 52, YELLOW 0, RED 0)",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS storage supplied the construction (before Zenny's own): studs from storage 103, from Zenny 12",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS raw log -> sawing at the sawhorse -> studs (the log from base storage): studs 0 -> 4, Zenny's logs 0 -> 0",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS FINISH applied afterwards (clapboard, shingles): 24/24 installed; 24 finished, 0 still framed",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS finishing changed no support: ",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS architectural vocabularies mixed on purpose: eras era.memory.modern_day era.memory.victorian era.memory.roman; log wing yes; Roman column yes",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS porch post out: predicted to stand, and it stands: predicted 0 falling, 0 fell",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS Roman column out: the predicted roof falls, by the canonical collapse: predicted [45], collapsed [45]",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS careful dismantle of the interior wall: intact studs (and its clapboard back as boards): stud 5, scrap_timber 2, timber_plank 2",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "PASS smashing a bay wall: fewer studs, more scrap: stud 1, scrap_timber 4, timber_plank 1",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldRenewalNeverTouchesPlayerConstruction",
+			"fullTestPath": "Gridlands.Game.BuildingV1.WorldRenewalNeverTouchesPlayerConstruction",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.024874668568372726,
+			"dateTime": "2026.10.04-06.29.09",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PlayerConstructionStreamsWholeAndAFallResumes",
+			"fullTestPath": "Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 1.9689311981201172,
+			"dateTime": "2026.10.04-06.29.09",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(357): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.10.04-06.29.09"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'presented exactly as the model (instanced, the fall an actor)' to be \"\", but it was \"piece 17: collision instances are not its shapes at its transform (1 vs 1); piece 18: collision instances are not its shapes at its transform (1 vs 1); piece 19: collision instances are not its shapes at its transform (1 vs 1); piece 20: collision instances are not its shapes at its transform (1 vs 1); piece 21: collision instances are not its shapes at its transform (3 vs 3); piece 22: collision instances are not its shapes at its transform (1 vs 1); piece 23: collision instances are not its shapes at its transform (1 vs 1); piece 24: collision instances are not its shapes at its transform (1 vs 1); piece 25: collision instances are not its shapes at its transform (3 vs 3); piece 26: collision instances are not its shapes at its transform (1 vs 1); piece 27: collision instances are not its shapes at its transform (8 vs 8); piece 28: collision instances are not its shapes at its transform (8 vs 8); piece 29: collision instances are not its shapes at its transform (8 vs 8); piece 30: collision instances are not its shapes at its transform (8 vs 8); piece 31: collision instances are not its shapes at its transform (8 vs 8); piece 32: collision instances are not its shapes at its transform (8 vs 8); piece 33: collision instances are not its shapes at its transform (1 vs 1); piece 34: collision instances are not its shapes at its transform (1 vs 1); piece 35: collision instances are not its shapes at its transform (1 vs 1); piece 36: collision instances are not its shapes at its transform (1 vs 1); piece 37: collision instances are not its shapes at its transform (1 vs 1); piece 38: collision instances are not its shapes at its transform (1 vs 1); piece 39: collision instances are not its shapes at its transform (1 vs 1); piece 40: collision instances are not its shapes at its transform (1 vs 1); piece 41: collision instances are not its shapes at its transform (1 vs 1); piece 42: collision instances are not its shapes at its transform (1 vs 1); piece 46: collision instances are not its shapes at its transform (1 vs 1); piece 47: collision instances are not its shapes at its transform (1 vs 1); piece 48: collision instances are not its shapes at its transform (1 vs 1); piece 49: collision instances are not its shapes at its transform (1 vs 1); piece 50: collision instances are not its shapes at its transform (1 vs 1); piece 51: collision instances are not its shapes at its transform (1 vs 1); piece 52: collision instances are not its shapes at its transform (1 vs 1); collision instance 16 says piece 27, but it is not one of that piece's boxes; collision instance 17 says piece 27, but it is not one of that piece's boxes; collision instance 18 says piece 27, but it is not one of that piece's boxes; collision instance 19 says piece 27, but it is not one of that piece's boxes; collision instance 20 says piece 27, but it is not one of that piece's boxes; collision instance 21 says piece 27, but it is not one of that piece's boxes; collision instance 22 says piece 27, but it is not one of that piece's boxes; collision instance 23 says piece 27, but it is not one of that piece's boxes; collision instance 24 says piece 28, but it is not one of that piece's boxes; collision instance 25 says piece 28, but it is not one of that piece's boxes; collision instance 26 says piece 28, but it is not one of that piece's boxes; collision instance 27 says piece 28, but it is not one of that piece's boxes; collision instance 28 says piece 28, but it is not one of that piece's boxes; collision instance 29 says piece 28, but it is not one of that piece's boxes; collision instance 30 says piece 28, but it is not one of that piece's boxes; collision instance 31 says piece 28, but it is not one of that piece's boxes; collision instance 32 says piece 29, but it is not one of that piece's boxes; collision instance 33 says piece 29, but it is not one of that piece's boxes; collision instance 34 says piece 29, but it is not one of that piece's boxes; collision instance 35 says piece 29, but it is not one of that piece's boxes; collision instance 36 says piece 29, but it is not one of that piece's boxes; collision instance 37 says piece 29, but it is not one of that piece's boxes; collision instance 38 says piece 29, but it is not one of that piece's boxes; collision instance 39 says piece 29, but it is not one of that piece's boxes; collision instance 40 says piece 30, but it is not one of that piece's boxes; collision instance 41 says piece 30, but it is not one of that piece's boxes; collision instance 42 says piece 30, but it is not one of that piece's boxes; collision instance 43 says piece 30, but it is not one of that piece's boxes; collision instance 44 says piece 30, but it is not one of that piece's boxes; collision instance 45 says piece 30, but it is not one of that piece's boxes; collision instance 46 says piece 30, but it is not one of that piece's boxes; collision instance 47 says piece 30, but it is not one of that piece's boxes; collision instance 48 says piece 31, but it is not one of that piece's boxes; collision instance 49 says piece 31, but it is not one of that piece's boxes; collision instance 50 says piece 31, but it is not one of that piece's boxes; collision instance 51 says piece 31, but it is not one of that piece's boxes; collision instance 52 says piece 31, but it is not one of that piece's boxes; collision instance 53 says piece 31, but it is not one of that piece's boxes; collision instance 54 says piece 31, but it is not one of that piece's boxes; collision instance 55 says piece 31, but it is not one of that piece's boxes; collision instance 56 says piece 32, but it is not one of that piece's boxes; collision instance 57 says piece 32, but it is not one of that piece's boxes; collision instance 58 says piece 32, but it is not one of that piece's boxes; collision instance 59 says piece 32, but it is not one of that piece's boxes; collision instance 60 says piece 32, but it is not one of that piece's boxes; collision instance 61 says piece 32, but it is not one of that piece's boxes; collision instance 62 says piece 32, but it is not one of that piece's boxes; collision instance 63 says piece 32, but it is not one of that piece's boxes; collision instance 64 says piece 46, but it is not one of that piece's boxes; collision instance 65 says piece 48, but it is not one of that piece's boxes; collision instance 66 says piece 50, but it is not one of that piece's boxes; collision instance 67 says piece 52, but it is not one of that piece's boxes; collision instance 68 says piece 17, but it is not one of that piece's boxes; collision instance 69 says piece 18, but it is not one of that piece's boxes; collision instance 70 says piece 19, but it is not one of that piece's boxes; collision instance 71 says piece 20, but it is not one of that piece's boxes; collision instance 72 says piece 21, but it is not one of that piece's boxes; collision instance 73 says piece 21, but it is not one of that piece's boxes; collision instance 74 says piece 21, but it is not one of that piece's boxes; collision instance 75 says piece 22, but it is not one of that piece's boxes; collision instance 76 says piece 23, but it is not one of that piece's boxes; collision instance 77 says piece 24, but it is not one of that piece's boxes; collision instance 78 says piece 25, but it is not one of that piece's boxes; collision instance 79 says piece 25, but it is not one of that piece's boxes; collision instance 80 says piece 25, but it is not one of that piece's boxes; collision instance 81 says piece 26, but it is not one of that piece's boxes; collision instance 82 says piece 47, but it is not one of that piece's boxes; collision instance 83 says piece 49, but it is not one of that piece's boxes; collision instance 84 says piece 51, but it is not one of that piece's boxes; collision instance 85 says piece 33, but it is not one of that piece's boxes; collision instance 86 says piece 34, but it is not one of that piece's boxes; collision instance 87 says piece 35, but it is not one of that piece's boxes; collision instance 88 says piece 36, but it is not one of that piece's boxes; collision instance 89 says piece 37, but it is not one of that piece's boxes; collision instance 90 says piece 38, but it is not one of that piece's boxes; collision instance 91 says piece 39, but it is not one of that piece's boxes; collision instance 92 says piece 40, but it is not one of that piece's boxes; collision instance 93 says piece 41, but it is not one of that piece's boxes; collision instance 94 says piece 42, but it is not one of that piece's boxes\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-06.29.09"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InventoryFullIsAnnouncedNotWeight",
+			"fullTestPath": "Gridlands.Game.Inventory.InventoryFullIsAnnouncedNotWeight",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.02643488347530365,
+			"dateTime": "2026.10.04-06.29.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RestoreNeverDiscardsOverflow",
+			"fullTestPath": "Gridlands.Game.Inventory.RestoreNeverDiscardsOverflow",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.026386439800262451,
+			"dateTime": "2026.10.04-06.29.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InstancedPiecesKeepTheirIdentityThroughEveryChange",
+			"fullTestPath": "Gridlands.Game.PlayerPresentation.InstancedPiecesKeepTheirIdentityThroughEveryChange",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.026959901675581932,
+			"dateTime": "2026.10.04-06.29.11",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'still exactly the model' to be \"\", but it was \"piece 4: collision instances are not its shapes at its transform (1 vs 1); piece 5: collision instances are not its shapes at its transform (1 vs 1); collision instance 2 says piece 4, but it is not one of that piece's boxes; collision instance 3 says piece 5, but it is not one of that piece's boxes\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-06.29.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'floor 3 keeps its identity' to be 4, but it was 5.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-06.29.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'floor 4 keeps its identity' to be 5, but it was 4.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-06.29.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'and its collision, untouched' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/repos/game-dev/gridlands/Source/GridlandsGame/Private/Tests/GLBuildingV1Tests.cpp",
+					"lineNumber": 578,
+					"timestamp": "2026.10.04-06.29.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'exactly the model again' to be \"\", but it was \"piece 4: collision instances are not its shapes at its transform (1 vs 1); piece 5: collision instances are not its shapes at its transform (1 vs 1); collision instance 2 says piece 4, but it is not one of that piece's boxes; collision instance 3 says piece 5, but it is not one of that piece's boxes\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-06.29.11"
+				}
+			],
+			"warnings": 0,
+			"errors": 5,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TheWinchesterHouseIsOneBatchThatFollowsTheModel",
+			"fullTestPath": "Gridlands.Game.PlayerPresentation.TheWinchesterHouseIsOneBatchThatFollowsTheModel",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"01A10599E3E17A8EABB7C5ED6C742831"
+			],
+			"duration": 0.084767371416091919,
+			"dateTime": "2026.10.04-06.29.11",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'finished: exactly the model (no frame left behind)' to be \"\", but it was \"piece 17: collision instances are not its shapes at its transform (1 vs 1); piece 18: collision instances are not its shapes at its transform (1 vs 1); piece 19: collision instances are not its shapes at its transform (1 vs 1); piece 20: collision instances are not its shapes at its transform (1 vs 1); piece 21: collision instances are not its shapes at its transform (3 vs 3); piece 22: collision instances are not its shapes at its transform (1 vs 1); piece 23: collision instances are not its shapes at its transform (1 vs 1); piece 24: collision instances are not its shapes at its transform (1 vs 1); piece 25: collision instances are not its shapes at its transform (3 vs 3); piece 26: collision instances are not its shapes at its transform (1 vs 1); piece 27: collision instances are not its shapes at its transform (8 vs 8); piece 28: collision instances are not its shapes at its transform (8 vs 8); piece 29: collision instances are not its shapes at its transform (8 vs 8); piece 30: collision instances are not its shapes at its transform (8 vs 8); piece 31: collision instances are not its shapes at its transform (8 vs 8); piece 32: collision instances are not its shapes at its transform (8 vs 8); piece 33: collision instances are not its shapes at its transform (1 vs 1); piece 34: collision instances are not its shapes at its transform (1 vs 1); piece 35: collision instances are not its shapes at its transform (1 vs 1); piece 36: collision instances are not its shapes at its transform (1 vs 1); piece 37: collision instances are not its shapes at its transform (1 vs 1); piece 38: collision instances are not its shapes at its transform (1 vs 1); piece 39: collision instances are not its shapes at its transform (1 vs 1); piece 40: collision instances are not its shapes at its transform (1 vs 1); piece 41: collision instances are not its shapes at its transform (1 vs 1); piece 42: collision instances are not its shapes at its transform (1 vs 1); piece 43: collision instances are not its shapes at its transform (3 vs 3); piece 44: collision instances are not its shapes at its transform (1 vs 1); piece 46: collision instances are not its shapes at its transform (1 vs 1); piece 47: collision instances are not its shapes at its transform (1 vs 1); piece 48: collision instances are not its shapes at its transform (1 vs 1); piece 49: collision instances are not its shapes at its transform (1 vs 1); piece 50: collision instances are not its shapes at its transform (1 vs 1); piece 51: collision instances are not its shapes at its transform (1 vs 1); piece 52: collision instances are not its shapes at its transform (1 vs 1); collision instance 16 says piece 27, but it is not one of that piece's boxes; collision instance 17 says piece 27, but it is not one of that piece's boxes; collision instance 18 says piece 27, but it is not one of that piece's boxes; collision instance 19 says piece 27, but it is not one of that piece's boxes; collision instance 20 says piece 27, but it is not one of that piece's boxes; collision instance 21 says piece 27, but it is not one of that piece's boxes; collision instance 22 says piece 27, but it is not one of that piece's boxes; collision instance 23 says piece 27, but it is not one of that piece's boxes; collision instance 24 says piece 28, but it is not one of that piece's boxes; collision instance 25 says piece 28, but it is not one of that piece's boxes; collision instance 26 says piece 28, but it is not one of that piece's boxes; collision instance 27 says piece 28, but it is not one of that piece's boxes; collision instance 28 says piece 28, but it is not one of that piece's boxes; collision instance 29 says piece 28, but it is not one of that piece's boxes; collision instance 30 says piece 28, but it is not one of that piece's boxes; collision instance 31 says piece 28, but it is not one of that piece's boxes; collision instance 32 says piece 29, but it is not one of that piece's boxes; collision instance 33 says piece 29, but it is not one of that piece's boxes; collision instance 34 says piece 29, but it is not one of that piece's boxes; collision instance 35 says piece 29, but it is not one of that piece's boxes; collision instance 36 says piece 29, but it is not one of that piece's boxes; collision instance 37 says piece 29, but it is not one of that piece's boxes; collision instance 38 says piece 29, but it is not one of that piece's boxes; collision instance 39 says piece 29, but it is not one of that piece's boxes; collision instance 40 says piece 30, but it is not one of that piece's boxes; collision instance 41 says piece 30, but it is not one of that piece's boxes; collision instance 42 says piece 30, but it is not one of that piece's boxes; collision instance 43 says piece 30, but it is not one of that piece's boxes; collision instance 44 says piece 30, but it is not one of that piece's boxes; collision instance 45 says piece 30, but it is not one of that piece's boxes; collision instance 46 says piece 30, but it is not one of that piece's boxes; collision instance 47 says piece 30, but it is not one of that piece's boxes; collision instance 48 says piece 31, but it is not one of that piece's boxes; collision instance 49 says piece 31, but it is not one of that piece's boxes; collision instance 50 says piece 31, but it is not one of that piece's boxes; collision instance 51 says piece 31, but it is not one of that piece's boxes; collision instance 52 says piece 31, but it is not one of that piece's boxes; collision instance 53 says piece 31, but it is not one of that piece's boxes; collision instance 54 says piece 31, but it is not one of that piece's boxes; collision instance 55 says piece 31, but it is not one of that piece's boxes; collision instance 56 says piece 32, but it is not one of that piece's boxes; collision instance 57 says piece 32, but it is not one of that piece's boxes; collision instance 58 says piece 32, but it is not one of that piece's boxes; collision instance 59 says piece 32, but it is not one of that piece's boxes; collision instance 60 says piece 32, but it is not one of that piece's boxes; collision instance 61 says piece 32, but it is not one of that piece's boxes; collision instance 62 says piece 32, but it is not one of that piece's boxes; collision instance 63 says piece 32, but it is not one of that piece's boxes; collision instance 64 says piece 43, but it is not one of that piece's boxes; collision instance 65 says piece 43, but it is not one of that piece's boxes; collision instance 66 says piece 43, but it is not one of that piece's boxes; collision instance 67 says piece 44, but it is not one of that piece's boxes; collision instance 68 says piece 46, but it is not one of that piece's boxes; collision instance 69 says piece 48, but it is not one of that piece's boxes; collision instance 70 says piece 50, but it is not one of that piece's boxes; collision instance 71 says piece 52, but it is not one of that piece's boxes; collision instance 72 says piece 17, but it is not one of that piece's boxes; collision instance 73 says piece 18, but it is not one of that piece's boxes; collision instance 74 says piece 19, but it is not one of that piece's boxes; collision instance 75 says piece 20, but it is not one of that piece's boxes; collision instance 76 says piece 21, but it is not one of that piece's boxes; collision instance 77 says piece 21, but it is not one of that piece's boxes; collision instance 78 says piece 21, but it is not one of that piece's boxes; collision instance 79 says piece 22, but it is not one of that piece's boxes; collision instance 80 says piece 23, but it is not one of that piece's boxes; collision instance 81 says piece 24, but it is not one of that piece's boxes; collision instance 82 says piece 25, but it is not one of that piece's boxes; collision instance 83 says piece 25, but it is not one of that piece's boxes; collision instance 84 says piece 25, but it is not one of that piece's boxes; collision instance 85 says piece 26, but it is not one of that piece's boxes; collision instance 86 says piece 47, but it is not one of that piece's boxes; collision instance 87 says piece 49, but it is not one of that piece's boxes; collision instance 88 says piece 51, but it is not one of that piece's boxes; collision instance 89 says piece 33, but it is not one of that piece's boxes; collision instance 90 says piece 34, but it is not one of that piece's boxes; collision instance 91 says piece 35, but it is not one of that piece's boxes; collision instance 92 says piece 36, but it is not one of that piece's boxes; collision instance 93 says piece 37, but it is not one of that piece's boxes; collision instance 94 says piece 38, but it is not one of that piece's boxes; collision instance 95 says piece 39, but it is not one of that piece's boxes; collision instance 96 says piece 40, but it is not one of that piece's boxes; collision instance 97 says piece 41, but it is not one of that piece's boxes; collision instance 98 says piece 42, but it is not one of that piece's boxes\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-06.29.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'highlighted: still exactly the model' to be \"\", but it was \"piece 17: collision instances are not its shapes at its transform (1 vs 1); piece 18: collision instances are not its shapes at its transform (1 vs 1); piece 19: collision instances are not its shapes at its transform (1 vs 1); piece 20: collision instances are not its shapes at its transform (1 vs 1); piece 21: collision instances are not its shapes at its transform (3 vs 3); piece 22: collision instances are not its shapes at its transform (1 vs 1); piece 23: collision instances are not its shapes at its transform (1 vs 1); piece 24: collision instances are not its shapes at its transform (1 vs 1); piece 25: collision instances are not its shapes at its transform (3 vs 3); piece 26: collision instances are not its shapes at its transform (1 vs 1); piece 27: collision instances are not its shapes at its transform (8 vs 8); piece 28: collision instances are not its shapes at its transform (8 vs 8); piece 29: collision instances are not its shapes at its transform (8 vs 8); piece 30: collision instances are not its shapes at its transform (8 vs 8); piece 31: collision instances are not its shapes at its transform (8 vs 8); piece 32: collision instances are not its shapes at its transform (8 vs 8); piece 33: collision instances are not its shapes at its transform (1 vs 1); piece 34: collision instances are not its shapes at its transform (1 vs 1); piece 35: collision instances are not its shapes at its transform (1 vs 1); piece 36: collision instances are not its shapes at its transform (1 vs 1); piece 37: collision instances are not its shapes at its transform (1 vs 1); piece 38: collision instances are not its shapes at its transform (1 vs 1); piece 39: collision instances are not its shapes at its transform (1 vs 1); piece 40: collision instances are not its shapes at its transform (1 vs 1); piece 41: collision instances are not its shapes at its transform (1 vs 1); piece 42: collision instances are not its shapes at its transform (1 vs 1); piece 43: collision instances are not its shapes at its transform (3 vs 3); piece 44: collision instances are not its shapes at its transform (1 vs 1); piece 46: collision instances are not its shapes at its transform (1 vs 1); piece 47: collision instances are not its shapes at its transform (1 vs 1); piece 48: collision instances are not its shapes at its transform (1 vs 1); piece 49: collision instances are not its shapes at its transform (1 vs 1); piece 50: collision instances are not its shapes at its transform (1 vs 1); piece 51: collision instances are not its shapes at its transform (1 vs 1); piece 52: collision instances are not its shapes at its transform (1 vs 1); collision instance 16 says piece 27, but it is not one of that piece's boxes; collision instance 17 says piece 27, but it is not one of that piece's boxes; collision instance 18 says piece 27, but it is not one of that piece's boxes; collision instance 19 says piece 27, but it is not one of that piece's boxes; collision instance 20 says piece 27, but it is not one of that piece's boxes; collision instance 21 says piece 27, but it is not one of that piece's boxes; collision instance 22 says piece 27, but it is not one of that piece's boxes; collision instance 23 says piece 27, but it is not one of that piece's boxes; collision instance 24 says piece 28, but it is not one of that piece's boxes; collision instance 25 says piece 28, but it is not one of that piece's boxes; collision instance 26 says piece 28, but it is not one of that piece's boxes; collision instance 27 says piece 28, but it is not one of that piece's boxes; collision instance 28 says piece 28, but it is not one of that piece's boxes; collision instance 29 says piece 28, but it is not one of that piece's boxes; collision instance 30 says piece 28, but it is not one of that piece's boxes; collision instance 31 says piece 28, but it is not one of that piece's boxes; collision instance 32 says piece 29, but it is not one of that piece's boxes; collision instance 33 says piece 29, but it is not one of that piece's boxes; collision instance 34 says piece 29, but it is not one of that piece's boxes; collision instance 35 says piece 29, but it is not one of that piece's boxes; collision instance 36 says piece 29, but it is not one of that piece's boxes; collision instance 37 says piece 29, but it is not one of that piece's boxes; collision instance 38 says piece 29, but it is not one of that piece's boxes; collision instance 39 says piece 29, but it is not one of that piece's boxes; collision instance 40 says piece 30, but it is not one of that piece's boxes; collision instance 41 says piece 30, but it is not one of that piece's boxes; collision instance 42 says piece 30, but it is not one of that piece's boxes; collision instance 43 says piece 30, but it is not one of that piece's boxes; collision instance 44 says piece 30, but it is not one of that piece's boxes; collision instance 45 says piece 30, but it is not one of that piece's boxes; collision instance 46 says piece 30, but it is not one of that piece's boxes; collision instance 47 says piece 30, but it is not one of that piece's boxes; collision instance 48 says piece 31, but it is not one of that piece's boxes; collision instance 49 says piece 31, but it is not one of that piece's boxes; collision instance 50 says piece 31, but it is not one of that piece's boxes; collision instance 51 says piece 31, but it is not one of that piece's boxes; collision instance 52 says piece 31, but it is not one of that piece's boxes; collision instance 53 says piece 31, but it is not one of that piece's boxes; collision instance 54 says piece 31, but it is not one of that piece's boxes; collision instance 55 says piece 31, but it is not one of that piece's boxes; collision instance 56 says piece 32, but it is not one of that piece's boxes; collision instance 57 says piece 32, but it is not one of that piece's boxes; collision instance 58 says piece 32, but it is not one of that piece's boxes; collision instance 59 says piece 32, but it is not one of that piece's boxes; collision instance 60 says piece 32, but it is not one of that piece's boxes; collision instance 61 says piece 32, but it is not one of that piece's boxes; collision instance 62 says piece 32, but it is not one of that piece's boxes; collision instance 63 says piece 32, but it is not one of that piece's boxes; collision instance 64 says piece 43, but it is not one of that piece's boxes; collision instance 65 says piece 43, but it is not one of that piece's boxes; collision instance 66 says piece 43, but it is not one of that piece's boxes; collision instance 67 says piece 44, but it is not one of that piece's boxes; collision instance 68 says piece 46, but it is not one of that piece's boxes; collision instance 69 says piece 48, but it is not one of that piece's boxes; collision instance 70 says piece 50, but it is not one of that piece's boxes; collision instance 71 says piece 52, but it is not one of that piece's boxes; collision instance 72 says piece 17, but it is not one of that piece's boxes; collision instance 73 says piece 18, but it is not one of that piece's boxes; collision instance 74 says piece 19, but it is not one of that piece's boxes; collision instance 75 says piece 20, but it is not one of that piece's boxes; collision instance 76 says piece 21, but it is not one of that piece's boxes; collision instance 77 says piece 21, but it is not one of that piece's boxes; collision instance 78 says piece 21, but it is not one of that piece's boxes; collision instance 79 says piece 22, but it is not one of that piece's boxes; collision instance 80 says piece 23, but it is not one of that piece's boxes; collision instance 81 says piece 24, but it is not one of that piece's boxes; collision instance 82 says piece 25, but it is not one of that piece's boxes; collision instance 83 says piece 25, but it is not one of that piece's boxes; collision instance 84 says piece 25, but it is not one of that piece's boxes; collision instance 85 says piece 26, but it is not one of that piece's boxes; collision instance 86 says piece 47, but it is not one of that piece's boxes; collision instance 87 says piece 49, but it is not one of that piece's boxes; collision instance 88 says piece 51, but it is not one of that piece's boxes; collision instance 89 says piece 33, but it is not one of that piece's boxes; collision instance 90 says piece 34, but it is not one of that piece's boxes; collision instance 91 says piece 35, but it is not one of that piece's boxes; collision instance 92 says piece 36, but it is not one of that piece's boxes; collision instance 93 says piece 37, but it is not one of that piece's boxes; collision instance 94 says piece 38, but it is not one of that piece's boxes; collision instance 95 says piece 39, but it is not one of that piece's boxes; collision instance 96 says piece 40, but it is not one of that piece's boxes; collision instance 97 says piece 41, but it is not one of that piece's boxes; collision instance 98 says piece 42, but it is not one of that piece's boxes\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-06.29.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'mid-fall: exactly the model' to be \"\", but it was \"piece 17: collision instances are not its shapes at its transform (1 vs 1); piece 18: collision instances are not its shapes at its transform (1 vs 1); piece 19: collision instances are not its shapes at its transform (1 vs 1); piece 20: collision instances are not its shapes at its transform (1 vs 1); piece 21: collision instances are not its shapes at its transform (3 vs 3); piece 22: collision instances are not its shapes at its transform (1 vs 1); piece 23: collision instances are not its shapes at its transform (1 vs 1); piece 24: collision instances are not its shapes at its transform (1 vs 1); piece 25: collision instances are not its shapes at its transform (3 vs 3); piece 26: collision instances are not its shapes at its transform (1 vs 1); piece 27: collision instances are not its shapes at its transform (8 vs 8); piece 28: collision instances are not its shapes at its transform (8 vs 8); piece 29: collision instances are not its shapes at its transform (8 vs 8); piece 30: collision instances are not its shapes at its transform (8 vs 8); piece 31: collision instances are not its shapes at its transform (8 vs 8); piece 32: collision instances are not its shapes at its transform (8 vs 8); piece 33: collision instances are not its shapes at its transform (1 vs 1); piece 34: collision instances are not its shapes at its transform (1 vs 1); piece 35: collision instances are not its shapes at its transform (1 vs 1); piece 36: collision instances are not its shapes at its transform (1 vs 1); piece 37: collision instances are not its shapes at its transform (1 vs 1); piece 38: collision instances are not its shapes at its transform (1 vs 1); piece 39: collision instances are not its shapes at its transform (1 vs 1); piece 40: collision instances are not its shapes at its transform (1 vs 1); piece 41: collision instances are not its shapes at its transform (1 vs 1); piece 42: collision instances are not its shapes at its transform (1 vs 1); piece 46: collision instances are not its shapes at its transform (1 vs 1); piece 47: collision instances are not its shapes at its transform (1 vs 1); piece 48: collision instances are not its shapes at its transform (1 vs 1); piece 49: collision instances are not its shapes at its transform (1 vs 1); piece 50: collision instances are not its shapes at its transform (1 vs 1); piece 51: collision instances are not its shapes at its transform (1 vs 1); piece 52: collision instances are not its shapes at its transform (1 vs 1); collision instance 16 says piece 27, but it is not one of that piece's boxes; collision instance 17 says piece 27, but it is not one of that piece's boxes; collision instance 18 says piece 27, but it is not one of that piece's boxes; collision instance 19 says piece 27, but it is not one of that piece's boxes; collision instance 20 says piece 27, but it is not one of that piece's boxes; collision instance 21 says piece 27, but it is not one of that piece's boxes; collision instance 22 says piece 27, but it is not one of that piece's boxes; collision instance 23 says piece 27, but it is not one of that piece's boxes; collision instance 24 says piece 28, but it is not one of that piece's boxes; collision instance 25 says piece 28, but it is not one of that piece's boxes; collision instance 26 says piece 28, but it is not one of that piece's boxes; collision instance 27 says piece 28, but it is not one of that piece's boxes; collision instance 28 says piece 28, but it is not one of that piece's boxes; collision instance 29 says piece 28, but it is not one of that piece's boxes; collision instance 30 says piece 28, but it is not one of that piece's boxes; collision instance 31 says piece 28, but it is not one of that piece's boxes; collision instance 32 says piece 29, but it is not one of that piece's boxes; collision instance 33 says piece 29, but it is not one of that piece's boxes; collision instance 34 says piece 29, but it is not one of that piece's boxes; collision instance 35 says piece 29, but it is not one of that piece's boxes; collision instance 36 says piece 29, but it is not one of that piece's boxes; collision instance 37 says piece 29, but it is not one of that piece's boxes; collision instance 38 says piece 29, but it is not one of that piece's boxes; collision instance 39 says piece 29, but it is not one of that piece's boxes; collision instance 40 says piece 30, but it is not one of that piece's boxes; collision instance 41 says piece 30, but it is not one of that piece's boxes; collision instance 42 says piece 30, but it is not one of that piece's boxes; collision instance 43 says piece 30, but it is not one of that piece's boxes; collision instance 44 says piece 30, but it is not one of that piece's boxes; collision instance 45 says piece 30, but it is not one of that piece's boxes; collision instance 46 says piece 30, but it is not one of that piece's boxes; collision instance 47 says piece 30, but it is not one of that piece's boxes; collision instance 48 says piece 31, but it is not one of that piece's boxes; collision instance 49 says piece 31, but it is not one of that piece's boxes; collision instance 50 says piece 31, but it is not one of that piece's boxes; collision instance 51 says piece 31, but it is not one of that piece's boxes; collision instance 52 says piece 31, but it is not one of that piece's boxes; collision instance 53 says piece 31, but it is not one of that piece's boxes; collision instance 54 says piece 31, but it is not one of that piece's boxes; collision instance 55 says piece 31, but it is not one of that piece's boxes; collision instance 56 says piece 32, but it is not one of that piece's boxes; collision instance 57 says piece 32, but it is not one of that piece's boxes; collision instance 58 says piece 32, but it is not one of that piece's boxes; collision instance 59 says piece 32, but it is not one of that piece's boxes; collision instance 60 says piece 32, but it is not one of that piece's boxes; collision instance 61 says piece 32, but it is not one of that piece's boxes; collision instance 62 says piece 32, but it is not one of that piece's boxes; collision instance 63 says piece 32, but it is not one of that piece's boxes; collision instance 64 says piece 46, but it is not one of that piece's boxes; collision instance 65 says piece 48, but it is not one of that piece's boxes; collision instance 66 says piece 50, but it is not one of that piece's boxes; collision instance 67 says piece 52, but it is not one of that piece's boxes; collision instance 68 says piece 17, but it is not one of that piece's boxes; collision instance 69 says piece 18, but it is not one of that piece's boxes; collision instance 70 says piece 19, but it is not one of that piece's boxes; collision instance 71 says piece 20, but it is not one of that piece's boxes; collision instance 72 says piece 21, but it is not one of that piece's boxes; collision instance 73 says piece 21, but it is not one of that piece's boxes; collision instance 74 says piece 21, but it is not one of that piece's boxes; collision instance 75 says piece 22, but it is not one of that piece's boxes; collision instance 76 says piece 23, but it is not one of that piece's boxes; collision instance 77 says piece 24, but it is not one of that piece's boxes; collision instance 78 says piece 25, but it is not one of that piece's boxes; collision instance 79 says piece 25, but it is not one of that piece's boxes; collision instance 80 says piece 25, but it is not one of that piece's boxes; collision instance 81 says piece 26, but it is not one of that piece's boxes; collision instance 82 says piece 47, but it is not one of that piece's boxes; collision instance 83 says piece 49, but it is not one of that piece's boxes; collision instance 84 says piece 51, but it is not one of that piece's boxes; collision instance 85 says piece 33, but it is not one of that piece's boxes; collision instance 86 says piece 34, but it is not one of that piece's boxes; collision instance 87 says piece 35, but it is not one of that piece's boxes; collision instance 88 says piece 36, but it is not one of that piece's boxes; collision instance 89 says piece 37, but it is not one of that piece's boxes; collision instance 90 says piece 38, but it is not one of that piece's boxes; collision instance 91 says piece 39, but it is not one of that piece's boxes; collision instance 92 says piece 40, but it is not one of that piece's boxes; collision instance 93 says piece 41, but it is not one of that piece's boxes; collision instance 94 says piece 42, but it is not one of that piece's boxes\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-06.29.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'landed: debris keeps its actor, nothing instanced twice' to be \"\", but it was \"piece 17: collision instances are not its shapes at its transform (1 vs 1); piece 18: collision instances are not its shapes at its transform (1 vs 1); piece 19: collision instances are not its shapes at its transform (1 vs 1); piece 20: collision instances are not its shapes at its transform (1 vs 1); piece 21: collision instances are not its shapes at its transform (3 vs 3); piece 22: collision instances are not its shapes at its transform (1 vs 1); piece 23: collision instances are not its shapes at its transform (1 vs 1); piece 24: collision instances are not its shapes at its transform (1 vs 1); piece 25: collision instances are not its shapes at its transform (3 vs 3); piece 26: collision instances are not its shapes at its transform (1 vs 1); piece 27: collision instances are not its shapes at its transform (8 vs 8); piece 28: collision instances are not its shapes at its transform (8 vs 8); piece 29: collision instances are not its shapes at its transform (8 vs 8); piece 30: collision instances are not its shapes at its transform (8 vs 8); piece 31: collision instances are not its shapes at its transform (8 vs 8); piece 32: collision instances are not its shapes at its transform (8 vs 8); piece 33: collision instances are not its shapes at its transform (1 vs 1); piece 34: collision instances are not its shapes at its transform (1 vs 1); piece 35: collision instances are not its shapes at its transform (1 vs 1); piece 36: collision instances are not its shapes at its transform (1 vs 1); piece 37: collision instances are not its shapes at its transform (1 vs 1); piece 38: collision instances are not its shapes at its transform (1 vs 1); piece 39: collision instances are not its shapes at its transform (1 vs 1); piece 40: collision instances are not its shapes at its transform (1 vs 1); piece 41: collision instances are not its shapes at its transform (1 vs 1); piece 42: collision instances are not its shapes at its transform (1 vs 1); piece 46: collision instances are not its shapes at its transform (1 vs 1); piece 47: collision instances are not its shapes at its transform (1 vs 1); piece 48: collision instances are not its shapes at its transform (1 vs 1); piece 49: collision instances are not its shapes at its transform (1 vs 1); piece 50: collision instances are not its shapes at its transform (1 vs 1); piece 51: collision instances are not its shapes at its transform (1 vs 1); piece 52: collision instances are not its shapes at its transform (1 vs 1); collision instance 16 says piece 27, but it is not one of that piece's boxes; collision instance 17 says piece 27, but it is not one of that piece's boxes; collision instance 18 says piece 27, but it is not one of that piece's boxes; collision instance 19 says piece 27, but it is not one of that piece's boxes; collision instance 20 says piece 27, but it is not one of that piece's boxes; collision instance 21 says piece 27, but it is not one of that piece's boxes; collision instance 22 says piece 27, but it is not one of that piece's boxes; collision instance 23 says piece 27, but it is not one of that piece's boxes; collision instance 24 says piece 28, but it is not one of that piece's boxes; collision instance 25 says piece 28, but it is not one of that piece's boxes; collision instance 26 says piece 28, but it is not one of that piece's boxes; collision instance 27 says piece 28, but it is not one of that piece's boxes; collision instance 28 says piece 28, but it is not one of that piece's boxes; collision instance 29 says piece 28, but it is not one of that piece's boxes; collision instance 30 says piece 28, but it is not one of that piece's boxes; collision instance 31 says piece 28, but it is not one of that piece's boxes; collision instance 32 says piece 29, but it is not one of that piece's boxes; collision instance 33 says piece 29, but it is not one of that piece's boxes; collision instance 34 says piece 29, but it is not one of that piece's boxes; collision instance 35 says piece 29, but it is not one of that piece's boxes; collision instance 36 says piece 29, but it is not one of that piece's boxes; collision instance 37 says piece 29, but it is not one of that piece's boxes; collision instance 38 says piece 29, but it is not one of that piece's boxes; collision instance 39 says piece 29, but it is not one of that piece's boxes; collision instance 40 says piece 30, but it is not one of that piece's boxes; collision instance 41 says piece 30, but it is not one of that piece's boxes; collision instance 42 says piece 30, but it is not one of that piece's boxes; collision instance 43 says piece 30, but it is not one of that piece's boxes; collision instance 44 says piece 30, but it is not one of that piece's boxes; collision instance 45 says piece 30, but it is not one of that piece's boxes; collision instance 46 says piece 30, but it is not one of that piece's boxes; collision instance 47 says piece 30, but it is not one of that piece's boxes; collision instance 48 says piece 31, but it is not one of that piece's boxes; collision instance 49 says piece 31, but it is not one of that piece's boxes; collision instance 50 says piece 31, but it is not one of that piece's boxes; collision instance 51 says piece 31, but it is not one of that piece's boxes; collision instance 52 says piece 31, but it is not one of that piece's boxes; collision instance 53 says piece 31, but it is not one of that piece's boxes; collision instance 54 says piece 31, but it is not one of that piece's boxes; collision instance 55 says piece 31, but it is not one of that piece's boxes; collision instance 56 says piece 32, but it is not one of that piece's boxes; collision instance 57 says piece 32, but it is not one of that piece's boxes; collision instance 58 says piece 32, but it is not one of that piece's boxes; collision instance 59 says piece 32, but it is not one of that piece's boxes; collision instance 60 says piece 32, but it is not one of that piece's boxes; collision instance 61 says piece 32, but it is not one of that piece's boxes; collision instance 62 says piece 32, but it is not one of that piece's boxes; collision instance 63 says piece 32, but it is not one of that piece's boxes; collision instance 64 says piece 46, but it is not one of that piece's boxes; collision instance 65 says piece 48, but it is not one of that piece's boxes; collision instance 66 says piece 50, but it is not one of that piece's boxes; collision instance 67 says piece 52, but it is not one of that piece's boxes; collision instance 68 says piece 17, but it is not one of that piece's boxes; collision instance 69 says piece 18, but it is not one of that piece's boxes; collision instance 70 says piece 19, but it is not one of that piece's boxes; collision instance 71 says piece 20, but it is not one of that piece's boxes; collision instance 72 says piece 21, but it is not one of that piece's boxes; collision instance 73 says piece 21, but it is not one of that piece's boxes; collision instance 74 says piece 21, but it is not one of that piece's boxes; collision instance 75 says piece 22, but it is not one of that piece's boxes; collision instance 76 says piece 23, but it is not one of that piece's boxes; collision instance 77 says piece 24, but it is not one of that piece's boxes; collision instance 78 says piece 25, but it is not one of that piece's boxes; collision instance 79 says piece 25, but it is not one of that piece's boxes; collision instance 80 says piece 25, but it is not one of that piece's boxes; collision instance 81 says piece 26, but it is not one of that piece's boxes; collision instance 82 says piece 47, but it is not one of that piece's boxes; collision instance 83 says piece 49, but it is not one of that piece's boxes; collision instance 84 says piece 51, but it is not one of that piece's boxes; collision instance 85 says piece 33, but it is not one of that piece's boxes; collision instance 86 says piece 34, but it is not one of that piece's boxes; collision instance 87 says piece 35, but it is not one of that piece's boxes; collision instance 88 says piece 36, but it is not one of that piece's boxes; collision instance 89 says piece 37, but it is not one of that piece's boxes; collision instance 90 says piece 38, but it is not one of that piece's boxes; collision instance 91 says piece 39, but it is not one of that piece's boxes; collision instance 92 says piece 40, but it is not one of that piece's boxes; collision instance 93 says piece 41, but it is not one of that piece's boxes; collision instance 94 says piece 42, but it is not one of that piece's boxes\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-06.29.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'dismantled: exactly the model' to be \"\", but it was \"piece 17: collision instances are not its shapes at its transform (1 vs 1); piece 18: collision instances are not its shapes at its transform (1 vs 1); piece 19: collision instances are not its shapes at its transform (1 vs 1); piece 20: collision instances are not its shapes at its transform (1 vs 1); piece 21: collision instances are not its shapes at its transform (3 vs 3); piece 22: collision instances are not its shapes at its transform (1 vs 1); piece 23: collision instances are not its shapes at its transform (1 vs 1); piece 24: collision instances are not its shapes at its transform (1 vs 1); piece 25: collision instances are not its shapes at its transform (3 vs 3); piece 27: collision instances are not its shapes at its transform (8 vs 8); piece 28: collision instances are not its shapes at its transform (8 vs 8); piece 29: collision instances are not its shapes at its transform (8 vs 8); piece 30: collision instances are not its shapes at its transform (8 vs 8); piece 31: collision instances are not its shapes at its transform (8 vs 8); piece 32: collision instances are not its shapes at its transform (8 vs 8); piece 33: collision instances are not its shapes at its transform (1 vs 1); piece 34: collision instances are not its shapes at its transform (1 vs 1); piece 35: collision instances are not its shapes at its transform (1 vs 1); piece 36: collision instances are not its shapes at its transform (1 vs 1); piece 37: collision instances are not its shapes at its transform (1 vs 1); piece 38: collision instances are not its shapes at its transform (1 vs 1); piece 39: collision instances are not its shapes at its transform (1 vs 1); piece 40: collision instances are not its shapes at its transform (1 vs 1); piece 41: collision instances are not its shapes at its transform (1 vs 1); piece 42: collision instances are not its shapes at its transform (1 vs 1); piece 46: collision instances are not its shapes at its transform (1 vs 1); piece 48: collision instances are not its shapes at its transform (1 vs 1); piece 50: collision instances are not its shapes at its transform (1 vs 1); piece 51: collision instances are not its shapes at its transform (1 vs 1); piece 52: collision instances are not its shapes at its transform (1 vs 1); collision instance 16 says piece 27, but it is not one of that piece's boxes; collision instance 17 says piece 27, but it is not one of that piece's boxes; collision instance 18 says piece 27, but it is not one of that piece's boxes; collision instance 19 says piece 27, but it is not one of that piece's boxes; collision instance 20 says piece 27, but it is not one of that piece's boxes; collision instance 21 says piece 27, but it is not one of that piece's boxes; collision instance 22 says piece 27, but it is not one of that piece's boxes; collision instance 23 says piece 27, but it is not one of that piece's boxes; collision instance 24 says piece 28, but it is not one of that piece's boxes; collision instance 25 says piece 28, but it is not one of that piece's boxes; collision instance 26 says piece 28, but it is not one of that piece's boxes; collision instance 27 says piece 28, but it is not one of that piece's boxes; collision instance 28 says piece 28, but it is not one of that piece's boxes; collision instance 29 says piece 28, but it is not one of that piece's boxes; collision instance 30 says piece 28, but it is not one of that piece's boxes; collision instance 31 says piece 28, but it is not one of that piece's boxes; collision instance 32 says piece 29, but it is not one of that piece's boxes; collision instance 33 says piece 29, but it is not one of that piece's boxes; collision instance 34 says piece 29, but it is not one of that piece's boxes; collision instance 35 says piece 29, but it is not one of that piece's boxes; collision instance 36 says piece 29, but it is not one of that piece's boxes; collision instance 37 says piece 29, but it is not one of that piece's boxes; collision instance 38 says piece 29, but it is not one of that piece's boxes; collision instance 39 says piece 29, but it is not one of that piece's boxes; collision instance 40 says piece 30, but it is not one of that piece's boxes; collision instance 41 says piece 30, but it is not one of that piece's boxes; collision instance 42 says piece 30, but it is not one of that piece's boxes; collision instance 43 says piece 30, but it is not one of that piece's boxes; collision instance 44 says piece 30, but it is not one of that piece's boxes; collision instance 45 says piece 30, but it is not one of that piece's boxes; collision instance 46 says piece 30, but it is not one of that piece's boxes; collision instance 47 says piece 30, but it is not one of that piece's boxes; collision instance 48 says piece 31, but it is not one of that piece's boxes; collision instance 49 says piece 31, but it is not one of that piece's boxes; collision instance 50 says piece 31, but it is not one of that piece's boxes; collision instance 51 says piece 31, but it is not one of that piece's boxes; collision instance 52 says piece 31, but it is not one of that piece's boxes; collision instance 53 says piece 31, but it is not one of that piece's boxes; collision instance 54 says piece 31, but it is not one of that piece's boxes; collision instance 55 says piece 31, but it is not one of that piece's boxes; collision instance 56 says piece 32, but it is not one of that piece's boxes; collision instance 57 says piece 32, but it is not one of that piece's boxes; collision instance 58 says piece 32, but it is not one of that piece's boxes; collision instance 59 says piece 32, but it is not one of that piece's boxes; collision instance 60 says piece 32, but it is not one of that piece's boxes; collision instance 61 says piece 32, but it is not one of that piece's boxes; collision instance 62 says piece 32, but it is not one of that piece's boxes; collision instance 63 says piece 32, but it is not one of that piece's boxes; collision instance 64 says piece 46, but it is not one of that piece's boxes; collision instance 65 says piece 48, but it is not one of that piece's boxes; collision instance 66 says piece 50, but it is not one of that piece's boxes; collision instance 67 says piece 52, but it is not one of that piece's boxes; collision instance 68 says piece 17, but it is not one of that piece's boxes; collision instance 69 says piece 18, but it is not one of that piece's boxes; collision instance 70 says piece 19, but it is not one of that piece's boxes; collision instance 71 says piece 20, but it is not one of that piece's boxes; collision instance 72 says piece 21, but it is not one of that piece's boxes; collision instance 73 says piece 21, but it is not one of that piece's boxes; collision instance 74 says piece 21, but it is not one of that piece's boxes; collision instance 75 says piece 22, but it is not one of that piece's boxes; collision instance 76 says piece 23, but it is not one of that piece's boxes; collision instance 77 says piece 24, but it is not one of that piece's boxes; collision instance 78 says piece 25, but it is not one of that piece's boxes; collision instance 79 says piece 25, but it is not one of that piece's boxes; collision instance 80 says piece 25, but it is not one of that piece's boxes; collision instance 82 says piece 51, but it is not one of that piece's boxes; collision instance 83 says piece 33, but it is not one of that piece's boxes; collision instance 84 says piece 34, but it is not one of that piece's boxes; collision instance 85 says piece 35, but it is not one of that piece's boxes; collision instance 86 says piece 36, but it is not one of that piece's boxes; collision instance 87 says piece 37, but it is not one of that piece's boxes; collision instance 88 says piece 38, but it is not one of that piece's boxes; collision instance 89 says piece 39, but it is not one of that piece's boxes; collision instance 90 says piece 40, but it is not one of that piece's boxes; collision instance 91 says piece 41, but it is not one of that piece's boxes; collision instance 92 says piece 42, but it is not one of that piece's boxes\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "/pehverse/engines/UE_5.8.3/Engine/Source/Runtime/Core/Public/Containers/Array.h",
+					"lineNumber": 1244,
+					"timestamp": "2026.10.04-06.29.11"
+				}
+			],
+			"warnings": 0,
+			"errors": 5,
+			"artifacts": []
+		}
+	]
+}

@@ -1,6 +1,6 @@
 --- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
 +++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
-@@ -251,7 +251,7 @@
+@@ -256,7 +256,7 @@
  	if (Actor && Falling)
  	{
  		// Mid-fall (decided while it was waiting): the plan's pose, not solid, until it lands.
@@ -8,4 +8,4 @@
 +		Actor->SetSolid(true); // DEFECT
  		Actor->SetActorTransform(GLCollapseRules::Motion(Falling->Outcome, Falling->Elapsed));
  	}
- 	return Actor;
+ 	return Actor != nullptr;

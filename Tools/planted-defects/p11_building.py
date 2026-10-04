@@ -5,7 +5,8 @@ FRAME -> FINISH (a finish never changes support; electrical registered, not buil
 canonical structural model (collapse, debris, persistence, streaming), salvage quality by recovery path, inventory
 stacks and slots (no weight; nothing ever discarded), shared base storage (claims, order, all or nothing, containers
 never lose their contents), ownership (world renewal never touches player construction), plans, the v2 -> v3 save
-migration, and the asynchronous restore that closes the P8 debt.
+migration, the asynchronous restore that closes the P8 debt, and the instanced presentation of player construction
+(ADR-0039 §11: identity through the batch's owner table, exactly-once presentation, transitions, streaming, collision).
 
 A permanent gate, same method and the same strict classifier as p10_structural.py: a defect is CAUGHT only when a test
 ASSERTION fails. A run that dies, does not build, or fails only through engine errors is not a catch.
@@ -28,10 +29,13 @@ BUILDING = 'Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp'
 STRUCT = 'Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp'
 SALVAGE = 'Source/GridlandsGame/Private/Salvage/GLSalvageableComponent.cpp'
 INVCOMP = 'Source/GridlandsGame/Private/Inventory/GLInventoryComponent.cpp'
+BATCH = 'Source/GridlandsGame/Private/Building/GLPlayerPieceBatch.cpp'
+LOOKS = 'Source/GridlandsGame/Private/Building/GLPiecePresentation.cpp'
 PHASE = 'Data/phase/construction/electrical.json'
 VALIDATE = 'Tools/gldata/validate.py'
 TESTS = ('Gridlands.Core.BuildingV1+Gridlands.Game.BuildingV1+Gridlands.Core.Building+Gridlands.Game.Building+Gridlands.Core.Inventory'
-         '+Gridlands.Game.Inventory+Gridlands.Core.Save+Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes')
+         '+Gridlands.Game.Inventory+Gridlands.Core.Save+Gridlands.Game.Grid.PlayerConstructionStreamsWholeAndAFallResumes'
+         '+Gridlands.Game.PlayerPresentation')
 
 POOL_CONSUME = ('\tTaken.Reset();\n\tTaken.SetNum(Sources.Num());\n\tif (!CanConsume(Cost))\n\t{\n\t\treturn false;\n\t}\n'
                 '\tverify(ConsumeInto(Sources, Cost, &Taken));\n\treturn true;')
@@ -116,6 +120,32 @@ DEFECTS = [
     ('B40-storing-removes-what-did-not-fit', [(BUILDING, '\t\t\tverify(Carrier->GetMutableInventory().Remove(Item, Fits));',
         '\t\t\tverify(Carrier->GetMutableInventory().Remove(Item, Carried[Item])); // DEFECT: all of it leaves Zenny')]),
     ('B41-taking-leaves-nothing-behind', [(BUILDING, '\t\t\tverify(Crate->Remove(Item, Fits));', '\t\t\tverify(Crate->Remove(Item, Held[Item])); // DEFECT: the rest vanishes')]),
+    # --- instanced presentation (P11 scaling, ADR-0039 §11): GAMEPLAY MODEL != PRESENTATION
+    ('P1-piece-id-mapped-to-the-wrong-instance', [(BATCH, '\t\tSet->AddInstance(World, /*bWorldSpace=*/true);\n\t\tOwners.FindOrAdd(Set).Add(PieceId);',
+        '\t\tSet->AddInstance(World, /*bWorldSpace=*/true);\n\t\tOwners.FindOrAdd(Set).Insert(PieceId, 0); // DEFECT: the owner table runs the other way')]),
+    ('P2-removal-changes-another-pieces-identity', [(BATCH, '\t\t\tEntry.Value.RemoveAt(I);', '\t\t\tEntry.Value.RemoveAtSwap(I); // DEFECT: the table swaps while the instances shift')]),
+    ('P3-stale-instance-after-dismantling', [(STRUCT, '\tconst FVector Where = PartBox(*Part).GetCenter();\n\tUninstance(*Structure, *Part);\n\tToDestroy.Add(Part->Actor);',
+        '\tconst FVector Where = PartBox(*Part).GetCenter();\n\tToDestroy.Add(Part->Actor); // DEFECT: its instances stay')]),
+    ('P4-restore-marks-instanced-without-instances', [(STRUCT, '\tif (!Falling && PresentInstanced(Structure, Part))',
+        '\tif (!Falling && Structure.bPlayer && Part.State == EGLStructurePartState::Intact && AGLPlayerPieceBatch::CanInstance(Part.Piece) && (Part.bInstanced = true)) // DEFECT: never added')]),
+    ('P5-finish-changes-the-model-not-the-presentation', [(STRUCT, '\tif (Part->bInstanced && Structure)\n\t{\n\t\tUninstance(*Structure, *Part);\n\t\tif (!PresentInstanced(*Structure, *Part))\n\t\t{\n\t\t\tSpawnPart(*Structure, *Part);\n\t\t}\n\t}\n\telse if',
+        '\tif (Part->bInstanced && Structure)\n\t{\n\t\t// DEFECT: the batch keeps showing the frame\n\t}\n\telse if')]),
+    ('P6-collapse-leaves-the-static-instance-behind', [(STRUCT, '\t\t\tUninstance(Structure, *Part);\n\t\t\tSpawnPart(Structure, *Part);',
+        '\t\t\tSpawnPart(Structure, *Part); // DEFECT: its instances stay where it stood')]),
+    ('P7-collapse-removes-the-wrong-instances', [(STRUCT, '\t\t\tUninstance(Structure, *Part);\n\t\t\tSpawnPart(Structure, *Part);',
+        '\t\t\tUninstance(Structure, Structure.Parts[0]); // DEFECT: another piece\'s\n\t\t\tPart->bInstanced = false;\n\t\t\tSpawnPart(Structure, *Part);')]),
+    ('P8-a-transition-duplicates-the-presentation', [(STRUCT, '\tif (Part->bInstanced && Structure)\n\t{\n\t\tUninstance(*Structure, *Part);\n\t\tif (!PresentInstanced',
+        '\tif (Part->bInstanced && Structure)\n\t{\n\t\tPart->bInstanced = false; // DEFECT: re-presented without leaving the batch\n\t\tif (!PresentInstanced')]),
+    ('P9-load-over-a-live-cell-duplicates-instances', [(STRUCT, '\t\tTWeakObjectPtr<AGLPlayerPieceBatch> Batch;\n\t\tif (Batches.RemoveAndCopyValue(Key, Batch) && Batch.IsValid())\n\t\t{\n\t\t\tBatch->Destroy();\n\t\t}',
+        '\t\t// DEFECT: the live batch stays')]),
+    ('P10-stream-out-leaks-the-batch', [(STRUCT, '\t\t\t\tBatch->Retire();\n\t\t\t\tRetiringBatchList.Add(Batch);', '\t\t\t\t// DEFECT: forgotten, never retired')]),
+    ('P11-interaction-selects-the-wrong-piece', [(STRUCT, '\t\tId = Batch->PieceIdAt(Hit.GetComponent(), Hit.Item);', '\t\tId = Batch->PieceIdAt(Hit.GetComponent(), Hit.Item + 1); // DEFECT: off by one instance')]),
+    ('P12-rotated-piece-drawn-unrotated', [(BATCH, '\tconst FTransform At = GLPiecePresentation::PieceTransform(Piece);', '\tconst FTransform At(Piece.Location); // DEFECT: no yaw')]),
+    ('P13-renderer-order-becomes-identity', [(BATCH, '\tSet->bSupportRemoveAtSwap = false;', '\tSet->bSupportRemoveAtSwap = true; // DEFECT: the renderer reorders, the owner table does not')]),
+    ('P14-storage-forced-into-the-batch', [(BATCH, '\tif (!Def || Def->Storage.Slots > 0 || !GLPiecePresentation::Describe(Piece, Look))',
+        '\tif (!Def || !GLPiecePresentation::Describe(Piece, Look)) // DEFECT: a crate loses its actor (Store / Take)')]),
+    ('P15-instances-do-not-collide', [(BATCH, '\t\tCollision = NewSet(LoadObject<UStaticMesh>(nullptr, BatchCubePath), true);', '\t\tCollision = NewSet(LoadObject<UStaticMesh>(nullptr, BatchCubePath), false); // DEFECT')]),
+    ('P16-removal-preview-not-drawn-on-instances', [(STRUCT, '\t\t\tBatch->SetHighlighted(PieceIds); // it shows those it presents', '\t\t\tBatch->SetHighlighted({}); // DEFECT')]),
     # --- ownership, plans, migration
     ('B33-renewal-ignores-player-ownership', [(CLAIMS, '\tif (Origin == EGLPieceOrigin::Player)\n\t{\n\t\treturn false;\n\t}', '\t// DEFECT: ownership ignored')]),
     ('B34-renewal-ignores-claims', [(CLAIMS, '\treturn ClaimAt(Claims, Location) == nullptr;', '\treturn true; // DEFECT')]),

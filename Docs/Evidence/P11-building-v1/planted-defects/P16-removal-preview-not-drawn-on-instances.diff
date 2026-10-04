@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Structure/GLStructureSubsystem.cpp
+@@ -1311,7 +1311,7 @@
+ 	{
+ 		if (AGLPlayerPieceBatch* Batch = Entry.Value.Get())
+ 		{
+-			Batch->SetHighlighted(PieceIds); // it shows those it presents
++			Batch->SetHighlighted({}); // DEFECT
+ 		}
+ 	}
+ 	for (const int32 Id : PieceIds)
