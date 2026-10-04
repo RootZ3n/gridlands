@@ -656,7 +656,7 @@ void UGLBuildModeComponent::UpdatePlacement(const FHitResult* Hit)
 		Status = TEXT("[BUILD] nothing to build");
 		return;
 	}
-	if (!Hit || !Building->Snap(Piece, Hit->ImpactPoint, YawStep, View.Candidate, &View.Snap))
+	if (!Hit || !Building->Snap(Piece, Hit->ImpactPoint, YawStep, View.Candidate, &View.Snap, View.AimEnd - View.AimStart))
 	{
 		ClearGhost();
 		View.Reason = TEXT("Aim at the ground or a free socket");

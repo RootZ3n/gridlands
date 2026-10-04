@@ -198,10 +198,13 @@ namespace GLStructureRules
 	 * Where Def would go near Aim: aligned to the nearest compatible free socket (bottom onto top, side onto side) within
 	 * MaxSnapDistanceCm that does not overlap; otherwise, for a ground-capable piece, on the ground at Aim. When both side
 	 * sockets declare a facing, the candidate's yaw comes from the data (they must face each other), not from YawStep.
-	 * Returns false when neither applies.
+	 * Returns false when neither applies. A piece that could rest on the socket several ways (P12) rests the way that sits
+	 * on the most supports; among those, the one extending along AimDirection (away from the viewer) when given, then the
+	 * one whose centre is nearest Aim.
 	 */
 	GRIDLANDSCORE_API bool Snap(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing, FName Def,
-		const FVector& Aim, int32 YawStep, FGroundHeight Ground, FGLPlacedPiece& OutCandidate, struct FGLSnapInfo* OutInfo = nullptr);
+		const FVector& Aim, int32 YawStep, FGroundHeight Ground, FGLPlacedPiece& OutCandidate, struct FGLSnapInfo* OutInfo = nullptr,
+		const FVector& AimDirection = FVector::ZeroVector);
 
 	/** Is this ground point under a piece that rests on the ground (terraforming must not move it)? Oriented. */
 	GRIDLANDSCORE_API bool IsUnderStructure(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Pieces,

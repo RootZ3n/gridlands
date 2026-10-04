@@ -81,6 +81,28 @@ bool FGLPRSnap::RunTest(const FString& Parameters)
 	Upper.Id = 4;
 	WithUpper.Add(Upper);
 	TestTrue(TEXT("and it stands (resting on both walls)"), GLStructureRules::ComputeSupport(Content, WithUpper, PRFlat).FindRef(4) > 0.0);
+	// Aimed at the outside face of one wall (the view from outside the room): it still rests on both walls, not straddling
+	// the one aimed at, whatever its yaw.
+	const TArray<FGLPlacedPiece> RoomNS = {
+		{ 1, TEXT("buildpiece.modern.timber_foundation"), FVector(0, 0, 0), 0 },
+		{ 2, TEXT("buildpiece.modern.timber_wall"), FVector(0, 100, 30), 0 },
+		{ 3, TEXT("buildpiece.modern.timber_wall"), FVector(0, -100, 30), 0 } };
+	for (const int32 Yaw : { 0, GLStructureRules::QuarterTurnSteps, 3 * GLStructureRules::QuarterTurnSteps })
+	{
+		FGLPlacedPiece Over;
+		TestTrue(FString::Printf(TEXT("yaw %d: rests on both walls when aimed at one from outside"), Yaw),
+			GLStructureRules::Snap(Content, RoomNS, TEXT("buildpiece.modern.upper_floor"), FVector(-9.6, -109.8, 264.5), Yaw, PRFlat, Over, &Info, FVector(0, 1, -0.1))
+			&& Over.Location.Equals(FVector(0, 0, 280), 0.5));
+	}
+	// A row of walls: resting along the row is supported twice too, so the viewer's direction decides (away from them,
+	// over the room), not a centimetre of aim.
+	TArray<FGLPlacedPiece> Row = RoomNS;
+	Row.Add({ 4, TEXT("buildpiece.modern.timber_foundation"), FVector(200, 0, 0), 0 });
+	Row.Add({ 5, TEXT("buildpiece.modern.timber_wall"), FVector(200, -100, 30), 0 });
+	FGLPlacedPiece Along;
+	TestTrue(TEXT("a wall row: the floor extends away from the viewer, over the room"),
+		GLStructureRules::Snap(Content, Row, TEXT("buildpiece.modern.upper_floor"), FVector(-9.6, -109.8, 264.5), 0, PRFlat, Along, &Info, FVector(0, 1, -0.1))
+		&& Along.Location.Equals(FVector(0, 0, 280), 0.5));
 	// A wall has one bottom socket: its snap is unchanged.
 	FGLPlacedPiece Wall;
 	TestTrue(TEXT("a wall on the floor's north edge"), GLStructureRules::Snap(Content, Room, TEXT("buildpiece.modern.timber_wall"), FVector(0, 90, 30), 0, PRFlat, Wall, &Info)

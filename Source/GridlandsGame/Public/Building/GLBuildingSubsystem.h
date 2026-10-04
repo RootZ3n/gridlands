@@ -118,7 +118,7 @@ public:
 	TArray<FName> StationsNear(const FVector& At, double ReachCm = 300.0) const;
 
 	/** Snap helper (GLStructureRules::Snap on the live ground, over the intact player pieces); OutInfo: what it connected. */
-	bool Snap(FName Def, const FVector& Aim, int32 YawStep, FGLPlacedPiece& OutCandidate, FGLSnapInfo* OutInfo = nullptr) const;
+	bool Snap(FName Def, const FVector& Aim, int32 YawStep, FGLPlacedPiece& OutCandidate, FGLSnapInfo* OutInfo = nullptr, const FVector& AimDirection = FVector::ZeroVector) const;
 	/** P12: what an operation costing Cost at At would take and from where (dry run of the commit's consumption). */
 	FGLCostView CostView(const AActor* Who, const FVector& At, TConstArrayView<FGLItemStackDef> Cost) const;
 	/** P12: what removing PieceId by Path recovers (the commit's own yield), and whether all of it fits Who's sources. */

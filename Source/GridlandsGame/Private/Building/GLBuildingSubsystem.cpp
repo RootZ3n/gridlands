@@ -413,9 +413,9 @@ FGLInstallCheck UGLBuildingSubsystem::InstallFinish(AActor* Builder, int32 Piece
 	return Check;
 }
 
-bool UGLBuildingSubsystem::Snap(FName Def, const FVector& Aim, int32 YawStep, FGLPlacedPiece& OutCandidate, FGLSnapInfo* OutInfo) const
+bool UGLBuildingSubsystem::Snap(FName Def, const FVector& Aim, int32 YawStep, FGLPlacedPiece& OutCandidate, FGLSnapInfo* OutInfo, const FVector& AimDirection) const
 {
-	return GLStructureRules::Snap(GLContent::Get(), GetPieces(), Def, Aim, YawStep, [this](const FVector2D& At) { return GroundAt(At); }, OutCandidate, OutInfo);
+	return GLStructureRules::Snap(GLContent::Get(), GetPieces(), Def, Aim, YawStep, [this](const FVector2D& At) { return GroundAt(At); }, OutCandidate, OutInfo, AimDirection);
 }
 
 FGLCostView UGLBuildingSubsystem::CostView(const AActor* Who, const FVector& At, TConstArrayView<FGLItemStackDef> Cost) const

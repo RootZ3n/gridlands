@@ -75,6 +75,7 @@ namespace
 		int32 Index = 0;
 		double StepAt = 0.0;
 		double Started = 0.0;
+		double HoldUntil = 0.0; // a screenshot is taken at the end of a later frame: nothing moves until then
 		TSharedRef<FJsonObject> Out = MakeShared<FJsonObject>();
 		TArray<TSharedPtr<FJsonValue>> Checks;
 		bool bPass = true;
@@ -125,6 +126,7 @@ namespace
 		const FString File = IPDir() / TEXT("screenshots") / FString::Printf(TEXT("%s-%d-%s.png"), *IP->Mode, IP->Shots++, Name);
 		IFileManager::Get().MakeDirectory(*FPaths::GetPath(File), true);
 		FScreenshotRequest::RequestScreenshot(File, /*bShowUI=*/true, /*bAddFilenameSuffix=*/false);
+		IP->HoldUntil = IP->World->GetTimeSeconds() + 0.4;
 		UE_LOG(LogGridlands, Log, TEXT("gl.Building.IntentProof: screenshot %s"), *File);
 	}
 
@@ -188,9 +190,12 @@ namespace
 		const TArray<FGLPlacedPiece> After = IPBuilding()->GetPieces();
 		if (After.Num() != Before + 1 || !View.bHasCandidate)
 		{
+			UE_LOG(LogGridlands, Log, TEXT("gl.Building.IntentProof: nothing placed at %s: aim %s, %s"), Where, *(View.AimPoint - IPAnchor).ToCompactString(), *Build->StatusLine());
 			return 0;
 		}
 		const FGLPlacedPiece& Placed = After.Last();
+		UE_LOG(LogGridlands, Log, TEXT("gl.Building.IntentProof: placed %s %d at %s yaw %.1f (aim %s)"), Where, Placed.Id, *(Placed.Location - IPAnchor).ToCompactString(),
+			GLStructureRules::YawDegrees(Placed.YawStep), *(View.AimPoint - IPAnchor).ToCompactString());
 		++IP->CommitChecks;
 		if (!Placed.Location.Equals(View.Candidate.Location, 0.5) || Placed.YawStep != View.Candidate.YawStep || Placed.Def != View.Candidate.Def)
 		{
@@ -316,6 +321,11 @@ namespace
 			IPQuit();
 			return false;
 		}
+		if (World->GetTimeSeconds() < IP->HoldUntil)
+		{
+			IP->StepAt = World->GetTimeSeconds();
+			return true;
+		}
 		if (!IP->Steps.IsValidIndex(IP->Index))
 		{
 			IP->Out->SetStringField(TEXT("fingerprintAtEnd"), IPFingerprint());
@@ -377,14 +387,27 @@ namespace
 			IPBuild()->ToggleBuild(); // hands free: the ordinary interaction (E) on the crate
 			IPStand(-700, -700);
 		}));
-		S.Add({ TEXT("face the crate"), [](double) { return IPAim(IPAt(-700, -450, 60)); } });
+		// The interactor looks from Zenny's eyes (not the build camera): face the crate from there.
+		S.Add(IPDo(TEXT("face the crate"), [] { IPController()->SetControlRotation((IPAt(-700, -450, 60) - IPZenny()->GetPawnViewLocation()).Rotation()); }));
 		S.Add({ TEXT("store into the crate"), [](double Since)
 		{
 			if (Since < 0.3)
 			{
 				return false; // the interactor's focus is updated by its tick
 			}
+			{
+				FVector Eye;
+				FRotator Rot;
+				IPZenny()->GetActorEyesViewPoint(Eye, Rot);
+				FHitResult Hit;
+				FCollisionQueryParams Params(TEXT("IPStore"), false, IPZenny());
+				const bool bHit = IP->World->LineTraceSingleByChannel(Hit, Eye, Eye + Rot.Vector() * 300.0, ECC_Visibility, Params);
+				UE_LOG(LogGridlands, Log, TEXT("gl.Building.IntentProof: store trace from %s dir %s: %s"), *(Eye - IPAnchor).ToCompactString(), *Rot.Vector().ToCompactString(),
+					bHit ? *FString::Printf(TEXT("%s (%s) at %s"), *GetNameSafe(Hit.GetActor()), *GetNameSafe(Hit.GetComponent()), *(FVector(Hit.ImpactPoint) - IPAnchor).ToCompactString()) : TEXT("nothing"));
+			}
 			const int32 Carried = IPCarried().FindRef(IPStud);
+			const UObject* Focus = IPZenny()->GetInteractor()->GetFocus();
+			UE_LOG(LogGridlands, Log, TEXT("gl.Building.IntentProof: store focus %s, Zenny %s"), Focus ? *Focus->GetName() : TEXT("none"), *(IPZenny()->GetActorLocation() - IPAnchor).ToCompactString());
 			IPZenny()->GetInteractor()->TryInteract(UGameplayTagsManager::Get().RequestGameplayTag(TEXT("Interact.Store")));
 			const FGLInventory* Crate = IPBuilding()->StorageOf(IP->Ids[TEXT("crate")]);
 			IPNote(TEXT("materials stored in base storage by the real verb"), Crate && Crate->CountOf(IPStud) > 0 && IPCarried().FindRef(IPStud) < Carried,
@@ -393,9 +416,11 @@ namespace
 			return true;
 		} });
 		// The row of floors (the favourite selects the foundation).
-		S.Add(IPDo(TEXT("favourite foundation"), [] { IPBuild()->SelectFavorite(0); IPStand(100, -450); }));
+		S.Add(IPDo(TEXT("favourite foundation"), [] { IPBuild()->SelectFavorite(0); }));
 		for (const double X : { -600.0, -400.0, -200.0, 0.0, 200.0, 400.0, 600.0, 800.0 })
 		{
+			// Zenny walks along the row (walking is not an interaction): each floor is in front of him, nothing between.
+			S.Add(IPDo(FString::Printf(TEXT("stand for floor %.0f"), X), [X] { IPStand(X, -400); }));
 			S.Add(IPAimThen(FString::Printf(TEXT("floor %.0f"), X), [X] { return IPAt(X, 0, 0); }, [X] { IP->Ids.Add(FString::Printf(TEXT("floor%.0f"), X), IPPlace(TEXT("floor"))); }));
 		}
 		S.Add(IPDo(TEXT("floors placed"), []
@@ -405,15 +430,12 @@ namespace
 			IPNote(TEXT("a row of 8 floors through the favourite"), Floors == 8 && IPBuild()->GetSelectedPiece() == IPFoundation, FString::Printf(TEXT("%d floors"), Floors));
 		}));
 		// Ten identical snapped walls (MEASURED): north edges from the north, south edges from the south.
-		S.Add(IPDo(TEXT("choose wall (measured from here)"), [] { IP->CountBase = IPBuild()->GetIntentTotal(); IPChoose(IPWall); IPStand(400, 450); }));
+		S.Add(IPDo(TEXT("choose wall (measured from here)"), [] { IP->CountBase = IPBuild()->GetIntentTotal(); IPChoose(IPWall); }));
 		for (const double Y : { 85.0, -85.0 })
 		{
-			if (Y < 0)
-			{
-				S.Add(IPDo(TEXT("to the south side"), [] { IPStand(400, -450); }));
-			}
 			for (const double X : { 0.0, 200.0, 400.0, 600.0, 800.0 })
 			{
+				S.Add(IPDo(FString::Printf(TEXT("stand for wall %.0f,%.0f"), X, Y), [X, Y] { IPStand(X, Y > 0 ? 450 : -450); }));
 				S.Add(IPAimThen(FString::Printf(TEXT("wall %.0f,%.0f"), X, Y), [X, Y] { return IPAt(X, Y, 30); }, [X, Y]
 				{
 					IPBuild()->RefreshView();
@@ -439,16 +461,13 @@ namespace
 			IPShot(TEXT("walls-framed"));
 		}));
 		// Finishing ten walls with the same finish (MEASURED).
-		S.Add(IPDo(TEXT("finish mode (measured from here)"), [] { IP->CountBase = IPBuild()->GetIntentTotal(); IPBuild()->ToggleFinishMode(); IPStand(400, -450); }));
+		S.Add(IPDo(TEXT("finish mode (measured from here)"), [] { IP->CountBase = IPBuild()->GetIntentTotal(); IPBuild()->ToggleFinishMode(); }));
 		for (int32 I = 0; I < 10; ++I)
 		{
 			// From the south the north walls are behind the south ones: the south walls first, then the north ones from the north.
 			const bool bSouthWall = I < 5;
 			const double X = 200.0 * (I % 5);
-			if (I == 5)
-			{
-				S.Add(IPDo(TEXT("to the north side"), [] { IPStand(400, 450); }));
-			}
+			S.Add(IPDo(FString::Printf(TEXT("stand for finish %d"), I), [X, bSouthWall] { IPStand(X, bSouthWall ? -450 : 450); }));
 			S.Add(IPAimThen(FString::Printf(TEXT("finish wall %d"), I), [X, bSouthWall] { return IPAt(X, bSouthWall ? -110 : 110, 150); }, [I]
 			{
 				UGLBuildModeComponent* Build = IPBuild();
@@ -472,6 +491,8 @@ namespace
 				{
 					Build->Primary();
 				}
+				UE_LOG(LogGridlands, Log, TEXT("gl.Building.IntentProof: finish %d: target %d (%s), aim %s"), I, Build->GetView().FinishTarget, *Build->GetView().Finish.ToString(),
+					*(Build->GetView().AimPoint - IPAnchor).ToCompactString());
 			}));
 		}
 		S.Add(IPDo(TEXT("finished"), []
@@ -500,7 +521,7 @@ namespace
 		}));
 		// The upper floor on floor 0's walls, and a stair up to it from the west.
 		S.Add(IPDo(TEXT("choose upper floor"), [] { IPChoose(IPUpper); IPBuild()->RotateQuarter(-1); IPStand(0, -700); }));
-		S.Add(IPAimThen(TEXT("upper floor"), [] { return IPAt(0, 0, 285); }, []
+		S.Add(IPAimThen(TEXT("upper floor"), [] { return IPAt(0, -110, 265); }, [] // the south wall's top, from outside: the floor goes over the room
 		{
 			const int32 Id = IPPlace(TEXT("upper floor"));
 			IP->Ids.Add(TEXT("upper"), Id);
@@ -508,7 +529,7 @@ namespace
 			IPNote(TEXT("an upper floor rests on the walls below"), Part && Part->Piece.Location.Equals(IPAt(0, 0, 280), 2.0) && IPBuilding()->Support().FindRef(Id) > 0.0,
 				Part ? Part->Piece.Location.ToCompactString() : FString(TEXT("not placed")));
 		}));
-		S.Add(IPDo(TEXT("choose stair"), [] { IPChoose(IPStair); IPBuild()->RotateQuarter(-1); IPStand(-500, -700); }));
+		S.Add(IPDo(TEXT("choose stair"), [] { IPChoose(IPStair); IPBuild()->RotateQuarter(-1); IPStand(-350, -500); }));
 		S.Add(IPAimThen(TEXT("stair"), [] { return IPAt(-100, 0, 290); }, []
 		{
 			IPBuild()->RefreshView();
@@ -553,35 +574,44 @@ namespace
 			UNavigationPath* Path = Nav ? Nav->FindPathToLocationSynchronously(IP->World.Get(), IPAt(-900, -300, 10), IPAt(20, 0, 310)) : nullptr;
 			IPNote(TEXT("navigation finds a path up the stair"), Path && Path->IsValid() && !Path->IsPartial() && Path->PathPoints.Last().Z > IPAnchor.Z + 260.0,
 				Path && Path->IsValid() ? FString::Printf(TEXT("%d points, ends at %.0f cm"), Path->PathPoints.Num(), Path->PathPoints.Last().Z - IPAnchor.Z) : FString(TEXT("no path")));
-			IPStand(0, -600);
-			IPBuild()->ToggleBuild();
-			IPBuild()->ToggleRemoveMode();
 			return true;
 		} });
-		// Removal: the north wall under the upper floor is redundant (one click); the south wall then brings it down (hold).
-		S.Add(IPDo(TEXT("to the north side"), [] { IPStand(0, 600); }));
-		S.Add(IPAimThen(TEXT("remove the redundant support"), [] { return IPAt(0, 110, 150); }, []
+		S.Add(IPWait(TEXT("upstairs frame"), 0.5)); // the screenshot is taken at the end of a later frame: keep still until then
+		S.Add(IPDo(TEXT("back down"), [] { IPStand(0, -600); IPBuild()->ToggleBuild(); IPBuild()->ToggleRemoveMode(); }));
+		// Removal on a second upper floor (over the room at x 400, no stair: a stair also holds what it reaches): its north
+		// wall is redundant (one click); its south wall then brings it down (hold).
+		S.Add(IPDo(TEXT("second upper floor"), [] { IPBuild()->ToggleRemoveMode(); IPChoose(IPUpper); IPStand(400, -700); }));
+		S.Add(IPAimThen(TEXT("place the second upper floor"), [] { return IPAt(400, -110, 265); }, []
+		{
+			const int32 Id = IPPlace(TEXT("second upper floor"));
+			IP->Ids.Add(TEXT("upper2"), Id);
+			const FGLStructurePartRuntime* Part = Id ? IPStructures()->FindPlayerPiece(Id) : nullptr;
+			IPNote(TEXT("a second upper floor over the room at x 400"), Part && Part->Piece.Location.Equals(IPAt(400, 0, 280), 2.0), Part ? (Part->Piece.Location - IPAnchor).ToCompactString() : FString(TEXT("not placed")));
+			IPBuild()->ToggleRemoveMode();
+		}));
+		S.Add(IPDo(TEXT("to the north side"), [] { IPStand(400, 600); }));
+		S.Add(IPAimThen(TEXT("remove the redundant support"), [] { return IPAt(400, 110, 150); }, []
 		{
 			UGLBuildModeComponent* Build = IPBuild();
 			Build->RefreshView();
 			const FGLBuildView View = Build->GetView();
 			Build->Primary();
-			IPNote(TEXT("a redundant support: nothing else falls, removed with one click"), View.RemoveTarget == IP->Ids[TEXT("wall0n")] && View.Predicted.Num() == 0 && !View.bNeedsConfirm
+			IPNote(TEXT("a redundant support: nothing else falls, removed with one click"), View.RemoveTarget == IP->Ids[TEXT("wall400n")] && View.Predicted.Num() == 0 && !View.bNeedsConfirm
 				&& !IPStructures()->FindPlayerPiece(View.RemoveTarget), FString::Printf(TEXT("target %d, predicted %d"), View.RemoveTarget, View.Predicted.Num()));
 		}));
-		S.Add(IPDo(TEXT("to the south side"), [] { IPStand(0, -600); }));
-		S.Add(IPAimThen(TEXT("aim at the last support"), [] { return IPAt(0, -110, 150); }, []
+		S.Add(IPDo(TEXT("to the south side"), [] { IPStand(400, -600); }));
+		S.Add(IPAimThen(TEXT("aim at the last support"), [] { return IPAt(400, -110, 150); }, []
 		{
 			UGLBuildModeComponent* Build = IPBuild();
 			Build->RefreshView();
 			IP->HoldTarget = Build->GetView().RemoveTarget;
 			IP->HoldPrediction = Build->GetView().Predicted;
-			IPNote(TEXT("the removal preview: the upper floor will come down (canonical prediction)"), IP->HoldTarget == IP->Ids[TEXT("wall0s")]
-				&& IP->HoldPrediction == IPBuilding()->PreviewRemoval(IP->HoldTarget) && IP->HoldPrediction.Contains(IP->Ids[TEXT("upper")]) && Build->GetView().bNeedsConfirm,
+			IPNote(TEXT("the removal preview: the upper floor will come down (canonical prediction)"), IP->HoldTarget == IP->Ids[TEXT("wall400s")]
+				&& IP->HoldPrediction == IPBuilding()->PreviewRemoval(IP->HoldTarget) && IP->HoldPrediction.Contains(IP->Ids[TEXT("upper2")]) && Build->GetView().bNeedsConfirm,
 				FString::Printf(TEXT("predicted [%s]"), *FString::JoinBy(IP->HoldPrediction, TEXT(","), [](int32 I) { return FString::FromInt(I); })));
 			IPShot(TEXT("removal-prediction"));
-			Build->Primary(); // starts the hold
 		}));
+		S.Add(IPDo(TEXT("press and hold"), [] { IPBuild()->Primary(); })); // starts the hold
 		S.Add({ TEXT("hold to confirm"), [](double Since)
 		{
 			if (Since < 0.15)
