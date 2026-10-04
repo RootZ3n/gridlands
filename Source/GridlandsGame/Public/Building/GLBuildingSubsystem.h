@@ -32,6 +32,28 @@ struct GRIDLANDSGAME_API FGLMaterialSources
 	void AnnounceAcquired(AActor* Who, const TMap<FName, int32>& Items) const;
 };
 
+/** P12 (ADR-0040): one item of a cost display: the commit's own sources and its own consumption plan. */
+struct GRIDLANDSGAME_API FGLCostLine
+{
+	FName Item;
+	int32 Needed = 0;
+	/** What the eligible base storage holds, and what Zenny carries. */
+	int32 InStorage = 0;
+	int32 Personal = 0;
+	/** What the commit would take from each (storage before Zenny inside a base). */
+	int32 FromStorage = 0;
+	int32 FromPersonal = 0;
+};
+
+struct GRIDLANDSGAME_API FGLCostView
+{
+	TArray<FGLCostLine> Lines;
+	bool bAffordable = false;
+	/** The claim whose storage supplies it (None: Zenny's pockets only). */
+	FName Claim;
+	TArray<int32> Containers;
+};
+
 /** Why a removal was refused (nothing changed). */
 enum class EGLDemolishRefusal : uint8 { None, UnknownPiece, NoRoomForRefund, StorageNotEmpty };
 
@@ -95,8 +117,15 @@ public:
 	/** Player-built station tags within reach of a point (a sawhorse provides Station.Saw). */
 	TArray<FName> StationsNear(const FVector& At, double ReachCm = 300.0) const;
 
-	/** Snap helper (GLStructureRules::Snap on the live ground, over the intact player pieces). */
-	bool Snap(FName Def, const FVector& Aim, int32 YawStep, FGLPlacedPiece& OutCandidate) const;
+	/** Snap helper (GLStructureRules::Snap on the live ground, over the intact player pieces); OutInfo: what it connected. */
+	bool Snap(FName Def, const FVector& Aim, int32 YawStep, FGLPlacedPiece& OutCandidate, FGLSnapInfo* OutInfo = nullptr) const;
+	/** P12: what an operation costing Cost at At would take and from where (dry run of the commit's consumption). */
+	FGLCostView CostView(const AActor* Who, const FVector& At, TConstArrayView<FGLItemStackDef> Cost) const;
+	/** P12: what removing PieceId by Path recovers (the commit's own yield), and whether all of it fits Who's sources. */
+	TMap<FName, int32> RemovalYield(int32 PieceId, EGLSalvagePath Path) const;
+	bool RemovalYieldFits(const AActor* Who, int32 PieceId, EGLSalvagePath Path) const;
+	/** P12: the finishes the install rule accepts on PieceId now (role, phase, knowledge), by display name. */
+	TArray<FName> FinishesFor(int32 PieceId) const;
 	bool IsUnderStructure(const FVector2D& World) const;
 
 	TMap<int32, double> Support() const;

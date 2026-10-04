@@ -191,6 +191,9 @@ CAPABILITY_EFFECTS = (
 REQUIREMENT_KINDS_NEEDING_TARGET = {"Requirement.ObjectSalvaged": "salvage_node", "Requirement.ItemDelivered": None}
 
 COUNT = Int(1, 100000)
+# Build piece roles (what a form does structurally; P12 adds the stair and the window wall).
+BUILD_ROLES = ("foundation", "wall", "doorway", "window_wall", "roof", "post", "beam", "floor", "stair", "stump", "trunk",
+               "storage", "base_core", "station")
 ITEM_STACK = Obj({"item": Ref("item"), "count": COUNT}, required=("item", "count"))
 SALVAGE_YIELD = Obj({"item": Ref("item"), "count": COUNT, "yieldCategory": Ref("yield")}, required=("item", "count", "yieldCategory"))
 VEC3 = List(Num(), min_items=3)
@@ -290,7 +293,9 @@ SCHEMAS: dict[str, Obj] = {
             "displayName": Str(),
             "era": Ref("era"),
             "material": Ref("material"),
-            "role": Enum("foundation", "wall", "doorway", "roof", "post", "beam", "floor", "stump", "trunk", "storage", "base_core", "station"),
+            "role": Enum(*BUILD_ROLES),
+            # P12: the browser category (buildcategory.*); absent: the category whose fallbackRoles hold the role (CAT-1).
+            "category": Ref("buildcategory"),
             # May rest directly on terrain (foundations, posts); otherwise it needs another piece.
             "grounded": Bool(),
             # Bounds in piece space (P11: oriented with the piece's yaw for overlap, terrain protection, collapse).
@@ -544,6 +549,12 @@ SCHEMAS: dict[str, Obj] = {
         },
         required=("displayName", "collapse", "noise"),
     ),
+    # P12 (ADR-0040): a piece-browser category. Eras and styles are filters, never locks: a category groups forms by
+    # what they do. fallbackRoles: the roles a piece without an explicit category falls into (each role in one at most).
+    "buildcategory": kind(
+        {"displayName": Str(), "order": Int(1, 1000), "fallbackRoles": List(Enum(*BUILD_ROLES), unique=True)},
+        required=("displayName", "order"),
+    ),
     # P11 (ADR-0039): a construction phase after FRAME (canonical order FRAME -> ELECTRICAL -> FINISH).
     "phase": kind(
         {"displayName": Str(), "order": Int(1, 100), "optional": Bool(), "implemented": Bool()},
@@ -555,7 +566,7 @@ SCHEMAS: dict[str, Obj] = {
             "displayName": Str(),
             "era": Ref("era"),
             "phase": Ref("phase"),
-            "fitsRoles": List(Enum("foundation", "wall", "doorway", "roof", "post", "beam", "floor"), min_items=1, unique=True),
+            "fitsRoles": List(Enum("foundation", "wall", "doorway", "window_wall", "roof", "post", "beam", "floor", "stair"), min_items=1, unique=True),
             "cost": List(ITEM_STACK, min_items=1),
             "unlockedBy": List(Ref("knowledge"), unique=True),
             "visual": Ref("visual"),

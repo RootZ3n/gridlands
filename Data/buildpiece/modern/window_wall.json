@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "id": "buildpiece.modern.window_wall",
+  "displayName": "Stud wall with window opening",
+  "era": "era.memory.modern_day",
+  "material": "material.timber.pine",
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "role": "window_wall",
+  "grounded": false,
+  "size": [
+    2,
+    0.2,
+    2.5
+  ],
+  "shapes": [
+    {
+      "size": [
+        0.55,
+        0.2,
+        2.5
+      ],
+      "offset": [
+        -0.725,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.55,
+        0.2,
+        2.5
+      ],
+      "offset": [
+        0.725,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.9,
+        0.2,
+        0.9
+      ],
+      "offset": [
+        0,
+        0,
+        0.45
+      ]
+    },
+    {
+      "size": [
+        0.9,
+        0.2,
+        0.4
+      ],
+      "offset": [
+        0,
+        0,
+        2.3
+      ]
+    }
+  ],
+  "sockets": [
+    {
+      "name": "bottom",
+      "role": "bottom",
+      "offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "top",
+      "role": "top",
+      "offset": [
+        0,
+        0,
+        2.5
+      ]
+    },
+    {
+      "name": "left",
+      "role": "side",
+      "offset": [
+        -1,
+        0,
+        1.25
+      ]
+    },
+    {
+      "name": "right",
+      "role": "side",
+      "offset": [
+        1,
+        0,
+        1.25
+      ]
+    }
+  ],
+  "cost": [
+    {
+      "item": "item.component.stud",
+      "count": 6
+    }
+  ],
+  "layers": [
+    "phase.construction.electrical",
+    "phase.construction.finish"
+  ],
+  "frameShapes": [
+    {
+      "size": [
+        2.0,
+        0.14,
+        0.05
+      ],
+      "offset": [
+        0,
+        0,
+        0.025
+      ]
+    },
+    {
+      "size": [
+        2.0,
+        0.14,
+        0.05
+      ],
+      "offset": [
+        0,
+        0,
+        2.475
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        -0.975,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        -0.475,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        0.475,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        2.4
+      ],
+      "offset": [
+        0.975,
+        0,
+        1.25
+      ]
+    },
+    {
+      "size": [
+        0.9,
+        0.14,
+        0.1
+      ],
+      "offset": [
+        0,
+        0,
+        0.9
+      ]
+    },
+    {
+      "size": [
+        0.9,
+        0.14,
+        0.2
+      ],
+      "offset": [
+        0,
+        0,
+        2.1
+      ]
+    },
+    {
+      "size": [
+        0.05,
+        0.14,
+        0.85
+      ],
+      "offset": [
+        0,
+        0,
+        0.45
+      ]
+    }
+  ],
+  "salvage": "salvage.build.window_wall",
+  "notes": "P12 (ADR-0040): a stud wall frame with a window opening: the component language can represent an opening, not only solid rectangles. Frame -> finish like any stud wall; no glass, shutters or fittings, and not a door (interactive doors are P13).",
+  "category": "buildcategory.building.walls_openings"
+}

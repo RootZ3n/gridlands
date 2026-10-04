@@ -210,6 +210,7 @@ def cross_check(ds: Dataset) -> None:
     check_grid(ds)
     check_knowledge_domains(ds)
     check_building_v1(ds)
+    check_build_categories(ds)
     check_generated_tags(ds)
 
 
@@ -664,6 +665,30 @@ def check_building_v1(ds: Dataset) -> None:
             for index, part in enumerate(data.get("parts") or []):
                 if isinstance(part, dict) and not whole_yaw_step(float(part.get("yaw", 0))):
                     ds.problem("YAW-1", rel, f".parts[{index}].yaw", f"a yaw must be a whole number of {YAW_STEP} degree steps")
+
+
+def check_build_categories(ds: Dataset) -> None:
+    """P12 (ADR-0040). CAT-1 every buildable piece resolves to exactly one browser category: its explicit category, or the
+    one category whose fallbackRoles hold its role (deterministic; no role may fall back into two categories); CAT-2
+    category orders are unique (the browser's order is the data's)."""
+    categories = sorted((e for e in ds.entities.values() if e.kind == "buildcategory"), key=lambda e: e.id)
+    owner: dict[str, str] = {}
+    for c in categories:
+        for role in c.data.get("fallbackRoles") or []:
+            if role in owner:
+                ds.problem("CAT-1", c.file, ".fallbackRoles", f"role {role} already falls back into {owner[role]}")
+            owner.setdefault(role, c.id)
+    orders: dict[int, str] = {}
+    for c in categories:
+        order = c.data.get("order")
+        if order in orders:
+            ds.problem("CAT-2", c.file, ".order", f"order {order} already used by {orders[order]}")
+        orders.setdefault(order, c.id)
+    for e in sorted((e for e in ds.entities.values() if e.kind == "buildpiece"), key=lambda e: e.id):
+        if not e.data.get("buildable", True) or e.data.get("category"):
+            continue
+        if e.data.get("role") not in owner:
+            ds.problem("CAT-1", e.file, ".role", f"no category: give it a category, or add {e.data.get('role')} to a category's fallbackRoles")
 
 
 def check_grid(ds: Dataset) -> None:

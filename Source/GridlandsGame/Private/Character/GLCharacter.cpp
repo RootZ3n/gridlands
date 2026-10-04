@@ -29,6 +29,7 @@
 #include "Interaction/GLInteractorComponent.h"
 #include "Inventory/GLInventoryComponent.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Playtest/GLFrictionLog.h"
 
 namespace GLCharacterInput
 {
@@ -54,6 +55,13 @@ namespace GLCharacterInput
 	const FName PieceSmash(TEXT("PieceSmash"));
 	const FName PieceFinish(TEXT("PieceFinish"));
 	const FName TakeAll(TEXT("TakeAll"));
+	// P12 build mode (ADR-0040).
+	const FName PrimaryRelease(TEXT("ToolPrimaryRelease"));
+	const FName BuildBrowser(TEXT("BuildBrowser"));
+	const FName BuildBack(TEXT("BuildBack"));
+	const FName BuildCamera(TEXT("BuildCamera"));
+	const FName Friction(TEXT("FrictionNote"));
+	const FName Favorite[8] = { TEXT("Favorite1"), TEXT("Favorite2"), TEXT("Favorite3"), TEXT("Favorite4"), TEXT("Favorite5"), TEXT("Favorite6"), TEXT("Favorite7"), TEXT("Favorite8") };
 	const FName Distract(TEXT("PehlichiDistract"));
 	const FName QuickLoad(TEXT("QuickLoad"));
 }
@@ -180,6 +188,18 @@ void AGLCharacter::BuildInput()
 	MappingContext->MapKey(MakeAction(GLCharacterInput::PieceSmash, EInputActionValueType::Boolean), EKeys::N);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::PieceFinish, EInputActionValueType::Boolean), EKeys::Y);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::TakeAll, EInputActionValueType::Boolean), EKeys::L); // P11: take everything from a storage crate
+	// P12 build mode: Tab browser, Esc / right mouse back, Alt build camera, 1-8 favorites (Ctrl: pin), F8 friction note.
+	MappingContext->MapKey(MakeAction(GLCharacterInput::BuildBrowser, EInputActionValueType::Boolean), EKeys::Tab);
+	UInputAction* BackAction = MakeAction(GLCharacterInput::BuildBack, EInputActionValueType::Boolean);
+	MappingContext->MapKey(BackAction, EKeys::Escape);
+	MappingContext->MapKey(BackAction, EKeys::RightMouseButton);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::BuildCamera, EInputActionValueType::Boolean), EKeys::LeftAlt);
+	MappingContext->MapKey(MakeAction(GLCharacterInput::Friction, EInputActionValueType::Boolean), EKeys::F8);
+	const FKey Digits[8] = { EKeys::One, EKeys::Two, EKeys::Three, EKeys::Four, EKeys::Five, EKeys::Six, EKeys::Seven, EKeys::Eight };
+	for (int32 I = 0; I < 8; ++I)
+	{
+		MappingContext->MapKey(MakeAction(GLCharacterInput::Favorite[I], EInputActionValueType::Boolean), Digits[I]);
+	}
 	MappingContext->MapKey(MakeAction(GLCharacterInput::Distract, EInputActionValueType::Boolean), EKeys::V);
 	MappingContext->MapKey(MakeAction(GLCharacterInput::QuickLoad, EInputActionValueType::Boolean), EKeys::F9);
 }
@@ -223,14 +243,24 @@ void AGLCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		Input->BindAction(FindInputAction(GLCharacterInput::BuildToggle), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::ToggleBuild);
 		Input->BindAction(FindInputAction(GLCharacterInput::TerraformCycle), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::CycleTerraform);
 		Input->BindAction(FindInputAction(GLCharacterInput::ToolPrimary), ETriggerEvent::Started, this, &AGLCharacter::PrimaryAction);
+		Input->BindAction(FindInputAction(GLCharacterInput::ToolPrimary), ETriggerEvent::Completed, BuildMode.Get(), &UGLBuildModeComponent::PrimaryReleased);
+		Input->BindAction(FindInputAction(GLCharacterInput::BuildBrowser), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::ToggleBrowser);
+		Input->BindAction(FindInputAction(GLCharacterInput::BuildBack), ETriggerEvent::Started, this, &AGLCharacter::BuildBack);
+		Input->BindAction(FindInputAction(GLCharacterInput::BuildCamera), ETriggerEvent::Started, this, &AGLCharacter::BuildCameraPressed);
+		Input->BindAction(FindInputAction(GLCharacterInput::BuildCamera), ETriggerEvent::Completed, this, &AGLCharacter::BuildCameraReleased);
+		Input->BindAction(FindInputAction(GLCharacterInput::Friction), ETriggerEvent::Started, this, &AGLCharacter::FrictionNote);
+		for (int32 I = 0; I < 8; ++I)
+		{
+			Input->BindAction(FindInputAction(GLCharacterInput::Favorite[I]), ETriggerEvent::Started, this, &AGLCharacter::Favorite, I);
+		}
 		Input->BindAction(FindInputAction(GLCharacterInput::Distract), ETriggerEvent::Started, this, &AGLCharacter::DistractCommand);
 		Input->BindAction(FindInputAction(GLCharacterInput::PieceNext), ETriggerEvent::Started, this, &AGLCharacter::NextPiece);
 		Input->BindAction(FindInputAction(GLCharacterInput::PiecePrevious), ETriggerEvent::Started, this, &AGLCharacter::PreviousPiece);
-		Input->BindAction(FindInputAction(GLCharacterInput::PieceRotate), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::Rotate);
-		Input->BindAction(FindInputAction(GLCharacterInput::PieceDemolish), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::Demolish);
-		Input->BindAction(FindInputAction(GLCharacterInput::PieceRotateFine), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::RotateFine);
-		Input->BindAction(FindInputAction(GLCharacterInput::PieceSmash), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::Smash);
-		Input->BindAction(FindInputAction(GLCharacterInput::PieceFinish), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::InstallFinish);
+		Input->BindAction(FindInputAction(GLCharacterInput::PieceRotate), ETriggerEvent::Started, this, &AGLCharacter::RotatePiece);
+		Input->BindAction(FindInputAction(GLCharacterInput::PieceDemolish), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::ToggleRemoveMode);
+		Input->BindAction(FindInputAction(GLCharacterInput::PieceRotateFine), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::Rotate15);
+		Input->BindAction(FindInputAction(GLCharacterInput::PieceSmash), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::TogglePath);
+		Input->BindAction(FindInputAction(GLCharacterInput::PieceFinish), ETriggerEvent::Started, BuildMode.Get(), &UGLBuildModeComponent::ToggleFinishMode);
 		Input->BindAction(FindInputAction(GLCharacterInput::TakeAll), ETriggerEvent::Started, this, &AGLCharacter::TakeAll);
 		Input->BindAction(FindInputAction(GLCharacterInput::QuickLoad), ETriggerEvent::Started, this, &AGLCharacter::QuickLoad);
 	}
@@ -303,12 +333,94 @@ void AGLCharacter::DistractCommand()
 
 void AGLCharacter::NextPiece()
 {
-	BuildMode->CyclePiece(1);
+	Wheel(1);
 }
 
 void AGLCharacter::PreviousPiece()
 {
-	BuildMode->CyclePiece(-1);
+	Wheel(-1);
+}
+
+bool AGLCharacter::IsDown(const FKey& A, const FKey& B) const
+{
+	const APlayerController* PC = Cast<APlayerController>(Controller);
+	return PC && (PC->IsInputKeyDown(A) || PC->IsInputKeyDown(B));
+}
+
+void AGLCharacter::Wheel(int32 Direction)
+{
+	// P12: the wheel means what the build sub-state says; Ctrl is one canonical 2.5 degree step everywhere in build mode.
+	if (BuildMode->GetMode() != EGLToolMode::Build)
+	{
+		return;
+	}
+	const bool bShift = IsDown(EKeys::LeftShift, EKeys::RightShift);
+	if (IsDown(EKeys::LeftControl, EKeys::RightControl))
+	{
+		BuildMode->RotateFine(Direction);
+		return;
+	}
+	if (BuildMode->GetView().bBuildCamera && bShift)
+	{
+		BuildMode->AdjustCameraHeight(Direction * 50.f);
+		return;
+	}
+	switch (BuildMode->GetView().State)
+	{
+	case EGLBuildState::Browse: bShift ? BuildMode->BrowseCategory(Direction) : BuildMode->BrowseMove(Direction); break;
+	case EGLBuildState::Place: bShift ? BuildMode->CycleCategory(Direction) : BuildMode->CycleVariant(Direction); break;
+	case EGLBuildState::Finish: BuildMode->CycleFinish(Direction); break;
+	case EGLBuildState::Remove: break;
+	}
+}
+
+void AGLCharacter::RotatePiece()
+{
+	BuildMode->RotateQuarter(IsDown(EKeys::LeftShift, EKeys::RightShift) ? -1 : 1);
+}
+
+void AGLCharacter::Favorite(int32 Slot)
+{
+	if (BuildMode->GetMode() == EGLToolMode::Build)
+	{
+		IsDown(EKeys::LeftControl, EKeys::RightControl) ? BuildMode->PinFavorite(Slot) : BuildMode->SelectFavorite(Slot);
+	}
+}
+
+void AGLCharacter::BuildBack()
+{
+	if (BuildMode->GetMode() != EGLToolMode::None)
+	{
+		BuildMode->Back();
+	}
+}
+
+void AGLCharacter::BuildCameraPressed()
+{
+	BuildMode->BuildCamera(true);
+}
+
+void AGLCharacter::BuildCameraReleased()
+{
+	BuildMode->BuildCamera(false);
+}
+
+void AGLCharacter::FrictionNote()
+{
+	GLFrictionLog::OpenPicker(GetWorld());
+}
+
+void AGLCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	// P12 build camera: pulled back and raised around Zenny (bounded; never free flight). The aim is the camera's view,
+	// so what it shows is what build mode targets.
+	const FGLBuildView& View = BuildMode->GetView();
+	const bool bPulled = View.bBuildCamera && View.Mode == EGLToolMode::Build;
+	const float Alpha = FMath::Clamp(DeltaSeconds * 8.f, 0.f, 1.f);
+	CameraBoom->TargetArmLength = FMath::Lerp(CameraBoom->TargetArmLength, bPulled ? BuildCameraArmCm : DefaultArmCm, Alpha);
+	const FVector Offset = bPulled ? FVector(0.f, 60.f, BuildCameraRaiseCm + View.CameraHeightCm) : DefaultSocketOffset;
+	CameraBoom->SocketOffset = FMath::Lerp(CameraBoom->SocketOffset, Offset, Alpha);
 }
 
 void AGLCharacter::AskForHint()

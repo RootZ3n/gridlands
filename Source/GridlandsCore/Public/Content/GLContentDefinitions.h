@@ -363,6 +363,8 @@ struct GRIDLANDSCORE_API FGLBuildPieceDef : public FGLDefinitionBase
 	UPROPERTY() FName Material;
 	/** foundation | wall | doorway | roof | post | beam | floor | storage | base_core | station ... */
 	UPROPERTY() FName Role;
+	/** P12 (ADR-0040): the piece-browser category; None: the category whose FallbackRoles hold Role (CAT-1). */
+	UPROPERTY() FName Category;
 	/** May rest directly on terrain. */
 	UPROPERTY() bool Grounded = false;
 	/** Piece-space bounds, metres, origin at the bottom centre. */
@@ -409,6 +411,20 @@ struct GRIDLANDSCORE_API FGLPhaseDef : public FGLDefinitionBase
 	UPROPERTY() int32 Order = 0;
 	UPROPERTY() bool Optional = true;
 	UPROPERTY() bool Implemented = false;
+};
+
+/**
+ * P12 (ADR-0040): a piece-browser category. Groups forms by what they do; eras and styles are filters, never locks.
+ * A piece without an explicit category falls into the one category whose FallbackRoles hold its role.
+ */
+USTRUCT()
+struct GRIDLANDSCORE_API FGLBuildCategoryDef : public FGLDefinitionBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FString DisplayName;
+	UPROPERTY() int32 Order = 0;
+	UPROPERTY() TArray<FName> FallbackRoles;
 };
 
 /**

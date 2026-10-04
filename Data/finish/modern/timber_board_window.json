@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "finish.modern.timber_board_window",
+  "displayName": "Timber boards (window wall)",
+  "era": "era.memory.modern_day",
+  "phase": "phase.construction.finish",
+  "fitsRoles": [
+    "window_wall"
+  ],
+  "cost": [
+    {
+      "item": "item.material.timber_plank",
+      "count": 2
+    }
+  ],
+  "unlockedBy": [
+    "knowledge.style.modern_timber_frame"
+  ],
+  "salvage": "salvage.finish.timber_board",
+  "tint": [
+    0.62,
+    0.44,
+    0.26
+  ],
+  "notes": "P12: the timber-board finish for a window wall, painted on the wall's own shapes so the opening stays open (the timber-board wall mesh is solid). No art task."
+}

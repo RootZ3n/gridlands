@@ -66,6 +66,14 @@ int32 FGLMaterialPool::CountOf(FName Item) const
 	return Total;
 }
 
+bool FGLMaterialPool::PlanConsume(TConstArrayView<FGLItemStackDef> Cost, TArray<TMap<FName, int32>>& OutTaken) const
+{
+	FTrial Trial(Sources);
+	OutTaken.Reset();
+	OutTaken.SetNum(Sources.Num());
+	return ConsumeInto(Trial.Pointers, Cost, &OutTaken);
+}
+
 bool FGLMaterialPool::ConsumeInto(TArrayView<FGLInventory*> In, TConstArrayView<FGLItemStackDef> Cost, TArray<TMap<FName, int32>>* OutTaken)
 {
 	const TMap<FName, int32> Need = Totals(Cost);

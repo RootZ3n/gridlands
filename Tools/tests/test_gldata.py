@@ -227,6 +227,23 @@ class RuleTests(unittest.TestCase):
         self.box.edit("salvage.build.stud_wall", better)
         self.assertIn("SV-Q1", self.box.rules())
 
+    def test_cat1_a_role_falls_back_into_one_category(self):
+        self.box.edit("buildcategory.building.roofs", lambda d: d.__setitem__("fallbackRoles", ["roof", "wall"]))
+        self.assertIn("CAT-1", self.box.rules())
+
+    def test_cat1_every_buildable_piece_has_a_category(self):
+        self.box.edit("buildcategory.building.vertical_access", lambda d: d.__setitem__("fallbackRoles", []))
+        self.box.edit("buildpiece.modern.timber_stair", lambda d: d.pop("category"))
+        self.assertIn("CAT-1", self.box.rules())
+
+    def test_cat1_an_explicit_category_must_exist(self):
+        self.box.edit("buildpiece.modern.timber_stair", lambda d: d.__setitem__("category", "buildcategory.building.nowhere"))
+        self.assertIn("ID-5", self.box.rules())  # an unresolved reference
+
+    def test_cat2_category_orders_are_unique(self):
+        self.box.edit("buildcategory.building.roofs", lambda d: d.__setitem__("order", 10))
+        self.assertIn("CAT-2", self.box.rules())
+
     def test_svq1_buildable_piece_needs_paths(self):
         self.box.edit("salvage.build.stud_wall", lambda d: d.pop("yieldsByPath"))
         self.assertIn("SV-Q1", self.box.rules())

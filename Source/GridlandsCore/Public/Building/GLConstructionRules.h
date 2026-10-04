@@ -27,6 +27,7 @@ enum class EGLInstallRefusal : uint8
 	AlreadyInstalled,    // that phase is already present
 	OutOfOrder,          // a later phase is already installed
 	NotKnown,
+	MissingItems,        // P12: the sources cannot pay for it (the cost display shows the same sources)
 };
 
 struct GRIDLANDSCORE_API FGLInstallCheck

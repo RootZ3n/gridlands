@@ -262,6 +262,7 @@ TArray<FGLWorldSocket> GLStructureRules::Sockets(const FGLBuildPieceDef& Def, co
 	for (const FGLBuildSocketDef& Socket : Def.Sockets)
 	{
 		FGLWorldSocket& World = Result.AddDefaulted_GetRef();
+		World.Name = FName(*Socket.Name);
 		World.Role = Socket.Role;
 		World.Location = ToWorld(Piece, Socket.Offset);
 		World.bHasFacing = Socket.Facing < NoFacing * 0.5;
@@ -362,6 +363,7 @@ FGLBuildCheck GLStructureRules::CheckPlacement(const FGLContentRegistry& Content
 		return Check;
 	}
 	Check.VerticalStep = VerticalStepOf(Content, *Def);
+	Check.Material = Def->Material;
 	const FGLFootprint Mine = Footprint(*Def, Candidate);
 	for (const FGLPlacedPiece& Other : Existing)
 	{
@@ -369,6 +371,7 @@ FGLBuildCheck GLStructureRules::CheckPlacement(const FGLContentRegistry& Content
 		if (OtherDef && Mine.Overlaps(Footprint(*OtherDef, Other), OverlapShrinkCm))
 		{
 			Check.Refusal = EGLBuildRefusal::Overlaps;
+			Check.BlockingPieceId = Other.Id;
 			Check.Reason = TEXT("something is already there");
 			return Check;
 		}
@@ -416,6 +419,10 @@ FGLBuildCheck GLStructureRules::CanPlace(const FGLContentRegistry& Content, TCon
 		if (Available(Cost.Item) < Cost.Count)
 		{
 			Check.Refusal = EGLBuildRefusal::MissingItems;
+			Check.MissingItem = Cost.Item;
+			Check.MissingNeeded = Cost.Count;
+			Check.MissingHave = Available(Cost.Item);
+			Check.Material = Def->Material;
 			Check.Reason = FString::Printf(TEXT("needs %d x %s"), Cost.Count, *Cost.Item.ToString());
 			return Check;
 		}
@@ -454,8 +461,9 @@ TArray<int32> GLStructureRules::CollapsesAfterRemoving(const FGLContentRegistry&
 }
 
 bool GLStructureRules::Snap(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing, FName DefId,
-	const FVector& Aim, int32 YawStep, FGroundHeight Ground, FGLPlacedPiece& OutCandidate)
+	const FVector& Aim, int32 YawStep, FGroundHeight Ground, FGLPlacedPiece& OutCandidate, FGLSnapInfo* OutInfo)
 {
+	FGLSnapInfo Info;
 	const FGLBuildPieceDef* Def = Content.Find<FGLBuildPieceDef>(DefId);
 	if (!Def)
 	{
@@ -504,6 +512,12 @@ bool GLStructureRules::Snap(const FGLContentRegistry& Content, TConstArrayView<F
 				Best = Distance;
 				OutCandidate = Candidate;
 				bFound = true;
+				Info.bSnapped = true;
+				Info.TargetPieceId = Other.Id;
+				Info.TargetSocket = Theirs.Name;
+				Info.TargetLocation = Theirs.Location;
+				Info.OwnSocket = FName(*OursDef.Name);
+				Info.bYawFromData = bSide && bOursFaces && Theirs.bHasFacing;
 				break;
 			}
 		}
@@ -513,6 +527,10 @@ bool GLStructureRules::Snap(const FGLContentRegistry& Content, TConstArrayView<F
 		OutCandidate = Local;
 		OutCandidate.Location = FVector(Aim.X, Aim.Y, Ground(FVector2D(Aim)));
 		bFound = true;
+	}
+	if (OutInfo)
+	{
+		*OutInfo = Info;
 	}
 	return bFound;
 }
