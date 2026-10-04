@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -335,7 +335,7 @@
+ 	const TArray<FName> List = PiecesOf(BrowseCategoryIndex);
+ 	if (State == EGLBuildState::Browse && List.IsValidIndex(BrowseIndex))
+ 	{
+-		SelectPiece(List[BrowseIndex]);
++		SelectPiece(List[(BrowseIndex + 1) % List.Num()]); // DEFECT
+ 		SetState(EGLBuildState::Place); // predictable: a selection always returns to placing
+ 	}
+ }

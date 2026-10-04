@@ -20,6 +20,11 @@ public:
 
 	int32 CountOf(FName Item) const;
 	bool CanConsume(TConstArrayView<FGLItemStackDef> Cost) const;
+	/**
+	 * P12 (ADR-0040): what Consume(Cost) would take from each source (source index -> item -> count), without taking it:
+	 * the same consumption run on copies, so a cost display is the commit's own plan. False (and partial) when short.
+	 */
+	bool PlanConsume(TConstArrayView<FGLItemStackDef> Cost, TArray<TMap<FName, int32>>& OutTaken) const;
 	bool Consume(TConstArrayView<FGLItemStackDef> Cost);
 	bool CanDeliver(const FGLContentRegistry& Content, const TMap<FName, int32>& Items) const;
 	bool Deliver(const FGLContentRegistry& Content, const TMap<FName, int32>& Items);

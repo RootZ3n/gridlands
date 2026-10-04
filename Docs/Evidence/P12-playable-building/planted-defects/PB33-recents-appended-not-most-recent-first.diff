@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -803,7 +803,7 @@
+ 		if (View.bHasCandidate && Building->Place(GetOwner(), View.Candidate).IsAllowed())
+ 		{
+ 			Recents.Remove(Piece);
+-			Recents.Insert(Piece, 0);
++			Recents.Add(Piece); // DEFECT
+ 			Recents.SetNum(FMath::Min(Recents.Num(), RecentCount));
+ 			SaveProfile();
+ 		}

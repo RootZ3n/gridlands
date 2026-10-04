@@ -52,8 +52,9 @@ with evidence under `Docs/Evidence/<milestone>/`. Gates are not traded for speed
 |---|---|---|
 | Pre-P11 design gate | Bounded attribution of the inherited reversal-frame spike; docs reconciliation; the Building v1 design (player-built collapse, preview, inventory stacks, shared base storage, phases, salvage quality, claims, the REAL HOUSE / yaw investigation) | **done and merged 2026-10-03** (PR #33, `4b481d2`) |
 | P11 | Building v1: FRAME → FINISH on the shared structural language, honest preview, player-built collapse, salvage quality, stack limits, shared base storage, ownership | **GREEN 2026-10-04 (see the P11 row above)** |
-| P12 | Structure authoring and export; Ofi plans as ordinary-component blueprints | proposed |
-| P13 | The first real dungeon: two complete routes, environmental boss resolution | proposed |
+| P12 | Playable building / daily driver: build mode, piece browser, frame/finish choice, snap and removal feedback, build camera, straight stair and window wall, friction log ([ADR-0040](ADR/0040-playable-building-build-mode.md)). Operator-approved 2026-10-04 (decisions Z1-Z9). Two gates: ENGINEERING GREEN, then DAILY-DRIVER ACCEPTED (the operator's own session) | **candidate (not merged, not tagged)**; P13 does not start until the operator's daily-driver session |
+| P13 | Structure authoring and export; Ofi plans as ordinary-component blueprints; interactive doors (Z3); arches | proposed (operator: after P12 DAILY-DRIVER ACCEPTED) |
+| P14 | The first real dungeon: two complete routes, environmental boss resolution | proposed |
 | Playtest baseline 3 | Home building plus the first dungeon, playable by the operator | proposed |
 
 ## First playable loop (M9 functional test)

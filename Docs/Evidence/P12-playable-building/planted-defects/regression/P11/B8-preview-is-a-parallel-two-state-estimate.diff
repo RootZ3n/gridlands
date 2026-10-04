@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -264,7 +264,7 @@
+ 			}
+ 		}
+ 	}
+-	Result.Preview = GLStructureRules::PreviewOf(Result);
++	Result.Preview = Result.IsAllowed() ? EGLPreview::Green : EGLPreview::Red; // DEFECT
+ 	return Result;
+ }
+ 

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "buildcategory.building.foundations_floors",
+  "displayName": "Foundations & floors",
+  "order": 10,
+  "fallbackRoles": [
+    "foundation",
+    "floor"
+  ],
+  "notes": "P12 (ADR-0040): a piece-browser category. Eras and styles are filters and vocabularies, never locks."
+}

@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "InputCoreTypes.h"
 #include "GLCharacter.generated.h"
 
 class UCameraComponent;
@@ -31,6 +32,13 @@ public:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
+
+	/** P12 build camera (ADR-0040): pulled back and raised around Zenny while held (or toggled); bounded, not free flight. */
+	UPROPERTY(EditAnywhere, Category = "Camera") float BuildCameraArmCm = 1000.f;
+	UPROPERTY(EditAnywhere, Category = "Camera") float BuildCameraRaiseCm = 250.f;
+	float DefaultArmCm = 400.f;
+	FVector DefaultSocketOffset = FVector(0.f, 60.f, 60.f);
 	virtual void NotifyControllerChanged() override;
 	virtual void GetActorEyesViewPoint(FVector& OutLocation, FRotator& OutRotation) const override;
 
@@ -66,6 +74,15 @@ private:
 	/** H: ask Pehlichi about NICE's current puzzle (ADR-0023). Zenny still says nothing. */
 	void AskForHint();
 	void NextPiece();
+	// P12 build mode (ADR-0040).
+	void Wheel(int32 Direction);
+	bool IsDown(const FKey& A, const FKey& B) const;
+	void RotatePiece();
+	void Favorite(int32 Slot);
+	void BuildBack();
+	void BuildCameraPressed();
+	void BuildCameraReleased();
+	void FrictionNote();
 	/** Left mouse: the build/terraform tool when one is out, otherwise a swing (M11). */
 	void PrimaryAction();
 	void DistractCommand();

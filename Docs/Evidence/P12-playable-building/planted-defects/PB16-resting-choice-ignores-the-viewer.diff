@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+@@ -569,7 +569,7 @@
+ 				const double Centre = FVector::Dist2D(Candidate.Location, Aim);
+ 				const int32 Rests = bSide ? 0 : RestingSockets(Content, Existing, *Def, Candidate);
+ 				const double AwayScore = Away.IsZero() ? 0.0 : FMath::RoundToDouble(FVector2D::DotProduct((FVector2D(Candidate.Location) - FVector2D(Theirs.Location)).GetSafeNormal(), Away) * 1000.0);
+-				const bool bBetter = Rests != BestRests ? Rests > BestRests : AwayScore != BestAway ? AwayScore > BestAway : Centre < BestCentre;
++				const bool bBetter = Rests != BestRests ? Rests > BestRests : Centre < BestCentre; // DEFECT
+ 				if ((bThisSocket && !bBetter) || OverlapsAny(Content, Existing, *Def, Candidate)) // the overlap test alone (no support solve per candidate)
+ 				{
+ 					continue;

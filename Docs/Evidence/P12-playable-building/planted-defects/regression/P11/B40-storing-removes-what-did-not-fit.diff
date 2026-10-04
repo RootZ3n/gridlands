@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -150,7 +150,7 @@
+ 		const int32 Fits = Crate->Add(GLContent::Get(), Item, Carried[Item]); // only what fits leaves Zenny
+ 		if (Fits > 0)
+ 		{
+-			verify(Carrier->GetMutableInventory().Remove(Item, Fits));
++			verify(Carrier->GetMutableInventory().Remove(Item, Carried[Item])); // DEFECT: all of it leaves Zenny
+ 			Moved += Fits;
+ 		}
+ 	}

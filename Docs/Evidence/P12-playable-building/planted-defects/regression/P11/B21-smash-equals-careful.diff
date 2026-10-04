@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLConstructionRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLConstructionRules.cpp
+@@ -109,7 +109,7 @@
+ {
+ 	switch (Path)
+ 	{
+-	case EGLSalvagePath::Destructive: return Salvage.YieldsByPath.Destructive.Num() ? Salvage.YieldsByPath.Destructive : Salvage.Yields;
++	case EGLSalvagePath::Destructive: return Salvage.YieldsByPath.Careful.Num() ? Salvage.YieldsByPath.Careful : Salvage.Yields; // DEFECT
+ 	case EGLSalvagePath::Collapse: return Salvage.YieldsByPath.Collapse.Num() ? Salvage.YieldsByPath.Collapse : Salvage.Yields;
+ 	case EGLSalvagePath::Careful:
+ 	default: return Salvage.YieldsByPath.Careful.Num() ? Salvage.YieldsByPath.Careful : Salvage.Yields;

@@ -656,7 +656,7 @@ bool FGLPPWinchester::RunTest(const FString& Parameters)
 			return false;
 		}
 		TestEqual(TEXT("finished: exactly the model (no frame left behind)"), V1Joined(GLPlayerPresentationCheck::Problems(S.Test.World, Cell)), FString());
-		const int32 Roof = House.Ids.FindRef(TEXT("porch_roof"));
+		const int32 PorchRoof = House.Ids.FindRef(TEXT("porch_roof"));
 		// The removal preview over instances: the first piece whose removal brings instanced pieces down.
 		TArray<int32> Predicted, Drawn;
 		for (const FGLPlacedPiece& Piece : S.Building->GetPieces())
@@ -678,8 +678,8 @@ bool FGLPPWinchester::RunTest(const FString& Parameters)
 		{
 			return false;
 		}
-		TestFalse(TEXT("the falling roof left the batch"), S.Structures->IsInstanced(Roof));
-		TestNotNull(TEXT("and falls as an actor"), S.Building->FindActor(Roof));
+		TestFalse(TEXT("the falling roof left the batch"), S.Structures->IsInstanced(PorchRoof));
+		TestNotNull(TEXT("and falls as an actor"), S.Building->FindActor(PorchRoof));
 		TestEqual(TEXT("mid-fall: exactly the model"), V1Joined(GLPlayerPresentationCheck::Problems(S.Test.World, Cell)), FString());
 		TestTrue(TEXT("saved mid-fall"), S.Test.World->GetSubsystem<UGLSaveSubsystem>()->SaveToSlot(V1Slot));
 		S.Structures->Advance(6.0);
@@ -694,8 +694,8 @@ bool FGLPPWinchester::RunTest(const FString& Parameters)
 	R.PresentAll();
 	const FName Cell = R.Building->GetPieces().Num() ? R.Building->GetPieces()[0].Cell : NAME_None;
 	TestEqual(TEXT("rebuilt from the model alone: exactly the model"), V1Joined(GLPlayerPresentationCheck::Problems(R.Test.World, Cell)), FString());
-	const int32 Roof = House.Ids.FindRef(TEXT("porch_roof"));
-	TestTrue(TEXT("the restored fall is an actor, not an instance"), !R.Structures->IsInstanced(Roof) && R.Building->FindActor(Roof) != nullptr);
+	const int32 PorchRoof = House.Ids.FindRef(TEXT("porch_roof"));
+	TestTrue(TEXT("the restored fall is an actor, not an instance"), !R.Structures->IsInstanced(PorchRoof) && R.Building->FindActor(PorchRoof) != nullptr);
 	R.Structures->Advance(6.0);
 	TestEqual(TEXT("it lands once"), R.Structures->ImpactCount(), 1);
 	TestEqual(TEXT("landed after the restart: exactly the model"), V1Joined(GLPlayerPresentationCheck::Problems(R.Test.World, Cell)), FString());

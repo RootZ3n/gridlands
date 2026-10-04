@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+@@ -387,7 +387,7 @@
+ 	if (OverlapsAny(Content, Existing, *Def, Candidate, &Blocking))
+ 	{
+ 		Check.Refusal = EGLBuildRefusal::Overlaps;
+-		Check.BlockingPieceId = Blocking;
++		// DEFECT: which piece is not recorded
+ 		Check.Reason = TEXT("something is already there");
+ 		return Check;
+ 	}

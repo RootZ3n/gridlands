@@ -262,6 +262,7 @@ TArray<FGLWorldSocket> GLStructureRules::Sockets(const FGLBuildPieceDef& Def, co
 	for (const FGLBuildSocketDef& Socket : Def.Sockets)
 	{
 		FGLWorldSocket& World = Result.AddDefaulted_GetRef();
+		World.Name = FName(*Socket.Name);
 		World.Role = Socket.Role;
 		World.Location = ToWorld(Piece, Socket.Offset);
 		World.bHasFacing = Socket.Facing < NoFacing * 0.5;
@@ -350,6 +351,25 @@ EGLPreview GLStructureRules::PreviewOf(const FGLBuildCheck& Check)
 	return Check.Support <= Check.VerticalStep + 1e-9 ? EGLPreview::Yellow : EGLPreview::Green;
 }
 
+bool GLStructureRules::OverlapsAny(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing, const FGLBuildPieceDef& Def,
+	const FGLPlacedPiece& Candidate, int32* OutBlocking)
+{
+	const FGLFootprint Mine = Footprint(Def, Candidate);
+	for (const FGLPlacedPiece& Other : Existing)
+	{
+		const FGLBuildPieceDef* OtherDef = Content.Find<FGLBuildPieceDef>(Other.Def);
+		if (OtherDef && Mine.Overlaps(Footprint(*OtherDef, Other), OverlapShrinkCm))
+		{
+			if (OutBlocking)
+			{
+				*OutBlocking = Other.Id;
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
 FGLBuildCheck GLStructureRules::CheckPlacement(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing,
 	const FGLPlacedPiece& Candidate, FGroundHeight Ground)
 {
@@ -362,16 +382,14 @@ FGLBuildCheck GLStructureRules::CheckPlacement(const FGLContentRegistry& Content
 		return Check;
 	}
 	Check.VerticalStep = VerticalStepOf(Content, *Def);
-	const FGLFootprint Mine = Footprint(*Def, Candidate);
-	for (const FGLPlacedPiece& Other : Existing)
+	Check.Material = Def->Material;
+	int32 Blocking = 0;
+	if (OverlapsAny(Content, Existing, *Def, Candidate, &Blocking))
 	{
-		const FGLBuildPieceDef* OtherDef = Content.Find<FGLBuildPieceDef>(Other.Def);
-		if (OtherDef && Mine.Overlaps(Footprint(*OtherDef, Other), OverlapShrinkCm))
-		{
-			Check.Refusal = EGLBuildRefusal::Overlaps;
-			Check.Reason = TEXT("something is already there");
-			return Check;
-		}
+		Check.Refusal = EGLBuildRefusal::Overlaps;
+		Check.BlockingPieceId = Blocking;
+		Check.Reason = TEXT("something is already there");
+		return Check;
 	}
 	for (const FGLWorldSocket& Socket : Sockets(*Def, Candidate))
 	{
@@ -416,6 +434,10 @@ FGLBuildCheck GLStructureRules::CanPlace(const FGLContentRegistry& Content, TCon
 		if (Available(Cost.Item) < Cost.Count)
 		{
 			Check.Refusal = EGLBuildRefusal::MissingItems;
+			Check.MissingItem = Cost.Item;
+			Check.MissingNeeded = Cost.Count;
+			Check.MissingHave = Available(Cost.Item);
+			Check.Material = Def->Material;
 			Check.Reason = FString::Printf(TEXT("needs %d x %s"), Cost.Count, *Cost.Item.ToString());
 			return Check;
 		}
@@ -453,9 +475,47 @@ TArray<int32> GLStructureRules::CollapsesAfterRemoving(const FGLContentRegistry&
 	return Falling;
 }
 
-bool GLStructureRules::Snap(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing, FName DefId,
-	const FVector& Aim, int32 YawStep, FGroundHeight Ground, FGLPlacedPiece& OutCandidate)
+namespace
 {
+	/** How many of a candidate's bottom sockets sit on a top socket of the existing pieces (how many supports it rests on). */
+	int32 RestingSockets(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing, const FGLBuildPieceDef& Def, const FGLPlacedPiece& Candidate)
+	{
+		constexpr double CoincideCm = 2.0;
+		int32 Rests = 0;
+		for (const FGLWorldSocket& Ours : GLStructureRules::Sockets(Def, Candidate))
+		{
+			if (Ours.Role != SocketBottom)
+			{
+				continue;
+			}
+			bool bOn = false;
+			for (const FGLPlacedPiece& Other : Existing)
+			{
+				const FGLBuildPieceDef* OtherDef = Content.Find<FGLBuildPieceDef>(Other.Def);
+				if (!OtherDef || FVector::Dist2D(Other.Location, Ours.Location) > 1000.0)
+				{
+					continue;
+				}
+				for (const FGLWorldSocket& Theirs : GLStructureRules::Sockets(*OtherDef, Other))
+				{
+					bOn |= Theirs.Role == SocketTop && FVector::Dist(Theirs.Location, Ours.Location) <= CoincideCm;
+				}
+				if (bOn)
+				{
+					break;
+				}
+			}
+			Rests += bOn ? 1 : 0;
+		}
+		return Rests;
+	}
+}
+
+bool GLStructureRules::Snap(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing, FName DefId,
+	const FVector& Aim, int32 YawStep, FGroundHeight Ground, FGLPlacedPiece& OutCandidate, FGLSnapInfo* OutInfo, const FVector& AimDirection)
+{
+	const FVector2D Away = FVector2D(AimDirection).GetSafeNormal();
+	FGLSnapInfo Info;
 	const FGLBuildPieceDef* Def = Content.Find<FGLBuildPieceDef>(DefId);
 	if (!Def)
 	{
@@ -481,11 +541,20 @@ bool GLStructureRules::Snap(const FGLContentRegistry& Content, TConstArrayView<F
 			{
 				continue;
 			}
+			// P12: when the piece has several bottom sockets that could rest on this socket (an upper floor's edge
+			// midpoints on a wall top), the way it rests on the most supports wins (over the room, on both walls, not
+			// hanging outside on one); then the one extending away from the viewer (along the aim); then the one whose
+			// centre is nearest the aim: never the data's socket order. Side links keep the first match (angled
+			// construction takes its yaw from data).
+			int32 BestRests = -1;
+			double BestAway = -2.0;
+			double BestCentre = TNumericLimits<double>::Max();
+			bool bThisSocket = false;
 			for (const FGLBuildSocketDef& OursDef : Def->Sockets)
 			{
 				const bool bSide = OursDef.Role == SocketSide && Theirs.Role == SocketSide;
 				const bool bCompatible = (OursDef.Role == SocketBottom && Theirs.Role == SocketTop) || bSide;
-				if (!bCompatible)
+				if (!bCompatible || (bThisSocket && bSide))
 				{
 					continue;
 				}
@@ -497,14 +566,31 @@ bool GLStructureRules::Snap(const FGLContentRegistry& Content, TConstArrayView<F
 					Candidate.YawStep = YawStepFromDegrees(Theirs.Facing + 180.0 - OursDef.Facing);
 				}
 				Candidate.Location = Theirs.Location - (ToWorld(Candidate, OursDef.Offset) - Candidate.Location);
-				if (CheckPlacement(Content, Existing, Candidate, Ground).Refusal == EGLBuildRefusal::Overlaps)
+				const double Centre = FVector::Dist2D(Candidate.Location, Aim);
+				const int32 Rests = bSide ? 0 : RestingSockets(Content, Existing, *Def, Candidate);
+				const double AwayScore = Away.IsZero() ? 0.0 : FMath::RoundToDouble(FVector2D::DotProduct((FVector2D(Candidate.Location) - FVector2D(Theirs.Location)).GetSafeNormal(), Away) * 1000.0);
+				const bool bBetter = Rests != BestRests ? Rests > BestRests : AwayScore != BestAway ? AwayScore > BestAway : Centre < BestCentre;
+				if ((bThisSocket && !bBetter) || OverlapsAny(Content, Existing, *Def, Candidate)) // the overlap test alone (no support solve per candidate)
 				{
 					continue;
 				}
+				BestRests = Rests;
+				BestAway = AwayScore;
+				BestCentre = Centre;
+				bThisSocket = true;
 				Best = Distance;
 				OutCandidate = Candidate;
 				bFound = true;
-				break;
+				Info.bSnapped = true;
+				Info.TargetPieceId = Other.Id;
+				Info.TargetSocket = Theirs.Name;
+				Info.TargetLocation = Theirs.Location;
+				Info.OwnSocket = FName(*OursDef.Name);
+				Info.bYawFromData = bSide && bOursFaces && Theirs.bHasFacing;
+				if (bSide)
+				{
+					break; // side links: the first match, as before
+				}
 			}
 		}
 	}
@@ -513,6 +599,10 @@ bool GLStructureRules::Snap(const FGLContentRegistry& Content, TConstArrayView<F
 		OutCandidate = Local;
 		OutCandidate.Location = FVector(Aim.X, Aim.Y, Ground(FVector2D(Aim)));
 		bFound = true;
+	}
+	if (OutInfo)
+	{
+		*OutInfo = Info;
 	}
 	return bFound;
 }

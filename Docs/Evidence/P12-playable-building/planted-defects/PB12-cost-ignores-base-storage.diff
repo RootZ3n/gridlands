@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -428,7 +428,7 @@
+ 	View.bAffordable = Pool.PlanConsume(Cost, Plan);
+ 	View.Claim = Sources.Claim;
+ 	View.Containers = Sources.Containers;
+-	const int32 Storage = Sources.Containers.Num();
++	const int32 Storage = 0; // DEFECT: a second, personal-only calculation
+ 	TMap<FName, int32> Need;
+ 	TArray<FName> Order;
+ 	for (const FGLItemStackDef& Stack : Cost)

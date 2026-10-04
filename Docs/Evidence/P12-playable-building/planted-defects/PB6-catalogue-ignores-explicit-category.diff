@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLBuildCatalog.cpp
++++ b/Source/GridlandsCore/Private/Building/GLBuildCatalog.cpp
+@@ -10,7 +10,7 @@
+ 	{
+ 		return NAME_None;
+ 	}
+-	if (!Def->Category.IsNone() && Content.Find<FGLBuildCategoryDef>(Def->Category))
++	if (false && !Def->Category.IsNone() && Content.Find<FGLBuildCategoryDef>(Def->Category)) // DEFECT
+ 	{
+ 		return Def->Category;
+ 	}

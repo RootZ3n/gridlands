@@ -1,0 +1,12 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -482,8 +482,7 @@
+ 	}
+ 	GLContent::Get().ForEachEntry([&](const FGLContentEntry& Entry)
+ 	{
+-		if (Entry.Definition.GetPtr<FGLFinishDef>()
+-			&& GLConstructionRules::CanInstall(GLContent::Get(), Part->Piece, Entry.Id, Knowledge ? &Knowledge->GetKnowledge() : nullptr).IsAllowed())
++		if (Entry.Definition.GetPtr<FGLFinishDef>() && (Knowledge || true)) // DEFECT: every finish, fitting or not
+ 		{
+ 			Out.Add(Entry.Id);
+ 		}

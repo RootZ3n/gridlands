@@ -1,0 +1,21 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -548,7 +548,7 @@
+ 	if (State == EGLBuildState::Remove)
+ 	{
+ 		// The confirmation belongs to one target and one prediction: anything else changing cancels it.
+-		const bool bSame = SameConfirmation(ConfirmTarget, ConfirmPrediction, View.RemoveTarget, View.Predicted);
++		const bool bSame = true; // DEFECT
+ 		if (bHolding)
+ 		{
+ 			HoldElapsed = bSame ? HoldElapsed + DeltaTime : 0.f;
+@@ -861,8 +861,7 @@
+ 	RefreshView();
+ 	UGLBuildingSubsystem* Building = GetWorld()->GetSubsystem<UGLBuildingSubsystem>();
+ 	// Only the piece the confirmation was for, with the prediction it was given (re-derived now by the canonical function).
+-	if (State != EGLBuildState::Remove || !View.RemoveTarget || View.RemoveTarget != ConfirmTarget
+-		|| (View.bNeedsConfirm && View.Predicted != ConfirmPrediction))
++	if (State != EGLBuildState::Remove || !View.RemoveTarget) // DEFECT: whatever is aimed at now
+ 	{
+ 		return;
+ 	}

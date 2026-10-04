@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "buildcategory.building.base_utility",
+  "displayName": "Base & utility",
+  "order": 60,
+  "fallbackRoles": [
+    "storage",
+    "base_core",
+    "station"
+  ],
+  "notes": "P12 (ADR-0040): a piece-browser category. Eras and styles are filters and vocabularies, never locks."
+}

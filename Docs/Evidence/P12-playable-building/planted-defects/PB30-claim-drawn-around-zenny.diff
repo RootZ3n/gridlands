@@ -1,0 +1,10 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -638,6 +638,7 @@
+ 			View.bShowClaim = true;
+ 			View.bInsideClaim = Claim.Contains(At);
+ 			View.ClaimAreas = Claim.Areas;
++			for (FGLClaimArea& Area : View.ClaimAreas) { Area.Centre = At; } // DEFECT
+ 			return;
+ 		}
+ 	}

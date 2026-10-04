@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -459,7 +459,7 @@
+ {
+ 	const UGLStructureSubsystem* Structures = GetWorld()->GetSubsystem<UGLStructureSubsystem>();
+ 	const FGLStructurePartRuntime* Part = Structures ? Structures->FindPlayerPiece(PieceId) : nullptr;
+-	return Part && Part->State == EGLStructurePartState::Intact ? ScaledYield(Part->Piece, Path) : TMap<FName, int32>();
++	return Part && Part->State == EGLStructurePartState::Intact ? ScaledYield(Part->Piece, EGLSalvagePath::Careful) : TMap<FName, int32>(); // DEFECT
+ }
+ 
+ bool UGLBuildingSubsystem::RemovalYieldFits(const AActor* Who, int32 PieceId, EGLSalvagePath Path) const

@@ -1,0 +1,11 @@
+--- a/Tools/gldata/validate.py
++++ b/Tools/gldata/validate.py
+@@ -656,7 +656,7 @@
+         if entity.kind == "finish":
+             phase = phases.get(data.get("phase", ""))
+             if phase and not phase.data.get("implemented"):
+-                ds.problem("PH-2", rel, ".phase", f"{data.get('phase')} is not implemented yet: no content for it")
++                pass  # DEFECT
+             for role in data.get("fitsRoles") or []:
+                 if not any(role == f.data.get("role") and data.get("phase") in (f.data.get("layers") or []) for f in forms):
+                     ds.problem("FIN-1", rel, ".fitsRoles", f"no {role} form accepts {data.get('phase')}")

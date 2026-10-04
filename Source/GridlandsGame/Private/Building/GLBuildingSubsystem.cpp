@@ -277,8 +277,6 @@ FGLBuildCheck UGLBuildingSubsystem::Place(AActor* Builder, const FGLPlacedPiece&
 		return Result;
 	}
 	const FGLBuildPieceDef* Def = GLContent::Get().Find<FGLBuildPieceDef>(Candidate.Def);
-	FGLMaterialSources Sources = SourcesFor(Builder, Candidate.Location);
-	FGLMaterialPool Pool = Sources.Pool();
 	FGLPlacedPiece Placed = Candidate;
 	Placed.Id = NextId++;
 	Placed.Cell = CellFor(Placed.Location);
@@ -292,6 +290,10 @@ FGLBuildCheck UGLBuildingSubsystem::Place(AActor* Builder, const FGLPlacedPiece&
 		Refused.Preview = EGLPreview::Red;
 		return Refused; // nothing was paid
 	}
+	// The sources are taken now, after the add: base storage lives in the player structure's parts, and adding a part may
+	// have moved them (P12: sources taken before the add pointed into freed memory once the parts array grew).
+	FGLMaterialSources Sources = SourcesFor(Builder, Candidate.Location);
+	FGLMaterialPool Pool = Sources.Pool();
 	verify(Pool.Consume(Def->Cost)); // Check() proved every cost is available: all or nothing
 	Emit(TEXT("Event.Building.Placed"), Placed.Def, Builder, { { TEXT("support"), Result.Support }, { TEXT("fromStorage"), static_cast<double>(Sources.Containers.Num()) } });
 	UGLNoiseSubsystem::EmitAction(this, TEXT("Noise.Build.Place"), GLStructureRules::Bounds(*Def, Placed).GetCenter(), Builder, Def->Material);
@@ -387,7 +389,7 @@ FGLInstallCheck UGLBuildingSubsystem::CheckInstall(const AActor* Builder, int32 
 		const FGLFinishDef* Finish = GLContent::Get().Find<FGLFinishDef>(Layer);
 		if (!SourcesFor(Builder, Part->Piece.Location).Pool().CanConsume(Finish->Cost))
 		{
-			Check.Refusal = EGLInstallRefusal::UnknownLayer;
+			Check.Refusal = EGLInstallRefusal::MissingItems;
 			Check.Reason = TEXT("missing materials");
 		}
 	}
@@ -411,9 +413,84 @@ FGLInstallCheck UGLBuildingSubsystem::InstallFinish(AActor* Builder, int32 Piece
 	return Check;
 }
 
-bool UGLBuildingSubsystem::Snap(FName Def, const FVector& Aim, int32 YawStep, FGLPlacedPiece& OutCandidate) const
+bool UGLBuildingSubsystem::Snap(FName Def, const FVector& Aim, int32 YawStep, FGLPlacedPiece& OutCandidate, FGLSnapInfo* OutInfo, const FVector& AimDirection) const
 {
-	return GLStructureRules::Snap(GLContent::Get(), GetPieces(), Def, Aim, YawStep, [this](const FVector2D& At) { return GroundAt(At); }, OutCandidate);
+	return GLStructureRules::Snap(GLContent::Get(), GetPieces(), Def, Aim, YawStep, [this](const FVector2D& At) { return GroundAt(At); }, OutCandidate, OutInfo, AimDirection);
+}
+
+FGLCostView UGLBuildingSubsystem::CostView(const AActor* Who, const FVector& At, TConstArrayView<FGLItemStackDef> Cost) const
+{
+	// The commit's own sources and its own consumption, dry-run: nothing here re-implements the order or the counts.
+	FGLCostView View;
+	const FGLMaterialSources Sources = SourcesFor(Who, At);
+	const FGLMaterialPool Pool = Sources.Pool();
+	TArray<TMap<FName, int32>> Plan;
+	View.bAffordable = Pool.PlanConsume(Cost, Plan);
+	View.Claim = Sources.Claim;
+	View.Containers = Sources.Containers;
+	const int32 Storage = Sources.Containers.Num();
+	TMap<FName, int32> Need;
+	TArray<FName> Order;
+	for (const FGLItemStackDef& Stack : Cost)
+	{
+		if (!Need.Contains(Stack.Item))
+		{
+			Order.Add(Stack.Item);
+		}
+		Need.FindOrAdd(Stack.Item) += Stack.Count;
+	}
+	for (const FName& Item : Order)
+	{
+		FGLCostLine& Line = View.Lines.AddDefaulted_GetRef();
+		Line.Item = Item;
+		Line.Needed = Need[Item];
+		for (int32 I = 0; I < Sources.Inventories.Num(); ++I)
+		{
+			const int32 Have = Sources.Inventories[I] ? Sources.Inventories[I]->CountOf(Item) : 0;
+			const int32 Take = Plan.IsValidIndex(I) ? Plan[I].FindRef(Item) : 0;
+			(I < Storage ? Line.InStorage : Line.Personal) += Have;
+			(I < Storage ? Line.FromStorage : Line.FromPersonal) += Take;
+		}
+	}
+	return View;
+}
+
+TMap<FName, int32> UGLBuildingSubsystem::RemovalYield(int32 PieceId, EGLSalvagePath Path) const
+{
+	const UGLStructureSubsystem* Structures = GetWorld()->GetSubsystem<UGLStructureSubsystem>();
+	const FGLStructurePartRuntime* Part = Structures ? Structures->FindPlayerPiece(PieceId) : nullptr;
+	return Part && Part->State == EGLStructurePartState::Intact ? ScaledYield(Part->Piece, Path) : TMap<FName, int32>();
+}
+
+bool UGLBuildingSubsystem::RemovalYieldFits(const AActor* Who, int32 PieceId, EGLSalvagePath Path) const
+{
+	const UGLStructureSubsystem* Structures = GetWorld()->GetSubsystem<UGLStructureSubsystem>();
+	const FGLStructurePartRuntime* Part = Structures ? Structures->FindPlayerPiece(PieceId) : nullptr;
+	return Part && SourcesFor(Who, Part->Piece.Location).Pool().CanDeliver(GLContent::Get(), ScaledYield(Part->Piece, Path));
+}
+
+TArray<FName> UGLBuildingSubsystem::FinishesFor(int32 PieceId) const
+{
+	// Every finish the install rule itself accepts on this piece now (role, phase, knowledge); costs are shown, not filtered.
+	TArray<FName> Out;
+	const UGLStructureSubsystem* Structures = GetWorld()->GetSubsystem<UGLStructureSubsystem>();
+	const FGLStructurePartRuntime* Part = Structures ? Structures->FindPlayerPiece(PieceId) : nullptr;
+	const UGLKnowledgeSubsystem* Knowledge = GetWorld()->GetSubsystem<UGLKnowledgeSubsystem>();
+	if (!Part || Part->State != EGLStructurePartState::Intact)
+	{
+		return Out;
+	}
+	GLContent::Get().ForEachEntry([&](const FGLContentEntry& Entry)
+	{
+		if (Entry.Definition.GetPtr<FGLFinishDef>()
+			&& GLConstructionRules::CanInstall(GLContent::Get(), Part->Piece, Entry.Id, Knowledge ? &Knowledge->GetKnowledge() : nullptr).IsAllowed())
+		{
+			Out.Add(Entry.Id);
+		}
+	});
+	auto Name = [](FName Id) { const FGLFinishDef* F = GLContent::Get().Find<FGLFinishDef>(Id); return F ? F->DisplayName : Id.ToString(); };
+	Out.Sort([&Name](FName A, FName B) { return Name(A) != Name(B) ? Name(A) < Name(B) : A.LexicalLess(B); });
+	return Out;
 }
 
 bool UGLBuildingSubsystem::IsUnderStructure(const FVector2D& World) const

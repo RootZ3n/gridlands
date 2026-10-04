@@ -1,0 +1,109 @@
+{
+	"normal":
+	{
+		"frames": 1606,
+		"gameThreadMsMean": 2.069466998761202,
+		"gameThreadMsP95": 2.4779999256134033,
+		"gameThreadMsP99": 2.75,
+		"gameThreadMsWorst": 3.3159999847412109,
+		"buildTickMsMean": 0.0053484653613320174,
+		"buildTickMsP99": 0.0099469907581806183,
+		"buildTickMsWorst": 0.085721025243401527,
+		"incrementalGameThreadMsMean": 0,
+		"status": "",
+		"predicted": 0
+	},
+	"place":
+	{
+		"frames": 1600,
+		"gameThreadMsMean": 3.4392606240510939,
+		"gameThreadMsP95": 3.9679999351501465,
+		"gameThreadMsP99": 4.3870000839233398,
+		"gameThreadMsWorst": 4.8870000839233398,
+		"buildTickMsMean": 1.5372077468782663,
+		"buildTickMsP99": 2.0980630069971085,
+		"buildTickMsWorst": 2.3819790221750736,
+		"incrementalGameThreadMsMean": 1.3697936252898919,
+		"status": "[BUILD] Stud wall [+] OK: Stands, with margin",
+		"predicted": 0
+	},
+	"buildCamera":
+	{
+		"frames": 1344,
+		"gameThreadMsMean": 3.4456398779792443,
+		"gameThreadMsP95": 3.880000114440918,
+		"gameThreadMsP99": 4.1880002021789551,
+		"gameThreadMsWorst": 5.2649998664855957,
+		"buildTickMsMean": 1.5484629454606744,
+		"buildTickMsP99": 1.8676300533115864,
+		"buildTickMsWorst": 2.7300899382680655,
+		"incrementalGameThreadMsMean": 1.3761728792180423,
+		"status": "[BUILD] Stud wall [+] OK: Stands, with margin",
+		"predicted": 0
+	},
+	"browser":
+	{
+		"frames": 1596,
+		"gameThreadMsMean": 2.006939849757909,
+		"gameThreadMsP95": 2.3629999160766602,
+		"gameThreadMsP99": 2.6549999713897705,
+		"gameThreadMsWorst": 4.0190000534057617,
+		"buildTickMsMean": 0.05816175811865687,
+		"buildTickMsP99": 0.099121127277612686,
+		"buildTickMsWorst": 0.77344803139567375,
+		"incrementalGameThreadMsMean": -0.062527149003293037,
+		"status": "[BUILD] choose a piece",
+		"predicted": 0
+	},
+	"removePrediction":
+	{
+		"frames": 1418,
+		"gameThreadMsMean": 3.2796135385887242,
+		"gameThreadMsP95": 3.6830000877380371,
+		"gameThreadMsP99": 4.1640000343322754,
+		"gameThreadMsWorst": 5.0679998397827148,
+		"buildTickMsMean": 1.4259722093658782,
+		"buildTickMsP99": 1.7051321920007467,
+		"buildTickMsWorst": 2.162800170481205,
+		"incrementalGameThreadMsMean": 1.2101465398275222,
+		"status": "[REMOVE careful] nothing else falls; recovers 5 Stud, 2 Scrap timber, 2 Timber plank",
+		"predicted": 0
+	},
+	"repeatedPlacement":
+	{
+		"frames": 1631,
+		"gameThreadMsMean": 2.5869840577948247,
+		"gameThreadMsP95": 3.9240000247955322,
+		"gameThreadMsP99": 4.4489998817443848,
+		"gameThreadMsWorst": 11.611000061035156,
+		"buildTickMsMean": 0.62525480689285617,
+		"buildTickMsP99": 2.1463090088218451,
+		"buildTickMsWorst": 2.6480108499526978,
+		"incrementalGameThreadMsMean": 0.51751705903362266,
+		"placements": 6,
+		"commitMsMean": 3.7015937268733978,
+		"commitMsWorst": 4.405242158100009,
+		"status": "[BUILD] Timber floor - Aim at the ground or a free socket",
+		"predicted": 0
+	},
+	"placeBreakdown":
+	{
+		"frames": 989,
+		"gameThreadMsMean": 6.06874722176061,
+		"gameThreadMsP95": 6.5390000343322754,
+		"gameThreadMsP99": 7.1319999694824219,
+		"gameThreadMsWorst": 8.9219999313354492,
+		"buildTickMsMean": 1.476632293664047,
+		"buildTickMsP99": 1.6568021383136511,
+		"buildTickMsWorst": 1.918216934427619,
+		"incrementalGameThreadMsMean": 3.999280222999408,
+		"snapMsMean": 0.12048772659578386,
+		"checkMsMean": 1.4159564365311719,
+		"costViewMsMean": 0.040216391192347989,
+		"predictionMsMean": 1.3064950140978466,
+		"status": "[BUILD] Stud wall [+] OK: Stands, with margin",
+		"predicted": 0
+	},
+	"pieces": 315,
+	"targetIncrementalGameThreadMs": 2
+}

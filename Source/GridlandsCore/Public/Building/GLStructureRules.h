@@ -37,6 +37,7 @@ struct GRIDLANDSCORE_API FGLPlacedPiece
 /** A socket in world space. */
 struct GRIDLANDSCORE_API FGLWorldSocket
 {
+	FName Name;
 	FName Role; // bottom | top | side
 	FVector Location = FVector::ZeroVector;
 	/** World facing in degrees (0 = +X), when the socket declares one. */
@@ -93,6 +94,20 @@ enum class EGLBuildRefusal : uint8
 	OutsideClaim,   // P11: a base core may not overlap another claim
 };
 
+/** P12 (ADR-0040): what a snap connected (the snap marker shows exactly this; the commit places the same candidate). */
+struct GRIDLANDSCORE_API FGLSnapInfo
+{
+	/** Snapped to another piece's socket (false: on the ground at the aim point). */
+	bool bSnapped = false;
+	int32 TargetPieceId = INT32_MIN;
+	FName TargetSocket;
+	FVector TargetLocation = FVector::ZeroVector;
+	/** The candidate's own socket that meets it. */
+	FName OwnSocket;
+	/** The yaw came from the two sockets' facings (data), not from the requested yaw. */
+	bool bYawFromData = false;
+};
+
 struct GRIDLANDSCORE_API FGLBuildCheck
 {
 	EGLBuildRefusal Refusal = EGLBuildRefusal::None;
@@ -103,6 +118,15 @@ struct GRIDLANDSCORE_API FGLBuildCheck
 	double VerticalStep = 0.0;
 	EGLPreview Preview = EGLPreview::Red;
 	TArray<FName> MissingKnowledge;
+	/** P12 (ADR-0040): machine-readable detail for the refusal (the UI explains these; it never re-derives them). */
+	/** Overlaps: the existing piece in the way (its id; INT32_MIN when it is not a known piece). */
+	int32 BlockingPieceId = INT32_MIN;
+	/** MissingItems: the first item short, how many the piece needs and how many the sources hold. */
+	FName MissingItem;
+	int32 MissingNeeded = 0;
+	int32 MissingHave = 0;
+	/** The piece's material (YELLOW: "at <material>'s limit"). */
+	FName Material;
 
 	bool IsAllowed() const { return Refusal == EGLBuildRefusal::None; }
 };
@@ -153,6 +177,9 @@ namespace GLStructureRules
 	GRIDLANDSCORE_API TMap<int32, double> ComputeSupport(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Pieces, FGroundHeight Ground);
 
 	/** Geometry and structure only (overlap, buried, support), with the preview colour of the result. */
+	/** Does the candidate's oriented footprint overlap an existing piece (the first one's id in OutBlocking)? CheckPlacement's own test. */
+	GRIDLANDSCORE_API bool OverlapsAny(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing, const FGLBuildPieceDef& Def,
+		const FGLPlacedPiece& Candidate, int32* OutBlocking = nullptr);
 	GRIDLANDSCORE_API FGLBuildCheck CheckPlacement(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing,
 		const FGLPlacedPiece& Candidate, FGroundHeight Ground);
 	/** Everything: knowledge, items (counted in Available), then CheckPlacement. */
@@ -174,10 +201,13 @@ namespace GLStructureRules
 	 * Where Def would go near Aim: aligned to the nearest compatible free socket (bottom onto top, side onto side) within
 	 * MaxSnapDistanceCm that does not overlap; otherwise, for a ground-capable piece, on the ground at Aim. When both side
 	 * sockets declare a facing, the candidate's yaw comes from the data (they must face each other), not from YawStep.
-	 * Returns false when neither applies.
+	 * Returns false when neither applies. A piece that could rest on the socket several ways (P12) rests the way that sits
+	 * on the most supports; among those, the one extending along AimDirection (away from the viewer) when given, then the
+	 * one whose centre is nearest Aim.
 	 */
 	GRIDLANDSCORE_API bool Snap(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing, FName Def,
-		const FVector& Aim, int32 YawStep, FGroundHeight Ground, FGLPlacedPiece& OutCandidate);
+		const FVector& Aim, int32 YawStep, FGroundHeight Ground, FGLPlacedPiece& OutCandidate, struct FGLSnapInfo* OutInfo = nullptr,
+		const FVector& AimDirection = FVector::ZeroVector);
 
 	/** Is this ground point under a piece that rests on the ground (terraforming must not move it)? Oriented. */
 	GRIDLANDSCORE_API bool IsUnderStructure(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Pieces,

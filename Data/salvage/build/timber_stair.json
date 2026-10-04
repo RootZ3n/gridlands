@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "id": "salvage.build.timber_stair",
+  "displayName": "Straight stair",
+  "integrity": 40.0,
+  "material": "material.timber.pine",
+  "yields": [
+    {
+      "item": "item.component.stud",
+      "count": 7,
+      "yieldCategory": "yield.common.salvage"
+    },
+    {
+      "item": "item.material.timber_plank",
+      "count": 3,
+      "yieldCategory": "yield.common.salvage"
+    }
+  ],
+  "yieldsByPath": {
+    "careful": [
+      {
+        "item": "item.component.stud",
+        "count": 7,
+        "yieldCategory": "yield.common.salvage"
+      },
+      {
+        "item": "item.material.timber_plank",
+        "count": 3,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ],
+    "destructive": [
+      {
+        "item": "item.component.stud",
+        "count": 3,
+        "yieldCategory": "yield.common.salvage"
+      },
+      {
+        "item": "item.material.timber_plank",
+        "count": 1,
+        "yieldCategory": "yield.common.salvage"
+      },
+      {
+        "item": "item.material.scrap_timber",
+        "count": 4,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ],
+    "collapse": [
+      {
+        "item": "item.material.scrap_timber",
+        "count": 6,
+        "yieldCategory": "yield.common.salvage"
+      }
+    ]
+  },
+  "notes": "P12 provisional yields (economy untuned)."
+}

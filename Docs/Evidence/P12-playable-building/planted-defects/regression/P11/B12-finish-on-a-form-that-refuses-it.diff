@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLConstructionRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLConstructionRules.cpp
+@@ -34,7 +34,7 @@
+ 		Check.Reason = FString::Printf(TEXT("%s is not built yet"), *Phase->DisplayName);
+ 		return Check;
+ 	}
+-	if (!Form->AcceptsPhase(Finish->Phase))
++	if (false && !Form->AcceptsPhase(Finish->Phase)) // DEFECT
+ 	{
+ 		Check.Refusal = EGLInstallRefusal::FormRefusesPhase;
+ 		Check.Reason = Form->Layers.Num() == 0 ? TEXT("it is complete as built") : TEXT("that does not go on this");

@@ -75,10 +75,7 @@ void AGLHUD::DrawHUD()
 			DrawText(TEXT("De-rezzed. Rebuilding Zenny..."), FLinearColor(1.f, 0.3f, 0.9f), Canvas->ClipX * 0.5f - 160.f, Canvas->ClipY * 0.45f, GEngine->GetLargeFont(), 1.2f);
 		}
 	}
-	if (const UGLBuildModeComponent* Tools = Zenny->FindComponentByClass<UGLBuildModeComponent>(); Tools && !Tools->StatusLine().IsEmpty())
-	{
-		DrawText(Tools->StatusLine(), FLinearColor(1.f, 0.85f, 0.3f), 24.f, Canvas->ClipY - 60.f, GEngine->GetMediumFont(), 1.2f);
-	}
+	DrawBuildMode(Zenny);
 }
 
 namespace

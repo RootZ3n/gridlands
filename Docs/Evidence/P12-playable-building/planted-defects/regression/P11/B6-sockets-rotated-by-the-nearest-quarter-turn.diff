@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+@@ -235,7 +235,7 @@
+ 
+ FVector GLStructureRules::ToWorld(const FGLPlacedPiece& Piece, const TArray<double>& LocalMetres)
+ {
+-	const FVector2D XY = RotateXY(FVector2D(Component(LocalMetres, 0), Component(LocalMetres, 1)) * 100.0, Piece.YawStep);
++	const FVector2D XY = RotateXY(FVector2D(Component(LocalMetres, 0), Component(LocalMetres, 1)) * 100.0, (Piece.YawStep + 18) / 36 * 36); // DEFECT
+ 	return Piece.Location + FVector(XY.X, XY.Y, Component(LocalMetres, 2) * 100.0);
+ }
+ 

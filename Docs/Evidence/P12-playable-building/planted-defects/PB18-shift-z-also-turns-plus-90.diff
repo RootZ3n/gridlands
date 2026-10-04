@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -416,7 +416,7 @@
+ void UGLBuildModeComponent::RotateQuarter(int32 Direction)
+ {
+ 	Count(TEXT("RotateQuarter"));
+-	YawStep = GLStructureRules::NormalizeYawStep(YawStep + (Direction >= 0 ? 1 : -1) * GLStructureRules::QuarterTurnSteps);
++	YawStep = GLStructureRules::NormalizeYawStep(YawStep + GLStructureRules::QuarterTurnSteps); // DEFECT
+ 	ClearGhost();
+ }
+ 

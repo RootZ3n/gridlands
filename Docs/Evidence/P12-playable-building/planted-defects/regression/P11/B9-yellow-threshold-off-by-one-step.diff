@@ -1,0 +1,11 @@
+--- a/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
++++ b/Source/GridlandsCore/Private/Building/GLStructureRules.cpp
+@@ -348,7 +348,7 @@
+ 	{
+ 		return EGLPreview::Red;
+ 	}
+-	return Check.Support <= Check.VerticalStep + 1e-9 ? EGLPreview::Yellow : EGLPreview::Green;
++	return Check.Support < Check.VerticalStep - 1e-9 ? EGLPreview::Yellow : EGLPreview::Green; // DEFECT
+ }
+ 
+ bool GLStructureRules::OverlapsAny(const FGLContentRegistry& Content, TConstArrayView<FGLPlacedPiece> Existing, const FGLBuildPieceDef& Def,

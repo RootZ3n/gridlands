@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -802,7 +802,7 @@
+ 	case EGLBuildState::Place:
+ 		if (View.bHasCandidate && Building->Place(GetOwner(), View.Candidate).IsAllowed())
+ 		{
+-			Recents.Remove(Piece);
++			// DEFECT: repeats kept
+ 			Recents.Insert(Piece, 0);
+ 			Recents.SetNum(FMath::Min(Recents.Num(), RecentCount));
+ 			SaveProfile();

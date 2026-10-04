@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -573,7 +573,7 @@
+ {
+ 	View.Mode = Mode;
+ 	View.State = State;
+-	View.YawStep = YawStep;
++	View.YawStep = GLStructureRules::NormalizeYawStep(YawStep + 1); // DEFECT
+ 	View.Path = Path;
+ 	View.EraFilter = EraFilter;
+ 	View.BrowseCategory = BrowseCategoryIndex;

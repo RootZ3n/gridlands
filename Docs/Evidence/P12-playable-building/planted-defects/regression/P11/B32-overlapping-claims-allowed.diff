@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildingSubsystem.cpp
+@@ -256,7 +256,7 @@
+ 		const TArray<FGLClaim> New = GLClaimRules::ClaimsFrom(GLContent::Get(), { Core }, GLContent::Tuning().Building.ClaimRadiusMetres * 100.0);
+ 		for (const FGLClaim& Existing : Claims())
+ 		{
+-			if (New.Num() && New[0].Overlaps(Existing))
++			if (false && New.Num() && New[0].Overlaps(Existing)) // DEFECT
+ 			{
+ 				Result.Refusal = EGLBuildRefusal::OutsideClaim;
+ 				Result.Reason = TEXT("too close to another base (claims may not overlap)");

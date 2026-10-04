@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -750,7 +750,7 @@
+ 		{
+ 			Now = Building->PreviewRemoval(View.RemoveTarget); // the commit's own function: what is shown is what will fall
+ 			View.Predicted = Now;
+-			View.bNeedsConfirm = Now.Num() > 0; // collateral collapse, not the piece's importance, decides
++			View.bNeedsConfirm = Now.Num() > 0 || Part->Piece.Def == FName(TEXT("buildpiece.modern.base_core")); // DEFECT
+ 			View.Yield = Building->RemovalYield(View.RemoveTarget, Path);
+ 			View.YieldCareful = Building->RemovalYield(View.RemoveTarget, EGLSalvagePath::Careful);
+ 			View.YieldDestructive = Building->RemovalYield(View.RemoveTarget, EGLSalvagePath::Destructive);

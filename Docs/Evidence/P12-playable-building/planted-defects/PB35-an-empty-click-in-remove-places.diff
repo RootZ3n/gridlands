@@ -1,0 +1,11 @@
+--- a/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
++++ b/Source/GridlandsGame/Private/Building/GLBuildModeComponent.cpp
+@@ -817,6 +817,8 @@
+ 	case EGLBuildState::Remove:
+ 		if (!View.RemoveTarget)
+ 		{
++			FGLPlacedPiece Fallback; // DEFECT: an empty click in REMOVE places the selected piece
++			if (Building->Snap(Piece, View.AimPoint, YawStep, Fallback)) { Building->Place(GetOwner(), Fallback); }
+ 			return;
+ 		}
+ 		if (!View.bNeedsConfirm)
